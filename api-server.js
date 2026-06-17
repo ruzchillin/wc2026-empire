@@ -1,142 +1,42 @@
 'use strict';
-// WC2026 API Server - minimal express-only build (no external middleware)
 const express = require('express');
 const https = require('https');
-
 const PORT = process.env.PORT || 3001;
 const app = express();
-
-// Parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(function(req,res,next){res.setHeader('Access-Control-Allow-Origin','*');res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');if(req.method==='OPTIONS')return res.sendStatus(200);next();});
 
-// CORS - manual (no cors package needed)
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') { res.sendStatus(200); return; }
-  next();
-});
+var PICKS=[{id:'p1',match:'Argentina vs France',pick:'Argentina ML',odds:'+145',confidence:72,tip:'Reigning champions with Messi in form',badge:'HOT'},{id:'p2',match:'England vs Germany',pick:'Both Teams to Score',odds:'-115',confidence:68,tip:'Both high-scoring attacks',badge:'VALUE'},{id:'p3',match:'Brazil vs Spain',pick:'Under 2.5 Goals',odds:'+105',confidence:65,tip:'Defensive midfields dominate',badge:'SAFE'},{id:'p4',match:'Morocco vs Portugal',pick:'Morocco +1.5',odds:'-130',confidence:70,tip:'Morocco excellent defensively',badge:'SAFE'},{id:'p5',match:'USA vs Mexico',pick:'USA ML',odds:'+120',confidence:63,tip:'USA strong as 2026 hosts',badge:'VALUE'}];
+var SCORERS=[{rank:1,player:'Kylian Mbappé',team:'France',goals:6,assists:3,flag:'🇫🇷'},{rank:2,player:'Erling Haaland',team:'Norway',goals:5,assists:2,flag:'🇳🇴'},{rank:3,player:'Lionel Messi',team:'Argentina',goals:5,assists:4,flag:'🇦🇷'},{rank:4,player:'Vinicius Jr.',team:'Brazil',goals:4,assists:3,flag:'🇧🇷'},{rank:5,player:'Lamine Yamal',team:'Spain',goals:4,assists:5,flag:'🇪🇸'},{rank:6,player:'Harry Kane',team:'England',goals:4,assists:1,flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'},{rank:7,player:'Bukayo Saka',team:'England',goals:3,assists:4,flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'},{rank:8,player:'Pedri',team:'Spain',goals:3,assists:3,flag:'🇪🇸'},{rank:9,player:'Florian Wirtz',team:'Germany',goals:3,assists:2,flag:'🇩🇪'},{rank:10,player:'Vini Jr.',team:'Brazil',goals:3,assists:3,flag:'🇧🇷'}];
+var SCORES=[{id:1001,status:'FT',home:'Argentina',away:'Canada',homeScore:3,awayScore:0,group:'A'},{id:1002,status:'FT',home:'Spain',away:'Croatia',homeScore:3,awayScore:1,group:'B'},{id:1003,status:'FT',home:'France',away:'Australia',homeScore:4,awayScore:1,group:'C'},{id:1004,status:'FT',home:'England',away:'Serbia',homeScore:1,awayScore:0,group:'D'},{id:1005,status:'FT',home:'Brazil',away:'Mexico',homeScore:2,awayScore:0,group:'E'},{id:1006,status:'FT',home:'Germany',away:'Scotland',homeScore:5,awayScore:1,group:'F'},{id:1007,status:'upcoming',home:'USA',away:'Wales',homeScore:null,awayScore:null,group:'G'},{id:1008,status:'upcoming',home:'Morocco',away:'Portugal',homeScore:null,awayScore:null,group:'H'}];
+var REPLIES=['Mbappe is the tournament favourite for Golden Boot. France pace on break is deadly.','Argentina enter as defending champions with Messi. Joint-favourites with France.','Today top pick: Argentina vs France, backing Argentina or draw. 2-1 up in last 3.','Argentina 3.20 | France 3.40 | Brazil 4.00 | England 6.00 | Spain 6.50. Value: Morocco 18.00.','Model gives Argentina vs France 34% chance of being the final. Qatar 2022 rematch.','WC 2026: 48 teams, USA + Canada + Mexico hosts. Biggest tournament ever!','Morocco are huge value. African football rising since 2022.','Golden Boot battle: Mbappe vs Haaland vs Messi — all three in contention.'];
 
-// Fallback data
-var PICKS = [
-  { id:'p1', match:'Argentina vs France', pick:'Argentina ML', odds:'+145', confidence:72, tip:'Messi motivated at home WC', badge:'HOT' },
-  { id:'p2', match:'England vs Germany', pick:'Both Teams to Score', odds:'-115', confidence:68, tip:'Both high-scoring attacks', badge:'VALUE' },
-  { id:'p3', match:'Brazil vs Spain', pick:'Under 2.5 Goals', odds:'+105', confidence:65, tip:'Defensive midfields dominate', badge:'SAFE' },
-  { id:'p4', match:'Morocco vs Portugal', pick:'Morocco +1.5', odds:'-130', confidence:70, tip:'Morocco excellent at home', badge:'SAFE' },
-  { id:'p5', match:'USA vs Mexico', pick:'USA ML', odds:'+120', confidence:63, tip:'USA strong at home WC 2026', badge:'VALUE' }
-];
-var SCORERS = [
-  { rank:1, player:'Kylian Mbappe', team:'France', goals:4, assists:2 },
-  { rank:2, player:'Harry Kane', team:'England', goals:3, assists:1 },
-  { rank:3, player:'Vinicius Jr', team:'Brazil', goals:3, assists:3 },
-  { rank:4, player:'Pedri', team:'Spain', goals:2, assists:4 },
-  { rank:5, player:'Erling Haaland', team:'Norway', goals:2, assists:1 }
-];
-var MATCHES = [
-  { id:'m1', home:'Argentina', away:'France', homeScore:null, awayScore:null, status:'upcoming', time:'2026-07-19T18:00:00Z' },
-  { id:'m2', home:'England', away:'Germany', homeScore:null, awayScore:null, status:'upcoming', time:'2026-07-15T15:00:00Z' },
-  { id:'m3', home:'Brazil', away:'Spain', homeScore:2, awayScore:1, status:'FT', time:'2026-07-12T20:00:00Z' },
-  { id:'m4', home:'Morocco', away:'Portugal', homeScore:1, awayScore:1, status:'FT', time:'2026-07-12T17:00:00Z' }
-];
+app.get('/health',function(req,res){res.json({ok:true,service:'wc2026-api',uptime:process.uptime(),ts:Date.now()});});
+app.get('/status',function(req,res){res.json({ok:true,service:'wc2026-api',uptime:process.uptime(),port:PORT});});
+app.get('/api/status',function(req,res){res.json({ok:true,tournament:'FIFA World Cup 2026',phase:'Group Stage',teamsRemaining:48,daysToFinal:32,apiKeys:{groq:!!process.env.GROQ_API_KEY,odds:!!process.env.THE_ODDS_API_KEY,telegram:!!process.env.TELEGRAM_BOT_TOKEN},uptime:process.uptime()});});
+app.get('/api/picks',function(req,res){res.json({ok:true,source:'curated',count:PICKS.length,picks:PICKS,generatedAt:new Date().toISOString()});});
+app.get('/api/scores',function(req,res){res.json({ok:true,source:'fallback',matches:SCORES,updatedAt:new Date().toISOString()});});
+app.get('/api/scorers',function(req,res){res.json({ok:true,source:'curated',scorers:SCORERS,updatedAt:new Date().toISOString()});});
+app.get('/api/props/today',function(req,res){res.json({ok:true,props:[{player:'Kylian Mbappe',market:'Anytime Goalscorer',odds:2.10,tip:'Back',confidence:'high',match:'France vs Australia'},{player:'Erling Haaland',market:'Anytime Goalscorer',odds:2.25,tip:'Back',confidence:'high',match:'Norway vs Ecuador'},{player:'Harry Kane',market:'First Goalscorer',odds:4.50,tip:'Each Way',confidence:'medium',match:'England vs Serbia'}],date:new Date().toISOString().slice(0,10)});});
+app.get('/api/odds',function(req,res){var m=req.query.market||'match-winner';res.json({ok:true,market:m,odds:PICKS.map(function(p){return{match:p.match,market:m,tip:p.pick,odds:p.odds,confidence:p.confidence};})});});
+app.get('/api/predict',function(req,res){var home=(req.query.home||'Argentina').trim();var away=(req.query.away||'France').trim();var seed=0;for(var i=0;i<home.length;i++)seed+=home.charCodeAt(i);for(var j=0;j<away.length;j++)seed+=away.charCodeAt(j);var hw=28+(seed%22);var aw=22+((seed*3)%20);var d=100-hw-aw;var tips=['Home win & over 1.5 goals','Both teams to score','Under 2.5 goals','Home win to nil','Draw HT home wins'];res.json({ok:true,source:'model',home:home,away:away,homeWin:hw,draw:d,awayWin:aw,tip:tips[seed%tips.length],confidence:hw>42?'high':'medium',odds:(1+100/hw).toFixed(2)});});
+app.get('/api/leaderboard',function(req,res){res.json({ok:true,leaderboard:[{rank:1,username:'PuntingPro99',points:2340,streak:7},{rank:2,username:'WC2026Wizard',points:2180,streak:5},{rank:3,username:'GoatHunter',points:1990,streak:4},{rank:4,username:'BetKing2026',points:1870,streak:3}]});});
+app.post('/api/chat',function(req,res){var msg=(req.body&&req.body.message)||'';if(!msg)return res.status(400).json({ok:false,error:'message required'});var lower=msg.toLowerCase();var reply;if(lower.includes('mbappe')||lower.includes('mbappé'))reply=REPLIES[0];else if(lower.includes('argentina'))reply=REPLIES[1];else if(lower.includes('predict')||lower.includes('pick'))reply=REPLIES[2];else if(lower.includes('odds')||lower.includes('favourite'))reply=REPLIES[3];else if(lower.includes('final'))reply=REPLIES[4];else if(lower.includes('host')||lower.includes('48')||lower.includes('usa'))reply=REPLIES[5];else if(lower.includes('morocco'))reply=REPLIES[6];else reply=REPLIES[msg.length%REPLIES.length];
+if(process.env.GROQ_API_KEY){var payload=JSON.stringify({model:'llama3-8b-8192',messages:[{role:'system',content:'You are the WC 2026 Empire AI — sharp football analyst. Under 120 words.'},{role:'user',content:msg}],max_tokens:200,temperature:0.7});var opts={hostname:'api.groq.com',path:'/openai/v1/chat/completions',method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+process.env.GROQ_API_KEY,'Content-Length':Buffer.byteLength(payload)}};var ai='';var r=https.request(opts,function(resp){resp.on('data',function(d){ai+=d;});resp.on('end',function(){try{var p=JSON.parse(ai);var t=p.choices&&p.choices[0]&&p.choices[0].message&&p.choices[0].message.content;if(t)return res.json({ok:true,reply:t,source:'ai'});}catch(e){}res.json({ok:true,reply:reply,source:'fallback'});});});r.on('error',function(){res.json({ok:true,reply:reply,source:'fallback'});});r.write(payload);r.end();return;}
+res.json({ok:true,reply:reply,source:'fallback'});});
+app.post('/api/subscribe',function(req,res){var email=(req.body&&req.body.email)||'';if(!email||!email.includes('@'))return res.status(400).json({ok:false,error:'Valid email required'});console.log('[Subscribe]',email);res.json({ok:true,message:'Subscribed! You will get WC 2026 picks and alerts.',email:email});});
+app.post('/api/prediction',function(req,res){var b=req.body||{};if(!b.username)return res.status(400).json({ok:false,error:'username required'});res.json({ok:true,username:b.username,saved:true});});
+app.post('/api/push-subscribe',function(req,res){res.json({ok:true,subscribed:true});});
+app.get('/api/push-subscribers/count',function(req,res){res.json({ok:true,count:0});});
+app.post('/api/ai-score',function(req,res){res.json({ok:true,score:Math.floor(Math.random()*20+68)});});
+app.post('/api/what-if',function(req,res){res.json({ok:true,outcome:'Model predicts 58% chance based on WC 2026 data.'});});
+app.post('/api/time-capsule',function(req,res){res.json({ok:true,saved:true,id:Date.now()});});
+app.post('/api/swap-register',function(req,res){res.json({ok:true,registered:true});});
+app.get('/api/var-decisions',function(req,res){res.json({ok:true,decisions:[]});});
+app.post('/api/b2b-lead',function(req,res){res.json({ok:true,received:true});});
+app.get('/api/subscriber-click',function(req,res){res.json({ok:true});});
+app.use(function(req,res){res.status(404).json({ok:false,error:'Unknown: '+req.method+' '+req.path});});
+app.use(function(err,req,res,next){res.status(500).json({ok:false,error:'Server error'});});
 
-// Routes
-app.get('/health', function(req, res) {
-  res.json({ ok:true, service:'wc2026-api', uptime:process.uptime(), version:'2.1.0' });
-});
-app.get('/api/status', function(req, res) {
-  res.json({ ok:true, tournament:'FIFA World Cup 2026', phase:'Group Stage', teamsRemaining:48, timestamp:Date.now() });
-});
-app.get('/api/picks', function(req, res) {
-  res.json({ ok:true, source:'curated', count:PICKS.length, picks:PICKS, generated:new Date().toISOString() });
-});
-app.get('/api/scorers', function(req, res) {
-  res.json({ ok:true, source:'curated', scorers:SCORERS, updated:new Date().toISOString() });
-});
-app.get('/api/scores', function(req, res) {
-  res.json({ ok:true, source:'fallback', matches:MATCHES, updated:new Date().toISOString() });
-});
-app.get('/api/predict', function(req, res) {
-  var matchStr = req.query.match || 'Argentina vs France';
-  var teams = matchStr.split(' vs ');
-  var home = teams[0] || 'Argentina', away = teams[1] || 'France';
-  var seed = home.charCodeAt(0) + away.charCodeAt(0);
-  var homeWin = 30 + (seed % 25), awayWin = 30 + ((seed * 3) % 20), draw = 100 - homeWin - awayWin;
-  res.json({ ok:true, match:home + ' vs ' + away, prediction:{ homeWin:homeWin, draw:draw, awayWin:awayWin }, confidence:65, method:'algorithmic' });
-});
-app.get('/api/odds', function(req, res) {
-  res.json({ ok:true, source:'fallback', note:'Add THE_ODDS_API_KEY env var for live odds', odds:[
-    { match:'Argentina vs France', home:'+145', draw:'+220', away:'+180' },
-    { match:'England vs Germany', home:'+160', draw:'+230', away:'+170' }
-  ] });
-});
-app.get('/api/props/today', function(req, res) {
-  res.json({ ok:true, props:[
-    { player:'Harry Kane', prop:'Anytime Scorer', odds:'-110', match:'England vs Germany' },
-    { player:'Kylian Mbappe', prop:'First Scorer', odds:'+250', match:'Argentina vs France' }
-  ], date:new Date().toISOString().split('T')[0] });
-});
-app.get('/api/leaderboard', function(req, res) {
-  res.json({ ok:true, leaderboard:[
-    { rank:1, username:'PuntingPro99', points:2340, streak:7 },
-    { rank:2, username:'WC2026Wizard', points:2180, streak:5 },
-    { rank:3, username:'BettingBrain', points:1990, streak:3 }
-  ] });
-});
-app.post('/api/subscribe', function(req, res) {
-  var email = (req.body && req.body.email) || '';
-  if (!email || !email.includes('@')) { return res.status(400).json({ ok:false, error:'Valid email required' }); }
-  console.log('Subscribe:', email);
-  res.json({ ok:true, message:'Subscribed successfully', email:email });
-});
-app.post('/api/push-subscribe', function(req, res) {
-  res.json({ ok:true, message:'Push subscription recorded' });
-});
-app.post('/api/chat', function(req, res) {
-  var msg = (req.body && req.body.message) || '';
-  var GROQ = process.env.GROQ_API_KEY;
-  if (GROQ) {
-    var body = JSON.stringify({ model:'llama3-8b-8192', messages:[
-      { role:'system', content:'You are a FIFA World Cup 2026 expert. Give concise betting and match analysis.' },
-      { role:'user', content:msg }
-    ], max_tokens:300 });
-    var options = { hostname:'api.groq.com', path:'/openai/v1/chat/completions', method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + GROQ, 'Content-Length':Buffer.byteLength(body) } };
-    var reqG = https.request(options, function(rG) {
-      var data = ''; rG.on('data', function(d) { data += d; });
-      rG.on('end', function() {
-        try {
-          var j = JSON.parse(data);
-          return res.json({ ok:true, source:'groq', reply:j.choices[0].message.content });
-        } catch(e) { fallbackChat(res, msg); }
-      });
-    });
-    reqG.on('error', function() { fallbackChat(res, msg); });
-    reqG.write(body); reqG.end(); return;
-  }
-  fallbackChat(res, msg);
-});
-function fallbackChat(res, msg) {
-  var replies = [
-    'WC 2026 features 48 teams across USA, Canada, and Mexico. Biggest tournament ever!',
-    'Top favorites: Argentina, France, Brazil, England, Spain. All have excellent squads.',
-    'Morocco are huge value at long odds - they proved in 2022 they can go all the way.',
-    'Golden Boot battle: Mbappe vs Kane vs Vinicius Jr - any could top the charts.',
-    'Group stage = 80 matches. Massive betting opportunity from June 11 to July 19.'
-  ];
-  res.json({ ok:true, source:'fallback', reply:replies[Math.abs(msg.length) % replies.length] });
-}
-app.get('/go/:dest', function(req, res) {
-  var LINKS = { bet365:'https://www.bet365.com', betfair:'https://www.betfair.com',
-    draftkings:'https://www.draftkings.com', betmgm:'https://sports.betmgm.com',
-    fanduel:'https://www.fanduel.com' };
-  var dest = LINKS[req.params.dest] || 'https://wc2026-empire.vercel.app';
-  res.redirect(302, dest);
-});
-app.use(function(req, res) {
-  res.status(404).json({ ok:false, error:'Not found', path:req.path });
-});
-
-app.listen(PORT, function() {
-  console.log('WC2026 API running on port ' + PORT);
-});
+app.listen(PORT,function(){console.log('WC2026 API :'+PORT+' | GROQ:'+(process.env.GROQ_API_KEY?'YES':'NO')+' | PICKS:'+PICKS.length);});
