@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Panini Sticker Tracker — Track Your Collection & Find Swaps</title>
+<meta name="description" content="Track your WC 2026 Panini sticker collection. Mark stickers as owned, find duplicates, and connect with swap partners. Free.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e5e5e5}
+.hero{background:linear-gradient(135deg,#b71c1c,#c62828);padding:40px 20px;text-align:center}
+.hero h1{font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#fff;margin-bottom:8px}
+.hero p{color:rgba(255,255,255,0.85);font-size:1rem}
+.stats-bar{background:#1a1a1a;border-bottom:1px solid #333;padding:16px 20px}
+.stats-inner{max-width:1000px;margin:0 auto;display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.stat{text-align:center}
+.stat-num{font-size:1.5rem;font-weight:800;color:#ffd700}
+.stat-label{font-size:0.75rem;color:#666}
+.container{max-width:1000px;margin:0 auto;padding:24px 16px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;align-items:center}
+.search-input{flex:1;min-width:200px;padding:10px 14px;background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:1rem}
+.filter-btn{padding:8px 16px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#aaa;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all 0.2s}
+.filter-btn.active{background:#ffd700;color:#000;border-color:#ffd700;font-weight:700}
+.section-title{font-size:1rem;font-weight:700;color:#ffd700;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.team-section{margin-bottom:32px}
+.team-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 14px;background:#1a1a1a;border-radius:8px;border-left:4px solid #ffd700;cursor:pointer}
+.team-flag{font-size:1.5rem}
+.team-name{font-weight:700;color:#fff;font-size:0.95rem}
+.team-progress{margin-left:auto;font-size:0.8rem;color:#666}
+.team-progress span{color:#ffd700;font-weight:700}
+.stickers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px}
+.sticker{background:#1a1a1a;border:2px solid #333;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative}
+.sticker:hover{border-color:#ffd700}
+.sticker.owned{background:#0d2b14;border-color:#00c853}
+.sticker.owned::after{content:'✓';position:absolute;top:3px;right:5px;font-size:0.7rem;color:#00c853;font-weight:800}
+.sticker.duplicate{background:#2b1a0d;border-color:#ff9800}
+.sticker.duplicate::after{content:'×2';position:absolute;top:3px;right:3px;font-size:0.65rem;color:#ff9800;font-weight:800}
+.sticker-num{font-size:0.75rem;color:#666;margin-bottom:4px}
+.sticker-name{font-size:0.7rem;color:#e5e5e5;line-height:1.2}
+.swap-section{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;margin-top:32px}
+.swap-section h2{color:#ffd700;font-size:1.1rem;margin-bottom:8px}
+.swap-section p{color:#aaa;font-size:0.9rem;margin-bottom:16px}
+.swap-form{display:flex;gap:10px;flex-wrap:wrap}
+.swap-form input{flex:1;min-width:180px;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem}
+.btn-gold{padding:10px 20px;background:#ffd700;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit}
+.missing-list{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px}
+.missing-tag{background:#2b0d0d;border:1px solid #f44336;border-radius:4px;padding:3px 8px;font-size:0.75rem;color:#ef9a9a}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:0.8rem;color:#aaa}
+.legend-dot{width:12px;height:12px;border-radius:2px}
+.buy-box{background:linear-gradient(135deg,#1a237e,#283593);border-radius:12px;padding:20px;margin-top:24px;text-align:center}
+.buy-box h3{color:#90caf9;margin-bottom:8px}
+.buy-box p{color:#c5cae9;font-size:0.85rem;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div style="font-size:3rem;margin-bottom:8px">🃏</div>
+  <h1>WC 2026 Panini Sticker Tracker</h1>
+  <p>Track your collection · Mark duplicates · Find swap partners</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">OWNED</div></div>
+    <div class="stat"><div class="stat-num" id="stat-missing">0</div><div class="stat-label">MISSING</div></div>
+    <div class="stat"><div class="stat-num" id="stat-dupes">0</div><div class="stat-label">DUPLICATES</div></div>
+    <div class="stat"><div class="stat-num" id="stat-pct">0%</div><div class="stat-label">COMPLETE</div></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="controls">
+    <input type="text" class="search-input" id="search" placeholder="Search player or team..." oninput="filterStickers()">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('missing',this)">Missing</button>
+    <button class="filter-btn" onclick="setFilter('owned',this)">Owned</button>
+    <button class="filter-btn" onclick="setFilter('duplicates',this)">Duplicates</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#1a1a1a;border:2px solid #333"></div> Not owned</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0d2b14;border:2px solid #00c853"></div> Owned</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2b1a0d;border:2px solid #ff9800"></div> Duplicate</div>
+  </div>
+
+  <p style="color:#666;font-size:0.85rem;margin-bottom:20px">Click once = owned · Click again = duplicate · Click again = remove · Your progress auto-saves in browser.</p>
+
+  <div id="sticker-container"></div>
+
+  <!-- DUPLICATES SWAP SECTION -->
+  <div class="swap-section">
+    <h2>🔄 Find Swap Partners</h2>
+    <p>Enter your email to connect with other collectors who need your duplicates (and have yours).</p>
+    <div class="swap-form">
+      <input type="email" id="swap-email" placeholder="Your email">
+      <input type="text" id="swap-location" placeholder="Your country/city">
+      <button class="btn-gold" onclick="registerForSwaps()">Find Swap Partners</button>
+    </div>
+    <div style="margin-top:12px">
+      <strong style="color:#fff;font-size:0.9rem">Your duplicates:</strong>
+      <div class="missing-list" id="duplicates-list"></div>
+    </div>
+  </div>
+
+  <!-- PANINI DIGITAL BUY CTA -->
+  <div class="buy-box">
+    <h3>📱 Try Panini Digital Stickers</h3>
+    <p>Also available as an official digital app — collect, swap and trade WC 2026 stickers online with fans worldwide.</p>
+    <a href="https://www.paninigroup.com/en/stickers/world-cup-2026" target="_blank" class="btn-gold" style="display:inline-block;text-decoration:none">Get Panini Digital →</a>
+  </div>
+</div>
+
+<script>
+// WC 2026 teams and representative sticker data
+// In production this would be the full 700+ sticker album
+const TEAMS = [
+  { name:'Argentina', flag:'🇦🇷', stickers:[
+    {n:'ARG1',p:'Emiliano Martínez'},{n:'ARG2',p:'Lionel Messi'},{n:'ARG3',p:'Ángel Di María'},
+    {n:'ARG4',p:'Rodrigo De Paul'},{n:'ARG5',p:'Lautaro Martínez'},{n:'ARG6',p:'Julián Álvarez'},
+    {n:'ARG7',p:'Alexis Mac Allister'},{n:'ARG8',p:'Nicolás Otamendi'},{n:'ARG9',p:'Cristian Romero'},
+    {n:'ARG10',p:'Nahuel Molina'},{n:'ARG11',p:'Argentina Badge'},{n:'ARG12',p:'Argentina Squad'},
+  ]},
+  { name:'Brazil', flag:'🇧🇷', stickers:[
+    {n:'BRA1',p:'Alisson Becker'},{n:'BRA2',p:'Vinicius Jr'},{n:'BRA3',p:'Rodrygo'},
+    {n:'BRA4',p:'Casemiro'},{n:'BRA5',p:'Marquinhos'},{n:'BRA6',p:'Raphinha'},
+    {n:'BRA7',p:'Bruno Guimarães'},{n:'BRA8',p:'Gabriel Martinelli'},{n:'BRA9',p:'Éder Militão'},
+    {n:'BRA10',p:'Endrick'},{n:'BRA11',p:'Brazil Badge'},{n:'BRA12',p:'Brazil Squad'},
+  ]},
+  { name:'France', flag:'🇫🇷', stickers:[
+    {n:'FRA1',p:'Mike Maignan'},{n:'FRA2',p:'Kylian Mbappé'},{n:'FRA3',p:'Antoine Griezmann'},
+    {n:'FRA4',p:'Aurélien Tchouaméni'},{n:'FRA5',p:'Raphaël Varane'},{n:'FRA6',p:'Marcus Thuram'},
+    {n:'FRA7',p:'Eduardo Camavinga'},{n:'FRA8',p:'Dayot Upamecano'},{n:'FRA9',p:'Kingsley Coman'},
+    {n:'FRA10',p:'William Saliba'},{n:'FRA11',p:'France Badge'},{n:'FRA12',p:'France Squad'},
+  ]},
+  { name:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', stickers:[
+    {n:'ENG1',p:'Jordan Pickford'},{n:'ENG2',p:'Jude Bellingham'},{n:'ENG3',p:'Harry Kane'},
+    {n:'ENG4',p:'Phil Foden'},{n:'ENG5',p:'Bukayo Saka'},{n:'ENG6',p:'Declan Rice'},
+    {n:'ENG7',p:'Trent Alexander-Arnold'},{n:'ENG8',p:'Marcus Rashford'},{n:'ENG9',p:'John Stones'},
+    {n:'ENG10',p:'Cole Palmer'},{n:'ENG11',p:'England Badge'},{n:'ENG12',p:'England Squad'},
+  ]},
+  { name:'Spain', flag:'🇪🇸', stickers:[
+    {n:'ESP1',p:'Unai Simón'},{n:'ESP2',p:'Pedri'},{n:'ESP3',p:'Lamine Yamal'},
+    {n:'ESP4',p:'Rodri'},{n:'ESP5',p:'Álvaro Morata'},{n:'ESP6',p:'Alejandro Grimaldo'},
+    {n:'ESP7',p:'Aymeric Laporte'},{n:'ESP8',p:'Ferran Torres'},{n:'ESP9',p:'Dani Carvajal'},
+    {n:'ESP10',p:'Nico Williams'},{n:'ESP11',p:'Spain Badge'},{n:'ESP12',p:'Spain Squad'},
+  ]},
+  { name:'Germany', flag:'🇩🇪', stickers:[
+    {n:'GER1',p:'Manuel Neuer'},{n:'GER2',p:'Jamal Musiala'},{n:'GER3',p:'Florian Wirtz'},
+    {n:'GER4',p:'Joshua Kimmich'},{n:'GER5',p:'Kai Havertz'},{n:'GER6',p:'Antonio Rüdiger'},
+    {n:'GER7',p:'Leroy Sané'},{n:'GER8',p:'Ilkay Gündogan'},{n:'GER9',p:'Jonathan Tah'},
+    {n:'GER10',p:'Serge Gnabry'},{n:'GER11',p:'Germany Badge'},{n:'GER12',p:'Germany Squad'},
+  ]},
+  { name:'Morocco', flag:'🇲🇦', stickers:[
+    {n:'MAR1',p:'Yassine Bounou'},{n:'MAR2',p:'Achraf Hakimi'},{n:'MAR3',p:'Hakim Ziyech'},
+    {n:'MAR4',p:'Sofyan Amrabat'},{n:'MAR5',p:'Youssef En-Nesyri'},{n:'MAR6',p:'Romain Saïss'},
+    {n:'MAR7',p:'Azzedine Ounahi'},{n:'MAR8',p:'Noussair Mazraoui'},{n:'MAR9',p:'Sofiane Boufal'},
+    {n:'MAR10',p:'Zakaria Aboukhlal'},{n:'MAR11',p:'Morocco Badge'},{n:'MAR12',p:'Morocco Squad'},
+  ]},
+  { name:'USA', flag:'🇺🇸', stickers:[
+    {n:'USA1',p:'Matt Turner'},{n:'USA2',p:'Christian Pulisic'},{n:'USA3',p:'Gio Reyna'},
+    {n:'USA4',p:'Tyler Adams'},{n:'USA5',p:'Weston McKennie'},{n:'USA6',p:'Tim Weah'},
+    {n:'USA7',p:'Sergiño Dest'},{n:'USA8',p:'Yunus Musah'},{n:'USA9',p:'Folarin Balogun'},
+    {n:'USA10',p:'Ricardo Pepi'},{n:'USA11',p:'USA Badge'},{n:'USA12',p:'USA Squad'},
+  ]},
+];
+
+// Load saved data
+let collection = JSON.parse(localStorage.getItem('panini_wc2026') || '{}');
+let activeFilter = 'all';
+
+function saveCollection() {
+  localStorage.setItem('panini_wc2026', JSON.stringify(collection));
+  updateStats();
+}
+
+function stickerClick(id) {
+  const state = collection[id] || 0;
+  collection[id] = (state + 1) % 3; // 0=none, 1=owned, 2=duplicate
+  const el = document.getElementById('s_' + id);
+  el.className = 'sticker' + (collection[id] === 1 ? ' owned' : collection[id] === 2 ? ' duplicate' : '');
+  saveCollection();
+}
+
+function updateStats() {
+  let total=0, dupes=0, missing=0, allStickers=0;
+  TEAMS.forEach(t => {
+    t.stickers.forEach(s => {
+      allStickers++;
+      const state = collection[s.n] || 0;
+      if (state === 1) total++;
+      else if (state === 2) { total++; dupes++; }
+      else missing++;
+    });
+  });
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-missing').textContent = missing;
+  document.getElementById('stat-dupes').textContent = dupes;
+  document.getElementById('stat-pct').textContent = Math.round((total/allStickers)*100) + '%';
+
+  // Update duplicates list
+  const dupList = document.getElementById('duplicates-list');
+  dupList.innerHTML = '';
+  TEAMS.forEach(t => {
+    t.stickers.forEach(s => {
+      if ((collection[s.n] || 0) === 2) {
+        const tag = document.createElement('div');
+        tag.className = 'missing-tag';
+        tag.textContent = s.n;
+        dupList.appendChild(tag);
+      }
+    });
+  });
+}
+
+function renderAll() {
+  const container = document.getElementById('sticker-container');
+  container.innerHTML = '';
+  const searchVal = document.getElementById('search').value.toLowerCase();
+
+  TEAMS.forEach(team => {
+    const filteredStickers = team.stickers.filter(s => {
+      if (searchVal && !s.p.toLowerCase().includes(searchVal) && !team.name.toLowerCase().includes(searchVal)) return false;
+      const state = collection[s.n] || 0;
+      if (activeFilter === 'missing' && state !== 0) return false;
+      if (activeFilter === 'owned' && state === 0) return false;
+      if (activeFilter === 'duplicates' && state !== 2) return false;
+      return true;
+    });
+    if (filteredStickers.length === 0) return;
+
+    const owned = team.stickers.filter(s => (collection[s.n] || 0) > 0).length;
+    const section = document.createElement('div');
+    section.className = 'team-section';
+    section.innerHTML = `
+      <div class="team-header">
+        <span class="team-flag">${team.flag}</span>
+        <span class="team-name">${team.name}</span>
+        <span class="team-progress"><span>${owned}</span>/${team.stickers.length}</span>
+      </div>
+      <div class="stickers-grid" id="grid_${team.name}"></div>`;
+    container.appendChild(section);
+
+    const grid = section.querySelector(`#grid_${team.name}`);
+    filteredStickers.forEach(s => {
+      const state = collection[s.n] || 0;
+      const div = document.createElement('div');
+      div.id = 's_' + s.n;
+      div.className = 'sticker' + (state === 1 ? ' owned' : state === 2 ? ' duplicate' : '');
+      div.innerHTML = `<div class="sticker-num">${s.n}</div><div class="sticker-name">${s.p}</div>`;
+      div.onclick = () => stickerClick(s.n);
+      grid.appendChild(div);
+    });
+  });
+}
+
+function filterStickers() { renderAll(); }
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+function registerForSwaps() {
+  const email = document.getElementById('swap-email').value;
+  if (!email) return;
+  fetch('/api/swap-register', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, location: document.getElementById('swap-location').value, duplicates: Object.keys(collection).filter(k => collection[k] === 2), missing: getAllMissing() })
+  }).catch(() => {});
+  document.querySelector('.swap-form').innerHTML = '<p style="color:#00c853;font-size:0.95rem">✅ Registered! We\'ll email you when we find matching swap partners.</p>';
+}
+
+function getAllMissing() {
+  const missing = [];
+  TEAMS.forEach(t => t.stickers.forEach(s => { if (!collection[s.n]) missing.push(s.n); }));
+  return missing;
+}
+
+renderAll();
+updateStats();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

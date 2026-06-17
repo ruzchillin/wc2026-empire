@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WC 2026 Watch Party Cost Calculator</title>
+<meta name="description" content="Plan your WC 2026 watch party. Calculate food, drinks, streaming and decoration costs. Get the best deals.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9fafb;color:#1a1a1a}
+.hero{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;padding:40px 20px;text-align:center}
+.hero h1{font-size:1.7rem;font-weight:800;margin-bottom:6px}
+.hero p{opacity:.85;font-size:.95rem}
+.main{max-width:800px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 300px;gap:20px}
+@media(max-width:680px){.main{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:20px}
+.panel-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.slider-group{margin-bottom:16px}
+.slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.slider-label{font-size:13px;font-weight:500;color:#374151}
+.slider-val{font-size:14px;font-weight:700;color:#7c3aed}
+input[type=range]{width:100%;accent-color:#7c3aed}
+.slider-sub{font-size:11px;color:#9ca3af;margin-top:3px}
+.divider{border:none;border-top:1px solid #f0f0f0;margin:16px 0}
+.total-card{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border-radius:12px;padding:20px;margin-bottom:16px;text-align:center}
+.total-label{font-size:12px;opacity:.8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.total-val{font-size:2.4rem;font-weight:800}
+.total-per{font-size:12px;opacity:.75;margin-top:4px}
+.breakdown{margin-bottom:16px}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f9fafb;font-size:13px}
+.breakdown-row:last-child{border:none;font-weight:700}
+.breakdown-label{color:#6b7280}
+.breakdown-val{font-weight:600;color:#1a1a1a}
+.save-tip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 14px;font-size:12px;color:#166534;margin-bottom:12px;line-height:1.5}
+.save-tip strong{font-weight:700}
+.aff-section{border-top:1px solid #f0f0f0;padding-top:14px}
+.aff-title{font-size:12px;font-weight:700;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.aff-btn{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border:1px solid #e5e7eb;border-radius:8px;text-decoration:none;color:#1a1a1a;font-size:12px;margin-bottom:7px;transition:background .1s}
+.aff-btn:hover{background:#f9fafb}
+.aff-btn-cpa{font-size:10px;font-weight:700;color:#7c3aed}
+.checklist{list-style:none}
+.checklist li{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f9fafb;font-size:13px;cursor:pointer}
+.checklist li:last-child{border:none}
+.check{width:18px;height:18px;border:2px solid #d1d5db;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .1s}
+.checklist li.done .check{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.checklist li.done span{text-decoration:line-through;color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>⚽ WC 2026 Watch Party Planner</h1>
+  <p>Calculate your budget, get the best deals and plan the perfect setup</p>
+</div>
+<div class="main">
+  <div>
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">🧑‍🤝‍🧑 Party details</div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Number of guests</span><span class="slider-val" id="guests-val">8</span></div>
+        <input type="range" id="guests" min="2" max="40" value="8" step="1" oninput="update()">
+        <div class="slider-sub">Including host</div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Number of matches</span><span class="slider-val" id="matches-val">3</span></div>
+        <input type="range" id="matches" min="1" max="10" value="3" step="1" oninput="update()">
+        <div class="slider-sub">How many WC games are you hosting?</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">🍕 Food & drinks</div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Food spend per person</span><span class="slider-val" id="food-val">$15</span></div>
+        <input type="range" id="food" min="5" max="60" value="15" step="1" oninput="update()">
+        <div class="slider-sub">Pizza, snacks, finger food — $10-20 is typical</div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Drinks per person</span><span class="slider-val" id="drinks-val">$12</span></div>
+        <input type="range" id="drinks" min="0" max="50" value="12" step="1" oninput="update()">
+        <div class="slider-sub">Beer, soft drinks, mixers</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-title">📺 Streaming & setup</div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Streaming service (monthly)</span><span class="slider-val" id="stream-val">$80</span></div>
+        <input type="range" id="stream" min="0" max="150" value="80" step="5" oninput="update()">
+        <div class="slider-sub">FuboTV ($80), YouTube TV ($73), cable ($0 if already have)</div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-top"><span class="slider-label">Decorations / setup</span><span class="slider-val" id="decor-val">$30</span></div>
+        <input type="range" id="decor" min="0" max="200" value="30" step="5" oninput="update()">
+        <div class="slider-sub">Flags, printed brackets, themed supplies</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">✅ Watch party checklist</div>
+      <ul class="checklist" id="checklist">
+        <li onclick="toggle(this)"><div class="check"></div><span>Set up FuboTV / streaming</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Order food / drinks (delivery promo code?)</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Print WC 2026 bracket for guests</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Set up sweep / prediction game</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Download NordVPN for backup stream</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Get DraftKings / FanDuel set up for in-play bets</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Print country flag decorations</span></li>
+        <li onclick="toggle(this)"><div class="check"></div><span>Set up WC 2026 Chrome extension for scores</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div class="total-card">
+      <div class="total-label">Total budget</div>
+      <div class="total-val" id="total">$0</div>
+      <div class="total-per" id="per-head">$0 per person per match</div>
+    </div>
+
+    <div class="panel" style="margin-bottom:14px">
+      <div class="breakdown">
+        <div class="breakdown-row"><span class="breakdown-label">🍕 Food total</span><span class="breakdown-val" id="b-food">$0</span></div>
+        <div class="breakdown-row"><span class="breakdown-label">🍺 Drinks total</span><span class="breakdown-val" id="b-drinks">$0</span></div>
+        <div class="breakdown-row"><span class="breakdown-label">📺 Streaming</span><span class="breakdown-val" id="b-stream">$0</span></div>
+        <div class="breakdown-row"><span class="breakdown-label">🎉 Decorations</span><span class="breakdown-val" id="b-decor">$0</span></div>
+        <div class="breakdown-row"><span class="breakdown-label" style="color:#1a1a1a;font-weight:700">Total</span><span class="breakdown-val" id="b-total" style="color:#7c3aed">$0</span></div>
+      </div>
+
+      <div class="save-tip" id="save-tip">
+        <strong>💡 Tip:</strong> FuboTV free trial covers 7 days — start it the day of your first match to watch up to 2 weekends free.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="aff-section">
+        <div class="aff-title">Get deals for your party</div>
+        <a href="https://fubo.tv" target="_blank" rel="nofollow" class="aff-btn">
+          <span>📺 FuboTV — 7-day free trial</span><span class="aff-btn-cpa">FREE</span>
+        </a>
+        <a href="https://ubereats.com" target="_blank" rel="nofollow" class="aff-btn">
+          <span>🍕 Uber Eats — order food delivery</span><span class="aff-btn-cpa">↗</span>
+        </a>
+        <a href="https://nordvpn.com" target="_blank" rel="nofollow" class="aff-btn">
+          <span>🔒 NordVPN — backup stream</span><span class="aff-btn-cpa">From $3.79/mo</span>
+        </a>
+        <a href="https://sportsbook.draftkings.com/promos" target="_blank" rel="nofollow" class="aff-btn">
+          <span>🎰 DraftKings — bet $5 get $200</span><span class="aff-btn-cpa">21+ only</span>
+        </a>
+        <a href="https://stubhub.com" target="_blank" rel="nofollow" class="aff-btn">
+          <span>🎟️ Go to a live match instead</span><span class="aff-btn-cpa">Tickets →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function update(){
+  const guests=+document.getElementById('guests').value;
+  const matches=+document.getElementById('matches').value;
+  const food=+document.getElementById('food').value;
+  const drinks=+document.getElementById('drinks').value;
+  const stream=+document.getElementById('stream').value;
+  const decor=+document.getElementById('decor').value;
+  document.getElementById('guests-val').textContent=guests;
+  document.getElementById('matches-val').textContent=matches;
+  document.getElementById('food-val').textContent='$'+food;
+  document.getElementById('drinks-val').textContent='$'+drinks;
+  document.getElementById('stream-val').textContent='$'+stream;
+  document.getElementById('decor-val').textContent='$'+decor;
+  const bFood=food*guests*matches;
+  const bDrinks=drinks*guests*matches;
+  const bStream=stream;
+  const bDecor=decor;
+  const total=bFood+bDrinks+bStream+bDecor;
+  const perHead=Math.round(total/guests/matches);
+  document.getElementById('b-food').textContent='$'+bFood;
+  document.getElementById('b-drinks').textContent='$'+bDrinks;
+  document.getElementById('b-stream').textContent='$'+bStream;
+  document.getElementById('b-decor').textContent='$'+bDecor;
+  document.getElementById('b-total').textContent='$'+total;
+  document.getElementById('total').textContent='$'+total;
+  document.getElementById('per-head').textContent='$'+perHead+' per person per match';
+  const tip=document.getElementById('save-tip');
+  if(total>300){tip.innerHTML='<strong>💡 Save $'+Math.round(total*.25)+':</strong> Use Uber Eats promo codes (UBERWC2026 often works), split the streaming cost, and use DraftKings bonus bets to subsidize drinks.';}
+  else if(stream>50){tip.innerHTML='<strong>💡 Tip:</strong> FuboTV 7-day free trial covers your first two WC weekends for free. Start it June 11th.';}
+  else{tip.innerHTML='<strong>💡 Tip:</strong> Get guests to each bring one item — host provides setup, guests bring food/drinks. Splits cost equally.';}
+}
+function toggle(el){el.classList.toggle('done');}
+update();
+</script>
+</body>
+</html>

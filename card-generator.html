@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Match Card Generator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; min-height: 100vh; padding: 20px; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #111; }
+  .layout { display: grid; grid-template-columns: 380px 1fr; gap: 24px; max-width: 1100px; margin: 0 auto; }
+  @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ── Controls ── */
+  .panel { background: white; border-radius: 12px; padding: 20px; border: 1px solid #e5e5e5; }
+  .panel h2 { font-size: 13px; font-weight: 600; color: #555; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 14px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12px; font-weight: 500; color: #555; margin-bottom: 5px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 13px; color: #111; background: white; outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: #667eea; }
+  .field textarea { height: 70px; resize: none; font-family: inherit; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid transparent; background: #f0f0f0; color: #444; transition: all 0.15s; }
+  .badge.active { background: #667eea; color: white; border-color: #667eea; }
+  .btn { width: 100%; padding: 11px; background: #111; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.15s; }
+  .btn:hover { background: #333; }
+  .btn-secondary { background: white; color: #111; border: 1px solid #ddd; margin-top: 8px; }
+  .btn-secondary:hover { background: #f5f5f5; }
+  .btn-green { background: #16a34a; }
+  .btn-green:hover { background: #15803d; }
+
+  /* ── Preview area ── */
+  .preview-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .preview-label { font-size: 12px; font-weight: 500; color: #888; margin-bottom: -8px; }
+
+  /* ── THE CARD ── */
+  .card-outer { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); width: 100%; max-width: 600px; }
+  .card-header {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d1b2a 100%);
+    padding: 20px 24px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(102,126,234,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .card-event { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 14px; }
+  .card-teams { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .card-team { flex: 1; text-align: center; }
+  .card-flag { font-size: 42px; line-height: 1; margin-bottom: 6px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+  .card-teamname { font-size: 14px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
+  .card-vs { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; flex-shrink: 0; }
+  .card-body { background: #0d1b2a; padding: 0; }
+  .card-datetime {
+    background: rgba(102,126,234,0.15);
+    border-top: 1px solid rgba(102,126,234,0.3);
+    padding: 8px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: rgba(255,255,255,0.6);
+  }
+  .card-datetime span { font-weight: 600; color: rgba(255,255,255,0.9); }
+  .card-prediction { padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .card-pred-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 8px; }
+  .card-pred-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .card-odds-row { display: flex; gap: 8px; padding: 12px 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .card-odd { flex: 1; background: rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 6px; text-align: center; }
+  .card-odd-label { font-size: 9px; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .card-odd-val { font-size: 16px; font-weight: 700; color: #7ee8a2; margin-top: 2px; }
+  .card-footer {
+    padding: 10px 24px;
+    background: rgba(0,0,0,0.3);
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .card-brand { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .card-cta { font-size: 10px; font-weight: 700; color: #667eea; letter-spacing: 0.05em; }
+  .card-confidence { display: flex; align-items: center; gap: 6px; }
+  .conf-bar { height: 4px; width: 80px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
+  .conf-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #667eea, #7ee8a2); }
+  .conf-label { font-size: 9px; color: rgba(255,255,255,0.4); font-weight: 600; }
+
+  /* ── Text cards ── */
+  .text-card-outer { border-radius: 12px; overflow: hidden; border: 1px solid #e5e5e5; background: white; max-width: 600px; }
+  .text-card-top { background: #111; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .text-card-top .brand { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+  .text-card-top .match-tag { font-size: 11px; font-weight: 700; color: white; }
+  .text-card-body { padding: 16px; }
+  .text-card-teams { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 4px; }
+  .text-card-date { font-size: 12px; color: #888; margin-bottom: 12px; }
+  .text-card-pick { font-size: 13px; color: #333; line-height: 1.6; border-left: 3px solid #667eea; padding-left: 10px; }
+  .text-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .text-tag { font-size: 11px; background: #f5f5f5; color: #555; padding: 3px 8px; border-radius: 4px; }
+
+  /* ── Export buttons ── */
+  .export-row { display: flex; gap: 8px; }
+  .copy-wrap { background: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #333; font-family: monospace; max-height: 120px; overflow-y: auto; line-height: 1.6; }
+
+  /* language selector */
+  .lang-pills { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+  .lang-pill { padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer; background: #f0f0f0; color: #555; border: 1px solid #e0e0e0; transition: all 0.1s; }
+  .lang-pill.sel { background: #0d1b2a; color: white; border-color: #0d1b2a; }
+</style>
+<meta name="description" content="Generate shareable World Cup 2026 match cards — custom score graphics for social media.">
+</head>
+<body>
+
+<h1>⚽ WC 2026 — Match Card Generator</h1>
+
+<div class="layout">
+
+  <!-- ── LEFT: Controls ── -->
+  <div>
+    <div class="panel" style="margin-bottom:14px;">
+      <h2>Match Details</h2>
+      <div class="row2">
+        <div class="field">
+          <label>Home team flag</label>
+          <input type="text" id="flag1" value="🇲🇽" maxlength="4">
+        </div>
+        <div class="field">
+          <label>Away team flag</label>
+          <input type="text" id="flag2" value="🇿🇦" maxlength="4">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Home team name</label>
+          <input type="text" id="team1" value="Mexico">
+        </div>
+        <div class="field">
+          <label>Away team name</label>
+          <input type="text" id="team2" value="South Africa">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Date</label>
+          <input type="text" id="matchdate" value="June 11, 2026">
+        </div>
+        <div class="field">
+          <label>Kickoff time</label>
+          <input type="text" id="matchtime" value="3:00 PM ET">
+        </div>
+      </div>
+      <div class="field">
+        <label>Venue</label>
+        <input type="text" id="venue" value="AT&T Stadium · Dallas, TX">
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:14px;">
+      <h2>Odds + Prediction</h2>
+      <div class="row2">
+        <div class="field">
+          <label>Home win odds</label>
+          <input type="text" id="odds1" value="-130">
+        </div>
+        <div class="field">
+          <label>Away win odds</label>
+          <input type="text" id="odds3" value="+380">
+        </div>
+      </div>
+      <div class="field">
+        <label>Draw odds</label>
+        <input type="text" id="odds2" value="+260">
+      </div>
+      <div class="field">
+        <label>AI prediction / analysis</label>
+        <textarea id="prediction">Mexico holds home-continent advantage and a deep squad. South Africa's qualification alone is historic but they face a massive step up. Look for Mexico to control possession and take the win, though South Africa's pace on the counter could threaten.</textarea>
+      </div>
+      <div class="field">
+        <label>Confidence level (1–100)</label>
+        <input type="range" id="confidence" min="50" max="95" value="72" style="padding:0;">
+        <div style="text-align:right; font-size:11px; color:#888; margin-top:4px;"><span id="conf-out">72</span>% confidence</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:14px;">
+      <h2>Style + Language</h2>
+      <div class="field">
+        <label>Card style</label>
+        <div class="badge-row">
+          <span class="badge active" data-style="dark" onclick="setStyle(this)">Dark premium</span>
+          <span class="badge" data-style="light" onclick="setStyle(this)">Light clean</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Brand name (shown on card)</label>
+        <input type="text" id="brandname" value="WC2026 AI PICKS">
+      </div>
+      <div class="field">
+        <label>CTA text</label>
+        <input type="text" id="ctatext" value="t.me/WC2026AIPicks">
+      </div>
+      <div class="field">
+        <label>Language</label>
+        <div class="lang-pills" id="langpills">
+          <span class="lang-pill sel" data-lang="en" onclick="setLang(this)">EN</span>
+          <span class="lang-pill" data-lang="es" onclick="setLang(this)">ES</span>
+          <span class="lang-pill" data-lang="pt" onclick="setLang(this)">PT</span>
+          <span class="lang-pill" data-lang="fr" onclick="setLang(this)">FR</span>
+          <span class="lang-pill" data-lang="ar" onclick="setLang(this)">AR</span>
+          <span class="lang-pill" data-lang="de" onclick="setLang(this)">DE</span>
+          <span class="lang-pill" data-lang="hi" onclick="setLang(this)">HI</span>
+          <span class="lang-pill" data-lang="sw" onclick="setLang(this)">SW</span>
+          <span class="lang-pill" data-lang="id" onclick="setLang(this)">ID</span>
+          <span class="lang-pill" data-lang="vi" onclick="setLang(this)">VI</span>
+          <span class="lang-pill" data-lang="th" onclick="setLang(this)">TH</span>
+          <span class="lang-pill" data-lang="ko" onclick="setLang(this)">KO</span>
+          <span class="lang-pill" data-lang="ja" onclick="setLang(this)">JA</span>
+          <span class="lang-pill" data-lang="zh" onclick="setLang(this)">ZH</span>
+          <span class="lang-pill" data-lang="ha" onclick="setLang(this)">HA</span>
+          <span class="lang-pill" data-lang="tl" onclick="setLang(this)">TL</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="generateCard()">Generate Card</button>
+    <button class="btn btn-secondary" onclick="generateTextCard()">Generate Text Card</button>
+    <button class="btn btn-green" onclick="copyCaption()">Copy Caption + Hashtags</button>
+  </div>
+
+  <!-- ── RIGHT: Preview ── -->
+  <div class="preview-wrap">
+    <div class="preview-label">DARK CARD (for TikTok, Instagram, Twitter)</div>
+    <div id="card-preview">
+      <div class="card-outer" id="main-card">
+        <div class="card-header">
+          <div class="card-event" id="c-event">FIFA WORLD CUP 2026 · GROUP STAGE</div>
+          <div class="card-teams">
+            <div class="card-team">
+              <div class="card-flag" id="c-flag1">🇲🇽</div>
+              <div class="card-teamname" id="c-name1">MEXICO</div>
+            </div>
+            <div class="card-vs">VS</div>
+            <div class="card-team">
+              <div class="card-flag" id="c-flag2">🇿🇦</div>
+              <div class="card-teamname" id="c-name2">SOUTH AFRICA</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-datetime">
+            <span id="c-date">June 11, 2026 · 3:00 PM ET</span>
+            <span id="c-venue" style="font-style:italic;">AT&T Stadium · Dallas</span>
+          </div>
+          <div class="card-odds-row">
+            <div class="card-odd">
+              <div class="card-odd-label" id="c-ol1">Mexico</div>
+              <div class="card-odd-val" id="c-ov1">-130</div>
+            </div>
+            <div class="card-odd">
+              <div class="card-odd-label">Draw</div>
+              <div class="card-odd-val" id="c-ov2">+260</div>
+            </div>
+            <div class="card-odd">
+              <div class="card-odd-label" id="c-ol3">South Africa</div>
+              <div class="card-odd-val" id="c-ov3">+380</div>
+            </div>
+          </div>
+          <div class="card-prediction">
+            <div class="card-pred-label" id="c-pred-label">AI PREDICTION</div>
+            <div class="card-pred-text" id="c-pred">Mexico holds home-continent advantage and a deep squad. South Africa's qualification alone is historic but they face a massive step up. Look for Mexico to control possession and take the win.</div>
+          </div>
+          <div class="card-footer">
+            <div>
+              <div class="card-brand" id="c-brand">WC2026 AI PICKS</div>
+              <div class="card-confidence">
+                <div class="conf-bar"><div class="conf-fill" id="c-conf-fill" style="width:72%"></div></div>
+                <div class="conf-label" id="c-conf-label">72% CONFIDENCE</div>
+              </div>
+            </div>
+            <div class="card-cta" id="c-cta">t.me/WC2026AIPicks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-label" style="margin-top:8px;">TEXT CARD (for Telegram, WhatsApp, Beehiiv)</div>
+    <div class="text-card-outer" id="text-card">
+      <div class="text-card-top">
+        <span class="brand" id="tc-brand">WC2026 AI PICKS</span>
+        <span class="match-tag" id="tc-match">Group Stage · June 11</span>
+      </div>
+      <div class="text-card-body">
+        <div class="text-card-teams" id="tc-teams">🇲🇽 Mexico vs South Africa 🇿🇦</div>
+        <div class="text-card-date" id="tc-date">3:00 PM ET · AT&T Stadium, Dallas</div>
+        <div class="text-card-pick" id="tc-pick">Mexico holds home-continent advantage and a deep squad. South Africa's qualification alone is historic but they face a massive step up. Look for Mexico to control possession and take the win.</div>
+        <div class="text-card-tags">
+          <span class="text-tag" id="tc-pick-badge">✅ Pick: Mexico Win</span>
+          <span class="text-tag" id="tc-odds-badge">Odds: -130</span>
+          <span class="text-tag" id="tc-conf-badge">72% confidence</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-label" style="margin-top:8px;">CAPTION READY TO COPY</div>
+    <div class="copy-wrap" id="caption-box">Click "Copy Caption + Hashtags" above to generate...</div>
+  </div>
+</div>
+
+<script>
+const LABELS = {
+  en: { pred: 'AI PREDICTION', event: 'FIFA WORLD CUP 2026 · GROUP STAGE', vs: 'VS', pickLabel: 'Pick', confLabel: 'confidence' },
+  es: { pred: 'PREDICCIÓN IA', event: 'COPA MUNDIAL 2026 · FASE DE GRUPOS', vs: 'VS', pickLabel: 'Pronóstico', confLabel: 'confianza' },
+  pt: { pred: 'PREVISÃO IA', event: 'COPA DO MUNDO 2026 · FASE DE GRUPOS', vs: 'VS', pickLabel: 'Palpite', confLabel: 'confiança' },
+  fr: { pred: 'PRÉDICTION IA', event: 'COUPE DU MONDE 2026 · PHASE DE GROUPES', vs: 'VS', pickLabel: 'Pronostic', confLabel: 'confiance' },
+  ar: { pred: 'توقع الذكاء الاصطناعي', event: 'كأس العالم 2026 · دور المجموعات', vs: 'ضد', pickLabel: 'التوقع', confLabel: 'ثقة' },
+  de: { pred: 'KI-PROGNOSE', event: 'FIFA WM 2026 · GRUPPENPHASE', vs: 'VS', pickLabel: 'Tipp', confLabel: 'Vertrauen' },
+  hi: { pred: 'AI भविष्यवाणी', event: 'FIFA विश्व कप 2026 · ग्रुप स्टेज', vs: 'बनाम', pickLabel: 'भविष्यवाणी', confLabel: 'विश्वास' },
+  sw: { pred: 'UTABIRI WA AI', event: 'FIFA KOMBE LA DUNIA 2026', vs: 'dhidi ya', pickLabel: 'Utabiri', confLabel: 'imani' },
+  id: { pred: 'PREDIKSI AI', event: 'PIALA DUNIA FIFA 2026 · FASE GRUP', vs: 'VS', pickLabel: 'Prediksi', confLabel: 'kepercayaan' },
+  vi: { pred: 'DỰ ĐOÁN AI', event: 'WORLD CUP 2026 · VÒNG BẢNG', vs: 'VS', pickLabel: 'Dự đoán', confLabel: 'độ tin cậy' },
+  th: { pred: 'ทำนาย AI', event: 'ฟุตบอลโลก 2026 · รอบแบ่งกลุ่ม', vs: 'VS', pickLabel: 'ทำนาย', confLabel: 'ความมั่นใจ' },
+  ko: { pred: 'AI 예측', event: 'FIFA 월드컵 2026 · 조별 리그', vs: 'VS', pickLabel: '픽', confLabel: '신뢰도' },
+  ja: { pred: 'AI予測', event: 'FIFAワールドカップ2026 · グループステージ', vs: 'VS', pickLabel: '予測', confLabel: '信頼度' },
+  zh: { pred: 'AI预测', event: 'FIFA世界杯2026 · 小组赛', vs: 'VS', pickLabel: '预测', confLabel: '置信度' },
+  ha: { pred: 'HASASHEN AI', event: 'KOFIN DUNIYA 2026 · RUKUNI', vs: 'akan', pickLabel: 'Tsinkayen', confLabel: 'amincewa' },
+  tl: { pred: 'HULA NG AI', event: 'FIFA WORLD CUP 2026 · GROUP STAGE', vs: 'laban sa', pickLabel: 'Hula', confLabel: 'kumpiyansa' },
+};
+
+const HASHTAGS = {
+  en: '#WorldCup2026 #WC2026 #FIFAWorldCup #FootballPredictions #AIPicks',
+  es: '#MundialDeFootball2026 #WC2026 #PronosticosFootball #CopaMundial',
+  pt: '#CopaDoMundo2026 #WC2026 #PalpitesFootball #BrasilNaMundial',
+  fr: '#CoupeduMonde2026 #WC2026 #PronosticsFootball #FIFA',
+  ar: '#كأس_العالم_2026 #WC2026 #توقعات_كرة_القدم',
+  de: '#WM2026 #WC2026 #DieManschaft #Fussball #Prognose',
+  hi: '#WorldCup2026 #फीफाविश्वकप #WC2026 #Football',
+  sw: '#KombeLaDunia2026 #WC2026 #MpiraMundo',
+  id: '#PialaDunia2026 #WC2026 #Bola #PrediksiFootball',
+  vi: '#WorldCup2026 #WC2026 #BóngĐáThếGiới',
+  th: '#ฟุตบอลโลก2026 #WC2026 #WorldCup',
+  ko: '#월드컵2026 #WC2026 #RedDevils #축구',
+  ja: '#ワールドカップ2026 #WC2026 #サムライブルー #FIFA',
+  zh: '#世界杯2026 #WC2026 #足球 #FIFA',
+  ha: '#WC2026 #SuperEagles #KofinDuniya2026',
+  tl: '#WorldCup2026 #WC2026 #Football #Pilipinas',
+};
+
+let currentStyle = 'dark';
+let currentLang = 'en';
+
+function setStyle(el) {
+  document.querySelectorAll('[data-style]').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  currentStyle = el.dataset.style;
+  generateCard();
+}
+
+function setLang(el) {
+  document.querySelectorAll('.lang-pill').forEach(e => e.classList.remove('sel'));
+  el.classList.add('sel');
+  currentLang = el.dataset.lang;
+  generateCard();
+}
+
+function generateCard() {
+  const t1 = document.getElementById('team1').value;
+  const t2 = document.getElementById('team2').value;
+  const f1 = document.getElementById('flag1').value;
+  const f2 = document.getElementById('flag2').value;
+  const dt = document.getElementById('matchdate').value;
+  const tm = document.getElementById('matchtime').value;
+  const vn = document.getElementById('venue').value;
+  const o1 = document.getElementById('odds1').value;
+  const o2 = document.getElementById('odds2').value;
+  const o3 = document.getElementById('odds3').value;
+  const pred = document.getElementById('prediction').value;
+  const conf = document.getElementById('confidence').value;
+  const brand = document.getElementById('brandname').value;
+  const cta = document.getElementById('ctatext').value;
+  const L = LABELS[currentLang] || LABELS.en;
+
+  document.getElementById('c-event').textContent = L.event;
+  document.getElementById('c-flag1').textContent = f1;
+  document.getElementById('c-flag2').textContent = f2;
+  document.getElementById('c-name1').textContent = t1.toUpperCase();
+  document.getElementById('c-name2').textContent = t2.toUpperCase();
+  document.getElementById('c-date').textContent = `${dt} · ${tm}`;
+  document.getElementById('c-venue').textContent = vn;
+  document.getElementById('c-ol1').textContent = t1;
+  document.getElementById('c-ol3').textContent = t2;
+  document.getElementById('c-ov1').textContent = o1;
+  document.getElementById('c-ov2').textContent = o2;
+  document.getElementById('c-ov3').textContent = o3;
+  document.getElementById('c-pred-label').textContent = L.pred;
+  document.getElementById('c-pred').textContent = pred.substring(0, 180) + (pred.length > 180 ? '...' : '');
+  document.getElementById('c-brand').textContent = brand;
+  document.getElementById('c-cta').textContent = cta;
+  document.getElementById('c-conf-fill').style.width = conf + '%';
+  document.getElementById('c-conf-label').textContent = `${conf}% ${L.confLabel.toUpperCase()}`;
+
+  // Text card
+  document.getElementById('tc-brand').textContent = brand;
+  document.getElementById('tc-match').textContent = `Group Stage · ${dt}`;
+  document.getElementById('tc-teams').textContent = `${f1} ${t1} vs ${t2} ${f2}`;
+  document.getElementById('tc-date').textContent = `${tm} · ${vn}`;
+  document.getElementById('tc-pick').textContent = pred;
+  document.getElementById('tc-pick-badge').textContent = `✅ ${L.pickLabel}: ${t1} Win`;
+  document.getElementById('tc-odds-badge').textContent = `Odds: ${o1}`;
+  document.getElementById('tc-conf-badge').textContent = `${conf}% ${L.confLabel}`;
+}
+
+function generateTextCard() {
+  generateCard();
+}
+
+function copyCaption() {
+  generateCard();
+  const t1 = document.getElementById('team1').value;
+  const t2 = document.getElementById('team2').value;
+  const f1 = document.getElementById('flag1').value;
+  const f2 = document.getElementById('flag2').value;
+  const dt = document.getElementById('matchdate').value;
+  const tm = document.getElementById('matchtime').value;
+  const pred = document.getElementById('prediction').value;
+  const conf = document.getElementById('confidence').value;
+  const cta = document.getElementById('ctatext').value;
+  const o1 = document.getElementById('odds1').value;
+  const brand = document.getElementById('brandname').value;
+  const L = LABELS[currentLang] || LABELS.en;
+  const tags = HASHTAGS[currentLang] || HASHTAGS.en;
+
+  const caption = `${f1} ${t1} vs ${t2} ${f2}
+${dt} · ${tm}
+
+${L.pred}:
+${pred}
+
+${L.pickLabel}: ${t1} Win (${o1}) | ${conf}% ${L.confLabel}
+
+${tags}
+
+📲 Follow ${cta} for every match`;
+
+  document.getElementById('caption-box').textContent = caption;
+  navigator.clipboard.writeText(caption).catch(() => {});
+}
+
+document.querySelectorAll('#team1, #team2, #flag1, #flag2, #matchdate, #matchtime, #venue, #odds1, #odds2, #odds3, #prediction, #brandname, #ctatext').forEach(el => {
+  el.addEventListener('input', generateCard);
+});
+
+document.getElementById('confidence').addEventListener('input', function() {
+  document.getElementById('conf-out').textContent = this.value;
+  generateCard();
+});
+
+generateCard();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

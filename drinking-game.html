@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Drinking Game Generator — Custom Rules for Every Match</title>
+<meta name="description" content="Generate custom WC 2026 drinking game rules for any match. Based on each team's playing style. Share with friends instantly.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e5e5e5;min-height:100vh}
+.hero{background:linear-gradient(135deg,#4a148c,#6a1b9a);padding:50px 20px;text-align:center}
+.hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:8px}
+.hero p{color:rgba(255,255,255,0.85)}
+.disclaimer{background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:12px 16px;text-align:center;font-size:0.8rem;color:#666;margin:20px auto;max-width:600px}
+.container{max-width:680px;margin:0 auto;padding:32px 20px}
+.team-select{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;margin-bottom:20px}
+.team-select h2{color:#fff;font-size:1.1rem;margin-bottom:16px}
+.vs-layout{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}
+.vs-label{text-align:center;font-size:1.5rem;font-weight:900;color:#666}
+select{width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:1rem;font-family:inherit}
+.generate-btn{width:100%;padding:18px;background:linear-gradient(135deg,#7b1fa2,#9c27b0);color:#fff;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s;margin-top:8px}
+.generate-btn:hover{opacity:0.9}
+.rules-output{display:none;margin-top:24px}
+.rules-output.show{display:block}
+.match-title{text-align:center;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:20px}
+.rule-section{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px}
+.rule-section h3{font-size:0.9rem;font-weight:700;color:#ce93d8;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.rule-item{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #2a2a2a}
+.rule-item:last-child{border-bottom:none}
+.rule-emoji{font-size:1.4rem;flex-shrink:0}
+.rule-text{font-size:0.95rem;color:#e5e5e5;line-height:1.4}
+.rule-sips{font-size:0.8rem;color:#ffd700;margin-top:2px;font-weight:600}
+.share-area{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:20px;margin-top:16px;text-align:center}
+.share-area h3{color:#fff;margin-bottom:12px}
+.share-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.share-btn{padding:10px 20px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.9rem}
+.safe-note{background:#0d2b14;border:1px solid #00c853;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:0.85rem;color:#69f0ae;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div style="font-size:3rem;margin-bottom:8px">🍺</div>
+  <h1>WC 2026 Drinking Game Generator</h1>
+  <p>Custom rules for every match based on real playing styles</p>
+</div>
+
+<div class="disclaimer">🔞 18+ only · Please drink responsibly · Never drink and drive · Consider a non-alcoholic version using juice/soda</div>
+
+<div class="container">
+  <div class="team-select">
+    <h2>🏟️ Select Tonight's Match</h2>
+    <div class="vs-layout">
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;display:block;margin-bottom:6px">Home Team</label>
+        <select id="team1" onchange="clearOutput()">
+          <option value="">-- Select team --</option>
+        </select>
+      </div>
+      <div class="vs-label">VS</div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;display:block;margin-bottom:6px">Away Team</label>
+        <select id="team2" onchange="clearOutput()">
+          <option value="">-- Select team --</option>
+        </select>
+      </div>
+    </div>
+    <button class="generate-btn" onclick="generateRules()">⚡ Generate Custom Rules</button>
+  </div>
+
+  <div class="rules-output" id="output">
+    <div class="match-title" id="match-title"></div>
+    <div id="rules-container"></div>
+    <div class="share-area">
+      <h3>📤 Share with your group</h3>
+      <div class="share-btns">
+        <button class="share-btn" style="background:#25d366;color:#fff" onclick="shareWA()">📱 WhatsApp</button>
+        <button class="share-btn" style="background:#000;color:#fff" onclick="shareX()">𝕏 Twitter/X</button>
+        <button class="share-btn" style="background:#333;color:#fff" onclick="copyRules()">📋 Copy Rules</button>
+      </div>
+    </div>
+    <div class="safe-note">🧃 Playing sober? Replace every "sip" with a point. Highest points at final whistle wins. Works great for office watch parties!</div>
+  </div>
+</div>
+
+<script>
+const TEAMS = {
+  'Argentina': { emoji:'🇦🇷', style:'tiki-taka', refs:['Messi','Lautaro','Di María'], traits:['possession','dribbling','set pieces'], known:'free kick masters' },
+  'Brazil': { emoji:'🇧🇷', style:'attacking', refs:['Vinicius Jr','Rodrygo','Endrick'], traits:['skill moves','pressing','pace'], known:'flair football' },
+  'France': { emoji:'🇫🇷', style:'counter', refs:['Mbappé','Griezmann','Thuram'], traits:['pace','set pieces','VAR requests'], known:'world champions' },
+  'England': { emoji:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', style:'direct', refs:['Bellingham','Kane','Saka'], traits:['long balls','penalties','heartbreak'], known:'penalty anxiety' },
+  'Spain': { emoji:'🇪🇸', style:'tiki-taka', refs:['Pedri','Yamal','Rodri'], traits:['possession','short passes','pressing'], known:'La Roja possession' },
+  'Germany': { emoji:'🇩🇪', style:'pressing', refs:['Musiala','Wirtz','Kimmich'], traits:['organization','set pieces','late goals'], known:'German efficiency' },
+  'Netherlands': { emoji:'🇳🇱', style:'total football', refs:['Dumfries','Gakpo','De Ligt'], traits:['orange army','pressing','transitions'], known:'Dutch total football' },
+  'Portugal': { emoji:'🇵🇹', style:'counter', refs:['Cristiano Ronaldo','Félix','Rúben Dias'], traits:['free kicks','CR7 celebrations','emotion'], known:'CR7 effect' },
+  'Mexico': { emoji:'🇲🇽', style:'defending', refs:['Memo Ochoa','Raúl Jiménez','Hirving Lozano'], traits:['altitude advantage','passionate fans','GOOOL commentary'], known:'Mexican wave' },
+  'USA': { emoji:'🇺🇸', style:'athletic', refs:['Pulisic','Reyna','McKennie'], traits:['pressing','transitions','home crowd'], known:'home advantage' },
+  'Morocco': { emoji:'🇲🇦', style:'defensive', refs:['Hakimi','Ziyech','En-Nesyri'], traits:['counter attacks','set pieces','crowd energy'], known:'Atlas Lions magic' },
+  'Japan': { emoji:'🇯🇵', style:'pressing', refs:['Doan','Minamino','Endo'], traits:['high press','discipline','late upsets'], known:'giant killers' },
+  'South Korea': { emoji:'🇰🇷', style:'pressing', refs:['Son Heung-min','Lee Jae-sung','Kim Min-jae'], traits:['intensity','Son moments','K-Wave support'], known:'Son show' },
+  'Senegal': { emoji:'🇸🇳', style:'physical', refs:['Sadio Mané','Koulibaly','Gueye'], traits:['physicality','pace','set pieces'], known:'Lions of Teranga' },
+  'Nigeria': { emoji:'🇳🇬', style:'attacking', refs:['Osimhen','Lookman','Iheanacho'], traits:['pace','individual brilliance','passion'], known:'Super Eagles' },
+  'Saudi Arabia': { emoji:'🇸🇦', style:'defending', refs:['Al-Dawsari','Al-Shahrani','Al-Malki'], traits:['counter attacks','set pieces','surprise factor'], known:'Saudi shock machine' },
+  'Canada': { emoji:'🇨🇦', style:'pressing', refs:['Davies','David','Buchanan'], traits:['pace','transition','home support'], known:'Canada rising' },
+  'Ecuador': { emoji:'🇪🇨', style:'direct', refs:['Plata','Caicedo','Estupiñán'], traits:['physicality','counter','altitude training'], known:'Los Tricolores' },
+  'Venezuela': { emoji:'🇻🇪', style:'counter', refs:['Soteldo','Machís','Bello'], traits:['flair','emotion','historic journey'], known:'first WC in 44 years' },
+  'Turkey': { emoji:'🇹🇷', style:'physical', refs:['Arda Güler','Calhanoglu','Soyuncu'], traits:['passion','comebacks','emotion'], known:'Turkish drama' },
+  'Iran': { emoji:'🇮🇷', style:'defensive', refs:['Taremi','Jahanbakhsh','Gholizadeh'], traits:['defending deep','counter','set pieces'], known:'Team Melli' },
+};
+
+// Populate selects
+function populateSelects() {
+  const t1 = document.getElementById('team1');
+  const t2 = document.getElementById('team2');
+  Object.keys(TEAMS).forEach(name => {
+    [t1, t2].forEach(sel => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = TEAMS[name].emoji + ' ' + name;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function generateRules() {
+  const t1name = document.getElementById('team1').value;
+  const t2name = document.getElementById('team2').value;
+  if (!t1name || !t2name || t1name === t2name) { alert('Please select two different teams!'); return; }
+
+  const t1 = TEAMS[t1name];
+  const t2 = TEAMS[t2name];
+
+  document.getElementById('match-title').textContent = `${t1.emoji} ${t1name} vs ${t2name} ${t2.emoji}`;
+
+  const rules = buildRules(t1name, t1, t2name, t2);
+  const container = document.getElementById('rules-container');
+  container.innerHTML = '';
+
+  rules.forEach(section => {
+    const div = document.createElement('div');
+    div.className = 'rule-section';
+    div.innerHTML = `<h3>${section.title}</h3>` + section.items.map(item =>
+      `<div class="rule-item">
+        <div class="rule-emoji">${item.emoji}</div>
+        <div>
+          <div class="rule-text">${item.rule}</div>
+          <div class="rule-sips">${item.sips}</div>
+        </div>
+      </div>`
+    ).join('');
+    container.appendChild(div);
+  });
+
+  document.getElementById('output').className = 'rules-output show';
+  document.getElementById('output').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildRules(t1name, t1, t2name, t2) {
+  const rules = [];
+
+  // Universal rules
+  rules.push({ title: '⚽ Every Match Rules', items: [
+    { emoji:'⚽', rule:'Someone scores a goal', sips:'3 sips — 5 if it was predicted by our AI!' },
+    { emoji:'🟨', rule:'Yellow card', sips:'1 sip' },
+    { emoji:'🟥', rule:'Red card', sips:'3 sips + everyone else points at the offender\'s team fans' },
+    { emoji:'📺', rule:'VAR review', sips:'1 sip while you wait — 2 more if decision is overturned' },
+    { emoji:'🤕', rule:'Player goes down injured but then plays on', sips:'Everyone else: 2 sips for surviving the suspense' },
+    { emoji:'🎯', rule:'Free kick awarded within 35 metres of goal', sips:'1 sip for the anticipation' },
+    { emoji:'🤷', rule:'Commentator says "that\'s football"', sips:'2 sips' },
+  ]});
+
+  // Team 1 specific
+  const t1rules = getTeamRules(t1name, t1);
+  rules.push({ title: `${t1.emoji} ${t1name} Rules`, items: t1rules });
+
+  // Team 2 specific
+  const t2rules = getTeamRules(t2name, t2);
+  rules.push({ title: `${t2.emoji} ${t2name} Rules`, items: t2rules });
+
+  // Combined drama
+  rules.push({ title: '🎭 Drama Rules', items: [
+    { emoji:'🥅', rule:'Penalty awarded', sips:'2 sips (3 if it\'s in the last 10 minutes)' },
+    { emoji:'💨', rule:'Penalty MISSED', sips:'Everyone from the scorer\'s nation: 4 sips' },
+    { emoji:'🏃', rule:'Substitution in the 90th minute or later', sips:'2 sips — it\'s getting spicy' },
+    { emoji:'⏱️', rule:'6+ minutes of added time shown', sips:'1 sip per minute shown over 5' },
+    { emoji:'🤝', rule:'It ends 0-0', sips:'Everyone: 4 sips for being put through that' },
+    { emoji:'🏆', rule:'Correct scoreline prediction — show the screenshot', sips:'You give out 5 sips total' },
+  ]});
+
+  return rules;
+}
+
+function getTeamRules(name, team) {
+  const rules = [];
+  const p = team.refs;
+
+  // Style-based rules
+  if (team.style === 'tiki-taka' || team.traits.includes('possession')) {
+    rules.push({ emoji:'⚡', rule:`${name} completes 10 passes in a row without losing possession`, sips:'1 sip — it\'ll happen a LOT' });
+  }
+  if (team.traits.includes('set pieces')) {
+    rules.push({ emoji:'🎯', rule:`${name} gets a corner kick`, sips:'1 sip — take one more if it\'s a goal' });
+  }
+  if (team.traits.includes('penalties') || name === 'England') {
+    rules.push({ emoji:'😰', rule:`Commentator mentions England\'s penalty history`, sips:'2 sips — you know it\'s coming' });
+  }
+  if (team.traits.includes('pace')) {
+    rules.push({ emoji:'💨', rule:`${p[0]} makes a run behind the defence`, sips:'1 sip — try not to spill it' });
+  }
+  if (name === 'Mexico') {
+    rules.push({ emoji:'📢', rule:`Mexican commentator screams "GOOOOOL!" (use your phone)`, sips:'Everyone: 3 sips and cheer with them' });
+  }
+  if (name === 'Portugal') {
+    rules.push({ emoji:'💪', rule:`CR7 does a "SIUUU" celebration`, sips:'All Portugal fans: 3 sips + do the pose' });
+  }
+  if (name === 'Brazil') {
+    rules.push({ emoji:'🕺', rule:`${p[0]} does a skill move or nutmeg`, sips:'2 sips and say "joga bonito"' });
+  }
+  if (name === 'Argentina') {
+    rules.push({ emoji:'🐐', rule:`Camera cuts to ${p[0]} more than 3 times in one minute`, sips:'2 sips (you know this will happen)' });
+  }
+  if (team.traits.includes('VAR requests') || name === 'France') {
+    rules.push({ emoji:'🖥️', rule:`${name} gets a decision overturned by VAR`, sips:'3 sips — controversy loading...' });
+  }
+
+  // Star player rule
+  rules.push({ emoji:'⭐', rule:`${p[0]} scores or directly assists`, sips:'3 sips — the star delivers' });
+  rules.push({ emoji:'👟', rule:`${p[1] || p[0]} takes a shot`, sips:'1 sip — regardless of result' });
+
+  // Unique known trait
+  rules.push({ emoji:'🏴', rule:`Something happens that perfectly captures "${team.known}"`, sips:'Everyone agrees: 3 sips — you\'ll know it when you see it' });
+
+  return rules.slice(0, 5); // limit to 5 per team to keep it manageable
+}
+
+function clearOutput() {
+  document.getElementById('output').className = 'rules-output';
+}
+
+function getRulesText() {
+  const t1 = document.getElementById('team1').value;
+  const t2 = document.getElementById('team2').value;
+  let text = `🍺 WC 2026 DRINKING GAME: ${t1} vs ${t2}\n\n`;
+  document.querySelectorAll('.rule-section').forEach(sec => {
+    text += sec.querySelector('h3').textContent + '\n';
+    sec.querySelectorAll('.rule-item').forEach(item => {
+      text += `${item.querySelector('.rule-emoji').textContent} ${item.querySelector('.rule-text').textContent} — ${item.querySelector('.rule-sips').textContent}\n`;
+    });
+    text += '\n';
+  });
+  text += 'Generated at wc2026ai.com/drinking-game\n🔞 Drink responsibly!';
+  return text;
+}
+
+function shareWA() {
+  window.open('https://wa.me/?text=' + encodeURIComponent(getRulesText()), '_blank');
+}
+function shareX() {
+  const t1 = document.getElementById('team1').value;
+  const t2 = document.getElementById('team2').value;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(`Just generated custom WC 2026 drinking game rules for ${t1} vs ${t2} 🍺⚽\nGet yours: wc2026ai.com/drinking-game`), '_blank');
+}
+function copyRules() {
+  navigator.clipboard.writeText(getRulesText());
+  alert('Rules copied! Paste them in your group chat.');
+}
+
+populateSelects();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

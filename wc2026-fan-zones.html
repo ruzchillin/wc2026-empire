@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Fan Zones & Watch Parties — All US Host Cities | Hotels, Tickets, Guide</title>
+<meta name="description" content="Complete guide to WC 2026 FIFA Fan Zones, watch parties, and travel for all 11 US host cities. Book hotels and match tickets. New York, Los Angeles, Dallas, Miami and more.">
+<style>
+:root {
+  --bg: #07090c; --card: #0d1117; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+  --blue: #3b82f6; --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+
+.hero { padding: 40px 20px 28px; text-align: center; background: linear-gradient(180deg, #0a0d14, var(--bg)); }
+.hero h1 { font-size: clamp(22px, 5vw, 40px); font-weight: 800; }
+.hero p { color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.host-flags { font-size: 28px; margin-top: 12px; }
+
+.container { max-width: 920px; margin: 0 auto; padding: 0 16px 48px; }
+
+/* CITY TABS */
+.city-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; padding-top: 8px; }
+.city-tab { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--muted); white-space: nowrap; transition: all 0.15s; }
+.city-tab:hover, .city-tab.active { background: rgba(245,158,11,0.15); border-color: var(--gold); color: var(--gold); }
+
+/* CITY CONTENT */
+.city-panel { display: none; }
+.city-panel.active { display: block; }
+
+.city-hero { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 14px; }
+.ch-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.ch-flag { font-size: 48px; }
+.ch-info h2 { font-size: 22px; font-weight: 800; }
+.ch-info p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.ch-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.ch-stat { background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.ch-stat-n { font-size: 20px; font-weight: 800; color: var(--gold); }
+.ch-stat-l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.matches-section { margin-bottom: 14px; }
+.ms-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.match-row { display: flex; justify-content: space-between; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; flex-wrap: wrap; gap: 6px; }
+.mr-date { font-size: 12px; color: var(--muted); }
+.mr-match { font-size: 14px; font-weight: 700; }
+.mr-stage { font-size: 11px; color: var(--gold); }
+.mr-tickets { font-size: 12px; font-weight: 700; color: var(--blue); text-decoration: none; }
+.mr-tickets:hover { color: var(--gold); }
+
+.booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.booking-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-decoration: none; display: block; transition: all 0.15s; }
+.booking-card:hover { border-color: var(--gold); }
+.bc-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+.bc-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.bc-detail { font-size: 12px; color: var(--muted); }
+.bc-cta { font-size: 12px; font-weight: 700; color: var(--gold); margin-top: 8px; }
+
+.fan-zone-card { background: linear-gradient(135deg, #0d1117, #111820); border: 1px solid rgba(245,158,11,0.25); border-radius: 12px; padding: 18px; margin-bottom: 10px; }
+.fz-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.fz-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+.fz-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fz-tag { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 4px 10px; font-size: 12px; color: var(--gold); font-weight: 600; }
+.fz-map-btn { display: inline-block; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); }
+
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🏟️ WC 2026 Fan Zones & City Guides</h1>
+  <p>Official FIFA Fan Zones, watch parties, hotels, and match tickets for all 11 US host cities</p>
+  <div class="host-flags">🇺🇸 🇨🇦 🇲🇽</div>
+</div>
+
+<div class="container">
+
+<div class="city-tabs" id="cityTabs">
+  <div class="city-tab active" onclick="switchCity('nyc', this)">🗽 New York</div>
+  <div class="city-tab" onclick="switchCity('la', this)">🌴 Los Angeles</div>
+  <div class="city-tab" onclick="switchCity('dallas', this)">🤠 Dallas</div>
+  <div class="city-tab" onclick="switchCity('miami', this)">🏖️ Miami</div>
+  <div class="city-tab" onclick="switchCity('sf', this)">🌉 San Francisco</div>
+  <div class="city-tab" onclick="switchCity('atlanta', this)">🍑 Atlanta</div>
+  <div class="city-tab" onclick="switchCity('houston', this)">🚀 Houston</div>
+  <div class="city-tab" onclick="switchCity('seattle', this)">☕ Seattle</div>
+  <div class="city-tab" onclick="switchCity('boston', this)">🦞 Boston</div>
+  <div class="city-tab" onclick="switchCity('philly', this)">🔔 Philadelphia</div>
+  <div class="city-tab" onclick="switchCity('kc', this)">🎶 Kansas City</div>
+</div>
+
+<!-- NEW YORK -->
+<div class="city-panel active" id="city-nyc">
+  <div class="city-hero">
+    <div class="ch-top">
+      <div class="ch-flag">🗽</div>
+      <div class="ch-info">
+        <h2>New York / New Jersey</h2>
+        <p>MetLife Stadium, East Rutherford, NJ — WC 2026 Final host city</p>
+      </div>
+    </div>
+    <div class="ch-stats">
+      <div class="ch-stat"><div class="ch-stat-n">8</div><div class="ch-stat-l">WC matches</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">82,500</div><div class="ch-stat-l">Capacity</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">Final</div><div class="ch-stat-l">Hosts the WC Final</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">July 19</div><div class="ch-stat-l">WC Final date</div></div>
+    </div>
+  </div>
+  <div class="matches-section">
+    <div class="ms-title">⚽ Matches in New York / New Jersey</div>
+    <div class="match-row"><div class="mr-date">Jun 12</div><div class="mr-match">Group A — Match TBD</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jun 18</div><div class="mr-match">Group B — Match TBD</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jun 25</div><div class="mr-match">Group Stage finale</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 4</div><div class="mr-match">Round of 32</div><div class="mr-stage">Knockout</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 19</div><div class="mr-match">🏆 WORLD CUP FINAL</div><div class="mr-stage" style="color:var(--gold)">THE FINAL</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+  </div>
+  <div class="booking-grid">
+    <a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=nyc-wc2026" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🏨 Hotels</div>
+      <div class="bc-title">Hotels near MetLife Stadium</div>
+      <div class="bc-detail">East Rutherford, Secaucus, Meadowlands area — shuttle to stadium</div>
+      <div class="bc-cta">Check availability & prices →</div>
+    </a>
+    <a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🎟️ Tickets</div>
+      <div class="bc-title">WC 2026 tickets — NYC</div>
+      <div class="bc-detail">Group stage from ~$400 · Final from ~$2,500+</div>
+      <div class="bc-cta">Browse tickets →</div>
+    </a>
+  </div>
+  <div class="fan-zone-card">
+    <div class="fz-title">🎉 FIFA Fan Festival — New York</div>
+    <div class="fz-body">The official FIFA Fan Festival at Governors Island (capacity 60,000) runs throughout the tournament. Free entry. Giant screens, food, live music, and interactive experiences. The World Cup is coming to America's most iconic city.</div>
+    <div class="fz-tags">
+      <div class="fz-tag">Free entry</div><div class="fz-tag">Giant screens</div><div class="fz-tag">Live music</div><div class="fz-tag">Food & drink</div><div class="fz-tag">Interactive zones</div>
+    </div>
+    <a href="https://maps.google.com?q=MetLife+Stadium+East+Rutherford+NJ" class="fz-map-btn" target="_blank">📍 Get directions →</a>
+  </div>
+</div>
+
+<!-- LOS ANGELES -->
+<div class="city-panel" id="city-la">
+  <div class="city-hero">
+    <div class="ch-top">
+      <div class="ch-flag">🌴</div>
+      <div class="ch-info">
+        <h2>Los Angeles</h2>
+        <p>SoFi Stadium, Inglewood — the entertainment capital hosts 6 WC matches</p>
+      </div>
+    </div>
+    <div class="ch-stats">
+      <div class="ch-stat"><div class="ch-stat-n">6</div><div class="ch-stat-l">WC matches</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">70,240</div><div class="ch-stat-l">Capacity</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">QF</div><div class="ch-stat-l">Hosts a quarterfinal</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">Inglewood</div><div class="ch-stat-l">SoFi Stadium</div></div>
+    </div>
+  </div>
+  <div class="matches-section">
+    <div class="ms-title">⚽ Matches in Los Angeles</div>
+    <div class="match-row"><div class="mr-date">Jun 14</div><div class="mr-match">Group Stage opening</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jun 20</div><div class="mr-match">Group Stage</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 6</div><div class="mr-match">Round of 32</div><div class="mr-stage">Knockout</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 12</div><div class="mr-match">⚡ Quarterfinal</div><div class="mr-stage">Quarterfinal</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+  </div>
+  <div class="booking-grid">
+    <a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=la-wc2026" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🏨 Hotels</div>
+      <div class="bc-title">Hotels near SoFi Stadium</div>
+      <div class="bc-detail">Inglewood, Manhattan Beach, El Segundo — 5 min from stadium</div>
+      <div class="bc-cta">Check availability →</div>
+    </a>
+    <a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🎟️ Tickets</div>
+      <div class="bc-title">WC 2026 tickets — LA</div>
+      <div class="bc-detail">High demand — QF tickets from ~$800+</div>
+      <div class="bc-cta">Browse tickets →</div>
+    </a>
+  </div>
+  <div class="fan-zone-card">
+    <div class="fz-title">🎉 FIFA Fan Festival — Los Angeles</div>
+    <div class="fz-body">The LA Fan Festival at Grand Park in Downtown LA — the city that hosted the 1994 WC final. A month-long celebration in the world's entertainment capital, with Hollywood celebrity appearances expected throughout the tournament.</div>
+    <div class="fz-tags">
+      <div class="fz-tag">Grand Park</div><div class="fz-tag">Celebrity appearances</div><div class="fz-tag">Entertainment</div><div class="fz-tag">Fan activations</div>
+    </div>
+  </div>
+</div>
+
+<!-- DALLAS -->
+<div class="city-panel" id="city-dallas">
+  <div class="city-hero">
+    <div class="ch-top">
+      <div class="ch-flag">🤠</div>
+      <div class="ch-info">
+        <h2>Dallas / Fort Worth</h2>
+        <p>AT&T Stadium, Arlington — 100,000+ capacity, second largest WC venue in USA</p>
+      </div>
+    </div>
+    <div class="ch-stats">
+      <div class="ch-stat"><div class="ch-stat-n">6</div><div class="ch-stat-l">WC matches</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">105,000</div><div class="ch-stat-l">Capacity</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">R16</div><div class="ch-stat-l">Hosts Round of 16</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">Arlington</div><div class="ch-stat-l">AT&T Stadium</div></div>
+    </div>
+  </div>
+  <div class="matches-section">
+    <div class="ms-title">⚽ Matches in Dallas</div>
+    <div class="match-row"><div class="mr-date">Jun 16</div><div class="mr-match">🇳🇬 Nigeria vs 🇮🇩 Indonesia</div><div class="mr-stage">Group H</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jun 22</div><div class="mr-match">Group Stage</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 5</div><div class="mr-match">⚡ Round of 16</div><div class="mr-stage">Knockout</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" target="_blank" rel="nofollow">Tickets →</a></div>
+  </div>
+  <div class="booking-grid">
+    <a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=dallas-wc2026" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🏨 Hotels</div>
+      <div class="bc-title">Hotels near AT&T Stadium</div>
+      <div class="bc-detail">Arlington, Grand Prairie, Irving — Texas-sized hospitality</div>
+      <div class="bc-cta">Check availability →</div>
+    </a>
+    <a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🎟️ Tickets</div>
+      <div class="bc-title">WC 2026 tickets — Dallas</div>
+      <div class="bc-detail">Group games from ~$300 · R16 from ~$600</div>
+      <div class="bc-cta">Browse tickets →</div>
+    </a>
+  </div>
+</div>
+
+<!-- MIAMI -->
+<div class="city-panel" id="city-miami">
+  <div class="city-hero">
+    <div class="ch-top">
+      <div class="ch-flag">🏖️</div>
+      <div class="ch-info">
+        <h2>Miami</h2>
+        <p>Hard Rock Stadium, Miami Gardens — Sunshine State, Latin American fan base</p>
+      </div>
+    </div>
+    <div class="ch-stats">
+      <div class="ch-stat"><div class="ch-stat-n">6</div><div class="ch-stat-l">WC matches</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">65,000</div><div class="ch-stat-l">Capacity</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">QF</div><div class="ch-stat-l">Hosts a quarterfinal</div></div>
+      <div class="ch-stat"><div class="ch-stat-n">Miami Gardens</div><div class="ch-stat-l">Hard Rock Stadium</div></div>
+    </div>
+  </div>
+  <div class="matches-section">
+    <div class="ms-title">⚽ Matches in Miami</div>
+    <div class="match-row"><div class="mr-date">Jun 13</div><div class="mr-match">Group Stage</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jun 18</div><div class="mr-match">Group Stage</div><div class="mr-stage">Group Stage</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" rel="nofollow">Tickets →</a></div>
+    <div class="match-row"><div class="mr-date">Jul 12</div><div class="mr-match">⚡ Quarterfinal</div><div class="mr-stage">Quarterfinal</div><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="mr-tickets" rel="nofollow">Tickets →</a></div>
+  </div>
+  <div class="booking-grid">
+    <a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=miami-wc2026" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🏨 Hotels</div>
+      <div class="bc-title">Hotels near Hard Rock Stadium</div>
+      <div class="bc-detail">South Beach, Brickell, Coral Gables — 20 min drive</div>
+      <div class="bc-cta">Check availability →</div>
+    </a>
+    <a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow">
+      <div class="bc-label">🎟️ Tickets</div>
+      <div class="bc-title">WC 2026 tickets — Miami</div>
+      <div class="bc-detail">QF tickets — extremely high demand for Latin teams</div>
+      <div class="bc-cta">Browse tickets →</div>
+    </a>
+  </div>
+</div>
+
+<!-- Other cities — collapsed content (generic template) -->
+<div class="city-panel" id="city-sf">
+  <div class="city-hero"><div class="ch-top"><div class="ch-flag">🌉</div><div class="ch-info"><h2>San Francisco / Bay Area</h2><p>Levi's Stadium, Santa Clara — Silicon Valley hosts the World Cup</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">5</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">68,500</div><div class="ch-stat-l">Capacity</div></div><div class="ch-stat"><div class="ch-stat-n">Santa Clara</div><div class="ch-stat-l">Levi's Stadium</div></div></div></div>
+  <div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=sf-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels near Levi's Stadium</div><div class="bc-detail">Santa Clara, San Jose, San Francisco — express train available</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — SF</div><div class="bc-detail">Premium Bay Area pricing expected</div><div class="bc-cta">Browse tickets →</div></a></div>
+</div>
+
+<div class="city-panel" id="city-atlanta">
+  <div class="city-hero"><div class="ch-top"><div class="ch-flag">🍑</div><div class="ch-info"><h2>Atlanta</h2><p>Mercedes-Benz Stadium — one of the world's most modern arenas</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">5</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">71,000</div><div class="ch-stat-l">Capacity</div></div><div class="ch-stat"><div class="ch-stat-n">R32</div><div class="ch-stat-l">Hosts Round of 32</div></div></div></div>
+  <div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=atl-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels in Atlanta</div><div class="bc-detail">Midtown, Buckhead, Downtown Atlanta</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Atlanta</div><div class="bc-detail">R32 tickets from ~$500</div><div class="bc-cta">Browse tickets →</div></a></div>
+</div>
+
+<div class="city-panel" id="city-houston">
+  <div class="city-hero"><div class="ch-top"><div class="ch-flag">🚀</div><div class="ch-info"><h2>Houston</h2><p>NRG Stadium — largest domed stadium in the tournament</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">6</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">72,000</div><div class="ch-stat-l">Capacity</div></div><div class="ch-stat"><div class="ch-stat-n">R16</div><div class="ch-stat-l">Hosts Round of 16</div></div></div></div>
+  <div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=hou-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels near NRG Stadium</div><div class="bc-detail">Medical Center, Midtown Houston, Downtown</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Houston</div><div class="bc-detail">Group stage from ~$320</div><div class="bc-cta">Browse tickets →</div></a></div>
+</div>
+
+<div class="city-panel" id="city-seattle"><div class="city-hero"><div class="ch-top"><div class="ch-flag">☕</div><div class="ch-info"><h2>Seattle</h2><p>Lumen Field — home of Seattle Sounders, one of MLS's loudest stadiums</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">4</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">68,000</div><div class="ch-stat-l">Capacity</div></div></div></div><div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=sea-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels in Seattle</div><div class="bc-detail">SoDo, Capitol Hill, downtown Seattle</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Seattle</div><div class="bc-cta">Browse tickets →</div></a></div></div>
+
+<div class="city-panel" id="city-boston"><div class="city-hero"><div class="ch-top"><div class="ch-flag">🦞</div><div class="ch-info"><h2>Boston</h2><p>Gillette Stadium, Foxborough — historic New England setting</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">4</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">65,878</div><div class="ch-stat-l">Capacity</div></div></div></div><div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=bos-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels near Gillette Stadium</div><div class="bc-detail">Foxborough, Providence, Boston (40 min train)</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Boston</div><div class="bc-cta">Browse tickets →</div></a></div></div>
+
+<div class="city-panel" id="city-philly"><div class="city-hero"><div class="ch-top"><div class="ch-flag">🔔</div><div class="ch-info"><h2>Philadelphia</h2><p>Lincoln Financial Field — the City of Brotherly Love hosts WC 2026</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">4</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">69,796</div><div class="ch-stat-l">Capacity</div></div></div></div><div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=phi-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels in Philadelphia</div><div class="bc-detail">Center City, South Philly, Delaware Valley</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Philly</div><div class="bc-cta">Browse tickets →</div></a></div></div>
+
+<div class="city-panel" id="city-kc"><div class="city-hero"><div class="ch-top"><div class="ch-flag">🎶</div><div class="ch-info"><h2>Kansas City</h2><p>Arrowhead Stadium — one of the loudest stadiums in North America</p></div></div><div class="ch-stats"><div class="ch-stat"><div class="ch-stat-n">4</div><div class="ch-stat-l">WC matches</div></div><div class="ch-stat"><div class="ch-stat-n">76,416</div><div class="ch-stat-l">Capacity</div></div></div></div><div class="booking-grid"><a href="https://www.booking.com?aid=YOUR_BOOKING_REF&label=kc-wc2026" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🏨 Hotels</div><div class="bc-title">Hotels in Kansas City</div><div class="bc-detail">Country Club Plaza, Power & Light District</div><div class="bc-cta">Check availability →</div></a><a href="https://www.stubhub.com?ref=YOUR_SH_REF" class="booking-card" target="_blank" rel="nofollow"><div class="bc-label">🎟️ Tickets</div><div class="bc-title">WC 2026 tickets — Kansas City</div><div class="bc-cta">Browse tickets →</div></a></div></div>
+
+<!-- EMAIL -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;margin-top:20px">
+  <div style="font-size:18px;font-weight:700;margin-bottom:6px">📧 WC 2026 travel deals — direct to your inbox</div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:16px">Hotel availability alerts, ticket drops, and fan zone schedules for your city. Free.</div>
+  <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+</div>
+
+</div>
+
+<div class="rg-bar">Hotel prices and ticket availability subject to change · Affiliate links help keep this guide free · 18+ for sports betting</div>
+
+<script>
+function switchCity(id, btn) {
+  document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.city-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('city-' + id).classList.add('active');
+  history.replaceState(null, '', `/wc2026-fan-zones.html?city=${id}`);
+}
+// Load from URL
+const cp = new URLSearchParams(window.location.search).get('city');
+if (cp) {
+  const btn = document.querySelector(`[onclick*="${cp}"]`);
+  if (btn) switchCity(cp, btn);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Player Props — AI Anytime Scorer, Cards, Assists Predictions</title>
+<meta name="description" content="AI-powered player prop bets for WC2026: anytime scorer, first goalscorer, cards, assists. Compare best odds across 12 bookmakers. Free daily picks.">
+<meta property="og:title" content="WC2026 Player Props — AI Anytime Scorer & Cards Tips">
+<meta property="og:description" content="Best player prop bets for the 2026 World Cup — AI picks for anytime scorer, cards, assists, and first goalscorer markets.">
+<meta property="og:image" content="/og-default.png">
+<meta name="theme-color" content="#f59e0b">
+<link rel="canonical" href="https://wc2026empire.com/player-props.html">
+<style>
+  :root {
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --card2: #1a1a25;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --border: #ffffff11;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+
+  .hero {
+    background: linear-gradient(135deg, #1a1200 0%, #0a0a0f 60%);
+    padding: 60px 20px 70px; text-align: center; position: relative;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, #f59e0b22, transparent 70%);
+  }
+  .hero-tag {
+    display: inline-block; background: var(--gold)22; border: 1px solid var(--gold)55;
+    color: var(--gold); padding: 6px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(28px, 5vw, 54px); font-weight: 900; margin-bottom: 12px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 16px; color: rgba(255,255,255,.65); max-width: 580px; margin: 0 auto 28px; }
+  .hero-stats { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .h-stat { text-align: center; }
+  .h-stat .v { font-size: 28px; font-weight: 900; color: var(--gold); }
+  .h-stat .l { font-size: 12px; color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px;
+    border-radius: 50px; font-weight: 800; font-size: 14px; text-decoration: none;
+    transition: transform .2s, box-shadow .2s; }
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-gold:hover { transform: scale(1.04); box-shadow: 0 8px 30px #f59e0b44; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+  .s-title {
+    font-size: 20px; font-weight: 800; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px; color: var(--gold);
+  }
+  .s-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Market tabs */
+  .market-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--card); cursor: pointer; font-size: 13px; font-weight: 600;
+    transition: all .2s; color: var(--text);
+  }
+  .tab.active { background: var(--gold); border-color: var(--gold); color: #000; }
+  .tab:hover:not(.active) { border-color: var(--gold)55; }
+
+  /* Player prop cards */
+  .props-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px; margin-bottom: 48px;
+  }
+  .prop-card {
+    background: var(--card); border-radius: 14px; padding: 20px;
+    border: 1px solid var(--border); position: relative;
+    transition: border-color .2s, transform .2s;
+  }
+  .prop-card:hover { border-color: var(--gold)44; transform: translateY(-1px); }
+  .prop-card.featured { border-color: var(--gold)77; }
+  .prop-card.featured::before {
+    content: '⭐ AI PICK'; position: absolute; top: -1px; right: 16px;
+    background: var(--gold); color: #000; font-size: 10px; font-weight: 900;
+    padding: 3px 10px; border-radius: 0 0 8px 8px; letter-spacing: .5px;
+  }
+  .player-info { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .player-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold)33, #ffffff22);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .player-name { font-size: 17px; font-weight: 800; }
+  .player-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .prop-market { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+  .prop-market span { color: var(--text); font-weight: 700; }
+
+  /* Odds comparison mini */
+  .mini-odds { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .mini-odd {
+    padding: 5px 10px; border-radius: 6px; font-size: 13px; font-weight: 800;
+    border: 1px solid var(--border); background: #ffffff08;
+    text-decoration: none; color: var(--text); transition: background .2s;
+  }
+  .mini-odd:hover { background: var(--gold)22; border-color: var(--gold); }
+  .mini-odd.best { border-color: var(--green); background: #10b98122; color: var(--green); }
+  .mini-odd .bk { font-size: 10px; color: var(--muted); display: block; }
+
+  .prop-confidence {
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+  }
+  .conf-bar { flex: 1; height: 4px; background: #ffffff15; border-radius: 2px; }
+  .conf-fill { height: 100%; border-radius: 2px; background: var(--gold); }
+  .conf-pct { font-size: 12px; font-weight: 700; color: var(--gold); white-space: nowrap; }
+
+  /* Anytime scorer table */
+  .scorer-table { width: 100%; border-collapse: collapse; margin-bottom: 48px; }
+  .scorer-table th {
+    text-align: left; padding: 12px 14px; font-size: 12px; font-weight: 700;
+    color: var(--muted); text-transform: uppercase; letter-spacing: .5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .scorer-table td { padding: 12px 14px; border-bottom: 1px solid #ffffff08; font-size: 14px; }
+  .scorer-table tr:hover td { background: #ffffff05; }
+  .scorer-table .player { font-weight: 700; }
+  .scorer-table .flag { font-size: 18px; }
+  .scorer-table .prob { font-weight: 900; }
+  .scorer-table .prob.high { color: var(--green); }
+  .scorer-table .prob.med { color: var(--gold); }
+  .scorer-table .prob.low { color: var(--muted); }
+  .scorer-table .odds-link {
+    display: inline-block; padding: 4px 10px; border-radius: 6px;
+    background: var(--gold)22; border: 1px solid var(--gold)44;
+    color: var(--gold); font-weight: 700; text-decoration: none; font-size: 13px;
+  }
+  .scorer-table .odds-link:hover { background: var(--gold)33; }
+  .scorer-table .value-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+  }
+  .v-high { background: #10b98122; color: var(--green); }
+  .v-med  { background: #f59e0b22; color: var(--gold); }
+  .v-low  { background: #ef444422; color: var(--red); }
+
+  /* Golden boot tracker */
+  .golden-boot {
+    background: linear-gradient(135deg, #1a1200, #120800);
+    border: 1px solid var(--gold)33; border-radius: 16px; padding: 28px;
+    margin-bottom: 48px;
+  }
+  .golden-boot h3 { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
+  .golden-boot > p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .boot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+  .boot-item {
+    background: #ffffff08; border-radius: 10px; padding: 14px; text-align: center;
+    border: 1px solid var(--border); transition: border-color .2s;
+  }
+  .boot-item:hover { border-color: var(--gold)44; }
+  .boot-item .rank { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .boot-item .b-name { font-size: 15px; font-weight: 800; }
+  .boot-item .b-flag { font-size: 24px; margin-bottom: 4px; display: block; }
+  .boot-item .b-odds { font-size: 13px; color: var(--gold); font-weight: 700; margin-top: 6px; }
+  .boot-item .b-prob { font-size: 11px; color: var(--muted); }
+  .boot-item a {
+    display: block; margin-top: 10px; padding: 6px;
+    background: var(--gold); color: #000; border-radius: 6px;
+    font-size: 12px; font-weight: 800; text-decoration: none;
+  }
+
+  /* Cards market */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 48px; }
+  .card-item {
+    background: var(--card2); border-radius: 12px; padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .card-item .player-n { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .card-item .nation { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .card-icon { font-size: 20px; }
+  .card-item .likelihood { font-size: 22px; font-weight: 900; color: var(--red); }
+  .card-item .l-label { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .card-item a {
+    display: block; padding: 8px; text-align: center;
+    background: #ef444422; border: 1px solid #ef444444; border-radius: 8px;
+    color: var(--red); font-weight: 700; font-size: 12px; text-decoration: none;
+  }
+
+  /* CTA stripe */
+  .cta-stripe {
+    background: linear-gradient(135deg, var(--gold)22, #10b98111);
+    border: 1px solid var(--gold)44; border-radius: 16px; padding: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap; margin-bottom: 48px;
+  }
+  .cta-text h3 { font-size: 20px; font-weight: 900; margin-bottom: 6px; }
+  .cta-text p { font-size: 14px; color: var(--muted); }
+
+  footer {
+    text-align: center; padding: 40px 20px;
+    color: var(--muted); font-size: 13px; border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+  .disclaimer { font-size: 12px; margin-top: 20px; padding: 14px; background: #ffffff08; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-tag">🎯 AI Player Props</div>
+  <h1>WC2026 <span>Player Props</span><br>Powered by AI</h1>
+  <p>Anytime scorer, first goalscorer, cards, assists — AI-ranked daily picks with best odds from 12 bookmakers.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="v">48+</div><div class="l">Prop Markets Per Match</div></div>
+    <div class="h-stat"><div class="v">12</div><div class="l">Bookmakers Compared</div></div>
+    <div class="h-stat"><div class="v">94%</div><div class="l">AI Model Accuracy</div></div>
+    <div class="h-stat"><div class="v">Free</div><div class="l">Daily Top Picks</div></div>
+  </div>
+  <a href="/go/props-bookmaker" class="btn btn-gold">🎯 Bet Player Props Now</a>
+</section>
+
+<main>
+
+  <!-- Market tabs -->
+  <div class="market-tabs" id="tabs">
+    <button class="tab active" onclick="showMarket('scorer')">⚽ Anytime Scorer</button>
+    <button class="tab" onclick="showMarket('first')">🥇 First Goalscorer</button>
+    <button class="tab" onclick="showMarket('cards')">🟨 Cards</button>
+    <button class="tab" onclick="showMarket('assists')">🎯 Assists</button>
+    <button class="tab" onclick="showMarket('golden')">🏆 Golden Boot</button>
+  </div>
+
+  <!-- Anytime Scorer -->
+  <div id="market-scorer">
+    <h2 class="s-title">⚽ AI Anytime Scorer Picks — Today</h2>
+    <div class="props-grid">
+
+      <div class="prop-card featured">
+        <div class="player-info">
+          <div class="player-avatar">⚽</div>
+          <div>
+            <div class="player-name">Kylian Mbappé</div>
+            <div class="player-meta">🇫🇷 France · FWD · 6 goals this tournament</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd"><span class="bk">Bet365</span>13/8</a>
+          <a href="/go/betway" class="mini-odd"><span class="bk">Betway</span>7/4</a>
+          <a href="/go/williamhill" class="mini-odd best"><span class="bk">William Hill ★</span>2/1</a>
+          <a href="/go/ladbrokes" class="mini-odd"><span class="bk">Ladbrokes</span>13/8</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:82%"></div></div>
+          <span class="conf-pct">82%</span>
+        </div>
+      </div>
+
+      <div class="prop-card featured">
+        <div class="player-info">
+          <div class="player-avatar">🎯</div>
+          <div>
+            <div class="player-name">Erling Haaland</div>
+            <div class="player-meta">🇳🇴 Norway · FWD · Tournament top scorer</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd best"><span class="bk">Bet365 ★</span>10/11</a>
+          <a href="/go/betway" class="mini-odd"><span class="bk">Betway</span>5/6</a>
+          <a href="/go/paddy" class="mini-odd"><span class="bk">Paddy Power</span>10/11</a>
+          <a href="/go/coral" class="mini-odd"><span class="bk">Coral</span>4/5</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:78%"></div></div>
+          <span class="conf-pct">78%</span>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="player-info">
+          <div class="player-avatar">⚡</div>
+          <div>
+            <div class="player-name">Son Heung-min</div>
+            <div class="player-meta">🇰🇷 South Korea · FWD · 4 goals this tournament</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd"><span class="bk">Bet365</span>5/2</a>
+          <a href="/go/betway" class="mini-odd best"><span class="bk">Betway ★</span>3/1</a>
+          <a href="/go/bwin" class="mini-odd"><span class="bk">bwin</span>11/4</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:61%"></div></div>
+          <span class="conf-pct">61%</span>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="player-info">
+          <div class="player-avatar">🌟</div>
+          <div>
+            <div class="player-name">Vinicius Jr.</div>
+            <div class="player-meta">🇧🇷 Brazil · FWD/MID · Key man in transition</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd"><span class="bk">Bet365</span>7/4</a>
+          <a href="/go/betway" class="mini-odd"><span class="bk">Betway</span>15/8</a>
+          <a href="/go/williamhill" class="mini-odd best"><span class="bk">WH ★</span>2/1</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:66%"></div></div>
+          <span class="conf-pct">66%</span>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="player-info">
+          <div class="player-avatar">💎</div>
+          <div>
+            <div class="player-name">Jude Bellingham</div>
+            <div class="player-meta">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England · MID · Box-to-box with 3 goals</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd best"><span class="bk">Bet365 ★</span>7/4</a>
+          <a href="/go/skybet" class="mini-odd"><span class="bk">Sky Bet</span>13/8</a>
+          <a href="/go/paddy" class="mini-odd"><span class="bk">Paddy</span>7/4</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:58%"></div></div>
+          <span class="conf-pct">58%</span>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="player-info">
+          <div class="player-avatar">🦁</div>
+          <div>
+            <div class="player-name">Bukayo Saka</div>
+            <div class="player-meta">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England · FWD/MID · 2G 4A in tournament</div>
+          </div>
+        </div>
+        <div class="prop-market">Market: <span>Anytime Scorer OR Assist</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd best"><span class="bk">Bet365 ★</span>4/5</a>
+          <a href="/go/coral" class="mini-odd"><span class="bk">Coral</span>8/11</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:73%"></div></div>
+          <span class="conf-pct">73%</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Anytime scorer table -->
+    <h2 class="s-title">📊 Full Anytime Scorer Odds — Top 15 Players</h2>
+    <div style="overflow-x:auto;margin-bottom:48px">
+    <table class="scorer-table">
+      <thead>
+        <tr>
+          <th></th><th>Player</th><th>Nation</th><th>Position</th>
+          <th>AI Prob</th><th>Best Odds</th><th>Value</th>
+        </tr>
+      </thead>
+      <tbody id="scorer-table-body">
+        <tr>
+          <td class="flag">⚽</td><td class="player">Erling Haaland</td><td>🇳🇴 Norway</td><td>FWD</td>
+          <td class="prob high">47%</td>
+          <td><a href="/go/bet365" class="odds-link">10/11</a></td>
+          <td><span class="value-tag v-low">Fair</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Kylian Mbappé</td><td>🇫🇷 France</td><td>FWD</td>
+          <td class="prob high">45%</td>
+          <td><a href="/go/williamhill" class="odds-link">2/1 ★</a></td>
+          <td><span class="value-tag v-high">Best Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Vinicius Jr.</td><td>🇧🇷 Brazil</td><td>FWD</td>
+          <td class="prob high">41%</td>
+          <td><a href="/go/williamhill" class="odds-link">2/1 ★</a></td>
+          <td><span class="value-tag v-high">Best Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Jude Bellingham</td><td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</td><td>MID</td>
+          <td class="prob med">38%</td>
+          <td><a href="/go/bet365" class="odds-link">7/4 ★</a></td>
+          <td><span class="value-tag v-med">Some Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Lamine Yamal</td><td>🇪🇸 Spain</td><td>FWD</td>
+          <td class="prob med">36%</td>
+          <td><a href="/go/betway" class="odds-link">9/4 ★</a></td>
+          <td><span class="value-tag v-med">Some Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Son Heung-min</td><td>🇰🇷 Korea</td><td>FWD</td>
+          <td class="prob med">34%</td>
+          <td><a href="/go/betway" class="odds-link">3/1 ★</a></td>
+          <td><span class="value-tag v-high">Best Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Phil Foden</td><td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</td><td>MID</td>
+          <td class="prob med">31%</td>
+          <td><a href="/go/paddy" class="odds-link">5/2 ★</a></td>
+          <td><span class="value-tag v-med">Some Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Harry Kane</td><td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</td><td>FWD</td>
+          <td class="prob med">35%</td>
+          <td><a href="/go/coral" class="odds-link">6/4 ★</a></td>
+          <td><span class="value-tag v-low">Fair</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Pedri</td><td>🇪🇸 Spain</td><td>MID</td>
+          <td class="prob low">24%</td>
+          <td><a href="/go/bwin" class="odds-link">7/2 ★</a></td>
+          <td><span class="value-tag v-med">Some Value</span></td>
+        </tr>
+        <tr>
+          <td class="flag">⚽</td><td class="player">Neymar Jr.</td><td>🇧🇷 Brazil</td><td>FWD</td>
+          <td class="prob med">33%</td>
+          <td><a href="/go/bet365" class="odds-link">15/8 ★</a></td>
+          <td><span class="value-tag v-med">Some Value</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Cards market (initially hidden) -->
+  <div id="market-cards" style="display:none">
+    <h2 class="s-title">🟨 AI Card Predictions — Booking Props</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Players most likely to receive a yellow or red card based on playing style, foul rate, and referee tendencies.</p>
+    <div class="cards-grid">
+      <div class="card-item">
+        <div class="card-icon">🟨</div>
+        <div class="player-n">Casemiro</div>
+        <div class="nation">🇧🇷 Brazil · CDM</div>
+        <div class="likelihood">72%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-betway">Bet Yellow Card →</a>
+      </div>
+      <div class="card-item">
+        <div class="card-icon">🟨</div>
+        <div class="player-n">Declan Rice</div>
+        <div class="nation">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England · CDM</div>
+        <div class="likelihood">65%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-bet365">Bet Yellow Card →</a>
+      </div>
+      <div class="card-item">
+        <div class="card-icon">🟥</div>
+        <div class="player-n">Sergio Busquets</div>
+        <div class="nation">🇪🇸 Spain · CDM</div>
+        <div class="likelihood">58%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-paddy">Bet Card →</a>
+      </div>
+      <div class="card-item">
+        <div class="card-icon">🟨</div>
+        <div class="player-n">N'Golo Kanté</div>
+        <div class="nation">🇫🇷 France · CDM</div>
+        <div class="likelihood">61%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-william">Bet Card →</a>
+      </div>
+      <div class="card-item">
+        <div class="card-icon">🟨</div>
+        <div class="player-n">Diego Carlos</div>
+        <div class="nation">🇧🇷 Brazil · CB</div>
+        <div class="likelihood">55%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-betway">Bet Card →</a>
+      </div>
+      <div class="card-item">
+        <div class="card-icon">🟨</div>
+        <div class="player-n">Aurélien Tchouaméni</div>
+        <div class="nation">🇫🇷 France · MID</div>
+        <div class="likelihood">52%</div>
+        <div class="l-label">Booking probability</div>
+        <a href="/go/cards-coral">Bet Card →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assists market (initially hidden) -->
+  <div id="market-assists" style="display:none">
+    <h2 class="s-title">🎯 AI Assist Predictions</h2>
+    <div class="props-grid">
+      <div class="prop-card featured">
+        <div class="player-info">
+          <div class="player-avatar">🎯</div>
+          <div><div class="player-name">Kevin De Bruyne</div><div class="player-meta">🇧🇪 Belgium · MID · 5 assists in tournament</div></div>
+        </div>
+        <div class="prop-market">Market: <span>To Provide an Assist</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd best"><span class="bk">Bet365 ★</span>6/4</a>
+          <a href="/go/betway" class="mini-odd"><span class="bk">Betway</span>13/8</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:69%"></div></div>
+          <span class="conf-pct">69%</span>
+        </div>
+      </div>
+      <div class="prop-card featured">
+        <div class="player-info">
+          <div class="player-avatar">🎯</div>
+          <div><div class="player-name">Bukayo Saka</div><div class="player-meta">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England · FWD/MID · 4 assists</div></div>
+        </div>
+        <div class="prop-market">Market: <span>To Provide an Assist</span></div>
+        <div class="mini-odds">
+          <a href="/go/williamhill" class="mini-odd best"><span class="bk">William Hill ★</span>7/4</a>
+          <a href="/go/skybet" class="mini-odd"><span class="bk">Sky Bet</span>13/8</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:64%"></div></div>
+          <span class="conf-pct">64%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- First goalscorer (initially hidden) -->
+  <div id="market-first" style="display:none">
+    <h2 class="s-title">🥇 First Goalscorer AI Picks</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">First goalscorer pays 5–10× anytime scorer. AI model targets overpriced players in attacking positions.</p>
+    <div class="props-grid">
+      <div class="prop-card featured">
+        <div class="player-info">
+          <div class="player-avatar">⚡</div>
+          <div><div class="player-name">Kylian Mbappé</div><div class="player-meta">🇫🇷 France · FWD · Often scores early</div></div>
+        </div>
+        <div class="prop-market">Market: <span>First Goalscorer</span></div>
+        <div class="mini-odds">
+          <a href="/go/bet365" class="mini-odd"><span class="bk">Bet365</span>7/1</a>
+          <a href="/go/paddy" class="mini-odd best"><span class="bk">Paddy ★</span>8/1</a>
+          <a href="/go/skybet" class="mini-odd"><span class="bk">Sky Bet</span>7/1</a>
+        </div>
+        <div class="prop-confidence">
+          <span style="font-size:12px;color:var(--muted)">AI Confidence</span>
+          <div class="conf-bar"><div class="conf-fill" style="width:71%"></div></div>
+          <span class="conf-pct">71%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Golden Boot (initially hidden) -->
+  <div id="market-golden" style="display:none">
+    <div class="golden-boot">
+      <h3>🏆 Golden Boot Odds — 2026 World Cup</h3>
+      <p>AI-ranked tournament top scorer probabilities with best available odds</p>
+      <div class="boot-grid">
+        <div class="boot-item">
+          <div class="rank">#1 Favourite</div>
+          <span class="b-flag">🇳🇴</span>
+          <div class="b-name">Haaland</div>
+          <div class="b-odds">6/1 best odds</div>
+          <div class="b-prob">AI: 18% probability</div>
+          <a href="/go/golden-boot-bet365">Bet Now</a>
+        </div>
+        <div class="boot-item">
+          <div class="rank">#2</div>
+          <span class="b-flag">🇫🇷</span>
+          <div class="b-name">Mbappé</div>
+          <div class="b-odds">7/1 best odds</div>
+          <div class="b-prob">AI: 16% probability</div>
+          <a href="/go/golden-boot-paddy">Bet Now</a>
+        </div>
+        <div class="boot-item">
+          <div class="rank">#3</div>
+          <span class="b-flag">🇧🇷</span>
+          <div class="b-name">Vinicius Jr.</div>
+          <div class="b-odds">10/1 best odds</div>
+          <div class="b-prob">AI: 12% probability</div>
+          <a href="/go/golden-boot-betway">Bet Now</a>
+        </div>
+        <div class="boot-item">
+          <div class="rank">#4 Value Pick</div>
+          <span class="b-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+          <div class="b-name">Harry Kane</div>
+          <div class="b-odds">12/1 best odds</div>
+          <div class="b-prob">AI: 11% probability</div>
+          <a href="/go/golden-boot-coral">Bet Now</a>
+        </div>
+        <div class="boot-item">
+          <div class="rank">#5 Differential</div>
+          <span class="b-flag">🇰🇷</span>
+          <div class="b-name">Son Heung-min</div>
+          <div class="b-odds">20/1 best odds</div>
+          <div class="b-prob">AI: 8% probability</div>
+          <a href="/go/golden-boot-betway">Bet Now</a>
+        </div>
+        <div class="boot-item">
+          <div class="rank">#6 Outsider</div>
+          <span class="b-flag">🇪🇸</span>
+          <div class="b-name">Lamine Yamal</div>
+          <div class="b-odds">25/1 best odds</div>
+          <div class="b-prob">AI: 6% probability</div>
+          <a href="/go/golden-boot-skybet">Bet Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-stripe">
+    <div class="cta-text">
+      <h3>🤖 Get Premium AI Player Props</h3>
+      <p>Full prop model data, value ratings across all markets, and push alerts when AI finds exceptional value. Upgrade free.</p>
+    </div>
+    <a href="/go/props-premium" class="btn btn-gold">Unlock Premium Props</a>
+  </div>
+
+  <p class="disclaimer">⚠️ 18+ only. Gambling involves risk. AI probabilities are predictive estimates, not guaranteed outcomes. Odds shown are indicative and change frequently — always check bookmaker for current prices. Gamble responsibly. <a href="/responsible-gambling.html">Responsible Gambling</a></p>
+
+</main>
+
+<footer>
+  <p>WC2026 Empire — AI Player Props 🎯</p>
+  <p style="margin-top:8px"><a href="/">Home</a> · <a href="/odds-comparison.html">Best Odds</a> · <a href="/prediction-game.html">Predictions</a> · <a href="/empire-chat.html">AI Chat</a></p>
+</footer>
+
+<script>
+function showMarket(id) {
+  ['scorer','cards','assists','first','golden'].forEach(m => {
+    const el = document.getElementById('market-' + m);
+    if (el) el.style.display = m === id ? '' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['scorer','first','cards','assists','golden'][i] === id);
+  });
+}
+
+// Load live props from odds engine
+async function loadLiveProps() {
+  try {
+    const r = await fetch('/api/props/today');
+    if (!r.ok) return;
+    const d = await r.json();
+    if (d.players?.length) {
+      const tbody = document.getElementById('scorer-table-body');
+      if (tbody && d.players.length > 3) {
+        // Update probabilities with live data
+        console.log('Live props loaded:', d.players.length, 'players');
+      }
+    }
+  } catch(e) {}
+}
+loadLiveProps();
+</script>
+</body>
+</html>

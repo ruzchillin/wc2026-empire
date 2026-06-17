@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>World Cup 2026 — Global Fan Hub | Every Country, Every Language | WC2026</title>
+<meta name="description" content="The complete global fan hub for WC2026. Find your country's page — local language, local odds, local broadcasters. 50+ nations covered. Your country, your language.">
+<meta property="og:title" content="WC2026 Global Fan Hub — Every Country, Every Language">
+<meta property="og:description" content="Find your country's World Cup 2026 page. Local language, local sportsbooks, local broadcasters. 50+ nations covered.">
+<meta name="theme-color" content="#6366f1">
+<link rel="canonical" href="https://wc2026empire.com/world-hub.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"WC2026 Empire Global Hub","url":"https://wc2026empire.com","description":"World Cup 2026 fan hub in 30+ languages covering 50+ countries"}</script>
+<style>
+:root{--indigo:#6366f1;--cyan:#06b6d4;--green:#10b981;--gold:#f59e0b;--red:#ef4444;--bg:#08080f;--card:#111118;--card2:#16161f;--text:#e8e8f0;--muted:#7777aa;--border:#ffffff0f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif}
+/* HERO */
+.hero{background:radial-gradient(ellipse at 30% 40%,#6366f122 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,#06b6d411 0%,transparent 50%),linear-gradient(180deg,#08080f,#0c0c18);padding:70px 20px 80px;text-align:center}
+.hero-badge{display:inline-block;background:var(--indigo)22;border:1px solid var(--indigo)66;color:#a5b4fc;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:22px}
+.hero h1{font-size:clamp(28px,6vw,68px);font-weight:900;line-height:1.05;margin-bottom:16px}
+.hero h1 .g{background:linear-gradient(135deg,var(--indigo),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);max-width:640px;margin:0 auto 28px}
+.stats-bar{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 20px;text-align:center}
+.stat .n{font-size:24px;font-weight:900;color:var(--indigo)}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+/* SEARCH */
+.search-wrap{max-width:480px;margin:0 auto 24px;position:relative}
+.search-input{width:100%;padding:14px 20px 14px 48px;background:var(--card);border:1px solid var(--border);border-radius:50px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--indigo)66}
+.search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:16px}
+/* REGION TABS */
+main{max-width:1200px;margin:0 auto;padding:40px 20px}
+.region-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.rtab{padding:8px 18px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;color:var(--text)}
+.rtab:hover,.rtab.active{border-color:var(--indigo);background:var(--indigo)22;color:#a5b4fc}
+/* COUNTRY GRID */
+.region-section{margin-bottom:48px}
+.region-title{font-size:18px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px;color:var(--cyan)}
+.region-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.country-card{background:var(--card2);border-radius:14px;padding:18px;border:1px solid var(--border);text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s;display:block}
+.country-card:hover{border-color:var(--indigo)55;transform:translateY(-3px)}
+.country-card.host{border-color:var(--gold)44}
+.country-card.host::before{content:'🏟️ HOST';display:block;font-size:10px;font-weight:900;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
+.cc-flag{font-size:36px;margin-bottom:10px;display:block}
+.cc-name{font-weight:800;font-size:15px;margin-bottom:4px}
+.cc-native{font-size:12px;color:var(--muted);margin-bottom:8px}
+.cc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700}
+.tag-free{background:var(--green)22;color:var(--green);border:1px solid var(--green)33}
+.tag-bet{background:var(--indigo)22;color:#a5b4fc;border:1px solid var(--indigo)33}
+.tag-vpn{background:var(--cyan)22;color:var(--cyan);border:1px solid var(--cyan)33}
+/* QUICK ACCESS */
+.quick-bar{background:var(--card);border-radius:16px;padding:24px;margin-bottom:48px;border:1px solid var(--border)}
+.quick-bar h3{font-size:16px;font-weight:800;margin-bottom:16px;color:var(--gold)}
+.quick-links{display:flex;gap:10px;flex-wrap:wrap}
+.ql{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:1px solid var(--border);text-decoration:none;font-size:13px;font-weight:700;color:var(--text);transition:all .2s;background:var(--card2)}
+.ql:hover{border-color:var(--indigo);background:var(--indigo)22}
+/* LANGUAGE BAR */
+.lang-bar{background:linear-gradient(135deg,var(--indigo)11,var(--cyan)11);border:1px solid var(--indigo)22;border-radius:16px;padding:24px;margin-bottom:48px}
+.lang-bar h3{font-size:16px;font-weight:800;margin-bottom:14px;color:var(--indigo)}
+.langs{display:flex;gap:8px;flex-wrap:wrap}
+.lang{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--text)}
+.lang:hover{border-color:var(--cyan);background:var(--cyan)22}
+footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+footer a{color:var(--indigo);text-decoration:none}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">🌍 GLOBAL FAN HUB</div>
+  <h1>World Cup 2026<br><span class="g">Every Country. Every Language.</span></h1>
+  <p>The world's most complete WC2026 fan hub. Find your country's page — local language, local odds, local broadcaster, local community.</p>
+  <div class="stats-bar">
+    <div class="stat"><div class="n">50+</div><div class="l">Countries</div></div>
+    <div class="stat"><div class="n">30+</div><div class="l">Languages</div></div>
+    <div class="stat"><div class="n">200+</div><div class="l">Betting Markets</div></div>
+    <div class="stat"><div class="n">104</div><div class="l">WC Matches</div></div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" id="countrySearch" placeholder="Search your country..." oninput="filterCountries(this.value)">
+  </div>
+</section>
+
+<main>
+
+  <!-- Quick access to key pages -->
+  <div class="quick-bar">
+    <h3>⚡ Most Popular Pages</h3>
+    <div class="quick-links">
+      <a href="/usa-wc2026.html" class="ql">🇺🇸 USA (Host)</a>
+      <a href="/brazil-wc2026.html" class="ql">🇧🇷 Brasil</a>
+      <a href="/england-wc2026.html" class="ql">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</a>
+      <a href="/germany-wc2026.html" class="ql">🇩🇪 Deutschland</a>
+      <a href="/france-wc2026.html" class="ql">🇫🇷 France</a>
+      <a href="/spain-wc2026.html" class="ql">🇪🇸 España</a>
+      <a href="/argentina-wc2026.html" class="ql">🇦🇷 Argentina</a>
+      <a href="/china-wc2026.html" class="ql">🇨🇳 中国</a>
+      <a href="/india-wc2026-hindi.html" class="ql">🇮🇳 भारत</a>
+      <a href="/japan-wc2026.html" class="ql">🇯🇵 日本</a>
+      <a href="/mexico-hub.html" class="ql">🇲🇽 México (Host)</a>
+      <a href="/nigeria-supereagles.html" class="ql">🇳🇬 Nigeria</a>
+      <a href="/australia-wc2026.html" class="ql">🇦🇺 Australia</a>
+      <a href="/korea-wc2026.html" class="ql">🇰🇷 한국</a>
+    </div>
+  </div>
+
+  <!-- Language quick links -->
+  <div class="lang-bar">
+    <h3>🌐 Browse by Language</h3>
+    <div class="langs">
+      <a href="/usa-wc2026.html" class="lang">🇬🇧 English</a>
+      <a href="/brazil-wc2026.html" class="lang">🇧🇷 Português</a>
+      <a href="/spain-wc2026.html" class="lang">🇪🇸 Español</a>
+      <a href="/france-wc2026.html" class="lang">🇫🇷 Français</a>
+      <a href="/germany-wc2026.html" class="lang">🇩🇪 Deutsch</a>
+      <a href="/china-wc2026.html" class="lang">🇨🇳 中文</a>
+      <a href="/india-wc2026-hindi.html" class="lang">🇮🇳 हिन्दी</a>
+      <a href="/japan-wc2026.html" class="lang">🇯🇵 日本語</a>
+      <a href="/korea-wc2026.html" class="lang">🇰🇷 한국어</a>
+      <a href="/russia-wc2026.html" class="lang">🇷🇺 Русский</a>
+      <a href="/vietnam-wc2026.html" class="lang">🇻🇳 Tiếng Việt</a>
+      <a href="/netherlands-wc2026.html" class="lang">🇳🇱 Nederlands</a>
+      <a href="/turkey-wc2026.html" class="lang">🇹🇷 Türkçe</a>
+      <a href="/saudi-arabia-wc2026.html" class="lang">🇸🇦 العربية</a>
+      <a href="/indonesia-wc2026.html" class="lang">🇮🇩 Bahasa</a>
+      <a href="/malaysia-wc2026.html" class="lang">🇲🇾 Melayu</a>
+      <a href="/senegal-wc2026.html" class="lang">🇸🇳 Wolof/FR</a>
+    </div>
+  </div>
+
+  <!-- Host Nations -->
+  <div class="region-section" id="hosts">
+    <h2 class="region-title">🏟️ Host Nations — USA, Canada, Mexico</h2>
+    <div class="country-grid">
+      <a href="/usa-wc2026.html" class="country-card host"><span class="cc-flag">🇺🇸</span><div class="cc-name">United States</div><div class="cc-native">English</div><div class="cc-tags"><span class="tag tag-free">📺 FOX Free</span><span class="tag tag-bet">🎰 DraftKings</span></div></a>
+      <a href="/canada-wc2026.html" class="country-card host"><span class="cc-flag">🇨🇦</span><div class="cc-name">Canada</div><div class="cc-native">English / Français</div><div class="cc-tags"><span class="tag tag-free">📺 CTV Free</span><span class="tag tag-bet">🎰 Sports Interact</span></div></a>
+      <a href="/mexico-hub.html" class="country-card host"><span class="cc-flag">🇲🇽</span><div class="cc-name">México</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 Televisa</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+    </div>
+  </div>
+
+  <!-- Europe -->
+  <div class="region-section" id="europe">
+    <h2 class="region-title">🌍 Europe</h2>
+    <div class="country-grid" id="europe-grid">
+      <a href="/england-wc2026.html" class="country-card"><span class="cc-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><div class="cc-name">England</div><div class="cc-native">English</div><div class="cc-tags"><span class="tag tag-free">📺 BBC/ITV Free</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/germany-wc2026.html" class="country-card"><span class="cc-flag">🇩🇪</span><div class="cc-name">Deutschland</div><div class="cc-native">Deutsch</div><div class="cc-tags"><span class="tag tag-free">📺 ARD/ZDF Frei</span><span class="tag tag-bet">🎰 Tipico</span></div></a>
+      <a href="/france-wc2026.html" class="country-card"><span class="cc-flag">🇫🇷</span><div class="cc-name">France</div><div class="cc-native">Français</div><div class="cc-tags"><span class="tag tag-free">📺 TF1 Gratuit</span><span class="tag tag-bet">🎰 Winamax</span></div></a>
+      <a href="/spain-wc2026.html" class="country-card"><span class="cc-flag">🇪🇸</span><div class="cc-name">España</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 RTVE Gratis</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/netherlands-wc2026.html" class="country-card"><span class="cc-flag">🇳🇱</span><div class="cc-name">Nederland</div><div class="cc-native">Nederlands</div><div class="cc-tags"><span class="tag tag-free">📺 NOS Gratis</span><span class="tag tag-bet">🎰 Unibet</span></div></a>
+      <a href="/russia-wc2026.html" class="country-card"><span class="cc-flag">🇷🇺</span><div class="cc-name">Россия</div><div class="cc-native">Русский</div><div class="cc-tags"><span class="tag tag-free">📺 Первый канал</span><span class="tag tag-bet">🎰 1xBet</span></div></a>
+      <a href="/turkey-wc2026.html" class="country-card"><span class="cc-flag">🇹🇷</span><div class="cc-name">Türkiye</div><div class="cc-native">Türkçe</div><div class="cc-tags"><span class="tag tag-free">📺 TRT Ücretsiz</span><span class="tag tag-bet">🎰 Bets10</span></div></a>
+      <a href="/portugal-wc2026.html" class="country-card"><span class="cc-flag">🇵🇹</span><div class="cc-name">Portugal</div><div class="cc-native">Português (PT)</div><div class="cc-tags"><span class="tag tag-free">📺 RTP Grátis</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/poland-wc2026.html" class="country-card"><span class="cc-flag">🇵🇱</span><div class="cc-name">Polska</div><div class="cc-native">Polski</div><div class="cc-tags"><span class="tag tag-free">📺 TVP Sport</span><span class="tag tag-bet">🎰 Fortuna</span></div></a>
+      <a href="/ukraine-wc2026.html" class="country-card"><span class="cc-flag">🇺🇦</span><div class="cc-name">Україна</div><div class="cc-native">Українська</div><div class="cc-tags"><span class="tag tag-free">📺 UA:Перший</span><span class="tag tag-bet">🎰 Parimatch</span></div></a>
+    </div>
+  </div>
+
+  <!-- Latin America -->
+  <div class="region-section" id="latam">
+    <h2 class="region-title">🌎 Latin America</h2>
+    <div class="country-grid" id="latam-grid">
+      <a href="/brazil-wc2026.html" class="country-card"><span class="cc-flag">🇧🇷</span><div class="cc-name">Brasil</div><div class="cc-native">Português (BR)</div><div class="cc-tags"><span class="tag tag-free">📺 Globo Grátis</span><span class="tag tag-bet">🎰 Betano</span></div></a>
+      <a href="/argentina-wc2026.html" class="country-card"><span class="cc-flag">🇦🇷</span><div class="cc-name">Argentina</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 TyC Sports</span><span class="tag tag-bet">🎰 Codere</span></div></a>
+      <a href="/colombia-wc2026.html" class="country-card"><span class="cc-flag">🇨🇴</span><div class="cc-name">Colombia</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 Caracol TV</span><span class="tag tag-bet">🎰 Betplay</span></div></a>
+      <a href="/chile-wc2026.html" class="country-card"><span class="cc-flag">🇨🇱</span><div class="cc-name">Chile</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 TVN</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/peru-wc2026.html" class="country-card"><span class="cc-flag">🇵🇪</span><div class="cc-name">Perú</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 ATV</span><span class="tag tag-bet">🎰 Betsson</span></div></a>
+      <a href="/ecuador-wc2026.html" class="country-card"><span class="cc-flag">🇪🇨</span><div class="cc-name">Ecuador</div><div class="cc-native">Español</div><div class="cc-tags"><span class="tag tag-free">📺 Teleamazonas</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+    </div>
+  </div>
+
+  <!-- Africa -->
+  <div class="region-section" id="africa">
+    <h2 class="region-title">🌍 Africa</h2>
+    <div class="country-grid" id="africa-grid">
+      <a href="/nigeria-supereagles.html" class="country-card"><span class="cc-flag">🇳🇬</span><div class="cc-name">Nigeria</div><div class="cc-native">English / Pidgin</div><div class="cc-tags"><span class="tag tag-free">📺 NTA</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/ghana-wc2026.html" class="country-card"><span class="cc-flag">🇬🇭</span><div class="cc-name">Ghana</div><div class="cc-native">English</div><div class="cc-tags"><span class="tag tag-free">📺 GTV Sports</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/morocco-wc2026.html" class="country-card"><span class="cc-flag">🇲🇦</span><div class="cc-name">المغرب</div><div class="cc-native">العربية / Français</div><div class="cc-tags"><span class="tag tag-free">📺 2M Gratuit</span><span class="tag tag-bet">🎰 Bwin</span></div></a>
+      <a href="/senegal-wc2026.html" class="country-card"><span class="cc-flag">🇸🇳</span><div class="cc-name">Sénégal</div><div class="cc-native">Français / Wolof</div><div class="cc-tags"><span class="tag tag-free">📺 RTS</span><span class="tag tag-bet">🎰 Betway Africa</span></div></a>
+      <a href="/egypt-wc2026.html" class="country-card"><span class="cc-flag">🇪🇬</span><div class="cc-name">مصر</div><div class="cc-native">العربية</div><div class="cc-tags"><span class="tag tag-free">📺 الأولى</span><span class="tag tag-bet">🎰 beIN</span></div></a>
+      <a href="/south-africa-wc2026.html" class="country-card"><span class="cc-flag">🇿🇦</span><div class="cc-name">South Africa</div><div class="cc-native">English / Zulu / Xhosa</div><div class="cc-tags"><span class="tag tag-free">📺 SABC Free</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/cameroon-wc2026.html" class="country-card"><span class="cc-flag">🇨🇲</span><div class="cc-name">Cameroun</div><div class="cc-native">Français / English</div><div class="cc-tags"><span class="tag tag-free">📺 CRTV</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/ivory-coast-wc2026.html" class="country-card"><span class="cc-flag">🇨🇮</span><div class="cc-name">Côte d'Ivoire</div><div class="cc-native">Français</div><div class="cc-tags"><span class="tag tag-free">📺 RTI</span><span class="tag tag-bet">🎰 1xBet</span></div></a>
+      <a href="/ethiopia-wc2026.html" class="country-card"><span class="cc-flag">🇪🇹</span><div class="cc-name">ኢትዮጵያ</div><div class="cc-native">አማርኛ</div><div class="cc-tags"><span class="tag tag-free">📺 EBC</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/kenya-wc2026.html" class="country-card"><span class="cc-flag">🇰🇪</span><div class="cc-name">Kenya</div><div class="cc-native">English / Swahili</div><div class="cc-tags"><span class="tag tag-free">📺 KBC</span><span class="tag tag-bet">🎰 SportPesa</span></div></a>
+    </div>
+  </div>
+
+  <!-- Asia & Middle East -->
+  <div class="region-section" id="asia">
+    <h2 class="region-title">🌏 Asia & Middle East</h2>
+    <div class="country-grid" id="asia-grid">
+      <a href="/china-wc2026.html" class="country-card"><span class="cc-flag">🇨🇳</span><div class="cc-name">中国</div><div class="cc-native">中文 (简体)</div><div class="cc-tags"><span class="tag tag-free">📺 CCTV5</span><span class="tag tag-bet">🎰 Merch/JD</span></div></a>
+      <a href="/india-wc2026-hindi.html" class="country-card"><span class="cc-flag">🇮🇳</span><div class="cc-name">भारत</div><div class="cc-native">हिन्दी</div><div class="cc-tags"><span class="tag tag-free">📺 Doordarshan</span><span class="tag tag-bet">🎰 Dream11</span></div></a>
+      <a href="/japan-wc2026.html" class="country-card"><span class="cc-flag">🇯🇵</span><div class="cc-name">日本</div><div class="cc-native">日本語</div><div class="cc-tags"><span class="tag tag-free">📺 NHK 無料</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/korea-wc2026.html" class="country-card"><span class="cc-flag">🇰🇷</span><div class="cc-name">대한민국</div><div class="cc-native">한국어</div><div class="cc-tags"><span class="tag tag-free">📺 KBS 무료</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/indonesia-wc2026.html" class="country-card"><span class="cc-flag">🇮🇩</span><div class="cc-name">Indonesia</div><div class="cc-native">Bahasa Indonesia</div><div class="cc-tags"><span class="tag tag-free">📺 RCTI Gratis</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/vietnam-wc2026.html" class="country-card"><span class="cc-flag">🇻🇳</span><div class="cc-name">Việt Nam</div><div class="cc-native">Tiếng Việt</div><div class="cc-tags"><span class="tag tag-free">📺 VTV Miễn phí</span><span class="tag tag-bet">🎰 W88</span></div></a>
+      <a href="/philippines-wc2026.html" class="country-card"><span class="cc-flag">🇵🇭</span><div class="cc-name">Pilipinas</div><div class="cc-native">Filipino / English</div><div class="cc-tags"><span class="tag tag-free">📺 GMA Free</span><span class="tag tag-bet">🎰 Bet88</span></div></a>
+      <a href="/thailand-wc2026.html" class="country-card"><span class="cc-flag">🇹🇭</span><div class="cc-name">ประเทศไทย</div><div class="cc-native">ภาษาไทย</div><div class="cc-tags"><span class="tag tag-free">📺 ช่อง 3</span><span class="tag tag-bet">🎰 SBOBET</span></div></a>
+      <a href="/malaysia-wc2026.html" class="country-card"><span class="cc-flag">🇲🇾</span><div class="cc-name">Malaysia</div><div class="cc-native">Bahasa Melayu</div><div class="cc-tags"><span class="tag tag-free">📺 RTM</span><span class="tag tag-bet">🎰 Bet365</span></div></a>
+      <a href="/saudi-arabia-wc2026.html" class="country-card"><span class="cc-flag">🇸🇦</span><div class="cc-name">المملكة العربية</div><div class="cc-native">العربية</div><div class="cc-tags"><span class="tag tag-bet">📺 beIN Sports</span><span class="tag tag-vpn">🔒 VPN</span></div></a>
+      <a href="/pakistan-wc2026.html" class="country-card"><span class="cc-flag">🇵🇰</span><div class="cc-name">پاکستان</div><div class="cc-native">اردو</div><div class="cc-tags"><span class="tag tag-free">📺 PTV Sports</span><span class="tag tag-bet">🎰 Betway</span></div></a>
+      <a href="/bangladesh-wc2026.html" class="country-card"><span class="cc-flag">🇧🇩</span><div class="cc-name">বাংলাদেশ</div><div class="cc-native">বাংলা</div><div class="cc-tags"><span class="tag tag-free">📺 BTV</span><span class="tag tag-bet">🎰 1xBet</span></div></a>
+    </div>
+  </div>
+
+  <!-- Oceania & Rest -->
+  <div class="region-section" id="oceania">
+    <h2 class="region-title">🌏 Oceania & Rest of World</h2>
+    <div class="country-grid">
+      <a href="/australia-wc2026.html" class="country-card"><span class="cc-flag">🇦🇺</span><div class="cc-name">Australia</div><div class="cc-native">English</div><div class="cc-tags"><span class="tag tag-free">📺 SBS Free</span><span class="tag tag-bet">🎰 Sportsbet</span></div></a>
+      <a href="/streaming-vpn.html" class="country-card"><span class="cc-flag">🌍</span><div class="cc-name">Everywhere Else</div><div class="cc-native">All Languages</div><div class="cc-tags"><span class="tag tag-vpn">🔒 VPN Guide</span><span class="tag tag-free">📺 Streaming Guide</span></div></a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>🌍 WC2026 Empire — The Global Fan Hub</p>
+  <p style="margin-top:8px"><a href="/">Home</a> · <a href="/odds-comparison.html">Odds</a> · <a href="/streaming-vpn.html">Streaming & VPN</a> · <a href="/prediction-game.html">Predict</a> · <a href="/empire-chat.html">AI Chat</a></p>
+</footer>
+
+<script>
+function filterCountries(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.country-card').forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.region-section').forEach(sec => {
+    const visible = [...sec.querySelectorAll('.country-card')].some(c => c.style.display !== 'none');
+    sec.style.display = visible ? 'block' : 'none';
+  });
+}
+document.querySelectorAll('.rtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.target;
+    if (target === 'all') {
+      document.querySelectorAll('.region-section').forEach(s => s.style.display = 'block');
+    } else {
+      document.querySelectorAll('.region-section').forEach(s => {
+        s.style.display = s.id === target ? 'block' : 'none';
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

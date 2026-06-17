@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Should I Cash Out? — WC 2026 Cash Out Calculator</title>
+<meta name="description" content="xG-powered cash out calculator for WC 2026. Enter your bet and match state — get a data-driven recommendation instantly.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a,#1e3a5f);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border-radius:20px;padding:32px;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+.sub{color:#6b7280;font-size:.88rem;margin-bottom:24px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.group{display:flex;flex-direction:column;gap:4px}
+.group.full{grid-column:1/-1}
+label{font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.04em}
+input,select{padding:10px 13px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;font-family:inherit;width:100%}
+input:focus,select:focus{outline:none;border-color:#3b82f6}
+.btn{width:100%;background:#0f172a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:6px}
+.result{margin-top:20px;border-radius:12px;padding:20px;display:none}
+.r-hold{background:#dcfce7;border:2px solid #86efac}
+.r-cash{background:#fee2e2;border:2px solid #fca5a5}
+.r-maybe{background:#fef3c7;border:2px solid #fcd34d}
+.verdict{font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.verdict.hold{color:#166534}.verdict.cash{color:#991b1b}.verdict.maybe{color:#92400e}
+.reasoning{font-size:.85rem;color:#374151;line-height:1.6;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat{background:rgba(0,0,0,.06);border-radius:7px;padding:8px 12px;text-align:center}
+.stat-lbl{font-size:10px;color:#6b7280;text-transform:uppercase;font-weight:700}
+.stat-val{font-size:1.1rem;font-weight:800;margin-top:2px}
+.aff{display:block;background:#0f172a;color:#fff;padding:11px;border-radius:8px;text-decoration:none;text-align:center;font-size:.83rem;font-weight:700}
+hr{border:none;border-top:1px solid #f0f0f0;margin:20px 0}
+.legal{font-size:.72rem;color:#9ca3af;text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>⚡ Should I Cash Out?</h1>
+  <p class="sub">Enter your bet + match state. Get an xG-based recommendation.</p>
+
+  <div class="row">
+    <div class="group full"><label>Bet description</label><input id="desc" placeholder="e.g. Brazil to win vs Argentina"/></div>
+  </div>
+  <div class="row">
+    <div class="group"><label>Stake (£/$)</label><input type="number" id="stake" placeholder="50"/></div>
+    <div class="group"><label>Original odds</label><input type="number" id="odds" placeholder="2.10" step="0.01"/></div>
+  </div>
+  <div class="row">
+    <div class="group"><label>Cash out offer</label><input type="number" id="offer" placeholder="38.50" step="0.01"/></div>
+    <div class="group"><label>Minute</label><input type="number" id="min" placeholder="67" min="1" max="120"/></div>
+  </div>
+  <div class="row">
+    <div class="group">
+      <label>Match state</label>
+      <select id="state">
+        <option value="win">Winning (your bet)</option>
+        <option value="draw">Currently drawing</option>
+        <option value="lose">Losing (your bet)</option>
+        <option value="et">Extra time</option>
+      </select>
+    </div>
+    <div class="group">
+      <label>Opponent pressure</label>
+      <select id="pressure">
+        <option value="low">Low — your team dominant</option>
+        <option value="med">Medium — competitive</option>
+        <option value="high">High — attacking hard</option>
+        <option value="ext">Extreme — desperate push</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="group">
+      <label>Man advantage</label>
+      <select id="men">
+        <option value="even">11 v 11</option>
+        <option value="up">Your team has extra man</option>
+        <option value="down">Your team down a man</option>
+      </select>
+    </div>
+    <div class="group">
+      <label>Match importance</label>
+      <select id="stage">
+        <option value="group">Group stage</option>
+        <option value="ko">Knockout round</option>
+        <option value="sf">Semi-final / Final</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn" onclick="calc()">Calculate →</button>
+
+  <div id="result" class="result">
+    <div id="verdict" class="verdict"></div>
+    <div id="reasoning" class="reasoning"></div>
+    <div class="stats" id="stats"></div>
+    <a href="https://sportsbook.draftkings.com?sport=soccer" target="_blank" rel="nofollow" class="aff">🎰 Live betting on WC 2026 — DraftKings →</a>
+  </div>
+
+  <hr>
+  <p class="legal">xG probability model based on WC historical data. Not financial advice. 21+ · Gamble responsibly · 1-800-GAMBLER</p>
+</div>
+<script>
+function calc(){
+  const stake=+document.getElementById('stake').value;
+  const odds=+document.getElementById('odds').value;
+  const offer=+document.getElementById('offer').value;
+  const min=+document.getElementById('min').value;
+  const state=document.getElementById('state').value;
+  const pressure=document.getElementById('pressure').value;
+  const men=document.getElementById('men').value;
+  const stage=document.getElementById('stage').value;
+  if(!stake||!odds||!offer||!min){alert('Fill in stake, odds, cash out offer and minute');return;}
+  const potWin=+(stake*odds).toFixed(2);
+  const timeLeft=Math.max(0,90-min);
+  let p=state==='win'?.65:state==='draw'?.38:state==='lose'?.18:0.52;
+  if(timeLeft<10)p+=.13; if(timeLeft<5)p+=.10; if(timeLeft>30)p-=.08;
+  if(pressure==='high')p-=.12; if(pressure==='ext')p-=.22; if(pressure==='low')p+=.09;
+  if(men==='up')p+=.11; if(men==='down')p-=.16;
+  if(stage==='sf')p+=(state==='win'?.05:-.02);
+  p=Math.min(.97,Math.max(.04,p));
+  const ev=+(potWin*p).toFixed(2);
+  const diff=+(ev-offer).toFixed(2);
+  const cashROI=+(((offer-stake)/stake)*100).toFixed(1);
+  let cls,verdict,reason;
+  if(diff>stake*.18&&p>.68){
+    cls='hold';verdict='✅ Let it ride';
+    reason=`Win probability is ~${Math.round(p*100)}%. Expected value holding (£${ev}) comfortably exceeds the cash out offer (£${offer}). You have +£${diff} of EV advantage by staying in. Unless you genuinely need the cash, the numbers say hold.`;
+  } else if(offer>stake*1.4&&(pressure==='ext'||men==='down'||timeLeft>25&&state!=='win')){
+    cls='maybe';verdict='⚠️ Lean toward cashing out';
+    reason=`Locking in a ${cashROI}% profit is solid, and the match situation carries risk. Win probability ~${Math.round(p*100)}%. The EV gap (£${Math.abs(diff)}) is within one big match event of swinging either way. If you're up for the stress, hold. If not, £${offer} is a real return.`;
+  } else if(diff<-stake*.08||p<.42){
+    cls='cash';verdict='🔴 Cash out';
+    reason=`Win probability has dropped to ~${Math.round(p*100)}%. Expected value holding is only £${ev} — below the £${offer} cash out offer. The book is offering you more than your mathematical expected return right now. Take the money.`;
+  } else {
+    cls='maybe';verdict='🟡 Borderline — risk call';
+    reason=`EV holding: £${ev} vs £${offer} cash out. Win probability: ~${Math.round(p*100)}%. It's statistically close. Cash out is the lower-variance play; holding is higher variance but positive EV. Your risk tolerance decides this one.`;
+  }
+  const el=document.getElementById('result');
+  document.getElementById('verdict').textContent=verdict;
+  document.getElementById('verdict').className='verdict '+cls;
+  document.getElementById('reasoning').textContent=reason;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="stat-lbl">Win probability</div><div class="stat-val">${Math.round(p*100)}%</div></div>
+    <div class="stat"><div class="stat-lbl">Expected value</div><div class="stat-val">£${ev}</div></div>
+    <div class="stat"><div class="stat-lbl">Cash out offer</div><div class="stat-val">£${offer}</div></div>
+    <div class="stat"><div class="stat-lbl">Full payout</div><div class="stat-val">£${potWin}</div></div>
+  `;
+  el.className='result r-'+cls; el.style.display='block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Armchair Manager | WC 2026 Tactical Analysis</title>
+<meta name="description" content="Post-match tactical analysis. Pick your team, choose your formation, prove you could do better.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif}
+header{background:#111;border-bottom:2px solid #00cc44;padding:20px;text-align:center}
+header h1{color:#00cc44;font-size:1.8rem;margin-bottom:6px}
+header p{color:#aaa;font-size:0.9rem}
+.tabs{display:flex;background:#111;border-bottom:1px solid #2a2a2a;overflow-x:auto}
+.tab{padding:12px 20px;cursor:pointer;color:#888;border-bottom:2px solid transparent;white-space:nowrap;font-size:0.9rem}
+.tab.active{color:#00cc44;border-bottom-color:#00cc44}
+.panel{display:none;padding:20px;max-width:1000px;margin:0 auto}
+.panel.active{display:block}
+/* Pitch */
+.pitch-container{position:relative;background:#1a2e1a;border:3px solid #2a4a2a;border-radius:12px;overflow:hidden;margin-bottom:16px}
+.pitch-grass{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#1a2e1a 0,#1a2e1a 40px,#1d321d 40px,#1d321d 80px)}
+.pitch-lines{position:absolute;inset:0}
+.pitch-svg{width:100%;height:340px}
+.formation-display{position:relative;height:340px;user-select:none}
+.player-dot{position:absolute;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;cursor:pointer;transform:translate(-50%,-50%);border:2px solid transparent;transition:all .2s;text-align:center;flex-direction:column}
+.player-dot:hover{transform:translate(-50%,-50%) scale(1.15);z-index:10}
+.player-dot .num{font-size:0.85rem;font-weight:700}
+.player-dot .name{font-size:0.55rem;line-height:1}
+.team-a .player-dot{background:#0a2a6a;border-color:#4499ff;color:#fff}
+.team-b .player-dot{background:#6a0a0a;border-color:#ff4444;color:#fff}
+/* Controls */
+.controls-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.control-group label{font-size:0.8rem;color:#888;margin-bottom:5px;display:block}
+.control-group select,.control-group input{background:#161616;border:1px solid #2a2a2a;border-radius:6px;padding:9px 12px;color:#e5e5e5;width:100%;font-size:0.9rem;outline:none}
+.control-group select:focus,.control-group input:focus{border-color:#00cc44}
+.analyze-btn{background:#00cc44;color:#000;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer;border:none;font-size:1rem;width:100%;margin-top:10px}
+/* Analysis */
+.analysis-card{background:#161616;border:1px solid #2a2a2a;border-radius:10px;padding:18px;margin-bottom:14px}
+.analysis-card h4{color:#00cc44;margin-bottom:8px}
+.analysis-card p{color:#ccc;font-size:0.9rem;line-height:1.6}
+.rating-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a1a1a}
+.rating-row:last-child{border-bottom:none}
+.rating-label{font-size:0.85rem;color:#ccc}
+.rating-bar{flex:1;background:#1a1a1a;border-radius:4px;height:6px;margin:0 12px;overflow:hidden}
+.rating-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#ff4444,#ffd700,#00cc44);transition:width .6s}
+.rating-num{font-size:0.85rem;font-weight:700;min-width:30px;text-align:right}
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}
+.player-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px;text-align:center}
+.player-card .pc-name{font-size:0.85rem;font-weight:600;margin-bottom:4px}
+.player-card .pc-rating{font-size:1.2rem;font-weight:700;color:#ffd700}
+.player-card .pc-pos{font-size:0.7rem;color:#888}
+.share-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.share-btn{padding:8px 16px;border-radius:6px;cursor:pointer;font-size:0.85rem;font-weight:600;border:none}
+.share-twitter{background:#1da1f2;color:#fff}
+.share-whatsapp{background:#25d366;color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🪑 Armchair Manager</h1>
+  <p>Pick your formation, rate the manager's decisions, prove you know better</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPanel('lineup')">⚽ Lineup Builder</div>
+  <div class="tab" onclick="showPanel('analysis')">📊 AI Analysis</div>
+  <div class="tab" onclick="showPanel('rate')">⭐ Rate Decisions</div>
+</div>
+
+<!-- LINEUP PANEL -->
+<div class="panel active" id="panel-lineup">
+  <div class="controls-grid">
+    <div class="control-group">
+      <label>Select Team</label>
+      <select id="teamSelect" onchange="loadTeam()">
+        <option value="brazil">🇧🇷 Brazil</option>
+        <option value="england">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</option>
+        <option value="france">🇫🇷 France</option>
+        <option value="argentina">🇦🇷 Argentina</option>
+        <option value="spain">🇪🇸 Spain</option>
+        <option value="germany">🇩🇪 Germany</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Formation</label>
+      <select id="formationSelect" onchange="renderPitch()">
+        <option value="433">4-3-3</option>
+        <option value="442">4-4-2</option>
+        <option value="352">3-5-2</option>
+        <option value="4231">4-2-3-1</option>
+        <option value="532">5-3-2</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="pitch-container">
+    <div class="pitch-grass"></div>
+    <svg class="pitch-svg" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
+      <rect x="5" y="5" width="390" height="330" fill="none" stroke="#2a4a2a" stroke-width="2"/>
+      <line x1="5" y1="170" x2="395" y2="170" stroke="#2a4a2a" stroke-width="1.5"/>
+      <circle cx="200" cy="170" r="40" fill="none" stroke="#2a4a2a" stroke-width="1.5"/>
+      <circle cx="200" cy="170" r="2" fill="#2a4a2a"/>
+      <rect x="135" y="5" width="130" height="55" fill="none" stroke="#2a4a2a" stroke-width="1.5"/>
+      <rect x="135" y="280" width="130" height="55" fill="none" stroke="#2a4a2a" stroke-width="1.5"/>
+      <rect x="165" y="5" width="70" height="22" fill="none" stroke="#2a4a2a" stroke-width="1.5"/>
+      <rect x="165" y="313" width="70" height="22" fill="none" stroke="#2a4a2a" stroke-width="1.5"/>
+    </svg>
+    <div class="formation-display team-a" id="pitchDisplay"></div>
+  </div>
+
+  <button class="analyze-btn" onclick="runAnalysis()">📊 Analyse This Lineup</button>
+</div>
+
+<!-- ANALYSIS PANEL -->
+<div class="panel" id="panel-analysis">
+  <div id="analysisContent">
+    <p style="color:#888;text-align:center;padding:40px">Build a lineup first, then click "Analyse" to get AI tactical breakdown.</p>
+  </div>
+</div>
+
+<!-- RATE DECISIONS PANEL -->
+<div class="panel" id="panel-rate">
+  <h3 style="color:#00cc44;margin-bottom:16px">Rate Manager Decisions</h3>
+  <div id="decisionList"></div>
+</div>
+
+<script>
+const TEAMS = {
+  brazil: {
+    name:'Brazil', flag:'🇧🇷', color:'#009c3b',
+    players: ['Alisson','Danilo','Militão','Marquinhos','Wendell','Bruno G.','Casemiro','Paquetá','Rodrygo','Vinicius Jr','Endrick'],
+    formation:'433', manager:'Dorival Jr', style:'High-press, quick transitions, wing play'
+  },
+  england: {
+    name:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', color:'#003090',
+    players: ['Pickford','Alexander-Arnold','Stones','Maguire','Trippier','Bellingham','Rice','Gallagher','Saka','Kane','Foden'],
+    formation:'4231', manager:'Gareth Southgate', style:'Pragmatic, defensive solidity, set pieces'
+  },
+  france: {
+    name:'France', flag:'🇫🇷', color:'#002395',
+    players: ['Maignan','Koundé','Upamecano','Saliba','T.Hernandez','Tchouaméni','Camavinga','Griezmann','Dembelé','Mbappé','Thuram'],
+    formation:'433', manager:'Deschamps', style:'Counter-attack, individual brilliance, depth'
+  },
+  argentina: {
+    name:'Argentina', flag:'🇦🇷', color:'#74acdf',
+    players: ['E.Martínez','Molina','Romero','Otamendi','Tagliafico','De Paul','Enzo','Mac Allister','Di María','Messi','Álvarez'],
+    formation:'433', manager:'Scaloni', style:'Possession, Messi freedom, press recovery'
+  },
+  spain: {
+    name:'Spain', flag:'🇪🇸', color:'#aa151b',
+    players: ['Unai Simón','Carvajal','Le Normand','Laporte','Cucurella','Pedri','Fabián','Busquets','Yamal','Morata','Williams'],
+    formation:'433', manager:'de la Fuente', style:'Tiki-taka evolved, positional play, press'
+  },
+  germany: {
+    name:'Germany', flag:'🇩🇪', color:'#000000',
+    players: ['Neuer','Kimmich','Rüdiger','Schlotterbeck','Raum','Kroos','Gündogan','Musiala','Gnabry','Havertz','Wirtz'],
+    formation:'4231', manager:'Nagelsmann', style:'High press, vertical, gegenpressing'
+  },
+};
+
+const FORMATIONS = {
+  '433':  [[200,310],[80,250],[160,250],[240,250],[320,250],[120,175],[200,165],[280,175],[80,90],[200,75],[320,90]],
+  '442':  [[200,310],[80,250],[160,250],[240,250],[320,250],[80,175],[180,175],[220,175],[320,175],[140,80],[260,80]],
+  '352':  [[200,310],[100,260],[200,255],[300,260],[80,180],[160,175],[240,175],[320,180],[100,90],[200,75],[300,90]],
+  '4231': [[200,310],[80,250],[160,250],[240,250],[320,250],[150,185],[250,185],[80,120],[200,110],[320,120],[200,60]],
+  '532':  [[200,310],[60,250],[140,255],[200,250],[260,255],[340,250],[120,170],[200,165],[280,170],[150,80],[250,80]],
+};
+
+let currentTeam = 'brazil';
+
+function loadTeam() {
+  currentTeam = document.getElementById('teamSelect').value;
+  const team = TEAMS[currentTeam];
+  document.getElementById('formationSelect').value = team.formation;
+  renderPitch();
+}
+
+function renderPitch() {
+  const formation = document.getElementById('formationSelect').value;
+  const positions = FORMATIONS[formation] || FORMATIONS['433'];
+  const team = TEAMS[currentTeam];
+  const display = document.getElementById('pitchDisplay');
+
+  const containerH = display.offsetHeight || 340;
+  const containerW = display.offsetWidth || 400;
+
+  display.innerHTML = positions.map((pos, i) => {
+    const player = team.players[i] || `P${i+1}`;
+    const xPct = (pos[0] / 400) * 100;
+    const yPct = (pos[1] / 340) * 100;
+    return `<div class="player-dot" style="left:${xPct}%;top:${yPct}%;background:#0a2a6a;border-color:#4499ff">
+      <div class="num">${i+1}</div>
+      <div class="name">${player.split(' ').pop()}</div>
+    </div>`;
+  }).join('');
+}
+
+async function runAnalysis() {
+  const team = TEAMS[currentTeam];
+  const formation = document.getElementById('formationSelect').value;
+  showPanel('analysis');
+
+  document.getElementById('analysisContent').innerHTML = '<p style="color:#00cc44;text-align:center;padding:30px">Analysing tactical setup...</p>';
+  await new Promise(r => setTimeout(r, 1200));
+
+  const ratings = [
+    {label:'Defensive Shape', val: Math.floor(Math.random()*20)+65},
+    {label:'Pressing Intensity', val: Math.floor(Math.random()*20)+60},
+    {label:'Build-up Play', val: Math.floor(Math.random()*25)+60},
+    {label:'Set Piece Threat', val: Math.floor(Math.random()*30)+55},
+    {label:'Transition Speed', val: Math.floor(Math.random()*20)+65},
+    {label:'Width Utilisation', val: Math.floor(Math.random()*25)+55},
+  ];
+
+  const playerRatings = team.players.map((p,i) => ({
+    name: p,
+    pos: ['GK','RB','CB','CB','LB','CM','CM','CM','RW','ST','LW'][i] || 'MF',
+    rating: (Math.random()*2+6.5).toFixed(1),
+  }));
+
+  const analysis = getAnalysisText(team, formation);
+
+  document.getElementById('analysisContent').innerHTML = `
+    <div class="analysis-card">
+      <h4>${team.flag} ${team.name} — ${formation} Analysis</h4>
+      <p>${analysis}</p>
+    </div>
+    <div class="analysis-card">
+      <h4>Tactical Ratings</h4>
+      ${ratings.map(r => `<div class="rating-row">
+        <span class="rating-label">${r.label}</span>
+        <div class="rating-bar"><div class="rating-fill" style="width:${r.val}%"></div></div>
+        <span class="rating-num">${r.val}</span>
+      </div>`).join('')}
+    </div>
+    <div class="analysis-card">
+      <h4>Player Ratings</h4>
+      <div class="player-grid">
+        ${playerRatings.map(p => `<div class="player-card">
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-rating">${p.rating}</div>
+          <div class="pc-pos">${p.pos}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="share-row">
+      <button class="share-btn share-twitter" onclick="shareAnalysis()">Share Analysis</button>
+      <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">WhatsApp</button>
+    </div>`;
+
+  renderDecisions(team);
+}
+
+function getAnalysisText(team, formation) {
+  const texts = {
+    '433': `The 4-3-3 gives ${team.name} width and press triggers through the front three. The midfield triangle needs to be compact defensively — ${team.players[5]} must track back when possession is lost. ${team.manager}'s ${team.style} philosophy suits this shape well, though transitions can leave the fullbacks exposed on the counter.`,
+    '442': `A classic 4-4-2 brings defensive solidity but demands high energy from wide midfielders. ${team.name}'s strength is in the forwards' partnership — the wide midfielders must provide defensive cover while still contributing in attack. ${team.manager} typically prefers this when protecting a lead.`,
+    '4231': `The 4-2-3-1 is a hybrid that protects with two holding midfielders while allowing the attacking three licence to roam. ${team.players[9]}'s movement in behind is key. The double pivot needs to dominate the centre — if they're bypassed, the back four face a 3v4 situation.`,
+    '352': `Three at the back demands high-quality wing-backs and a dominant midfield three. ${team.name}'s fullbacks become engine-room figures in this system. The central three defenders need aerial dominance. ${team.manager}'s use of this is bold — it's high-reward, high-risk.`,
+    '532': `This is a defensive-minded shape designed to absorb pressure and hit on the break. Five defenders gives solidity but the two strikers can be isolated. ${team.name} would need ${team.players[9]} and ${team.players[10]} to press intelligently to regain possession quickly.`,
+  };
+  return texts[formation] || texts['433'];
+}
+
+function renderDecisions(team) {
+  const decisions = [
+    {q:`${team.manager} started ${team.players[6]} despite carrying an injury`, opts:['Correct — key player', 'Should have rested him', 'Too risky, needed cover']},
+    {q:`${team.name} used a high defensive line all game`, opts:['Brilliant, dominated space', 'Cost them on the counter', 'Depends on opponent']},
+    {q:`Substitution: ${team.players[10]} replaced at 65 mins`, opts:['Good tactical call', 'Too early, still dangerous', 'Should\'ve been sooner']},
+  ];
+
+  document.getElementById('decisionList').innerHTML = decisions.map((d,i) => `
+    <div class="analysis-card">
+      <h4>Decision ${i+1}</h4>
+      <p style="margin-bottom:12px">${d.q}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${d.opts.map(o => `<button onclick="voteDecision(this,'${i}')" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#ccc;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:0.85rem;transition:all .2s" onmouseover="this.style.borderColor='#00cc44'" onmouseout="if(!this.classList.contains('voted'))this.style.borderColor='#2a2a2a'">${o}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function voteDecision(btn, idx) {
+  const parent = btn.closest('.analysis-card').querySelectorAll('button');
+  parent.forEach(b => { b.style.borderColor='#2a2a2a'; b.style.background='#1a1a1a'; b.style.color='#ccc'; });
+  btn.style.borderColor = '#00cc44';
+  btn.style.background = '#003300';
+  btn.style.color = '#00cc44';
+}
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if (event) event.target.classList.add('active');
+}
+
+function shareAnalysis() {
+  const team = TEAMS[currentTeam];
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I just analysed ${team.flag} ${team.name}'s tactics on the WC 2026 Armchair Manager — what do you think? wc2026ai.com/armchair`)}`;
+  window.open(url,'_blank');
+}
+
+function shareWhatsApp() {
+  const team = TEAMS[currentTeam];
+  window.open(`https://wa.me/?text=${encodeURIComponent(`Check out my ${team.flag} ${team.name} tactical analysis: wc2026ai.com/armchair`)}`, '_blank');
+}
+
+// Init
+loadTeam();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

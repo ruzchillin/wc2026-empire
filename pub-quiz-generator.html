@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free WC 2026 Pub Quiz Generator — AI-Powered Football Questions | Print Ready</title>
+<meta name="description" content="Generate a free World Cup 2026 pub quiz in 10 seconds. AI-powered, print-ready, 10–50 questions. Perfect for pubs, offices, and WC watch parties.">
+<style>
+:root {
+  --bg: #07090c; --card: #0d1117; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+  --green: #22c55e; --blue: #3b82f6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+
+.header { padding: 36px 20px 20px; text-align: center; }
+.header h1 { font-size: clamp(22px, 5vw, 40px); font-weight: 800; }
+.header p { color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+.container { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+
+.gen-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+.gen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.field-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 7px; display: block; text-transform: uppercase; letter-spacing: 0.06em; }
+.field-select, .field-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; padding: 10px 12px; font-size: 14px; outline: none;
+}
+.field-select:focus, .field-input:focus { border-color: var(--gold); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tag { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); transition: all 0.15s; }
+.tag:hover, .tag.active { background: rgba(245,158,11,0.15); border-color: var(--gold); color: var(--gold); }
+.gen-btn { width: 100%; background: var(--gold); color: #000; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 800; cursor: pointer; }
+.gen-btn:hover { opacity: 0.9; }
+
+/* QUIZ OUTPUT */
+.quiz-output { display: none; }
+.quiz-output.show { display: block; }
+.qo-header { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 10px; }
+.qo-title { font-size: 18px; font-weight: 800; }
+.qo-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.action-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text); }
+.action-btn.primary { background: var(--gold); color: #000; border-color: var(--gold); }
+
+.round { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 10px; }
+.round-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.question { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.question:last-child { border: none; }
+.q-num { font-size: 12px; font-weight: 700; color: var(--muted); }
+.q-text { font-size: 14px; font-weight: 600; margin-top: 4px; line-height: 1.5; }
+.q-answer { font-size: 13px; color: var(--green); margin-top: 4px; display: none; }
+.q-answer.show { display: block; }
+.q-toggle { font-size: 11px; color: var(--muted); cursor: pointer; margin-top: 4px; }
+.q-toggle:hover { color: var(--gold); }
+
+.email-gate { background: var(--card); border: 1px solid rgba(245,158,11,0.3); border-radius: 14px; padding: 24px; margin-top: 20px; text-align: center; }
+.eg-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+.eg-sub { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+
+/* UPSELL */
+.upsell { background: linear-gradient(135deg, #0d1117, #1a1030); border: 1px solid rgba(245,158,11,0.25); border-radius: 14px; padding: 22px; margin-top: 16px; }
+.us-badge { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.us-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.us-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+.us-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.us-feat { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.us-cta { display: block; text-align: center; background: var(--gold); color: #000; font-weight: 800; font-size: 14px; padding: 12px; border-radius: 10px; text-decoration: none; }
+
+@media print {
+  .header, .gen-card, .action-btns, .email-gate, .upsell, .rg-bar { display: none !important; }
+  .quiz-output { display: block !important; }
+  body { background: white; color: black; }
+  .round { background: white; border: 1px solid #ccc; break-inside: avoid; }
+  .q-answer { display: block !important; }
+}
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🍺 WC 2026 Pub Quiz Generator</h1>
+  <p>AI-powered. Print-ready. Free. Generate a custom World Cup quiz for your pub, office, or watch party in 10 seconds.</p>
+</div>
+
+<div class="container">
+
+<div class="gen-card">
+  <div class="gen-grid">
+    <div>
+      <label class="field-label">Number of questions</label>
+      <select class="field-select" id="qCount">
+        <option value="10">10 questions (quick round)</option>
+        <option value="20" selected>20 questions (standard)</option>
+        <option value="30">30 questions (full evening)</option>
+        <option value="50">50 questions (mega quiz)</option>
+      </select>
+    </div>
+    <div>
+      <label class="field-label">Difficulty</label>
+      <select class="field-select" id="qDiff">
+        <option value="easy">🟢 Easy (casual fans)</option>
+        <option value="mixed" selected>🟡 Mixed (most pubs)</option>
+        <option value="hard">🔴 Hard (football nerds)</option>
+      </select>
+    </div>
+    <div>
+      <label class="field-label">Format</label>
+      <select class="field-select" id="qFormat">
+        <option value="rounds" selected>Rounds (History, Flags, Records...)</option>
+        <option value="rapid">Rapid fire — no rounds</option>
+        <option value="picture">Picture round included</option>
+      </select>
+    </div>
+  </div>
+  <div style="margin-bottom:16px">
+    <label class="field-label">Topics to include</label>
+    <div class="tags" id="topicTags">
+      <div class="tag active" data-topic="history">📖 WC History</div>
+      <div class="tag active" data-topic="2026">🏆 WC 2026</div>
+      <div class="tag active" data-topic="records">📊 Records</div>
+      <div class="tag active" data-topic="flags">🏳️ Flags & Countries</div>
+      <div class="tag" data-topic="players">⭐ Star Players</div>
+      <div class="tag" data-topic="stadiums">🏟️ Stadiums & Host Cities</div>
+      <div class="tag" data-topic="scorers">⚽ Top Scorers</div>
+      <div class="tag" data-topic="upsets">⚡ Upsets & Shocks</div>
+    </div>
+  </div>
+  <div style="margin-bottom:16px">
+    <label class="field-label">Your pub / event name (optional)</label>
+    <input type="text" class="field-input" id="pubName" placeholder="e.g. The Crown & Anchor WC Night">
+  </div>
+  <button class="gen-btn" onclick="generateQuiz()">⚽ Generate My Quiz Now →</button>
+</div>
+
+<!-- QUIZ OUTPUT -->
+<div class="quiz-output" id="quizOutput">
+
+  <div class="qo-header">
+    <div>
+      <div class="qo-title" id="quizTitle">🏆 WC 2026 Pub Quiz</div>
+      <div class="qo-sub" id="quizSub">20 questions · Mixed difficulty</div>
+    </div>
+    <div class="action-btns">
+      <button class="action-btn" onclick="toggleAnswers()">👁️ Toggle answers</button>
+      <button class="action-btn primary" onclick="window.print()">🖨️ Print quiz</button>
+      <button class="action-btn" onclick="generateQuiz()">🔄 New quiz</button>
+    </div>
+  </div>
+
+  <div id="quizRounds"></div>
+
+  <div class="email-gate">
+    <div class="eg-title">📧 Want 50+ more questions?</div>
+    <div class="eg-sub">Subscribe free for the full 200-question WC 2026 quiz bank — updated after every match. New weekly rounds every Monday.</div>
+    <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+  </div>
+
+  <div class="upsell">
+    <div class="us-badge">🍺 For Pubs & Bars</div>
+    <div class="us-title">Run WC quiz nights all tournament — on autopilot</div>
+    <div class="us-body">
+      This generator produces one quiz. Our Bar Intelligence system gives you a fresh, fully unique quiz for every match week — with live match scores on the night, and crowd-driven bonus rounds that react to goals as they happen.
+    </div>
+    <div class="us-features">
+      <div class="us-feat">📱 QR code on tables — guests answer on phones</div>
+      <div class="us-feat">⚽ Goal alerts: live question interrupts mid-round</div>
+      <div class="us-feat">📊 Leaderboard on your big screen</div>
+      <div class="us-feat">📧 Auto-collect guest emails every quiz night</div>
+      <div class="us-feat">🔄 New quiz generated for every WC match week</div>
+      <div class="us-feat">💰 Win-Share pricing: free until you make money</div>
+    </div>
+    <a href="/win-share.html" class="us-cta">Learn more — Bar Intelligence for WC 2026 →</a>
+  </div>
+
+</div><!-- end quizOutput -->
+</div>
+
+<div class="rg-bar">Free to use · No account required · AI-generated questions · <a href="/command-center.html" style="color:var(--gold);text-decoration:none">WC 2026 AI picks →</a></div>
+
+<script>
+// Tag toggle
+document.querySelectorAll('.tag').forEach(t => {
+  t.addEventListener('click', () => t.classList.toggle('active'));
+});
+
+let answersVisible = false;
+function toggleAnswers() {
+  answersVisible = !answersVisible;
+  document.querySelectorAll('.q-answer').forEach(a => a.classList.toggle('show', answersVisible));
+}
+
+// ============================================================
+// QUESTION BANK — 80+ questions across categories
+// In production, world-engine.js generates these via Groq API
+// ============================================================
+const QB = {
+  history: [
+    {q:"Which country has won the most World Cups?", a:"Brazil (5)", d:"easy"},
+    {q:"In what year was the first FIFA World Cup held?", a:"1930 (Uruguay)", d:"easy"},
+    {q:"Which nation hosted the 2022 World Cup?", a:"Qatar", d:"easy"},
+    {q:"Who scored in the 2022 World Cup final for France — twice in two minutes?", a:"Kylian Mbappé", d:"easy"},
+    {q:"Which European team won the 2010 World Cup?", a:"Spain", d:"easy"},
+    {q:"What is the record for most goals scored in a single World Cup match?", a:"12 — Austria 7-5 Switzerland (1954)", d:"hard"},
+    {q:"Which player holds the record for most World Cup goals across all tournaments?", a:"Miroslav Klose — 16 goals", d:"mixed"},
+    {q:"England's only World Cup win came in which year and where?", a:"1966, Wembley Stadium, London", d:"easy"},
+    {q:"What was the final score of the infamous Brazil vs Germany 2014 semi-final?", a:"Brazil 1-7 Germany (the Mineirazo)", d:"mixed"},
+    {q:"Which goalkeeper saved the most penalties at a single World Cup? (Hint: 2022)", a:"Yassine Bounou (Bono) — Morocco", d:"hard"},
+    {q:"How many times has Germany appeared in a World Cup final?", a:"8 times (record)", d:"hard"},
+    {q:"Who scored the 'Goal of the Century' at Mexico 1986?", a:"Diego Maradona vs England", d:"easy"},
+    {q:"Which African nation reached the semi-finals in 2022?", a:"Morocco", d:"easy"},
+    {q:"What year did France first win the World Cup?", a:"1998, on home soil", d:"easy"},
+    {q:"The 'Hand of God' goal was scored by Maradona against which team?", a:"England — quarter-final, Mexico 1986", d:"easy"},
+  ],
+  records: [
+    {q:"Who is the all-time top scorer in World Cup history?", a:"Miroslav Klose (Germany) — 16 goals", d:"mixed"},
+    {q:"Which team holds the record for the biggest World Cup win?", a:"Hungary 10-1 El Salvador (1982)", d:"hard"},
+    {q:"What is the fastest goal ever scored at a World Cup?", a:"Hakan Şükür (Turkey) vs South Korea — 11 seconds (2002)", d:"hard"},
+    {q:"Which player has appeared at the most World Cups?", a:"Antonio Carbajal and Lothar Matthäus — 5 tournaments", d:"hard"},
+    {q:"How many teams compete in WC 2026?", a:"48 teams", d:"easy"},
+    {q:"How many total matches are played at WC 2026?", a:"104 matches", d:"mixed"},
+    {q:"Which tournament featured the most goals ever in WC history?", a:"1998 France World Cup — 171 goals", d:"hard"},
+    {q:"Which player won the Golden Ball at the 2022 WC despite being on the losing team?", a:"Lionel Messi (Argentina won, but joke — he actually WON with Argentina)", d:"mixed"},
+  ],
+  flags: [
+    {q:"Which WC 2026 nation has a maple leaf on its flag?", a:"Canada (co-host)", d:"easy"},
+    {q:"The 'Stars and Stripes' belongs to which WC 2026 co-host?", a:"United States", d:"easy"},
+    {q:"Which South American nation has a sun on its flag?", a:"Argentina (and Uruguay)", d:"mixed"},
+    {q:"Brazil's flag features a globe — how many stars does it have?", a:"27 stars (representing states + federal district)", d:"hard"},
+    {q:"Which African nation's flag has a horizontal green-white-green design?", a:"Nigeria", d:"mixed"},
+    {q:"Portugal's flag features a yellow armillary sphere — what does it represent?", a:"Portugal's Age of Discovery / maritime history", d:"hard"},
+    {q:"Which team plays in all-white? (Hint: they've won 4 World Cups)", a:"Germany", d:"easy"},
+    {q:"Morocco's team shirts are what colour?", a:"Red", d:"easy"},
+  ],
+  players: [
+    {q:"Which England captain is playing in his third World Cup at WC 2026?", a:"Harry Kane", d:"easy"},
+    {q:"Vinicius Jr plays club football for which team?", a:"Real Madrid", d:"easy"},
+    {q:"Which Portuguese player is considered the greatest of his generation?", a:"Cristiano Ronaldo", d:"easy"},
+    {q:"Jude Bellingham plays his club football in which country?", a:"Spain (Real Madrid)", d:"mixed"},
+    {q:"Which Nigerian striker scored the most WC 2026 qualifying goals for Africa?", a:"Victor Osimhen", d:"mixed"},
+    {q:"Who is France's captain for WC 2026?", a:"Kylian Mbappé", d:"easy"},
+    {q:"Which German midfielder won the Bundesliga Young Player of the Year multiple times before his 20th birthday?", a:"Florian Wirtz", d:"hard"},
+    {q:"Bukayo Saka plays for which Premier League club?", a:"Arsenal", d:"easy"},
+  ],
+  stadiums: [
+    {q:"Which three countries co-host WC 2026?", a:"USA, Canada, Mexico", d:"easy"},
+    {q:"How many games does the USA host at WC 2026?", a:"60 of the 104 games", d:"mixed"},
+    {q:"Which New York area stadium hosts WC 2026 games?", a:"MetLife Stadium (East Rutherford, NJ)", d:"mixed"},
+    {q:"The WC 2026 final is held in which city?", a:"New York / New Jersey (MetLife Stadium)", d:"mixed"},
+    {q:"How many host cities are there in WC 2026 total?", a:"16 cities (11 USA, 3 Mexico, 2 Canada)", d:"hard"},
+    {q:"Which Mexican city hosts WC 2026 matches and hosted the 1970 and 1986 finals?", a:"Mexico City (Estadio Azteca)", d:"mixed"},
+    {q:"Dallas and Houston are host cities in which US state?", a:"Texas", d:"easy"},
+  ],
+  '2026': [
+    {q:"When did the WC 2026 group stage kick off?", a:"June 2026", d:"easy"},
+    {q:"How many teams qualify from each group in WC 2026?", a:"3 from each of 12 groups (top 2 + 8 best third-place teams)", d:"hard"},
+    {q:"Which nation makes their first World Cup appearance since 1938 at WC 2026?", a:"Indonesia", d:"hard"},
+    {q:"WC 2026 is the first to feature how many teams?", a:"48 teams", d:"easy"},
+    {q:"Which format change means WC 2026 has a Round of 32 for the first time?", a:"Expansion to 48 teams adds the Round of 32", d:"mixed"},
+    {q:"WC 2026 coincides with the 100th anniversary of which tournament?", a:"FIFA World Cup (first held in 1930 — this is the centennial edition)", d:"mixed"},
+  ],
+  upsets: [
+    {q:"Which Asian team beat Germany in the 2022 World Cup group stage?", a:"Japan (1-0)", d:"mixed"},
+    {q:"South Korea famously eliminated which two European giants in 2002?", a:"Spain and Italy", d:"hard"},
+    {q:"Which North American team reached the semi-finals at USA 1994?", a:"Bulgaria — no wait, correct answer: USA reached QF, Bulgaria reached SF by eliminating Germany", d:"hard"},
+    {q:"Saudi Arabia beat Argentina in the 2022 group stage. What was the score?", a:"2-1 to Saudi Arabia", d:"easy"},
+    {q:"Which sub-Saharan African team first reached a WC quarter-final in 1990?", a:"Cameroon (the Indomitable Lions)", d:"mixed"},
+  ],
+  scorers: [
+    {q:"Who was the top scorer at the 2022 World Cup?", a:"Kylian Mbappé — 8 goals", d:"easy"},
+    {q:"Which player scored a hat-trick in the 2022 World Cup final?", a:"Kylian Mbappé", d:"easy"},
+    {q:"Ronaldo holds the record for goals in European Championships — how many WC goals does he have?", a:"8 World Cup goals (in 5 tournaments)", d:"hard"},
+    {q:"Who is the only player to score in 4 different World Cups?", a:"Miroslav Klose (2002, 2006, 2010, 2014)", d:"hard"},
+    {q:"Which Argentine scored Argentina's opening goal in the 2022 WC final?", a:"Ángel Di María", d:"mixed"},
+    {q:"How many goals did Gary Lineker score at the 1986 World Cup?", a:"6 goals (Golden Boot)", d:"mixed"},
+  ]
+};
+
+function generateQuiz() {
+  const count = parseInt(document.getElementById('qCount').value);
+  const diff = document.getElementById('qDiff').value;
+  const format = document.getElementById('qFormat').value;
+  const pubName = document.getElementById('pubName').value;
+  const activeTopics = [...document.querySelectorAll('.tag.active')].map(t => t.dataset.topic);
+  if (activeTopics.length === 0) { alert('Select at least one topic'); return; }
+  // Gather questions
+  let pool = [];
+  activeTopics.forEach(topic => {
+    if (QB[topic]) {
+      let qs = [...QB[topic]];
+      if (diff === 'easy') qs = qs.filter(q => q.d !== 'hard');
+      else if (diff === 'hard') qs = qs.filter(q => q.d !== 'easy');
+      pool.push(...qs);
+    }
+  });
+  // Shuffle
+  pool = pool.sort(() => Math.random() - 0.5).slice(0, count);
+  // Arrange into rounds
+  const title = pubName ? `🏆 ${pubName}` : '🏆 WC 2026 Pub Quiz';
+  document.getElementById('quizTitle').textContent = title;
+  document.getElementById('quizSub').textContent = `${count} questions · ${diff === 'easy' ? 'Easy' : diff === 'mixed' ? 'Mixed difficulty' : 'Hard'} · Generated ${new Date().toLocaleDateString()}`;
+  const roundsEl = document.getElementById('quizRounds');
+  roundsEl.innerHTML = '';
+  if (format === 'rounds' && pool.length >= 10) {
+    // Split into rounds of ~5
+    const perRound = Math.ceil(pool.length / Math.ceil(pool.length / 5));
+    const roundNames = ['Round 1: Warm-Up', 'Round 2: History', 'Round 3: Records & Stats', 'Round 4: Players & Nations', 'Round 5: WC 2026', 'Round 6: Final Showdown', 'Round 7: Tiebreaker'];
+    let qIdx = 0;
+    for (let r = 0; r < Math.ceil(pool.length / perRound); r++) {
+      const chunk = pool.slice(qIdx, qIdx + perRound);
+      if (!chunk.length) break;
+      roundsEl.innerHTML += renderRound(roundNames[r] || `Round ${r+1}`, chunk, qIdx + 1);
+      qIdx += perRound;
+    }
+  } else {
+    roundsEl.innerHTML += renderRound('Questions', pool, 1);
+  }
+  document.getElementById('quizOutput').classList.add('show');
+  document.getElementById('quizOutput').scrollIntoView({ behavior: 'smooth' });
+  answersVisible = false;
+  document.querySelectorAll('.q-answer').forEach(a => a.classList.remove('show'));
+}
+
+function renderRound(title, questions, startNum) {
+  return `<div class="round">
+    <div class="round-title">${title}</div>
+    ${questions.map((q, i) => `
+      <div class="question">
+        <div class="q-num">Q${startNum + i}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-answer">✅ ${q.a}</div>
+        <div class="q-toggle" onclick="this.previousElementSibling.classList.toggle('show')">Show/hide answer</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+// Auto-generate on load for engagement
+window.addEventListener('load', () => {
+  generateQuiz();
+});
+</script>
+</body>
+</html>

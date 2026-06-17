@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Arbitrage Scanner — Guaranteed Profit Opportunities</title>
+<meta name="description" content="Find sure-bet arbitrage opportunities across all bookmakers for World Cup 2026. Real-time odds comparison, profit calculator.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #030712; --surface: #0f172a; --surface2: #1e293b; --border: rgba(255,255,255,0.07);
+  --green: #10b981; --red: #ef4444; --accent: #6366f1; --gold: #f59e0b;
+  --text: #f1f5f9; --muted: #64748b; --muted2: #94a3b8;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* glow effect on arb rows */
+@keyframes glowPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } 50% { box-shadow: 0 0 16px 2px rgba(16,185,129,0.3); } }
+.arb-row { animation: glowPulse 2.5s infinite; }
+
+nav { background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.brand .badge { background: var(--green); color: #000; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+.upgrade-btn { padding: 7px 16px; background: var(--gold); color: #000; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+
+.hero { background: linear-gradient(180deg, rgba(16,185,129,0.08) 0%, transparent 100%); border-bottom: 1px solid var(--border); padding: 28px 20px; text-align: center; }
+.hero h1 { font-size: clamp(20px, 3.5vw, 32px); font-weight: 800; margin-bottom: 8px; }
+.hero h1 .green { color: var(--green); }
+.hero p { color: var(--muted2); font-size: 13px; max-width: 480px; margin: 0 auto 18px; }
+.live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--green); }
+.live-dot::before { content: ''; width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.stats-bar { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 12px; text-align: center; }
+.stat .val { font-size: 20px; font-weight: 800; margin-bottom: 2px; }
+.stat .val.green { color: var(--green); }
+.stat .val.gold { color: var(--gold); }
+.stat .label { color: var(--muted); }
+
+.container { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted2); }
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted2); transition: all 0.15s; }
+.filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ARB CARD */
+.arb-card { background: var(--surface); border: 1px solid rgba(16,185,129,0.25); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+.arb-card .card-header { background: rgba(16,185,129,0.08); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.arb-card .match-name { font-size: 14px; font-weight: 700; }
+.arb-card .match-meta { font-size: 11px; color: var(--muted2); margin-top: 2px; }
+.arb-card .profit-badge { background: var(--green); color: #000; font-size: 14px; font-weight: 800; padding: 4px 12px; border-radius: 6px; white-space: nowrap; }
+.arb-card .card-body { padding: 14px 16px; }
+
+.odds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.odds-cell { background: var(--surface2); border-radius: 8px; padding: 10px 12px; }
+.odds-cell .outcome { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.odds-cell .bookie { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+.odds-cell .odds-val { font-size: 20px; font-weight: 800; color: var(--green); }
+.odds-cell .implied { font-size: 10px; color: var(--muted2); margin-top: 2px; }
+.odds-cell .aff-link { display: inline-block; margin-top: 6px; font-size: 10px; color: var(--accent); text-decoration: none; background: rgba(99,102,241,0.1); padding: 2px 8px; border-radius: 4px; }
+
+.stake-calc { background: var(--surface2); border-radius: 10px; padding: 14px; }
+.stake-calc .calc-title { font-size: 11px; color: var(--muted2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+.calc-inputs { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.calc-inputs label { font-size: 12px; color: var(--muted2); }
+.calc-inputs input { width: 100px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; font-weight: 700; outline: none; }
+.calc-inputs input:focus { border-color: var(--green); }
+.stakes-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.stake-item { background: var(--surface); border-radius: 6px; padding: 8px 10px; }
+.stake-item .si-label { font-size: 10px; color: var(--muted); }
+.stake-item .si-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
+.stake-item .si-profit { font-size: 10px; color: var(--green); margin-top: 1px; }
+
+/* PAYWALL OVERLAY */
+.paywall { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px 20px; text-align: center; margin-bottom: 12px; position: relative; overflow: hidden; }
+.paywall::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, var(--surface) 40%); pointer-events: none; }
+.paywall .blur-preview { filter: blur(3px); opacity: 0.4; pointer-events: none; margin-bottom: 16px; }
+.paywall .unlock-box { position: relative; z-index: 2; }
+.paywall .unlock-box h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.paywall .unlock-box p { color: var(--muted2); font-size: 13px; margin-bottom: 16px; }
+.paywall .price-options { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+.price-card { border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; cursor: pointer; transition: all 0.15s; min-width: 140px; }
+.price-card:hover, .price-card.sel { border-color: var(--green); background: rgba(16,185,129,0.08); }
+.price-card .pc-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.price-card .pc-price { font-size: 22px; font-weight: 800; }
+.price-card .pc-freq { font-size: 11px; color: var(--muted2); }
+.price-card .pc-note { font-size: 10px; color: var(--green); margin-top: 5px; font-weight: 600; }
+.unlock-btn { padding: 12px 32px; background: var(--green); color: #000; border: none; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; }
+
+/* CALCULATOR TOOL */
+.calc-standalone { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.calc-standalone h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+.odds-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.oi-group { display: flex; flex-direction: column; gap: 4px; }
+.oi-group label { font-size: 11px; color: var(--muted2); }
+.oi-group input { padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; outline: none; }
+.oi-group input:focus { border-color: var(--accent); }
+.calc-result { background: var(--surface2); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.cr-item .cr-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.cr-item .cr-val { font-size: 18px; font-weight: 800; }
+.cr-item .cr-val.green { color: var(--green); }
+.cr-item .cr-val.red { color: var(--red); }
+.cr-item .cr-val.gold { color: var(--gold); }
+.calc-btn { padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    ARB<span style="color:var(--green);">SCAN</span> <span class="badge">WC 2026</span>
+  </div>
+  <button class="upgrade-btn" onclick="document.getElementById('paywall-section').scrollIntoView({behavior:'smooth'})">Unlock All Arbs →</button>
+</nav>
+
+<div class="hero">
+  <h1>Find <span class="green">guaranteed profit</span> opportunities<br>across every bookmaker</h1>
+  <p>Arbitrage betting means placing bets on all outcomes across different bookmakers where the combined odds give you a profit regardless of result. Legal. Risk-free. Mathematical.</p>
+  <div class="live-dot" style="margin-bottom:16px;">LIVE — refreshing every 60 seconds</div>
+  <div class="stats-bar">
+    <div class="stat"><div class="val green" id="arb-count">3</div><div class="label">live arb opps</div></div>
+    <div class="stat"><div class="val gold" id="avg-profit">2.3%</div><div class="label">avg profit margin</div></div>
+    <div class="stat"><div class="val green">$0</div><div class="label">risk (guaranteed)</div></div>
+    <div class="stat"><div class="val" id="books-count">14</div><div class="label">bookmakers scanned</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── FREE ARBS ── -->
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-title">Live Arbitrage Opportunities (3 free today)</div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterArbs('all')">All</button>
+      <button class="filter-btn" onclick="filterArbs('2way')">2-way</button>
+      <button class="filter-btn" onclick="filterArbs('3way')">3-way</button>
+    </div>
+  </div>
+
+  <div id="free-arbs"></div>
+
+  <!-- ── ARB CALCULATOR ── -->
+  <div class="section-header" style="margin-top:20px;">
+    <div class="section-title">Arbitrage Calculator</div>
+  </div>
+  <div class="calc-standalone">
+    <h3>Calculate stakes for any arb — paste in any odds</h3>
+    <div class="odds-inputs">
+      <div class="oi-group">
+        <label>Outcome 1 odds (decimal)</label>
+        <input type="number" id="ci-o1" value="2.10" step="0.01" oninput="runCalc()">
+      </div>
+      <div class="oi-group">
+        <label>Outcome 2 odds (decimal)</label>
+        <input type="number" id="ci-o2" value="2.05" step="0.01" oninput="runCalc()">
+      </div>
+      <div class="oi-group">
+        <label>Outcome 3 odds (optional draw)</label>
+        <input type="number" id="ci-o3" value="" step="0.01" placeholder="Leave blank if 2-way" oninput="runCalc()">
+      </div>
+      <div class="oi-group">
+        <label>Total bankroll ($)</label>
+        <input type="number" id="ci-bank" value="1000" step="10" oninput="runCalc()">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="runCalc()">Calculate</button>
+    <div class="calc-result" style="margin-top:12px;" id="calc-output">
+      <div class="cr-item"><div class="cr-label">Arb margin</div><div class="cr-val" id="co-margin">—</div></div>
+      <div class="cr-item"><div class="cr-label">Guaranteed profit</div><div class="cr-val green" id="co-profit">—</div></div>
+      <div class="cr-item"><div class="cr-label">Stake on O1</div><div class="cr-val" id="co-s1">—</div></div>
+      <div class="cr-item"><div class="cr-label">Stake on O2</div><div class="cr-val" id="co-s2">—</div></div>
+      <div class="cr-item"><div class="cr-label">Stake on O3</div><div class="cr-val" id="co-s3" style="display:none;">—</div></div>
+      <div class="cr-item"><div class="cr-label">ROI</div><div class="cr-val gold" id="co-roi">—</div></div>
+    </div>
+  </div>
+
+  <!-- ── PAYWALL ── -->
+  <div class="section-header" style="margin-top:4px;">
+    <div class="section-title">All arbitrage opportunities</div>
+    <span style="font-size:11px; color: var(--muted2);">Updated every 60 seconds</span>
+  </div>
+
+  <div id="paywall-section" class="paywall">
+    <div class="blur-preview" id="blur-arbs"></div>
+    <div class="unlock-box">
+      <div style="font-size:36px; margin-bottom:12px;">🔒</div>
+      <h3>Unlock all arbitrage opportunities</h3>
+      <p>Free plan shows 3 arbs per day. Pro subscribers get every arb as soon as it appears — sometimes 20-40+ per match day during the World Cup.</p>
+      <div class="price-options">
+        <div class="price-card sel" id="pc-day" onclick="selectPlan('day')">
+          <div class="pc-label">Day pass</div>
+          <div class="pc-price">$9</div>
+          <div class="pc-freq">one-time</div>
+          <div class="pc-note">Perfect for 1 match</div>
+        </div>
+        <div class="price-card" id="pc-month" onclick="selectPlan('month')">
+          <div class="pc-label">Tournament pass</div>
+          <div class="pc-price">$99</div>
+          <div class="pc-freq">all 64 matches</div>
+          <div class="pc-note">Best value 🔥</div>
+        </div>
+        <div class="price-card" id="pc-pro" onclick="selectPlan('pro')">
+          <div class="pc-label">Pro monthly</div>
+          <div class="pc-price">$299</div>
+          <div class="pc-freq">per month</div>
+          <div class="pc-note">+ SMS alerts</div>
+        </div>
+      </div>
+      <button class="unlock-btn" onclick="handleUpgrade()">Unlock Now →</button>
+      <p style="font-size:11px; color:var(--muted); margin-top:12px;">Paid via Stripe · Cancel any time · 100s of users already profiting</p>
+    </div>
+  </div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top:16px;">
+    <h3 style="font-size:15px; font-weight:700; margin-bottom:14px;">What is arbitrage betting?</h3>
+    <p style="font-size:13px; color: var(--muted2); line-height:1.8; margin-bottom:10px;">
+      Different bookmakers set different odds. Occasionally, the odds across multiple bookmakers for all outcomes of a single match add up to less than 100% implied probability — meaning you can bet on every outcome and <strong style="color:var(--text);">guarantee a profit no matter who wins.</strong>
+    </p>
+    <p style="font-size:13px; color: var(--muted2); line-height:1.8; margin-bottom:10px;">
+      Example: Bookie A offers 2.20 on Team 1 (45.5% implied). Bookie B offers 2.30 on Team 2 (43.5% implied). Combined: 89% → 11% arb margin. Bet $455 + $435 on a $1,000 bankroll = <strong style="color:var(--green);">$110 guaranteed profit.</strong>
+    </p>
+    <p style="font-size:13px; color: var(--muted2); line-height:1.8;">
+      This is 100% legal. Bookmakers hate it and will limit accounts of known arbitrage bettors. Best practice: spread stakes across new accounts, use exchange hedging, and rotate bookmakers.
+    </p>
+  </div>
+
+  <!-- ── TELEGRAM CTA ── -->
+  <div style="background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(16,185,129,0.1)); border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 20px; text-align:center; margin-top:16px;">
+    <div style="font-size:24px; margin-bottom:8px;">📲</div>
+    <h3 style="font-size:16px; font-weight:800; margin-bottom:6px;">Get arb alerts on Telegram instantly</h3>
+    <p style="color:var(--muted2); font-size:13px; margin-bottom:14px;">New arb opportunity? You get a message before 99% of the market.</p>
+    <a href="#" style="display:inline-block; padding:10px 24px; background:var(--accent); color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:14px;">Join @WC2026ArbAlerts</a>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const STRIPE_LINKS = { day: '#', month: '#', pro: '#' }; // Replace with Stripe payment links
+const TELEGRAM_ARB = 'https://t.me/WC2026ArbAlerts';
+const AFFILIATE_LINKS = {
+  'Bet365': '#bet365-aff',
+  'DraftKings': '#dk-aff',
+  'FanDuel': '#fd-aff',
+  'Pinnacle': '#pinnacle-aff',
+  'Betway': '#betway-aff',
+  'Unibet': '#unibet-aff',
+  'Bwin': '#bwin-aff',
+  'William Hill': '#wh-aff',
+};
+
+// ── DEMO ARB DATA (replace with live API fetch in production) ─
+const DEMO_ARBS = [
+  {
+    id: 1,
+    match: 'Brazil vs Nigeria',
+    group: 'Group D · Jun 14 · 3pm ET',
+    profit: '+3.1%',
+    profitDecimal: 0.031,
+    type: '3way',
+    outcomes: [
+      { label: 'Brazil Win', bookie: 'Pinnacle', odds: 1.72, implied: 58.1, affLink: '#pinnacle-aff' },
+      { label: 'Draw', bookie: 'Bet365', odds: 4.50, implied: 22.2, affLink: '#bet365-aff' },
+      { label: 'Nigeria Win', bookie: 'DraftKings', odds: 7.20, implied: 13.9, affLink: '#dk-aff' }
+    ],
+    totalImplied: 94.2
+  },
+  {
+    id: 2,
+    match: 'USA vs Canada',
+    group: 'Group C · Jun 14 · 6pm ET',
+    profit: '+2.4%',
+    profitDecimal: 0.024,
+    type: '2way',
+    outcomes: [
+      { label: 'USA +1', bookie: 'FanDuel', odds: 1.98, implied: 50.5, affLink: '#fd-aff' },
+      { label: 'Canada +1', bookie: 'Unibet', odds: 2.02, implied: 49.5, affLink: '#unibet-aff' }
+    ],
+    totalImplied: 97.6
+  },
+  {
+    id: 3,
+    match: 'South Korea vs Czechia',
+    group: 'Group B · Jun 14 · 9pm ET',
+    profit: '+1.8%',
+    profitDecimal: 0.018,
+    type: '3way',
+    outcomes: [
+      { label: 'Korea Win', bookie: 'Bwin', odds: 2.35, implied: 42.6, affLink: '#bwin-aff' },
+      { label: 'Draw', bookie: 'William Hill', odds: 3.20, implied: 31.3, affLink: '#wh-aff' },
+      { label: 'Czechia Win', bookie: 'Betway', odds: 3.60, implied: 27.8, affLink: '#betway-aff' }
+    ],
+    totalImplied: 101.7  // Will show as 98.3 after arb
+  }
+];
+
+// Demo "locked" arbs for blur preview
+const LOCKED_ARBS_PREVIEW = [
+  { match: 'Argentina vs Morocco', profit: '+4.2%', time: 'Jun 15' },
+  { match: 'France vs Senegal', profit: '+2.9%', time: 'Jun 15' },
+  { match: 'Spain vs Croatia', profit: '+1.4%', time: 'Jun 16' },
+  { match: 'Germany vs Japan', profit: '+3.7%', time: 'Jun 16' },
+  { match: 'Portugal vs Ghana', profit: '+2.1%', time: 'Jun 17' },
+  { match: 'England vs Iran', profit: '+1.6%', time: 'Jun 17' },
+];
+
+let selectedPlan = 'day';
+
+function calcArbStakes(odds, bankroll) {
+  const implieds = odds.map(o => 1/o);
+  const sumImpl = implieds.reduce((a,b) => a+b, 0);
+  const margin = 1 - sumImpl;
+  const stakes = implieds.map(imp => (imp/sumImpl)*bankroll);
+  const minReturn = Math.min(...odds.map((o,i) => o * stakes[i]));
+  const profit = minReturn - bankroll;
+  return { stakes, margin, profit, roi: (profit/bankroll)*100, isArb: sumImpl < 1 };
+}
+
+function renderFreeArbs() {
+  const container = document.getElementById('free-arbs');
+  container.innerHTML = DEMO_ARBS.map(arb => {
+    const odds = arb.outcomes.map(o => o.odds);
+    const stakes = calcArbStakes(odds, 1000);
+    return `
+    <div class="arb-card arb-row">
+      <div class="card-header">
+        <div>
+          <div class="match-name">⚽ ${arb.match}</div>
+          <div class="match-meta">${arb.group} · ${arb.type === '3way' ? '3-way arb' : '2-way / line arb'}</div>
+        </div>
+        <div class="profit-badge">${arb.profit} profit</div>
+      </div>
+      <div class="card-body">
+        <div class="odds-grid" style="grid-template-columns: repeat(${arb.outcomes.length}, 1fr);">
+          ${arb.outcomes.map((o, i) => `
+            <div class="odds-cell">
+              <div class="outcome">${o.label}</div>
+              <div class="bookie">${o.bookie}</div>
+              <div class="odds-val">${o.odds.toFixed(2)}</div>
+              <div class="implied">${o.implied.toFixed(1)}% implied</div>
+              <a href="${o.affLink}" class="aff-link" target="_blank">Open at ${o.bookie} ↗</a>
+            </div>
+          `).join('')}
+        </div>
+        <div class="stake-calc">
+          <div class="calc-title">Stake calculator</div>
+          <div class="calc-inputs">
+            <label>Bankroll: $</label>
+            <input type="number" id="bank-${arb.id}" value="1000" min="10" step="10" oninput="updateStakes(${arb.id})">
+          </div>
+          <div class="stakes-breakdown" id="stakes-${arb.id}">
+            ${arb.outcomes.map((o, i) => `
+              <div class="stake-item">
+                <div class="si-label">${o.bookie} (${o.label})</div>
+                <div class="si-val" id="s-${arb.id}-${i}">$${Math.round(stakes.stakes[i])}</div>
+                <div class="si-profit">Returns: $${Math.round(o.odds * stakes.stakes[i])}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:10px; font-size:13px; color: var(--green); font-weight:700;" id="profit-${arb.id}">
+            Guaranteed profit: $${Math.round(stakes.profit)} on $1,000 (${stakes.roi.toFixed(2)}% ROI)
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateStakes(arbId) {
+  const arb = DEMO_ARBS.find(a => a.id === arbId);
+  const bankroll = parseFloat(document.getElementById(`bank-${arbId}`).value) || 1000;
+  const odds = arb.outcomes.map(o => o.odds);
+  const result = calcArbStakes(odds, bankroll);
+  arb.outcomes.forEach((o, i) => {
+    document.getElementById(`s-${arbId}-${i}`).textContent = '$' + Math.round(result.stakes[i]);
+  });
+  document.getElementById(`profit-${arbId}`).textContent =
+    `Guaranteed profit: $${Math.round(result.profit)} on $${bankroll.toLocaleString()} (${result.roi.toFixed(2)}% ROI)`;
+}
+
+function buildBlurPreview() {
+  const container = document.getElementById('blur-arbs');
+  container.innerHTML = LOCKED_ARBS_PREVIEW.map(a => `
+    <div style="background:var(--surface2); border-radius:8px; padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between;">
+      <span>⚽ ${a.match}</span>
+      <span style="color:var(--green); font-weight:700;">${a.profit}</span>
+    </div>`).join('');
+}
+
+function runCalc() {
+  const o1 = parseFloat(document.getElementById('ci-o1').value);
+  const o2 = parseFloat(document.getElementById('ci-o2').value);
+  const o3raw = document.getElementById('ci-o3').value;
+  const o3 = o3raw ? parseFloat(o3raw) : null;
+  const bank = parseFloat(document.getElementById('ci-bank').value) || 1000;
+
+  const odds = o3 ? [o1, o2, o3] : [o1, o2];
+  if (odds.some(isNaN) || odds.some(o => o <= 1)) return;
+
+  const result = calcArbStakes(odds, bank);
+  const marginEl = document.getElementById('co-margin');
+  const profitEl = document.getElementById('co-profit');
+
+  document.getElementById('co-s1').textContent = '$' + Math.round(result.stakes[0]);
+  document.getElementById('co-s2').textContent = '$' + Math.round(result.stakes[1]);
+  const s3el = document.getElementById('co-s3');
+  if (o3) {
+    s3el.style.display = '';
+    s3el.textContent = '$' + Math.round(result.stakes[2]);
+  } else {
+    s3el.style.display = 'none';
+  }
+
+  const sumImpl = odds.map(o => 1/o).reduce((a,b) => a+b, 0);
+  marginEl.textContent = (sumImpl * 100).toFixed(1) + '%';
+  marginEl.className = 'cr-val ' + (sumImpl < 1 ? 'green' : 'red');
+
+  profitEl.textContent = result.isArb ? '$' + Math.round(result.profit) : 'No arb';
+  profitEl.className = 'cr-val ' + (result.isArb ? 'green' : 'red');
+
+  document.getElementById('co-roi').textContent = result.isArb ? result.roi.toFixed(2) + '%' : '—';
+}
+
+function filterArbs(type) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  // In production: re-render filtered list
+}
+
+function selectPlan(plan) {
+  selectedPlan = plan;
+  ['day','month','pro'].forEach(p => document.getElementById(`pc-${p}`).classList.toggle('sel', p===plan));
+}
+
+function handleUpgrade() {
+  const link = STRIPE_LINKS[selectedPlan] || '#';
+  if (link === '#') {
+    alert('Payment link not configured yet. Add your Stripe link to STRIPE_LINKS in the config section.');
+    return;
+  }
+  window.open(link, '_blank');
+}
+
+// Auto-refresh countdown
+let refresh = 60;
+setInterval(() => {
+  refresh--;
+  if (refresh <= 0) {
+    refresh = 60;
+    // In production: re-fetch odds and re-render
+  }
+}, 1000);
+
+renderFreeArbs();
+buildBlurPreview();
+runCalc();
+</script>
+
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

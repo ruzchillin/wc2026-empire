@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Group Standings — Live Tables, Results & Qualifiers</title>
+<meta name="description" content="Live World Cup 2026 group standings for all 12 groups. Updated automatically after every match. See who qualifies for the Round of 32.">
+<meta property="og:title" content="WC 2026 Live Group Standings">
+<meta property="og:description" content="Live tables for all 12 WC 2026 groups. Updated after every match.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Facebook Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','PIXEL_ID');fbq('track','PageView');</script>
+<!-- Schema: SportsSeries for group stage -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SportsOrganization","name":"FIFA World Cup 2026","sport":"Football","url":"https://wc2026intel.vercel.app/group-standings.html"}
+</script>
+<style>
+  :root { --bg:#0a0a0a; --card:#141414; --border:#2a2a2a; --text:#f0f0f0; --muted:#888; --accent:#00ff88; --qualify:#0d3a1f; --qualify-border:#1a7a40; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); }
+
+  nav { background:#111; border-bottom:1px solid var(--border); padding:12px 20px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+  .nav-brand { font-weight:700; color:var(--accent); text-decoration:none; }
+  .nav-links a { color:var(--muted); text-decoration:none; margin-left:14px; font-size:0.85rem; }
+
+  .page-header { background:linear-gradient(135deg,#0d2b1a,#0a1a2e); padding:32px 20px; text-align:center; }
+  .page-header h1 { font-size:1.8rem; font-weight:800; }
+  .page-header p { color:var(--muted); margin-top:8px; }
+  .live-indicator { display:inline-flex; align-items:center; gap:6px; background:#1a1a1a; border:1px solid #333; border-radius:20px; padding:4px 14px; font-size:0.8rem; margin-top:12px; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .container { max-width:900px; margin:0 auto; padding:0 16px 80px; }
+
+  /* GROUP FILTER */
+  .group-filter { display:flex; gap:8px; flex-wrap:wrap; margin:20px 0; justify-content:center; }
+  .group-btn { background:var(--card); border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:6px 14px; cursor:pointer; font-size:0.85rem; transition:all 0.2s; }
+  .group-btn:hover, .group-btn.active { background:var(--accent); color:#000; border-color:var(--accent); font-weight:700; }
+
+  /* GROUP TABLE */
+  .group-section { margin:24px 0; }
+  .group-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .group-name { font-size:1.1rem; font-weight:700; color:var(--accent); }
+  .group-progress { font-size:0.75rem; color:var(--muted); }
+
+  .standings-table { width:100%; border-collapse:collapse; background:var(--card); border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+  .standings-table th { padding:10px 12px; text-align:left; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid var(--border); }
+  .standings-table th.num { text-align:center; }
+  .standings-table td { padding:12px; border-bottom:1px solid var(--border); font-size:0.88rem; }
+  .standings-table td.num { text-align:center; color:var(--muted); }
+  .standings-table tr:last-child td { border-bottom:none; }
+  .standings-table tr.qualifying { background:var(--qualify); }
+  .standings-table tr.qualifying td { border-bottom:1px solid var(--qualify-border); }
+  .standings-table tr.qualifying:last-child td { border-bottom:none; }
+
+  .pos-num { width:24px; height:24px; border-radius:50%; background:var(--border); display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; }
+  .pos-num.q { background:var(--accent); color:#000; }
+  .team-cell { display:flex; align-items:center; gap:10px; }
+  .team-flag { font-size:1.2rem; }
+  .team-name-text { font-weight:600; }
+  .pts { font-weight:800; font-size:1rem; color:#fff; text-align:center; }
+  .pts-cell { text-align:center; font-weight:800; font-size:1rem; color:#fff; }
+  .form-badges { display:flex; gap:3px; }
+  .form-w { width:18px; height:18px; border-radius:3px; background:#0d3a1f; color:#00cc66; font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .form-d { width:18px; height:18px; border-radius:3px; background:#2a2a1a; color:#cccc00; font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .form-l { width:18px; height:18px; border-radius:3px; background:#3a0d0d; color:#cc3333; font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+  .qualify-legend { display:flex; align-items:center; gap:8px; font-size:0.75rem; color:var(--muted); margin-top:8px; }
+  .legend-dot { width:10px; height:10px; border-radius:2px; background:var(--accent); }
+
+  /* EMAIL CAPTURE */
+  .email-capture { background:linear-gradient(135deg,#1a1a2e,#0d1b35); border:1px solid #2a3a5e; border-radius:12px; padding:24px; margin:32px 0; text-align:center; }
+  .email-capture h3 { font-size:1.1rem; margin-bottom:8px; }
+  .email-capture p { font-size:0.85rem; color:var(--muted); margin-bottom:16px; }
+  .email-form { display:flex; gap:10px; max-width:400px; margin:0 auto; }
+  .email-form input { flex:1; background:#1a1a1a; border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--text); font-size:0.9rem; }
+  .email-form button { background:var(--accent); color:#000; border:none; border-radius:8px; padding:10px 20px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+  /* TELEGRAM CTA */
+  .tg-cta { background:#0a2a3a; border:1px solid #1a4a6a; border-radius:12px; padding:16px 20px; margin:20px 0; display:flex; align-items:center; gap:16px; }
+  .tg-btn { margin-left:auto; background:#229ED9; color:#fff; border:none; border-radius:8px; padding:10px 18px; font-weight:700; text-decoration:none; white-space:nowrap; font-size:0.85rem; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#111; border-top:1px solid var(--border); display:flex; justify-content:space-around; padding:10px 0; z-index:99; }
+  .bottom-nav a { color:var(--muted); text-decoration:none; font-size:0.65rem; text-align:center; display:flex; flex-direction:column; gap:2px; }
+  .bottom-nav .icon { font-size:1.2rem; }
+
+  @media(max-width:600px) {
+    .hide-mobile { display:none; }
+    .email-form { flex-direction:column; }
+    .tg-cta { flex-direction:column; text-align:center; }
+    .tg-btn { margin:0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">⚡ WC 2026 Intel</a>
+  <div class="nav-links">
+    <a href="/live-scores.html">Live</a>
+    <a href="/golden-boot-tracker.html">Scorer</a>
+    <a href="/watch-guide.html">Watch</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>⚽ WC 2026 Group Standings</h1>
+  <p>Live tables for all 12 groups — updated after every match</p>
+  <div class="live-indicator"><span class="dot"></span> Auto-updates every 60 seconds</div>
+</div>
+
+<div class="container">
+
+  <!-- GROUP FILTER -->
+  <div class="group-filter">
+    <button class="group-btn active" onclick="filterGroup('all')">All Groups</button>
+    <button class="group-btn" onclick="filterGroup('A')">A</button>
+    <button class="group-btn" onclick="filterGroup('B')">B</button>
+    <button class="group-btn" onclick="filterGroup('C')">C</button>
+    <button class="group-btn" onclick="filterGroup('D')">D</button>
+    <button class="group-btn" onclick="filterGroup('E')">E</button>
+    <button class="group-btn" onclick="filterGroup('F')">F</button>
+    <button class="group-btn" onclick="filterGroup('G')">G</button>
+    <button class="group-btn" onclick="filterGroup('H')">H</button>
+    <button class="group-btn" onclick="filterGroup('I')">I</button>
+    <button class="group-btn" onclick="filterGroup('J')">J</button>
+    <button class="group-btn" onclick="filterGroup('K')">K</button>
+    <button class="group-btn" onclick="filterGroup('L')">L</button>
+  </div>
+
+  <div id="standings-container">
+    <!-- Groups rendered by JS -->
+    <div style="text-align:center;padding:40px;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+      Loading standings...
+    </div>
+  </div>
+
+  <!-- QUALIFY LEGEND -->
+  <div class="qualify-legend">
+    <div class="legend-dot"></div>
+    <span>Green rows = qualify for Round of 32 (top 2 per group)</span>
+  </div>
+
+  <!-- EMAIL CAPTURE -->
+  <div class="email-capture">
+    <h3>📊 Get instant standings updates</h3>
+    <p>Every time a group position changes, we'll email you. Plus AI predictions for the next round.</p>
+    <div class="email-form">
+      <input type="email" id="heroEmail" placeholder="your@email.com">
+      <button onclick="subscribeEmail()">Get Updates →</button>
+    </div>
+  </div>
+
+  <!-- TELEGRAM CTA -->
+  <div class="tg-cta">
+    <div style="font-size:2rem">✈️</div>
+    <div>
+      <strong>Live alerts on Telegram</strong>
+      <p style="font-size:0.8rem;color:var(--muted);margin:0">Goals, standings, AI tips — all WC 2026 matches</p>
+    </div>
+    <a href="https://t.me/wc2026intel" target="_blank" class="tg-btn">Join Free →</a>
+  </div>
+
+  <!-- AFFILIATE STRIP -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;text-align:center">
+    <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px">WATCH EVERY GROUP MATCH</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://nordvpn.com/ref/wc2026intel" target="_blank" rel="nofollow" style="background:#4687FF;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem">🔒 NordVPN — Stream Free</a>
+      <a href="https://www.fubo.tv/?ref=wc2026intel" target="_blank" rel="nofollow" style="background:#E8001C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem">📺 FuboTV — 7 Day Trial</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <a href="/live-scores.html"><span class="icon">⚽</span>Live</a>
+  <a href="/group-standings.html"><span class="icon">📊</span>Groups</a>
+  <a href="/golden-boot-tracker.html"><span class="icon">🥾</span>Scorer</a>
+  <a href="/watch-guide.html"><span class="icon">📺</span>Watch</a>
+  <a href="/viral-quiz.html"><span class="icon">🧠</span>Quiz</a>
+</div>
+
+<script>
+// ── WC 2026 Group Data (seed — updated via API) ───────────────────────────────
+const GROUPS = {
+  A: {
+    name: 'Group A',
+    teams: [
+      { name:'USA',     flag:'🇺🇸', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Mexico',  flag:'🇲🇽', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Canada',  flag:'🇨🇦', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Algeria', flag:'🇩🇿', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  B: {
+    name: 'Group B',
+    teams: [
+      { name:'Argentina', flag:'🇦🇷', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Colombia',  flag:'🇨🇴', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Chile',     flag:'🇨🇱', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Japan',     flag:'🇯🇵', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  C: {
+    name: 'Group C',
+    teams: [
+      { name:'Brazil',      flag:'🇧🇷', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Uruguay',     flag:'🇺🇾', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Ecuador',     flag:'🇪🇨', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'South Korea', flag:'🇰🇷', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  D: {
+    name: 'Group D',
+    teams: [
+      { name:'France',      flag:'🇫🇷', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Netherlands', flag:'🇳🇱', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Denmark',     flag:'🇩🇰', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Morocco',     flag:'🇲🇦', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  E: {
+    name: 'Group E',
+    teams: [
+      { name:'Spain',    flag:'🇪🇸', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Germany',  flag:'🇩🇪', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Belgium',  flag:'🇧🇪', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Nigeria',  flag:'🇳🇬', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  F: {
+    name: 'Group F',
+    teams: [
+      { name:'England',     flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Portugal',    flag:'🇵🇹', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Senegal',     flag:'🇸🇳', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Serbia',      flag:'🇷🇸', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  G: {
+    name: 'Group G',
+    teams: [
+      { name:'Italy',       flag:'🇮🇹', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Croatia',     flag:'🇭🇷', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Cameroon',    flag:'🇨🇲', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'South Africa',flag:'🇿🇦', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+  H: {
+    name: 'Group H',
+    teams: [
+      { name:'Mexico',      flag:'🇲🇽', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Peru',        flag:'🇵🇪', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Australia',   flag:'🇦🇺', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+      { name:'Ghana',       flag:'🇬🇭', mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0, form:[] },
+    ]
+  },
+};
+
+let activeGroup = 'all';
+
+function filterGroup(group) {
+  activeGroup = group;
+  document.querySelectorAll('.group-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === (group === 'all' ? 'All Groups' : group));
+  });
+  renderStandings();
+}
+
+function formBadge(result) {
+  if (result === 'W') return '<div class="form-w">W</div>';
+  if (result === 'D') return '<div class="form-d">D</div>';
+  if (result === 'L') return '<div class="form-l">L</div>';
+  return '';
+}
+
+function renderGroupTable(groupKey, groupData) {
+  const sorted = [...groupData.teams].sort((a, b) =>
+    b.pts !== a.pts ? b.pts - a.pts :
+    (b.gf - b.ga) !== (a.gf - a.ga) ? (b.gf - b.ga) - (a.gf - a.ga) :
+    b.gf - a.gf
+  );
+
+  const matchesPlayed = sorted.reduce((sum, t) => sum + t.mp, 0) / 2;
+  const totalMatches = 6; // 4 teams × 3 matches each / 2
+
+  return `
+  <div class="group-section" data-group="${groupKey}" id="group-${groupKey}">
+    <div class="group-header">
+      <div class="group-name">Group ${groupKey}</div>
+      <div class="group-progress">${matchesPlayed}/${totalMatches} matches played</div>
+    </div>
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th style="width:30px">#</th>
+          <th>Team</th>
+          <th class="num">MP</th>
+          <th class="num">W</th>
+          <th class="num hide-mobile">D</th>
+          <th class="num hide-mobile">L</th>
+          <th class="num">GD</th>
+          <th class="num">Pts</th>
+          <th class="hide-mobile">Form</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sorted.map((team, i) => `
+        <tr class="${i < 2 ? 'qualifying' : ''}">
+          <td><div class="pos-num ${i < 2 ? 'q' : ''}">${i + 1}</div></td>
+          <td>
+            <div class="team-cell">
+              <span class="team-flag">${team.flag}</span>
+              <span class="team-name-text">${team.name}</span>
+            </div>
+          </td>
+          <td class="num">${team.mp}</td>
+          <td class="num">${team.w}</td>
+          <td class="num hide-mobile">${team.d}</td>
+          <td class="num hide-mobile">${team.l}</td>
+          <td class="num">${team.gf - team.ga >= 0 ? '+' : ''}${team.gf - team.ga}</td>
+          <td class="pts-cell">${team.pts}</td>
+          <td class="hide-mobile">
+            <div class="form-badges">
+              ${team.form.slice(-5).map(formBadge).join('')}
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderStandings() {
+  const container = document.getElementById('standings-container');
+  const groups = activeGroup === 'all' ? Object.keys(GROUPS) : [activeGroup];
+  container.innerHTML = groups
+    .filter(k => GROUPS[k])
+    .map(k => renderGroupTable(k, GROUPS[k]))
+    .join('');
+}
+
+// ── Fetch live standings from API ─────────────────────────────────────────────
+async function fetchStandings() {
+  try {
+    const resp = await fetch(`/api/standings`);
+    if (!resp.ok) throw new Error('API unavailable');
+    const data = await resp.json();
+    // Update GROUPS with live data
+    data.forEach(group => {
+      if (GROUPS[group.key]) {
+        GROUPS[group.key].teams = group.teams;
+      }
+    });
+  } catch (e) {
+    // Use seed data silently
+  }
+  renderStandings();
+}
+
+// ── Email subscription ─────────────────────────────────────────────────────────
+function subscribeEmail() {
+  const email = document.getElementById('heroEmail').value;
+  if (!email || !email.includes('@')) { alert('Please enter a valid email'); return; }
+  document.querySelector('.email-form').innerHTML = '<p style="color:var(--accent);font-weight:700;padding:10px">✅ You\'re subscribed! Check your inbox.</p>';
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+renderStandings();
+fetchStandings();
+
+// Auto-refresh every 60 seconds
+setInterval(fetchStandings, 60000);
+
+// Update live indicator
+setInterval(() => {
+  const dot = document.querySelector('.dot');
+  if (dot) {
+    dot.style.background = '#ff4444';
+    setTimeout(() => dot.style.background = 'var(--accent)', 300);
+  }
+}, 60000);
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

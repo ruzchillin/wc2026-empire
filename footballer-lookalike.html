@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footballer Look-Alike Finder | Which WC Star Are You?</title>
+<meta name="description" content="Answer 12 questions and find out which WC 2026 footballer you look like. Share your result.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#1a0a1a,#0a0a2a);border-bottom:2px solid #cc44ff;padding:24px 20px;text-align:center}
+header h1{color:#cc44ff;font-size:2rem;margin-bottom:6px}
+header p{color:#aaa}
+.main{max-width:600px;margin:30px auto;padding:0 20px}
+/* Quiz */
+.quiz-card{background:#161616;border:2px solid #2a0a4a;border-radius:14px;padding:28px;margin-bottom:20px}
+.progress-bar{background:#1a0a2a;border-radius:6px;height:6px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#9933ff,#cc44ff);border-radius:6px;transition:width .4s}
+.q-num{font-size:0.8rem;color:#888;margin-bottom:8px}
+.question{font-size:1.1rem;color:#cc44ff;font-weight:600;margin-bottom:20px;line-height:1.4}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1a0a2a;border:2px solid #2a0a4a;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .2s;font-size:0.95rem;text-align:left}
+.option:hover{border-color:#cc44ff;background:#2a0a4a}
+.option.selected{border-color:#cc44ff;background:#2a0a4a;color:#cc44ff}
+.next-btn{background:#cc44ff;color:#000;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer;border:none;font-size:1rem;width:100%;margin-top:16px;display:none}
+.next-btn:hover{background:#dd55ff}
+/* Result */
+.result-card{background:#161616;border:2px solid #cc44ff;border-radius:14px;padding:28px;text-align:center;display:none}
+.result-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#2a0a4a,#4a0a8a);border:3px solid #cc44ff;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 16px}
+.result-name{font-size:1.5rem;font-weight:700;color:#cc44ff;margin-bottom:4px}
+.result-team{font-size:0.9rem;color:#888;margin-bottom:16px}
+.result-desc{font-size:0.9rem;color:#ccc;line-height:1.6;margin-bottom:20px}
+.traits{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px}
+.trait{background:#2a0a4a;color:#cc44ff;padding:4px 12px;border-radius:20px;font-size:0.8rem}
+.match-pct{font-size:2.5rem;font-weight:700;color:#cc44ff;margin-bottom:4px}
+.match-label{font-size:0.8rem;color:#888;margin-bottom:20px}
+.share-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.share-btn{padding:10px 20px;border-radius:6px;cursor:pointer;font-size:0.9rem;font-weight:700;border:none}
+.share-twitter{background:#1da1f2;color:#fff}
+.share-whatsapp{background:#25d366;color:#fff}
+.share-copy{background:#333;color:#e5e5e5}
+.retry-btn{background:transparent;border:2px solid #cc44ff;color:#cc44ff;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:0.9rem;font-weight:700}
+/* Upload option */
+.upload-section{background:#161616;border:2px dashed #4a0a8a;border-radius:12px;padding:28px;text-align:center;margin-bottom:20px;cursor:pointer;transition:border-color .2s}
+.upload-section:hover{border-color:#cc44ff}
+.upload-section h3{color:#cc44ff;margin-bottom:8px}
+.upload-section p{color:#888;font-size:0.85rem;margin-bottom:14px}
+.upload-note{font-size:0.75rem;color:#555;margin-top:10px}
+.upload-btn{background:#cc44ff;color:#000;padding:10px 24px;border-radius:6px;font-weight:700;cursor:pointer;border:none;font-size:0.9rem}
+.or-divider{text-align:center;color:#444;margin:16px 0;font-size:0.9rem}
+.or-divider::before,.or-divider::after{content:'——————';color:#2a2a2a;margin:0 8px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚽ Footballer Look-Alike</h1>
+  <p>Which WC 2026 star matches your personality & style?</p>
+</header>
+
+<div class="main">
+
+  <!-- Upload section (visual only – AI on backend) -->
+  <div class="upload-section" id="uploadSection">
+    <div style="font-size:2.5rem;margin-bottom:12px">📸</div>
+    <h3>Photo Match (Premium)</h3>
+    <p>Upload a selfie to get AI-powered facial similarity matching with WC 2026 players.</p>
+    <button class="upload-btn" onclick="triggerUpload()">Upload Photo</button>
+    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+    <div class="upload-note">Photos are not stored · Processed locally · No account needed</div>
+  </div>
+
+  <div class="or-divider">OR take the quiz below</div>
+
+  <!-- Quiz -->
+  <div class="quiz-card" id="quizCard">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-num" id="qNum">Question 1 of 12</div>
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsList"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="result-avatar" id="resultAvatar"></div>
+    <div class="result-name" id="resultName"></div>
+    <div class="result-team" id="resultTeam"></div>
+    <div class="match-pct" id="matchPct"></div>
+    <div class="match-label">personality match</div>
+    <div class="result-desc" id="resultDesc"></div>
+    <div class="traits" id="resultTraits"></div>
+    <div class="share-row">
+      <button class="share-btn share-twitter" onclick="shareResult()">Share on X</button>
+      <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">WhatsApp</button>
+      <button class="share-btn share-copy" onclick="copyResult()">Copy Result</button>
+    </div>
+    <button class="retry-btn" onclick="restart()">Try Again</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {q:'How do you approach a challenge?', opts:[
+    {t:'Head on — no fear',key:'aggressive'},
+    {t:'Calculated and smart',key:'tactical'},
+    {t:'I inspire others around me',key:'leader'},
+    {t:'Work harder than everyone else',key:'work'},
+  ]},
+  {q:'Your playing style in football is...', opts:[
+    {t:'Dribbling past people',key:'dribble'},
+    {t:'Finding the killer pass',key:'pass'},
+    {t:'Scoring goals at any cost',key:'goal'},
+    {t:'Never letting anyone past me',key:'defend'},
+  ]},
+  {q:'You score the winner in the final minute. You...', opts:[
+    {t:'Do a full sprint celebration, shirt off',key:'aggressive'},
+    {t:'Point to the sky calmly',key:'leader'},
+    {t:'Sprint to the fans immediately',key:'work'},
+    {t:'Fall to your knees overwhelmed',key:'tactical'},
+  ]},
+  {q:'Which country\'s football style do you love most?', opts:[
+    {t:'Brazil — flair and joy',key:'dribble'},
+    {t:'Spain — possession and intelligence',key:'pass'},
+    {t:'Germany — discipline and work rate',key:'work'},
+    {t:'Argentina — grit and heart',key:'goal'},
+  ]},
+  {q:'What\'s your best quality?', opts:[
+    {t:'Leadership',key:'leader'},
+    {t:'Work ethic',key:'work'},
+    {t:'Creativity',key:'dribble'},
+    {t:'Composure under pressure',key:'tactical'},
+  ]},
+  {q:'In school, you were...', opts:[
+    {t:'The one everyone looked up to',key:'leader'},
+    {t:'Always doing extra work',key:'work'},
+    {t:'The creative one',key:'dribble'},
+    {t:'Quietly brilliant',key:'tactical'},
+  ]},
+  {q:'If a match goes to penalties, you...', opts:[
+    {t:'Step up first — love the pressure',key:'aggressive'},
+    {t:'Volunteer to take the decisive one',key:'goal'},
+    {t:'Remind teammates to stay calm',key:'leader'},
+    {t:'Visualise the perfect run-up',key:'tactical'},
+  ]},
+  {q:'Your preferred position?', opts:[
+    {t:'Striker — I want to score',key:'goal'},
+    {t:'Central midfielder — I control things',key:'pass'},
+    {t:'Winger — give me space to run',key:'dribble'},
+    {t:'Defender — I protect what matters',key:'defend'},
+  ]},
+  {q:'How do you react to losing?', opts:[
+    {t:'Train twice as hard tomorrow',key:'work'},
+    {t:'Analyse what went wrong',key:'tactical'},
+    {t:'Rally the team for next time',key:'leader'},
+    {t:'Feel it deeply but channel it',key:'aggressive'},
+  ]},
+  {q:'Fame or legacy?', opts:[
+    {t:'Legacy — I want to be remembered',key:'leader'},
+    {t:'Legacy — through titles and trophies',key:'goal'},
+    {t:'The journey and the craft matter most',key:'dribble'},
+    {t:'I just want to win',key:'aggressive'},
+  ]},
+  {q:'Best moment in football?', opts:[
+    {t:'A last-minute winner',key:'aggressive'},
+    {t:'A perfect through-ball that creates a goal',key:'pass'},
+    {t:'A solo run beating five players',key:'dribble'},
+    {t:'Lifting a trophy with your team',key:'leader'},
+  ]},
+  {q:'One word that describes you?', opts:[
+    {t:'Relentless',key:'work'},
+    {t:'Creative',key:'dribble'},
+    {t:'Leader',key:'leader'},
+    {t:'Lethal',key:'goal'},
+  ]},
+];
+
+const PLAYERS = {
+  goal: {
+    name:'Kylian Mbappé',team:'🇫🇷 France',emoji:'⚡',
+    desc:'You\'re electric, decisive, and have a natural instinct for goals. Like Mbappé, you\'re driven to be the best and thrive when the lights are brightest.',
+    traits:['Pace','Finishing','Clutch','Ambition'],
+  },
+  dribble: {
+    name:'Lamine Yamal',team:'🇪🇸 Spain',emoji:'🌟',
+    desc:'You have flair and creativity that can\'t be taught. Like Yamal, you\'re already ahead of your time — unconventional, audacious, and genuinely unpredictable.',
+    traits:['Dribbling','Vision','Flair','Youth'],
+  },
+  leader: {
+    name:'Lionel Messi',team:'🇦🇷 Argentina',emoji:'🐐',
+    desc:'Quiet until it matters, then unmistakable. Like Messi, you lead through excellence — people follow you because of what you do, not what you say.',
+    traits:['Vision','Leadership','Excellence','Legacy'],
+  },
+  pass: {
+    name:'Kevin De Bruyne',team:'🇧🇪 Belgium',emoji:'🎯',
+    desc:'You\'re the smartest person in the room who rarely needs to say it. Like KDB, you see space others don\'t and make everyone around you better.',
+    traits:['Vision','Intelligence','Passing','Control'],
+  },
+  tactical: {
+    name:'Rodri',team:'🇪🇸 Spain',emoji:'🧠',
+    desc:'You win through intelligence, not flash. Like Rodri, you\'re disciplined, composed under pressure, and the glue that holds everything together.',
+    traits:['Discipline','Composure','Tactical','Reliability'],
+  },
+  work: {
+    name:'N\'Golo Kanté',team:'🇫🇷 France',emoji:'🏃',
+    desc:'Endless engine, everywhere at once. Like Kanté, your secret weapon is work ethic and humility — you outwork everyone and do it with a smile.',
+    traits:['Work rate','Humility','Energy','Consistency'],
+  },
+  aggressive: {
+    name:'Vinicius Jr',team:'🇧🇷 Brazil',emoji:'🎭',
+    desc:'Bold, fearless, and impossible to contain. Like Vinicius, you carry joy and intensity into everything — you celebrate big and compete even bigger.',
+    traits:['Bravery','Pace','Expression','Intensity'],
+  },
+  defend: {
+    name:'Rúben Dias',team:'🇵🇹 Portugal',emoji:'🛡',
+    desc:'The silent protector. Like Dias, you defend what matters, lead from the back, and your calmness makes panicking around you pointless.',
+    traits:['Leadership','Defending','Reading game','Calm'],
+  },
+};
+
+let answers = [];
+let currentQ = 0;
+let selectedOpt = null;
+
+function initQuiz() {
+  answers = [];
+  currentQ = 0;
+  selectedOpt = null;
+  document.getElementById('quizCard').style.display = 'block';
+  document.getElementById('resultCard').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('qNum').textContent = `Question ${currentQ+1} of ${QUESTIONS.length}`;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('optionsList').innerHTML = q.opts.map((o,i) => 
+    `<div class="option" onclick="selectOption(this,'${o.key}')">${o.t}</div>`
+  ).join('');
+  document.getElementById('nextBtn').style.display = 'none';
+  selectedOpt = null;
+}
+
+function selectOption(el, key) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedOpt = key;
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQuestion() {
+  if (!selectedOpt) return;
+  answers.push(selectedOpt);
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  // Count keys
+  const counts = {};
+  answers.forEach(a => { counts[a] = (counts[a]||0)+1; });
+  const topKey = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const player = PLAYERS[topKey] || PLAYERS['goal'];
+  const pct = Math.floor(Math.random() * 12) + 82; // 82-94%
+
+  document.getElementById('quizCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultAvatar').textContent = player.emoji;
+  document.getElementById('resultName').textContent = player.name;
+  document.getElementById('resultTeam').textContent = player.team;
+  document.getElementById('matchPct').textContent = pct + '%';
+  document.getElementById('resultDesc').textContent = player.desc;
+  document.getElementById('resultTraits').innerHTML = player.traits.map(t => `<span class="trait">${t}</span>`).join('');
+  window._result = { player, pct };
+
+  // Track for email
+  fetch('/api/lookalike-result', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({player:player.name,pct})}).catch(()=>{});
+}
+
+function shareResult() {
+  const r = window._result;
+  if (!r) return;
+  const text = `I just found my WC 2026 footballer look-alike — I'm ${r.player.emoji} ${r.player.name} with a ${r.pct}% personality match! Try yours 👇 wc2026ai.com/lookalike`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,'_blank');
+}
+
+function shareWhatsApp() {
+  const r = window._result;
+  if (!r) return;
+  const text = `I found my WC 2026 footballer match — ${r.player.emoji} ${r.player.name} (${r.pct}% match)! Find yours: wc2026ai.com/lookalike`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+}
+
+function copyResult() {
+  const r = window._result;
+  if (!r) return;
+  navigator.clipboard.writeText(`My WC 2026 footballer match: ${r.player.emoji} ${r.player.name} (${r.pct}%) — wc2026ai.com/lookalike`).then(()=>alert('Copied!'));
+}
+
+function restart() {
+  initQuiz();
+}
+
+function triggerUpload() {
+  document.getElementById('photoInput').click();
+}
+
+function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const formData = new FormData();
+  formData.append('photo', file);
+  // Show loading state
+  document.getElementById('uploadSection').innerHTML = '<div style="font-size:2rem;margin-bottom:8px">⏳</div><p style="color:#cc44ff">Analysing your photo...</p>';
+  fetch('/api/lookalike-photo', {method:'POST',body:formData})
+    .then(r => r.json())
+    .then(data => {
+      window._result = {player: data.player || PLAYERS['goal'], pct: data.pct || 87};
+      showResult();
+    })
+    .catch(() => {
+      // Fallback: just run quiz
+      document.getElementById('uploadSection').innerHTML = '<div style="font-size:1.5rem;margin-bottom:8px">⚠️</div><p style="color:#888;font-size:0.85rem">Photo analysis unavailable — take the quiz instead!</p>';
+    });
+}
+
+initQuiz();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

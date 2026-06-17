@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA World Cup 2026 — AI भविष्यवाणियाँ | India Football Predictions Hindi</title>
+<meta name="description" content="FIFA World Cup 2026 के लिए AI-संचालित भविष्यवाणियाँ। हर मैच का विश्लेषण, स्कोर प्रेडिक्शन, और Dream11 टिप्स। 580 मिलियन हिंदी बोलने वालों के लिए।">
+<meta name="keywords" content="FIFA World Cup 2026, football predictions hindi, AI predictions, World Cup 2026 analysis, Dream11 tips, world cup schedule">
+<style>
+:root {
+  --bg: #0a0a14; --card: #0f1018; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b;
+  --india-saffron: #FF9933; --india-green: #138808; --india-blue: #000080;
+  --gold: #f59e0b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans Devanagari', system-ui, sans-serif; line-height: 1.7; }
+
+.hero {
+  background: linear-gradient(135deg, #0a0a14 0%, #1a0a2e 50%, #0a0a14 100%);
+  padding: 48px 20px 36px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,153,51,0.12) 0%, transparent 70%);
+}
+.hero-flag { font-size: 56px; margin-bottom: 12px; }
+.hero-badge {
+  display: inline-block; background: rgba(255,153,51,0.15); border: 1px solid rgba(255,153,51,0.4);
+  color: var(--india-saffron); font-size: 11px; font-weight: 700; padding: 4px 12px;
+  border-radius: 12px; margin-bottom: 14px; letter-spacing: 0.06em;
+}
+.hero h1 { font-size: clamp(24px, 5.5vw, 44px); font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+.hero h1 span { color: var(--india-saffron); }
+.hero-sub { font-size: 15px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; }
+.hero-stats { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.hs-item strong { color: var(--india-saffron); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; }
+.section { padding: 28px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border: none; }
+.section-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+.section-title .hl { color: var(--india-saffron); }
+
+/* PREDICTION CARDS */
+.pred-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.pred-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+  border-top: 3px solid var(--india-saffron);
+}
+.pc-match { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--muted); }
+.pc-teams { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.pc-odds-row { display: flex; gap: 6px; margin-bottom: 10px; }
+.pc-opt { flex: 1; text-align: center; background: var(--bg); border-radius: 8px; padding: 8px 6px; }
+.pc-opt-n { font-size: 18px; font-weight: 800; }
+.pc-opt-l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pc-opt.pick .pc-opt-n { color: var(--india-saffron); }
+.pc-ai { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+.pc-cta {
+  display: block; text-align: center; background: linear-gradient(135deg, var(--india-saffron), #ff6600);
+  color: white; font-weight: 700; font-size: 13px; padding: 8px; border-radius: 8px;
+  text-decoration: none;
+}
+
+/* DREAM11 SECTION */
+.dream11-card {
+  background: linear-gradient(135deg, #0f1018, #1a1030); border: 1px solid rgba(255,153,51,0.3);
+  border-radius: 14px; padding: 22px; margin-bottom: 10px;
+}
+.d11-logo { font-size: 13px; font-weight: 700; color: var(--india-saffron); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.d11-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.d11-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+.d11-picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.dp-item { background: rgba(255,153,51,0.08); border: 1px solid rgba(255,153,51,0.2); border-radius: 8px; padding: 10px 12px; }
+.dp-role { font-size: 10px; font-weight: 700; color: var(--india-saffron); text-transform: uppercase; }
+.dp-name { font-size: 13px; font-weight: 700; margin-top: 2px; }
+.dp-team { font-size: 11px; color: var(--muted); }
+.d11-cta { display: block; text-align: center; background: var(--india-saffron); color: white; font-weight: 800; font-size: 14px; padding: 12px; border-radius: 10px; text-decoration: none; }
+
+/* SCHEDULE */
+.schedule-item {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.si-teams { font-size: 15px; font-weight: 700; }
+.si-time { font-size: 12px; color: var(--muted); }
+.si-pred { font-size: 13px; font-weight: 700; color: var(--india-saffron); }
+
+/* FAVOURITES */
+.fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.fav-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+.fav-flag { font-size: 32px; margin-bottom: 6px; }
+.fav-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.fav-pct { font-size: 22px; font-weight: 800; color: var(--india-saffron); }
+.fav-label { font-size: 11px; color: var(--muted); }
+
+/* INDIA CRICKET ANALOGY */
+.analogy-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.ab-title { font-size: 16px; font-weight: 800; margin-bottom: 10px; }
+.ab-body { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.ab-body strong { color: var(--text); }
+
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-flag">🇮🇳⚽🏆</div>
+  <div class="hero-badge">AI-POWERED · WC 2026 · हिंदी में</div>
+  <h1>FIFA World Cup 2026<br><span>AI भविष्यवाणियाँ</span></h1>
+  <p class="hero-sub">हर मैच के लिए AI विश्लेषण, स्कोर प्रेडिक्शन, और Dream11 टिप्स — 580 मिलियन हिंदी बोलने वालों के लिए</p>
+  <div class="hero-stats">
+    <div class="hs-item"><strong>104</strong> मैच</div>
+    <div class="hs-item"><strong>48</strong> टीमें</div>
+    <div class="hs-item"><strong>3</strong> देश (USA, Canada, Mexico)</div>
+    <div class="hs-item"><strong>जून–जुलाई 2026</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- AI PREDICTIONS -->
+<div class="section">
+  <div class="section-title">🤖 आज के <span class="hl">AI प्रेडिक्शन</span></div>
+  <div class="pred-grid">
+
+    <div class="pred-card">
+      <div class="pc-match">ग्रुप A · मैच 12 · न्यूयॉर्क</div>
+      <div class="pc-teams">🇧🇷 Brazil vs 🇩🇪 Germany</div>
+      <div class="pc-odds-row">
+        <div class="pc-opt pick">
+          <div class="pc-opt-n">52%</div>
+          <div class="pc-opt-l">Brazil जीत</div>
+        </div>
+        <div class="pc-opt">
+          <div class="pc-opt-n">20%</div>
+          <div class="pc-opt-l">ड्रा</div>
+        </div>
+        <div class="pc-opt">
+          <div class="pc-opt-n">28%</div>
+          <div class="pc-opt-l">Germany जीत</div>
+        </div>
+      </div>
+      <div class="pc-ai">🤖 AI: Brazil घर से बाहर मजबूत है। Vinicius Jr का फॉर्म बेहतरीन। Germany की रक्षा कमजोर लग रही है।</div>
+      <a href="/command-center.html" class="pc-cta">पूरा विश्लेषण देखें →</a>
+    </div>
+
+    <div class="pred-card">
+      <div class="pc-match">ग्रुप B · मैच 14 · लॉस एंजेलिस</div>
+      <div class="pc-teams">🇫🇷 France vs 🇦🇷 Argentina</div>
+      <div class="pc-odds-row">
+        <div class="pc-opt pick">
+          <div class="pc-opt-n">44%</div>
+          <div class="pc-opt-l">France जीत</div>
+        </div>
+        <div class="pc-opt">
+          <div class="pc-opt-n">22%</div>
+          <div class="pc-opt-l">ड्रा</div>
+        </div>
+        <div class="pc-opt">
+          <div class="pc-opt-n">34%</div>
+          <div class="pc-opt-l">Argentina जीत</div>
+        </div>
+      </div>
+      <div class="pc-ai">🤖 AI: 2022 Final का रीमैच! Mbappé vs Messi — यह मैच टूर्नामेंट का सबसे बड़ा मुकाबला होगा।</div>
+      <a href="/command-center.html" class="pc-cta">पूरा विश्लेषण देखें →</a>
+    </div>
+
+    <div class="pred-card">
+      <div class="pc-match">ग्रुप C · मैच 16 · ह्यूस्टन</div>
+      <div class="pc-teams">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs 🇵🇹 Portugal</div>
+      <div class="pc-odds-row">
+        <div class="pc-opt">
+          <div class="pc-opt-n">38%</div>
+          <div class="pc-opt-l">England जीत</div>
+        </div>
+        <div class="pc-opt">
+          <div class="pc-opt-n">25%</div>
+          <div class="pc-opt-l">ड्रा</div>
+        </div>
+        <div class="pc-opt pick">
+          <div class="pc-opt-n">37%</div>
+          <div class="pc-opt-l">Portugal जीत</div>
+        </div>
+      </div>
+      <div class="pc-ai">🤖 AI: Kane vs Fernandes — दोनों टीमें बेहद प्रतिस्पर्धी हैं। AI को ड्रा या Portugal की जीत ज्यादा संभावित लग रही है।</div>
+      <a href="/command-center.html" class="pc-cta">पूरा विश्लेषण देखें →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- DREAM11 -->
+<div class="section">
+  <div class="section-title">🎯 <span class="hl">Dream11</span> World Cup टिप्स</div>
+
+  <div class="dream11-card">
+    <div class="d11-logo">🏆 Dream11 World Cup Fantasy Team</div>
+    <div class="d11-title">आज की सर्वश्रेष्ठ Fantasy टीम — AI द्वारा चुनी गई</div>
+    <div class="d11-body">
+      हमारा AI हर मैच के आंकड़े, पिछले प्रदर्शन, और मैदान की स्थिति को ध्यान में रखकर सर्वश्रेष्ठ Dream11 टीम तैयार करता है।
+      <br><br>
+      <strong>Brazil vs Germany मैच के लिए:</strong>
+    </div>
+    <div class="d11-picks">
+      <div class="dp-item"><div class="dp-role">⭐ C (Captain)</div><div class="dp-name">Vinicius Jr</div><div class="dp-team">🇧🇷 Brazil</div></div>
+      <div class="dp-item"><div class="dp-role">VC (Vice-Captain)</div><div class="dp-name">Rodrygo</div><div class="dp-team">🇧🇷 Brazil</div></div>
+      <div class="dp-item"><div class="dp-role">Forward</div><div class="dp-name">Kai Havertz</div><div class="dp-team">🇩🇪 Germany</div></div>
+      <div class="dp-item"><div class="dp-role">Midfielder</div><div class="dp-name">Wirtz</div><div class="dp-team">🇩🇪 Germany</div></div>
+      <div class="dp-item"><div class="dp-role">Midfielder</div><div class="dp-name">Musiala</div><div class="dp-team">🇩🇪 Germany</div></div>
+      <div class="dp-item"><div class="dp-role">Midfielder</div><div class="dp-name">Paquetá</div><div class="dp-team">🇧🇷 Brazil</div></div>
+      <div class="dp-item"><div class="dp-role">Defender</div><div class="dp-name">Militão</div><div class="dp-team">🇧🇷 Brazil</div></div>
+      <div class="dp-item"><div class="dp-role">Defender</div><div class="dp-name">Rüdiger</div><div class="dp-team">🇩🇪 Germany</div></div>
+      <div class="dp-item"><div class="dp-role">Goalkeeper</div><div class="dp-name">Alisson</div><div class="dp-team">🇧🇷 Brazil</div></div>
+    </div>
+    <a href="https://www.dream11.com?ref=YOUR_D11_REF" class="d11-cta" target="_blank" rel="nofollow">Dream11 पर अभी खेलें → ₹100 बोनस मिलेगा</a>
+  </div>
+</div>
+
+<!-- TOURNAMENT FAVOURITES -->
+<div class="section">
+  <div class="section-title">🏆 World Cup जीतने की <span class="hl">सम्भावना</span></div>
+  <div class="fav-grid">
+    <div class="fav-card"><div class="fav-flag">🇧🇷</div><div class="fav-name">Brazil</div><div class="fav-pct">22%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇫🇷</div><div class="fav-name">France</div><div class="fav-pct">18%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇦🇷</div><div class="fav-name">Argentina</div><div class="fav-pct">15%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇩🇪</div><div class="fav-name">Germany</div><div class="fav-pct">12%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="fav-name">England</div><div class="fav-pct">10%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇪🇸</div><div class="fav-name">Spain</div><div class="fav-pct">9%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇵🇹</div><div class="fav-name">Portugal</div><div class="fav-pct">7%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+    <div class="fav-card"><div class="fav-flag">🇳🇱</div><div class="fav-name">Netherlands</div><div class="fav-pct">6%</div><div class="fav-label">AI जीत प्रतिशत</div></div>
+  </div>
+</div>
+
+<!-- INDIA CRICKET ANALOGY -->
+<div class="section">
+  <div class="section-title">🏏 Cricket प्रेमियों के लिए — <span class="hl">Football समझाइए</span></div>
+  <div class="analogy-box">
+    <div class="ab-title">Cricket के लेंस से World Cup Football</div>
+    <div class="ab-body">
+      Football का World Cup cricket के T20 World Cup जैसा है — <strong>छोटे-छोटे पल जो सब कुछ बदल देते हैं।</strong>
+      <br><br>
+      <strong>एक goal = एक six:</strong> माहौल में बिजली-सी दौड़ जाती है।
+      <br>
+      <strong>Argentina vs Brazil = India vs Pakistan:</strong> दो देशों के बीच ऐसा मुकाबला जो सिर्फ खेल नहीं, भावना है।
+      <br>
+      <strong>Messi = Sachin Tendulkar:</strong> दोनों ने अपने खेल में सब हासिल किया — आखिरकार World Cup भी।
+      <br>
+      <strong>Penalty shootout = Super Over:</strong> आखिरी पलों में रोंगटे खड़े कर देने वाला रोमांच।
+      <br><br>
+      इस बार World Cup में 104 मैच होंगे — <strong>हर मैच पर AI विश्लेषण, हिंदी में।</strong>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH SCHEDULE -->
+<div class="section">
+  <div class="section-title">📅 आगामी <span class="hl">मैच</span> (IST समय)</div>
+  <div class="schedule-item">
+    <div><div class="si-teams">🇧🇷 Brazil vs 🇩🇪 Germany</div><div class="si-time">कल रात 11:30 PM IST · न्यूयॉर्क</div></div>
+    <div class="si-pred">AI: Brazil 52%</div>
+  </div>
+  <div class="schedule-item">
+    <div><div class="si-teams">🇫🇷 France vs 🇦🇷 Argentina</div><div class="si-time">15 जून · 4:30 AM IST · लॉस एंजेलिस</div></div>
+    <div class="si-pred">AI: France 44%</div>
+  </div>
+  <div class="schedule-item">
+    <div><div class="si-teams">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs 🇵🇹 Portugal</div><div class="si-time">16 जून · 2:00 AM IST · ह्यूस्टन</div></div>
+    <div class="si-pred">AI: Draw/Portugal</div>
+  </div>
+  <div class="schedule-item">
+    <div><div class="si-teams">🇪🇸 Spain vs 🇵🇹 Portugal</div><div class="si-time">18 जून · 12:30 AM IST · मियामी</div></div>
+    <div class="si-pred">AI: Spain 42%</div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px">* सभी समय IST (Indian Standard Time) में</p>
+</div>
+
+<!-- EMAIL SIGNUP -->
+<div style="background:var(--card);border:1px solid rgba(255,153,51,0.25);border-radius:14px;padding:24px;text-align:center">
+  <div style="font-size:22px;margin-bottom:8px">📧</div>
+  <div style="font-size:18px;font-weight:800;margin-bottom:6px">हर मैच का AI विश्लेषण — हिंदी में</div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:16px">Dream11 टिप्स, score predictions, और WC 2026 की सबसे जरूरी जानकारी — सीधे आपके inbox में।</div>
+  <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+</div>
+
+</div>
+
+<div class="rg-bar">
+  Dream11 18+ | Fantasy sports में जीत की कोई गारंटी नहीं | जिम्मेदारी से खेलें | AI predictions सिर्फ मनोरंजन के लिए हैं
+</div>
+
+</body>
+</html>

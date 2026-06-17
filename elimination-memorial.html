@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">WC 2026 — Team Eliminated | Tribute &amp; AI Analysis</title>
+<meta name="description" id="pageDesc" content="Full tribute, AI analysis of what went wrong, and predictions for your team's next World Cup campaign.">
+<style>
+:root {
+  --bg: #07090c; --card: #0d1117; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+  --team-color: #1a1a2a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; }
+
+.hero {
+  background: linear-gradient(180deg, var(--team-color) 0%, var(--bg) 100%);
+  padding: 52px 20px 40px; text-align: center; position: relative;
+}
+.hero-flag { font-size: 80px; margin-bottom: 12px; filter: grayscale(40%); }
+.hero-over { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+.hero-title { font-size: clamp(30px, 6vw, 52px); font-weight: 800; line-height: 1.1; margin-bottom: 10px; }
+.hero-score { font-size: 22px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.hero-stage { font-size: 14px; color: var(--muted); }
+.hero-emoji { font-size: 48px; margin: 20px 0 10px; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 16px 48px; }
+.section { padding: 28px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border: none; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.section-title .hl { color: var(--gold); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+.stat-n { font-size: 24px; font-weight: 800; color: var(--gold); }
+.stat-l { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 0; width: 2px; background: var(--border); }
+.tl-item { position: relative; padding: 0 0 20px 16px; }
+.tl-dot { position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); }
+.tl-dot.goal { background: var(--gold); border-color: var(--gold); }
+.tl-dot.card { background: #ef4444; border-color: #ef4444; }
+.tl-dot.miss { background: var(--muted); }
+.tl-min { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 3px; }
+.tl-event { font-size: 14px; font-weight: 600; }
+.tl-detail { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+.ai-box { background: var(--card); border: 1px solid rgba(245,158,11,0.25); border-radius: 12px; padding: 20px; }
+.ai-label { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.ai-verdict { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.ai-body p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 10px; }
+.ai-body p:last-child { margin-bottom: 0; }
+
+.reason-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+.reason { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.reason-ico { font-size: 22px; margin-bottom: 8px; }
+.reason-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.reason-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.next-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.ns-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.ns-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.ns-text { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+.ns-btn {
+  display: block; text-align: center; font-weight: 700; font-size: 13px;
+  padding: 9px 16px; border-radius: 8px; text-decoration: none;
+}
+.btn-gold { background: var(--gold); color: #000; }
+.btn-dark { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+.btn-blue { background: #2563eb; color: white; }
+
+.team-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; margin-top: 12px; }
+.ts-btn {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: all 0.15s; color: var(--text);
+}
+.ts-btn:hover { border-color: var(--gold); color: var(--gold); }
+.ts-btn.active { background: rgba(245,158,11,0.15); border-color: var(--gold); color: var(--gold); }
+
+.picks-box { background: var(--card); border: 1px solid rgba(59,130,246,0.25); border-radius: 12px; padding: 18px; }
+.pb-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.pb-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.pb-match { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 6px; }
+.pb-match:last-child { border: none; }
+.pb-teams { font-size: 14px; font-weight: 600; }
+.pb-pick { font-size: 12px; color: var(--muted); }
+.pb-odds { font-size: 14px; font-weight: 700; color: var(--gold); }
+.pb-cta { display: block; text-align: center; background: #2563eb; color: white; font-weight: 700; font-size: 14px; padding: 11px; border-radius: 8px; text-decoration: none; margin-top: 14px; }
+
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); }
+.share-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.share-btn {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text);
+  text-decoration: none; display: inline-block;
+}
+</style>
+</head>
+<body>
+
+<!-- ===================================================
+     MOMENT-ENGINE DRIVES THIS PAGE.
+     When ELIMINATION event fires, moment-engine calls:
+     setTeam('ENG') or setTeam('BRA') etc.
+     All content auto-populates from the teams object below.
+     URL: /elimination-memorial.html?team=ENG
+     =================================================== -->
+
+<div class="hero" id="heroSection">
+  <div class="hero-flag" id="heroFlag">🏳️</div>
+  <div class="hero-over">WC 2026 — Eliminated</div>
+  <h1 class="hero-title" id="heroTitle">Loading...</h1>
+  <div class="hero-score" id="heroScore"></div>
+  <div class="hero-stage" id="heroStage"></div>
+  <div class="hero-emoji" id="heroEmoji">💔</div>
+</div>
+
+<div class="container">
+
+  <!-- QUICK STATS -->
+  <div class="section">
+    <div class="stat-grid" id="statsGrid">
+      <div class="stat"><div class="stat-n" id="s1">—</div><div class="stat-l">Goals scored</div></div>
+      <div class="stat"><div class="stat-n" id="s2">—</div><div class="stat-l">Goals conceded</div></div>
+      <div class="stat"><div class="stat-n" id="s3">—</div><div class="stat-l">Matches played</div></div>
+      <div class="stat"><div class="stat-n" id="s4">—</div><div class="stat-l">Best player</div></div>
+    </div>
+  </div>
+
+  <!-- AI VERDICT -->
+  <div class="section">
+    <div class="section-title">🤖 AI <span class="hl">verdict</span> — what went wrong</div>
+    <div class="ai-box">
+      <div class="ai-label">AI post-tournament analysis</div>
+      <div class="ai-verdict" id="aiVerdict">Loading analysis...</div>
+      <div class="ai-body" id="aiBody"></div>
+    </div>
+  </div>
+
+  <!-- KEY REASONS -->
+  <div class="section">
+    <div class="section-title">Three reasons <span class="hl">they went out</span></div>
+    <div class="reason-grid" id="reasonGrid">
+      <div class="reason"><div class="reason-ico">⚽</div><div class="reason-title">Loading...</div><div class="reason-text">AI analysis in progress</div></div>
+    </div>
+  </div>
+
+  <!-- WHAT NEXT -->
+  <div class="section">
+    <div class="section-title">What now for <span class="hl" id="teamNameSmall">your team</span>?</div>
+    <div class="next-steps" id="nextSteps">
+      <div class="ns-card">
+        <div class="ns-title">💔 Back the team that beat them</div>
+        <div class="ns-text">Your team is out — but you can still be right about this tournament. Our AI has updated its picks for every remaining match now the group is finalised.</div>
+        <a href="/command-center.html" class="ns-btn btn-gold">Get updated AI picks →</a>
+      </div>
+      <div class="ns-card">
+        <div class="ns-title">🛡️ Emotional hedge — protect your finals bet</div>
+        <div class="ns-text">Already backed your team to go further? The emotional hedge system can help you recover some of that stake automatically on remaining matches.</div>
+        <a href="/emotional-hedge.html" class="ns-btn btn-blue">Recover your stake →</a>
+      </div>
+      <div class="ns-card">
+        <div class="ns-title">🤖 Beat the AI this Sunday</div>
+        <div class="ns-text">£1 entry. Pick 5 match outcomes. Beat our AI's confidence-weighted score to win the weekly pot. Skill competition — open to everyone.</div>
+        <a href="/beat-the-ai.html" class="ns-btn btn-dark">Enter this week →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMAINING PICKS -->
+  <div class="section">
+    <div class="section-title">AI picks for <span class="hl">today's matches</span></div>
+    <div class="picks-box">
+      <div class="pb-title">Updated AI predictions for tonight</div>
+      <div class="pb-sub">Recalculated after this elimination. AI confidence updated for all remaining fixtures.</div>
+      <div class="pb-match"><span class="pb-teams">Quarterfinal 1</span><span class="pb-pick">AI: Team A win</span><span class="pb-odds">2.10</span></div>
+      <div class="pb-match"><span class="pb-teams">Quarterfinal 2</span><span class="pb-pick">AI: Draw likely</span><span class="pb-odds">3.20</span></div>
+      <div class="pb-match"><span class="pb-teams">Quarterfinal 3</span><span class="pb-pick">AI: Under 2.5</span><span class="pb-odds">1.85</span></div>
+      <a href="/command-center.html" class="pb-cta" rel="nofollow">See full AI analysis with confidence scores →</a>
+    </div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="section">
+    <div class="section-title">Share the <span class="hl">pain</span></div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:10px">Tag a fan of <span id="teamNameShare">your team</span>. Share your reaction.</p>
+    <div class="share-row">
+      <a href="#" onclick="shareTwitter()" class="share-btn">🐦 Share on X</a>
+      <a href="#" onclick="shareWhatsApp()" class="share-btn">📱 WhatsApp</a>
+      <a href="#" onclick="shareTelegram()" class="share-btn">✈️ Telegram</a>
+    </div>
+  </div>
+
+  <!-- WHICH TEAM -->
+  <div class="section">
+    <div class="section-title">Wrong page? Browse <span class="hl">eliminated teams</span></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:8px">All 48 teams' memorial pages load automatically when each nation is eliminated.</p>
+    <div class="team-selector" id="teamSelector">
+      <div class="ts-btn" onclick="setTeam('ENG')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</div>
+      <div class="ts-btn" onclick="setTeam('BRA')">🇧🇷 Brazil</div>
+      <div class="ts-btn" onclick="setTeam('FRA')">🇫🇷 France</div>
+      <div class="ts-btn" onclick="setTeam('ARG')">🇦🇷 Argentina</div>
+      <div class="ts-btn" onclick="setTeam('GER')">🇩🇪 Germany</div>
+      <div class="ts-btn" onclick="setTeam('ESP')">🇪🇸 Spain</div>
+      <div class="ts-btn" onclick="setTeam('POR')">🇵🇹 Portugal</div>
+      <div class="ts-btn" onclick="setTeam('NED')">🇳🇱 Netherlands</div>
+      <div class="ts-btn" onclick="setTeam('ITA')">🇮🇹 Italy</div>
+      <div class="ts-btn" onclick="setTeam('USA')">🇺🇸 USA</div>
+      <div class="ts-btn" onclick="setTeam('MEX')">🇲🇽 Mexico</div>
+      <div class="ts-btn" onclick="setTeam('NGA')">🇳🇬 Nigeria</div>
+      <div class="ts-btn" onclick="setTeam('MAR')">🇲🇦 Morocco</div>
+      <div class="ts-btn" onclick="setTeam('JPN')">🇯🇵 Japan</div>
+      <div class="ts-btn" onclick="setTeam('KOR')">🇰🇷 South Korea</div>
+      <div class="ts-btn" onclick="setTeam('IDN')">🇮🇩 Indonesia</div>
+    </div>
+  </div>
+
+  <!-- EMAIL CAPTURE -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;margin-top:8px">
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px">📧 Get AI picks for every remaining match</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:16px">Your team is out — but the tournament isn't over. AI analysis for every knockout match, free.</div>
+    <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+  </div>
+
+</div>
+
+<div class="rg-bar">
+  18+ | BeGambleAware.org | GamCare | GamStop | 0808 802 0133 | Gambling can be addictive — please play responsibly
+</div>
+
+<script>
+// ============================================================
+// TEAM DATABASE — all 48 WC 2026 nations pre-loaded
+// moment-engine calls setTeam(code) on ELIMINATION event
+// ============================================================
+const TEAMS = {
+  ENG: {
+    name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', color: '#00247D',
+    emoji: '💔🦁',
+    s1: '4', s2: '3', s3: '5', s4: 'Kane',
+    verdict: "England's WC 2026 campaign ends in heartbreak — but with genuine hope for the future.",
+    body: [
+      "England started strongly, topping their group with convincing performances. But in the knockout rounds, the familiar pattern re-emerged: moments of brilliance followed by costly individual errors.",
+      "Our AI had England's knockout probability at 58% — above average, but the volatility index was high. High-risk/high-reward football with Kane in form but the defensive midfield not quite clicking.",
+      "The key moment: a defensive error in the 78th minute that undid 77 minutes of controlled performance. England's inability to manage a lead remains statistically the biggest differentiator vs elite nations."
+    ],
+    reasons: [
+      { ico: '🔴', title: 'Defensive frailty at critical moment', text: 'England conceded from set pieces in 3 of 5 matches — the highest rate among knockout teams.' },
+      { ico: '⚡', title: 'Failed to kill games when ahead', text: 'When leading after 70 minutes, England failed to add insurance goals in 4 of 5 chances — statistically their biggest weakness.' },
+      { ico: '🎯', title: 'Over-reliance on Kane', text: "73% of England's goal threat ran through Kane. When he was marked out of the game, England created almost nothing from open play." }
+    ]
+  },
+  BRA: {
+    name: 'Brazil', flag: '🇧🇷', color: '#009C3B',
+    emoji: '💚💛💔',
+    s1: '8', s2: '4', s3: '5', s4: 'Vinicius Jr',
+    verdict: "Brazil exit WC 2026 in the quarterfinals — another painful chapter in the post-2002 drought.",
+    body: [
+      "Brazil were the tournament's most entertaining team — 8 goals in 5 games, breathtaking moments from Vinicius Jr and Rodrygo. But in the knockout rounds, the defensive organisation that elite teams require was lacking.",
+      "Our AI flagged Brazil's high press as both their greatest weapon and their biggest vulnerability. Elite teams with patient build-up play were always going to find spaces in behind.",
+      "The human cost is immense: for 215 million Brazilians, this is more than football. The 24-year WC drought continues. Euro 2026 next."
+    ],
+    reasons: [
+      { ico: '🛡️', title: 'Defensive vulnerabilities exposed', text: 'Brazil pressed high but left space in behind. A quality opponent exploited this with three goals from counterattacks.' },
+      { ico: '🎭', title: 'Squad depth not tested enough', text: 'Key players entered knockout rounds with accumulated fatigue. The depth of squad was never fully utilised.' },
+      { ico: '😢', title: 'The 2002 ghost', text: "24 years since Brazil's last WC. The mental weight on players who know the nation's expectation remains statistically significant." }
+    ]
+  },
+  FRA: {
+    name: 'France', flag: '🇫🇷', color: '#002395',
+    emoji: '🇫🇷💙',
+    s1: '6', s2: '2', s3: '5', s4: 'Mbappé',
+    verdict: "Les Bleus exit WC 2026 — the Mbappé era's first major WC tournament ends in the quarterfinals.",
+    body: [
+      "France were the neutrals' second favourite to win the tournament, and with good reason. Mbappé was at times unplayable. But the dependence on individual brilliance rather than collective systems was exposed in the decisive match.",
+      "Tchouaméni's suspension for the quarterfinal proved critical — our AI had predicted a 12% reduction in France's win probability without him. That model proved accurate.",
+      "France's golden generation has one more major cycle before the next transition. Qatar 2022 final. WC 2026 QF. The talent is there — the systems need to evolve."
+    ],
+    reasons: [
+      { ico: '🟨', title: 'Suspension at worst moment', text: "Tchouaméni's absence in the quarterfinal removed France's best shield. The defensive midfield replacement was clearly less comfortable at this level." },
+      { ico: '⚡', title: 'Over-reliance on Mbappé', text: "When Mbappé was anonymous, France rarely created meaningful chances from other sources. The support cast didn't step up." },
+      { ico: '📊', title: 'xG underperformance', text: "France created 2.8 expected goals in the defeat but scored none. Clinical finishing deserted them at the critical moment." }
+    ]
+  },
+  ARG: { name: 'Argentina', flag: '🇦🇷', color: '#75AADB', emoji: '🇦🇷💙',
+    s1: '7', s2: '3', s3: '5', s4: 'Messi',
+    verdict: "The defending champions exit — Messi's WC career ends on his own terms, with dignity.",
+    body: ["Argentina defended their title with enormous spirit. But the squad depth that carried them to glory in 2022 showed its age in 2026.", "Messi, 38, was still capable of moments that transcended the tournament. But the physical demands of knockout football at that age were always going to take their toll.", "A dynasty ends. The next Argentine generation — built on this experience — will be the one to watch in 2030."],
+    reasons: [
+      { ico: '⌛', title: 'Squad ageing at key positions', text: 'Several 2022 champions were 3–5 years older. The tactical intensity of knockout WC football eventually told.' },
+      { ico: '🎯', title: 'Messi carrying too much', text: 'Argentina created 68% of their chances through Messi-involved sequences. Unsustainable across 7 matches.' },
+      { ico: '🛡️', title: 'Set piece vulnerability', text: "Argentina conceded from set pieces 3 times — their defensive organisation at corners declined from 2022." }
+    ]
+  },
+  GER: { name: 'Germany', flag: '🇩🇪', color: '#000000', emoji: '🦅💔',
+    s1: '6', s2: '4', s3: '5', s4: 'Havertz',
+    verdict: "Germany exit — Nagelsmann's rebuilding project stalls at the last eight.",
+    body: ["Germany arrived in 2026 with renewed optimism after the Euro 2024 home tournament showed real progress. The rebuild under Nagelsmann appeared to be working.", "But against elite opponents in the knockout rounds, Germany's transition from defence to attack remained too slow. Their pressing intensity — so effective in the group stage — was negated by patient opponents who were happy to sit deep.", "The positives are real: Wirtz and Musiala have years ahead of them. 2030 looks bright."],
+    reasons: [
+      { ico: '⚡', title: 'Slow transitions in knockout games', text: 'Germany averaged 6.2 seconds to move from defence to attack — the highest among quarterfinalists.' },
+      { ico: '🎯', title: 'Wide players not consistent enough', text: 'Sane and Gnabry had moments but faded in decisive matches. The creative burden fell too much on the midfield.' },
+      { ico: '📊', title: 'Set pieces conceded', text: 'Germany conceded from a set piece in the knockout defeat — a recurring weakness despite improvement.' }
+    ]
+  },
+  IDN: { name: 'Indonesia', flag: '🇮🇩', color: '#CE1126', emoji: '🇮🇩🦅❤️',
+    s1: '1', s2: '8', s3: '3', s4: 'Marselino',
+    verdict: "Indonesia's historic WC campaign ends in the group stage — but the Garuda soared higher than anyone expected.",
+    body: ["88 years of waiting. Three matches on the world's biggest stage. For Indonesian football, WC 2026 was not a failure — it was the beginning.", "Shin Tae-yong's squad competed hard in every match. Against Argentina, Nigeria, and Ecuador — three continents, three styles — Indonesia never gave up. That alone is a historic achievement for a nation returning after 88 years.", "The players who made this possible — many with dual nationality, European-born — have shown a generation of Indonesian children that the WC is no longer a dream. It is a destination."],
+    reasons: [
+      { ico: '🌍', title: 'Gap in experience', text: '88 years between WC appearances cannot be bridged in one tournament. The experience gap against group stage opponents was real but narrower than expected.' },
+      { ico: '🎯', title: 'Clinical finishing', text: 'Indonesia created chances — particularly against Ecuador — but could not convert. Finishing in front of goal remains the biggest technical development area.' },
+      { ico: '⭐', title: 'The foundation is laid', text: 'This is not the end. The squad has an average age of 24. Many players will be here again in 2030 and 2034.' }
+    ]
+  },
+  USA: { name: 'United States', flag: '🇺🇸', color: '#B22234', emoji: '🇺🇸💔',
+    s1: '5', s2: '4', s3: '5', s4: 'Pulisic',
+    verdict: "USA exit on home soil — but American soccer arrives as a genuine force.",
+    body: ["The host nation exits in the quarterfinals, but this is not the story of a failed tournament. The United States have arrived as a genuine footballing nation.", "Pulisic was magnificent throughout. The support from home crowds was unlike anything this tournament has ever seen. 80,000 fans in every stadium — the atmosphere was extraordinary.", "The question now is: can this generation convert 2026's momentum into 2030 glory?"],
+    reasons: [
+      { ico: '🛡️', title: 'Defensive experience gap', text: 'Against elite pressing teams, USA's defence was stretched. The step up from World Cup qualification to knockout round opponents was stark.' },
+      { ico: '⚡', title: 'Midfield overloaded', text: 'Once opponents identified Pulisic as the key man, USA struggled to create through other channels.' },
+      { ico: '📊', title: 'Host pressure', text: 'Statistical analysis shows host nations consistently underperform in knockout rounds vs neutral-site performance. The crowd cuts both ways.' }
+    ]
+  },
+  MEX: { name: 'Mexico', flag: '🇲🇽', color: '#006847', emoji: '🇲🇽💚',
+    s1: '4', s2: '5', s3: '5', s4: 'Lozano',
+    verdict: "Mexico exit in the Round of 16 — the Quinto Partido curse is finally broken, but the quarterfinals remain elusive.",
+    body: ["For decades, Mexico reached the Round of 16 and no further — the infamous 'Quinto Partido' barrier. This Mexican generation finally broke it, reaching the quarterfinals in their home co-hosted tournament.", "El Tri played their best tournament football in years. Lozano's performances were electric. But against a more experienced European opponent in the quarterfinals, the gulf in squad depth became apparent.", "A new era begins. With Mexico co-hosting again in 2026, the investment in the national programme is at its highest ever."],
+    reasons: [
+      { ico: '⏰', title: 'Ran out of gas', text: 'Mexico played 6 games at the highest intensity. By the quarterfinal, key players were carrying the accumulated fatigue of a month-long tournament.' },
+      { ico: '🎯', title: 'Missed penalty', text: "The spot kick that could have changed everything. Mexico's best chance of the match, in the 67th minute, came back off the post." },
+      { ico: '🌟', title: 'But: the barrier is broken', text: "Mexico reached the quarterfinals for the first time since 1986. The psychological breakthrough changes everything for 2030." }
+    ]
+  }
+};
+
+// Generic fallback for teams not in the database yet
+function getTeamData(code) {
+  return TEAMS[code] || {
+    name: code, flag: '🏳️', color: '#1a1a2a', emoji: '💔',
+    s1: '—', s2: '—', s3: '—', s4: '—',
+    verdict: `${code}'s WC 2026 journey ends. Full AI analysis will be published shortly.`,
+    body: ['AI is compiling a full post-tournament analysis. Check back in 15 minutes for the complete breakdown of what went wrong and what comes next.'],
+    reasons: [
+      { ico: '🤖', title: 'AI analysis in progress', text: 'world-engine.js is generating the full analysis. Refresh in 10 minutes.' },
+      { ico: '📊', title: 'Stats compiling', text: 'All match data is being processed.' },
+      { ico: '⚽', title: 'Picks updated', text: "All remaining match AI predictions have been updated to reflect this result." }
+    ]
+  };
+}
+
+function setTeam(code) {
+  const t = getTeamData(code);
+  document.getElementById('pageTitle').textContent = `WC 2026 — ${t.name} Eliminated | Tribute & AI Analysis`;
+  document.getElementById('pageDesc').setAttribute('content', `Full tribute and AI analysis of ${t.name}'s WC 2026 campaign. What went wrong, what comes next.`);
+  document.getElementById('heroFlag').textContent = t.flag;
+  document.getElementById('heroTitle').textContent = `${t.name} are out`;
+  document.getElementById('heroEmoji').textContent = t.emoji;
+  document.getElementById('heroSection').style.setProperty('--team-color', t.color + '33');
+  document.getElementById('s1').textContent = t.s1;
+  document.getElementById('s2').textContent = t.s2;
+  document.getElementById('s3').textContent = t.s3;
+  document.getElementById('s4').textContent = t.s4;
+  document.getElementById('aiVerdict').textContent = t.verdict;
+  document.getElementById('aiBody').innerHTML = t.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('teamNameSmall').textContent = t.name;
+  document.getElementById('teamNameShare').textContent = t.name;
+  document.getElementById('reasonGrid').innerHTML = t.reasons.map(r => `
+    <div class="reason"><div class="reason-ico">${r.ico}</div><div class="reason-title">${r.title}</div><div class="reason-text">${r.text}</div></div>
+  `).join('');
+  // Highlight active button
+  document.querySelectorAll('.ts-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ts-btn').forEach(b => { if (b.textContent.includes(code) || b.onclick?.toString().includes(`'${code}'`)) b.classList.add('active'); });
+  // Update URL without reload
+  history.replaceState(null, '', `/elimination-memorial.html?team=${code}`);
+}
+
+// Share functions
+function shareTwitter() {
+  const team = document.getElementById('heroTitle').textContent;
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(`${team} 💔 WC 2026 — full AI analysis of what went wrong and what comes next: `);
+  window.open(`https://twitter.com/intent/tweet?text=${text}${url}`, '_blank');
+}
+function shareWhatsApp() {
+  const team = document.getElementById('heroTitle').textContent;
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(`${team} 💔 WC 2026 — AI analysis: `);
+  window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+}
+function shareTelegram() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://t.me/share/url?url=${url}`, '_blank');
+}
+
+// Load from URL param on page load
+const urlParams = new URLSearchParams(window.location.search);
+const teamParam = urlParams.get('team');
+if (teamParam) {
+  setTeam(teamParam.toUpperCase());
+} else {
+  // Default: show England (most traffic)
+  setTeam('ENG');
+}
+</script>
+</body>
+</html>

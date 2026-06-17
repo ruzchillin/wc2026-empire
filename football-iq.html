@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Football IQ Test — What's Your Score?</title>
+<meta name="description" content="Test your World Cup 2026 football knowledge. 20 questions, get your official Football IQ score and shareable certificate. Free.">
+<meta property="og:title" content="WC 2026 Football IQ Test 🏆">
+<meta property="og:description" content="How well do you really know football? Take the WC 2026 Football IQ test and get your score.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e5e5e5;min-height:100vh}
+.hero{background:linear-gradient(135deg,#1a237e,#283593);padding:50px 20px;text-align:center}
+.hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:12px}
+.hero p{color:rgba(255,255,255,0.85);font-size:1.1rem}
+.container{max-width:680px;margin:0 auto;padding:40px 20px}
+.progress-bar{width:100%;height:6px;background:#1a1a1a;border-radius:3px;margin-bottom:32px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00c853,#69f0ae);border-radius:3px;transition:width 0.4s}
+.question-num{font-size:0.85rem;color:#666;margin-bottom:8px}
+.question-text{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.5}
+.question-emoji{font-size:2.5rem;margin-bottom:16px;text-align:center;display:block}
+.options{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.option-btn{background:#1a1a1a;border:2px solid #333;border-radius:10px;padding:16px 20px;color:#e5e5e5;font-size:1rem;cursor:pointer;text-align:left;transition:all 0.2s;font-family:inherit}
+.option-btn:hover{border-color:#00c853;background:#1e2e1e}
+.option-btn.correct{border-color:#00c853;background:#0d2b14;color:#00c853}
+.option-btn.wrong{border-color:#f44336;background:#2b0d0d;color:#f44336}
+.option-btn.reveal{border-color:#00c853;background:#0d2b14;color:#00c853}
+.option-btn:disabled{cursor:default}
+.feedback{margin-top:16px;padding:14px;border-radius:8px;font-size:0.95rem;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:#0d2b14;border:1px solid #00c853;color:#69f0ae}
+.feedback.wrong{background:#2b0d0d;border:1px solid #f44336;color:#ef9a9a}
+.next-btn{margin-top:20px;width:100%;padding:16px;background:#00c853;color:#000;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s;font-family:inherit}
+.next-btn:hover{background:#00b847}
+.results{display:none;text-align:center}
+.results.show{display:block}
+.score-circle{width:160px;height:160px;border-radius:50%;border:6px solid #00c853;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;background:#0d2b14}
+.score-num{font-size:3rem;font-weight:900;color:#00c853}
+.score-label{font-size:0.8rem;color:#69f0ae}
+.tier-badge{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:8px}
+.tier-desc{color:#aaa;font-size:0.95rem;margin-bottom:32px}
+.certificate{background:linear-gradient(135deg,#1a1a1a,#222);border:2px solid #ffd700;border-radius:16px;padding:32px;margin:24px 0;text-align:center;position:relative}
+.certificate::before{content:'🏆';position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:2.5rem;background:#0a0a0a;padding:0 8px}
+.certificate h3{color:#ffd700;font-size:1.1rem;margin-bottom:4px}
+.certificate .cert-name{font-size:1.8rem;font-weight:900;color:#fff;margin:12px 0 4px}
+.certificate .cert-detail{color:#aaa;font-size:0.9rem}
+.certificate .cert-score{font-size:2.5rem;font-weight:900;color:#ffd700;margin:12px 0}
+.share-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.share-btn{padding:12px 24px;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;border:none;font-family:inherit}
+.share-tw{background:#000;color:#fff}
+.share-wa{background:#25d366;color:#fff}
+.share-copy{background:#333;color:#fff}
+.email-capture{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;margin-top:24px;text-align:center}
+.email-capture h3{color:#fff;font-size:1.1rem;margin-bottom:8px}
+.email-capture p{color:#aaa;font-size:0.9rem;margin-bottom:16px}
+.email-form{display:flex;gap:10px;flex-wrap:wrap}
+.email-form input{flex:1;min-width:200px;padding:12px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:1rem}
+.email-form button{padding:12px 24px;background:#00c853;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚽ WC 2026 Football IQ Test</h1>
+  <p>20 questions · 5 minutes · Get your official score + shareable certificate</p>
+</div>
+
+<div class="container">
+  <div id="quiz-area">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:5%"></div></div>
+
+    <div id="question-box">
+      <div class="question-num" id="q-num">Question 1 of 20</div>
+      <span class="question-emoji" id="q-emoji">⚽</span>
+      <div class="question-text" id="q-text">Loading...</div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="next-btn" style="display:none" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="score-circle">
+      <div class="score-num" id="final-score">0/20</div>
+      <div class="score-label">YOUR SCORE</div>
+    </div>
+    <div class="tier-badge" id="tier-badge">Loading...</div>
+    <div class="tier-desc" id="tier-desc"></div>
+
+    <div class="certificate" id="certificate">
+      <h3>OFFICIAL CERTIFICATE OF FOOTBALL IQ</h3>
+      <p style="color:#888;font-size:0.85rem">WC 2026 AI Intelligence Platform</p>
+      <div class="cert-name" id="cert-name">Football Expert</div>
+      <div class="cert-score" id="cert-score">0%</div>
+      <div class="cert-detail">WC 2026 Football IQ · <span id="cert-date"></span></div>
+      <div style="margin-top:16px;font-size:0.8rem;color:#666">wc2026ai.com</div>
+    </div>
+
+    <div class="share-btns">
+      <button class="share-btn share-tw" onclick="shareTwitter()">𝕏 Share on X</button>
+      <button class="share-btn share-wa" onclick="shareWhatsApp()">📱 Share on WhatsApp</button>
+      <button class="share-btn share-copy" onclick="copyResult()">📋 Copy Result</button>
+    </div>
+
+    <div class="email-capture">
+      <h3>🤖 Get AI Picks for Every WC 2026 Match</h3>
+      <p>Your Football IQ is <span id="iq-inline">great</span>. Put it to use — get AI predictions before every WC 2026 match, free.</p>
+      <div class="email-form">
+        <input type="email" id="email-input" placeholder="Your email address">
+        <button onclick="subscribeEmail()">Get Free Picks</button>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;text-align:center">
+      <button onclick="restartQuiz()" style="background:transparent;border:1px solid #333;color:#aaa;padding:12px 24px;border-radius:8px;cursor:pointer;font-family:inherit">🔄 Try Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { q:"How many teams are in WC 2026?", emoji:"🏆", options:["32","36","48","64"], correct:2, fact:"WC 2026 expands to 48 teams for the first time ever — up from 32 at WC 2022." },
+  { q:"Which three countries are hosting WC 2026?", emoji:"🌎", options:["USA, Brazil, Mexico","USA, Canada, Mexico","USA, Canada, Cuba","Mexico, Canada, Colombia"], correct:1, fact:"USA, Canada, and Mexico are co-hosting WC 2026 — the first time three nations co-host." },
+  { q:"Where is the WC 2026 Final being held?", emoji:"🏟️", options:["AT&T Stadium, Dallas","Hard Rock Stadium, Miami","MetLife Stadium, New Jersey","SoFi Stadium, Los Angeles"], correct:2, fact:"MetLife Stadium in New Jersey (near NYC) hosts the Final — capacity 82,500." },
+  { q:"Which player holds the record for most WC goals ever?", emoji:"⚽", options:["Pelé","Miroslav Klose","Ronaldo (Brazil)","Gerd Müller"], correct:1, fact:"Miroslav Klose scored 16 WC goals across 4 tournaments (2002-2014) — the all-time record." },
+  { q:"How many WC tournaments has Brazil won?", emoji:"🇧🇷", options:["3","4","5","6"], correct:2, fact:"Brazil has won 5 WC titles: 1958, 1962, 1970, 1994, 2002 — more than any other nation." },
+  { q:"The WC 2026 tournament runs for how many days?", emoji:"📅", options:["28","32","38","45"], correct:2, fact:"WC 2026 runs June 11 – July 19, 2026 — 38 days of football." },
+  { q:"Which country won the most recent WC (2022)?", emoji:"🥇", options:["France","Brazil","Argentina","Morocco"], correct:2, fact:"Argentina won WC 2022 in Qatar, beating France on penalties in the final after a 3-3 draw." },
+  { q:"What altitude is Mexico City's Estadio Azteca at?", emoji:"⛰️", options:["500m","1,200m","2,240m","3,500m"], correct:2, fact:"Mexico City sits at 2,240 metres above sea level — causing significant disadvantage for sea-level teams." },
+  { q:"Which WC 2026 host city is furthest north?", emoji:"🌨️", options:["Seattle","Vancouver","Toronto","Boston"], correct:1, fact:"Vancouver, Canada is the northernmost WC 2026 host city." },
+  { q:"Who scored in the most WC tournaments? (5 different WCs)", emoji:"🌟", options:["Pelé","Cristiano Ronaldo","Lothar Matthäus","Antonio Carbajal / Kristine Lilly"], correct:1, fact:"Cristiano Ronaldo scored in 5 different WC tournaments (2006, 2010, 2014, 2018, 2022)." },
+  { q:"What is xG in football analytics?", emoji:"📊", options:["Extra Goals","Expected Goals","Exchange Gamble","eXtra possession Grade"], correct:1, fact:"xG (Expected Goals) measures the quality of a chance based on historical data — closer to goal, less pressure, better angle = higher xG." },
+  { q:"Which nation was eliminated in the WC 2022 group stage despite scoring 6 goals?", emoji:"😱", options:["Germany","Belgium","Mexico","Denmark"], correct:0, fact:"Germany scored 6 goals but were eliminated in the group stage of WC 2022 — one of the biggest shocks in WC history." },
+  { q:"How many referees officiate at a WC match? (including VAR)", emoji:"🦺", options:["3","5","7","8"], correct:2, fact:"7 officials per match: 1 referee, 2 assistant referees, 1 fourth official, and 3 VAR officials." },
+  { q:"What does CONCACAF stand for?", emoji:"🌎", options:["Continental Northern/Central American and Caribbean Association Football","Confederation of North, Central America and Caribbean Association Football","Council of North America Caribbean and Central American Football","Confederation of Nations in Central America, Caribbean And Football"], correct:1, fact:"CONCACAF represents North/Central America and the Caribbean — USA, Canada, Mexico, and Caribbean nations." },
+  { q:"Which stadium hosted both the 1970 and 1986 WC Finals?", emoji:"🏟️", options:["Estadio Azteca","Bernabéu","Maracana","Wembley"], correct:0, fact:"The Estadio Azteca in Mexico City hosted both the 1970 and 1986 Finals — the only stadium to do this twice." },
+  { q:"In a penalty shootout, how many players take penalties before sudden death?", emoji:"🥅", options:["3 each","4 each","5 each","6 each"], correct:2, fact:"Each team takes 5 penalties. If still level after 5 each, it becomes sudden death — one penalty at a time." },
+  { q:"Who is the WC's all-time leading scorer in a SINGLE tournament?", emoji:"⚽", options:["Gerd Müller (10 in 1970)","Just Fontaine (13 in 1958)","Ronaldo (8 in 2002)","Klose (8 in 2006)"], correct:1, fact:"Just Fontaine scored 13 goals at the 1958 WC in Sweden — a record unlikely to ever be broken." },
+  { q:"WC 2026 will be the first time the USA co-hosts a WC since...", emoji:"🇺🇸", options:["1986","1990","1994","1998"], correct:2, fact:"USA last hosted in 1994 — the first time the WC came to North America. WC 2026 is their return after 32 years." },
+  { q:"Morocco's run to the WC 2022 semi-finals was the best ever by...", emoji:"🇲🇦", options:["An Asian nation","An African nation","An Arab nation","Both African and Arab nation"], correct:3, fact:"Morocco became the first African AND first Arab nation to reach a WC semi-final. Historic on two counts." },
+  { q:"Which country has appeared in the most WC Finals? (record holders)", emoji:"🏆", options:["Brazil (8)","Germany/West Germany (8)","Italy (6)","Argentina (6)"], correct:1, fact:"Germany/West Germany have appeared in 8 WC Finals — 1954, 1966, 1974, 1982, 1986, 1990, 2002, 2014 — the most of any nation." },
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  document.getElementById('q-emoji').textContent = q.emoji;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress').style.width = `${((current+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').style.display = 'none';
+  answered = false;
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => answer(i);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.correct) {
+    score++;
+    buttons[idx].classList.add('correct');
+    const fb = document.getElementById('feedback');
+    fb.textContent = '✅ Correct! ' + q.fact;
+    fb.className = 'feedback correct show';
+  } else {
+    buttons[idx].classList.add('wrong');
+    buttons[q.correct].classList.add('reveal');
+    const fb = document.getElementById('feedback');
+    fb.textContent = '❌ Not quite. ' + q.fact;
+    fb.className = 'feedback wrong show';
+  }
+
+  document.getElementById('next-btn').style.display = 'block';
+  document.getElementById('next-btn').textContent = current < QUESTIONS.length - 1 ? 'Next Question →' : 'See My Score →';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUESTIONS.length) showResults();
+  else loadQuestion();
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const results = document.getElementById('results');
+  results.className = 'results show';
+
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById('final-score').textContent = `${score}/${QUESTIONS.length}`;
+  document.getElementById('cert-score').textContent = `${pct}% IQ Score`;
+  document.getElementById('cert-date').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+
+  let tier, desc;
+  if (pct >= 90) { tier = '🏆 Elite Football Analyst'; desc = 'You know football at a professional level. You see the game most fans never see.'; }
+  else if (pct >= 75) { tier = '⭐ Football Expert'; desc = 'Exceptional football knowledge. You understand the tactical and historical depth of the game.'; }
+  else if (pct >= 60) { tier = '✅ Serious Football Fan'; desc = 'Above average. You follow the game closely and understand the nuances.'; }
+  else if (pct >= 45) { tier = '⚽ Regular Football Fan'; desc = 'Solid knowledge. You know the game well — better than most casual viewers.'; }
+  else { tier = '👶 Casual Fan'; desc = 'You\'re learning! Football has incredible depth — and WC 2026 is a perfect time to go deeper.'; }
+
+  document.getElementById('tier-badge').textContent = tier;
+  document.getElementById('tier-desc').textContent = desc;
+  document.getElementById('cert-name').textContent = tier.replace(/^[^\s]+\s/, '');
+  document.getElementById('iq-inline').textContent = tier.replace(/^[^\s]+\s/, '').toLowerCase();
+}
+
+function shareTwitter() {
+  const score = document.getElementById('final-score').textContent;
+  const tier = document.getElementById('tier-badge').textContent;
+  const text = encodeURIComponent(`I scored ${score} on the WC 2026 Football IQ Test — ${tier}! 🏆⚽\n\nTest yours: wc2026ai.com/football-iq`);
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function shareWhatsApp() {
+  const score = document.getElementById('final-score').textContent;
+  const tier = document.getElementById('tier-badge').textContent;
+  const text = encodeURIComponent(`I scored ${score} on the WC 2026 Football IQ Test — ${tier}! 🏆⚽\nTest yours: wc2026ai.com/football-iq`);
+  window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function copyResult() {
+  const score = document.getElementById('final-score').textContent;
+  const tier = document.getElementById('tier-badge').textContent;
+  navigator.clipboard.writeText(`WC 2026 Football IQ: ${score} — ${tier} | wc2026ai.com/football-iq`);
+  alert('Result copied! Share it anywhere.');
+}
+
+function subscribeEmail() {
+  const email = document.getElementById('email-input').value;
+  if (!email) return;
+  fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, source:'football-iq'}) })
+    .catch(() => {});
+  document.querySelector('.email-capture').innerHTML = '<h3 style="color:#00c853">✅ You\'re in!</h3><p style="color:#aaa">Check your inbox — first AI picks arriving before tonight\'s match.</p>';
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('results').className = 'results';
+  document.getElementById('quiz-area').style.display = 'block';
+  loadQuestion();
+}
+
+loadQuestion();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

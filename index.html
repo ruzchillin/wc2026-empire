@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Empire | AI Sports Intelligence for the World Cup</title>
+<meta name="description" content="AI-powered World Cup 2026 picks, analysis, betting tools and community. 10,000 simulations per match. Free picks daily. Track record public.">
+<meta property="og:title" content="WC 2026 Empire — AI Sports Intelligence">
+<meta property="og:description" content="Free AI picks for every WC 2026 match. 10,000 simulations. Track record public. We only profit when you profit.">
+<meta property="og:image" content="/og-default.png">
+<link rel="manifest" href="/manifest.json">
+<style>
+:root{
+  --gold:#D4AF37;--gold-light:#F5D060;
+  --dark:#080B0E;--dark2:#0F1419;--dark3:#141C25;--dark4:#1A2332;
+  --green:#16A34A;--green-light:#22C55E;
+  --red:#DC2626;--blue:#3B82F6;--purple:#7C3AED;
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#475569;
+  --border:rgba(255,255,255,0.07);--gold-border:rgba(212,175,55,0.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,11,14,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;padding:0 24px;gap:32px;}
+.nav-logo{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.01em;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-logo-badge{background:var(--gold);color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;letter-spacing:.06em;text-transform:uppercase;}
+.nav-links{display:flex;gap:24px;list-style:none;margin-left:auto;}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:color .15s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--gold);color:#000;font-size:13px;font-weight:700;padding:9px 20px;border-radius:6px;text-decoration:none;white-space:nowrap;margin-left:8px;}
+@media(max-width:700px){.nav-links{display:none;}.nav-cta{margin-left:auto;}}
+
+/* ── HERO ── */
+.hero{padding:120px 24px 80px;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 100% 70% at 50% -10%,rgba(212,175,55,.07) 0%,transparent 60%);pointer-events:none;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(212,175,55,.08);border:1px solid var(--gold-border);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green-light);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-size:clamp(38px,7vw,76px);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:24px;max-width:820px;}
+.hero h1 .gold{color:var(--gold);}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--text2);max-width:540px;line-height:1.75;margin-bottom:12px;}
+.hero-note{font-size:13px;color:var(--text3);margin-bottom:44px;}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:64px;}
+.btn-gold{background:var(--gold);color:#000;font-size:15px;font-weight:700;padding:14px 28px;border-radius:7px;text-decoration:none;display:inline-block;transition:opacity .15s;}
+.btn-gold:hover{opacity:.88;}
+.btn-outline{background:transparent;color:var(--text2);font-size:15px;font-weight:500;padding:14px 24px;border-radius:7px;border:1px solid var(--border);text-decoration:none;display:inline-block;transition:all .15s;}
+.btn-outline:hover{border-color:var(--gold-border);color:var(--text);}
+.hero-trust{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text3);}
+.trust-icon{font-size:14px;}
+
+/* ── STATS STRIP ── */
+.stats-strip{background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0;}
+.stats-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-block{padding:28px 24px;text-align:center;border-right:1px solid var(--border);}
+.stat-block:last-child{border-right:none;}
+.stat-num{font-size:clamp(26px,3.5vw,36px);font-weight:900;line-height:1;letter-spacing:-.02em;}
+.stat-num.green{color:var(--green-light);}
+.stat-num.gold{color:var(--gold);}
+.stat-label{font-size:11px;color:var(--text3);margin-top:7px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+@media(max-width:600px){.stats-inner{grid-template-columns:1fr 1fr;}.stat-block:nth-child(2){border-right:none;}.stat-block:nth-child(3){border-top:1px solid var(--border);}}.stat-block:nth-child(4){border-top:1px solid var(--border);border-right:none;}}
+
+/* ── TODAY'S PICKS PREVIEW ── */
+.section{padding:80px 24px;max-width:1080px;margin:0 auto;}
+.section-eyebrow{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px;}
+.section-sub{color:var(--text2);font-size:16px;line-height:1.7;max-width:520px;}
+.picks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:36px;}
+.pick-preview{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color .2s;text-decoration:none;display:block;color:var(--text);}
+.pick-preview:hover{border-color:rgba(212,175,55,.3);}
+.pick-badge{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:12px;}
+.badge-top{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
+.badge-value{background:rgba(22,163,74,.12);color:var(--green-light);border:1px solid rgba(22,163,74,.2);}
+.badge-insight{background:rgba(59,130,246,.12);color:#93C5FD;border:1px solid rgba(59,130,246,.2);}
+.pick-match{font-size:16px;font-weight:700;margin-bottom:4px;}
+.pick-tip{font-size:13px;color:var(--text2);margin-bottom:14px;}
+.pick-foot{display:flex;align-items:center;justify-content:space-between;}
+.pick-odds{font-size:22px;font-weight:800;color:var(--gold);}
+.pick-conf{font-size:12px;color:var(--text3);}
+.conf-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:4px;width:80px;}
+.conf-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--green-light));}
+.picks-cta{text-align:center;margin-top:28px;}
+
+/* ── HOW IT WORKS ── */
+.how-section{padding:80px 24px;background:var(--dark2);}
+.how-inner{max-width:1080px;margin:0 auto;}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-top:48px;}
+.how-card{background:var(--dark2);padding:32px 28px;}
+.how-num{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.1em;margin-bottom:16px;}
+.how-icon{font-size:32px;margin-bottom:14px;}
+.how-title{font-size:16px;font-weight:700;margin-bottom:8px;}
+.how-desc{font-size:13px;color:var(--text2);line-height:1.7;}
+
+/* ── TOOLS HUB ── */
+.tools-section{padding:80px 24px;max-width:1080px;margin:0 auto;}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:40px;}
+.tool-card{background:var(--dark2);border:1px solid var(--border);border-radius:8px;padding:18px 16px;text-decoration:none;display:block;transition:all .15s;}
+.tool-card:hover{border-color:var(--gold-border);background:var(--dark3);}
+.tool-icon{font-size:22px;margin-bottom:10px;}
+.tool-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.tool-desc{font-size:12px;color:var(--text3);}
+
+/* ── WIN-SHARE CTA ── */
+.winshare-cta{padding:80px 24px;text-align:center;background:linear-gradient(135deg,rgba(212,175,55,.06) 0%,transparent 50%);}
+.winshare-inner{max-width:600px;margin:0 auto;}
+.winshare-price-row{display:flex;justify-content:center;gap:0;margin:40px auto;border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:480px;}
+.price-col{flex:1;padding:22px 16px;text-align:center;border-right:1px solid var(--border);}
+.price-col:last-child{border-right:none;}
+.price-num{font-size:24px;font-weight:800;line-height:1;}
+.price-num.gold{color:var(--gold);}
+.price-label{font-size:11px;color:var(--text3);margin-top:6px;text-transform:uppercase;letter-spacing:.05em;}
+
+/* ── PARTNERS ── */
+.partners{padding:56px 24px;border-top:1px solid var(--border);}
+.partners-inner{max-width:900px;margin:0 auto;text-align:center;}
+.partners-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;}
+.partners-logos{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:center;}
+.partner-name{font-size:14px;font-weight:700;color:var(--text3);letter-spacing:.03em;padding:8px 16px;border:1px solid var(--border);border-radius:6px;transition:all .15s;}
+.partner-name:hover{color:var(--text2);border-color:rgba(255,255,255,.12);}
+
+/* ── EMAIL CAPTURE ── */
+.email-section{padding:80px 24px;background:var(--dark2);}
+.email-inner{max-width:560px;margin:0 auto;text-align:center;}
+.email-form{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;justify-content:center;}
+.email-input{flex:1;min-width:220px;background:var(--dark3);border:1px solid var(--border);color:var(--text);font-size:15px;padding:14px 18px;border-radius:7px;outline:none;}
+.email-input:focus{border-color:var(--gold-border);}
+.email-btn{background:var(--gold);color:#000;font-size:15px;font-weight:700;padding:14px 22px;border-radius:7px;border:none;cursor:pointer;white-space:nowrap;}
+.email-fine{font-size:12px;color:var(--text3);margin-top:12px;}
+
+/* ── FOOTER ── */
+footer{background:var(--dark2);border-top:1px solid var(--border);padding:48px 24px 32px;}
+.footer-inner{max-width:1080px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-brand{font-size:16px;font-weight:800;color:var(--text);margin-bottom:10px;}
+.footer-tagline{font-size:13px;color:var(--text3);line-height:1.6;max-width:200px;}
+.footer-col-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-links a{color:var(--text3);text-decoration:none;font-size:13px;transition:color .15s;}
+.footer-links a:hover{color:var(--text2);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.footer-disclaimer{font-size:11px;color:var(--text3);line-height:1.7;max-width:680px;}
+.footer-copy{font-size:11px;color:var(--text3);white-space:nowrap;}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-logo">WC 2026 Empire <span class="nav-logo-badge">AI</span></a>
+  <ul class="nav-links">
+    <li><a href="win-share.html">Win-Share Picks</a></li>
+    <li><a href="odds-comparison.html">Odds</a></li>
+    <li><a href="digital-store.html">Tools</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="empire-command.html">Command</a></li>
+  </ul>
+  <a href="win-share.html" class="nav-cta">Free Picks →</a>
+</nav>
+
+<!-- ── HERO ── */
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow"><div class="live-dot"></div> WC 2026 · AI Model · Free Daily Picks</div>
+  <h1>The <span class="gold">World Cup 2026</span><br>Picks Engine</h1>
+  <p class="hero-sub">10,000 simulations per match. Free picks every match day. Track record always public. No subscription.</p>
+  <p class="hero-note">Win-Share model: we take 15% of profit. Nothing if you lose.</p>
+  <div class="hero-actions">
+    <a href="win-share.html" class="btn-gold">Get Today's Free Picks</a>
+    <a href="#how" class="btn-outline">How It Works</a>
+  </div>
+  <div class="hero-trust">
+    <div class="trust-item"><span class="trust-icon">✅</span> Track record public</div>
+    <div class="trust-item"><span class="trust-icon">🤖</span> AI model, not gut feel</div>
+    <div class="trust-item"><span class="trust-icon">🔒</span> No card required</div>
+    <div class="trust-item"><span class="trust-icon">📊</span> Every pick timestamped</div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-block">
+      <div class="stat-num green">67%</div>
+      <div class="stat-label">Win Rate</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num gold">+18.4%</div>
+      <div class="stat-label">ROI All Picks</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">312</div>
+      <div class="stat-label">Picks Logged</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">10K</div>
+      <div class="stat-label">Simulations / Match</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PICKS PREVIEW ── -->
+<section class="section">
+  <div class="section-eyebrow">AI Picks</div>
+  <h2 class="section-title">Today's Top Picks</h2>
+  <p class="section-sub">Generated by our AI model before kickoff. Every pick logged and tracked.</p>
+
+  <div class="picks-grid">
+    <a href="win-share.html" class="pick-preview">
+      <span class="pick-badge badge-top">★ Top Pick</span>
+      <div class="pick-match">USA vs Morocco</div>
+      <div class="pick-tip">Over 2.5 Goals</div>
+      <div class="pick-foot">
+        <div>
+          <div class="pick-odds">1.87</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="pick-conf">Confidence: 74%</div>
+          <div class="conf-bar"><div class="conf-fill" style="width:74%"></div></div>
+        </div>
+      </div>
+    </a>
+    <a href="win-share.html" class="pick-preview">
+      <span class="pick-badge badge-value">Value Bet</span>
+      <div class="pick-match">Brazil vs Serbia</div>
+      <div class="pick-tip">Brazil Win & BTTS</div>
+      <div class="pick-foot">
+        <div><div class="pick-odds">2.10</div></div>
+        <div style="text-align:right;">
+          <div class="pick-conf">Confidence: 71%</div>
+          <div class="conf-bar"><div class="conf-fill" style="width:71%"></div></div>
+        </div>
+      </div>
+    </a>
+    <a href="win-share.html" class="pick-preview">
+      <span class="pick-badge badge-insight">AI Insight</span>
+      <div class="pick-match">England vs Tunisia</div>
+      <div class="pick-tip">England -1 Asian Handicap</div>
+      <div class="pick-foot">
+        <div><div class="pick-odds">1.95</div></div>
+        <div style="text-align:right;">
+          <div class="pick-conf">Confidence: 68%</div>
+          <div class="conf-bar"><div class="conf-fill" style="width:68%"></div></div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="picks-cta">
+    <a href="win-share.html" class="btn-gold">View All Picks + Full Analysis →</a>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="section-eyebrow">The Model</div>
+    <h2 class="section-title">How We Make Picks</h2>
+    <p class="section-sub">Not gut feel. Not tipster guesses. A quantitative model built on tournament data.</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-icon">🔁</div>
+        <div class="how-title">10,000 Simulations</div>
+        <div class="how-desc">Every match runs through 10,000 Poisson-distribution simulations using team form, xG, head-to-head, and squad data.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-icon">📈</div>
+        <div class="how-title">Value Detection</div>
+        <div class="how-desc">A pick only goes live when our model probability exceeds the bookmaker's implied probability by at least 5%. No edges = no pick.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-icon">🤖</div>
+        <div class="how-title">Groq AI Analysis</div>
+        <div class="how-desc">Our Groq AI engine runs meta-analysis across 15 years of World Cup tournament data to weight situational factors.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <div class="how-icon">✅</div>
+        <div class="how-title">Public Track Record</div>
+        <div class="how-desc">Every pick is timestamped before kickoff. Nothing is hidden, edited, or removed. The record is permanent and open.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS ── -->
+<section class="tools-section">
+  <div class="section-eyebrow">Tools & Analysis</div>
+  <h2 class="section-title">Everything You Need</h2>
+  <p class="section-sub">Free calculators, guides, comparison tools — all built for the 2026 World Cup.</p>
+  <div class="tools-grid">
+    <a href="wc2026-free-bets.html" class="tool-card">
+      <div class="tool-icon">💰</div>
+      <div class="tool-name">Free Bets</div>
+      <div class="tool-desc">£560+ in signup bonuses from UK bookmakers</div>
+    </a>
+    <a href="odds-comparison.html" class="tool-card">
+      <div class="tool-icon">📊</div>
+      <div class="tool-name">Odds Comparison</div>
+      <div class="tool-desc">Live odds from 20+ bookmakers, best price highlighted</div>
+    </a>
+    <a href="how-to-bet-wc2026.html" class="tool-card">
+      <div class="tool-icon">📖</div>
+      <div class="tool-name">Beginner's Guide</div>
+      <div class="tool-desc">6-step guide to betting on the World Cup</div>
+    </a>
+    <a href="digital-store.html" class="tool-card">
+      <div class="tool-icon">📦</div>
+      <div class="tool-name">Betting Tools</div>
+      <div class="tool-desc">Bankroll calculator, arb finder, bonus tracker</div>
+    </a>
+    <a href="star-players.html" class="tool-card">
+      <div class="tool-icon">⭐</div>
+      <div class="tool-name">Player Analysis</div>
+      <div class="tool-desc">Stats and betting angles for 20+ top stars</div>
+    </a>
+    <a href="community.html" class="tool-card">
+      <div class="tool-icon">💬</div>
+      <div class="tool-name">Community</div>
+      <div class="tool-desc">Telegram, Discord, Reddit — live match chat</div>
+    </a>
+    <a href="prediction-game.html" class="tool-card">
+      <div class="tool-icon">🎮</div>
+      <div class="tool-name">Prediction Game</div>
+      <div class="tool-desc">Beat the AI — predict matches, climb leaderboard</div>
+    </a>
+    <a href="empire-command.html" class="tool-card">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-name">AI Command</div>
+      <div class="tool-desc">Chat with the AI — ask anything about WC 2026</div>
+    </a>
+  </div>
+</section>
+
+<!-- ── WIN-SHARE CTA ── -->
+<section class="winshare-cta">
+  <div class="winshare-inner">
+    <div class="section-eyebrow">Win-Share Model</div>
+    <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px;">We only earn when<br>you profit</h2>
+    <p style="color:var(--text2);font-size:16px;line-height:1.7;">Most tipsters charge £30–200/month regardless of results. We charge nothing upfront, nothing per month, and nothing if you lose.</p>
+    <div class="winshare-price-row">
+      <div class="price-col">
+        <div class="price-num">£0</div>
+        <div class="price-label">Upfront</div>
+      </div>
+      <div class="price-col">
+        <div class="price-num">£0</div>
+        <div class="price-label">Monthly</div>
+      </div>
+      <div class="price-col">
+        <div class="price-num">£0</div>
+        <div class="price-label">If You Lose</div>
+      </div>
+      <div class="price-col">
+        <div class="price-num gold">15%</div>
+        <div class="price-label">Of Profit Only</div>
+      </div>
+    </div>
+    <a href="win-share.html" class="btn-gold" style="font-size:16px;padding:16px 32px;">Join Win-Share Free →</a>
+    <p style="font-size:12px;color:var(--text3);margin-top:14px;">18+ only. Please gamble responsibly. Track record public. Past performance does not guarantee future results.</p>
+  </div>
+</section>
+
+<!-- ── PARTNERS ── -->
+<section class="partners">
+  <div class="partners-inner">
+    <div class="partners-label">Bookmakers We Track Odds From</div>
+    <div class="partners-logos">
+      <span class="partner-name">bet365</span>
+      <span class="partner-name">Betfair</span>
+      <span class="partner-name">William Hill</span>
+      <span class="partner-name">Paddy Power</span>
+      <span class="partner-name">Betway</span>
+      <span class="partner-name">DraftKings</span>
+      <span class="partner-name">FanDuel</span>
+      <span class="partner-name">BetMGM</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── EMAIL CAPTURE ── -->
+<section class="email-section" id="join">
+  <div class="email-inner">
+    <div class="section-eyebrow">Daily Picks</div>
+    <h2 style="font-size:clamp(26px,3.5vw,36px);font-weight:800;letter-spacing:-.02em;margin-bottom:10px;">Get picks in your inbox</h2>
+    <p style="color:var(--text2);font-size:16px;line-height:1.7;">One email per match day. Today's picks, analysis, and odds. Nothing else.</p>
+    <div class="email-form">
+      <input type="email" class="email-input" id="hero-email" placeholder="your@email.com">
+      <button class="email-btn" onclick="subscribe()">Get Free Picks</button>
+    </div>
+    <p class="email-fine">No card. Unsubscribe anytime. We send exactly one email per match day.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">WC 2026 Empire</div>
+        <div class="footer-tagline">AI-powered sports intelligence for the 2026 FIFA World Cup.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Picks</div>
+        <ul class="footer-links">
+          <li><a href="win-share.html">Win-Share Model</a></li>
+          <li><a href="odds-comparison.html">Odds Comparison</a></li>
+          <li><a href="wc2026-free-bets.html">Free Bets</a></li>
+          <li><a href="wc2026-acca-guide.html">Acca Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Analysis</div>
+        <ul class="footer-links">
+          <li><a href="star-players.html">Player Hub</a></li>
+          <li><a href="africa-wc2026.html">Africa</a></li>
+          <li><a href="south-america-wc2026.html">South America</a></li>
+          <li><a href="dark-horses-wc2026.html">Dark Horses</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Community</div>
+        <ul class="footer-links">
+          <li><a href="community.html">All Platforms</a></li>
+          <li><a href="prediction-game.html">Prediction Game</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="digital-store.html">Tools &amp; Products</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">
+        WC 2026 Empire provides sports analysis and AI model picks for informational purposes only. Nothing on this site constitutes financial advice or a recommendation to bet. Gambling involves risk. Always gamble responsibly with money you can afford to lose. 18+ only. BeGambleAware.org | GamCare.org.uk | National Problem Gambling Helpline 1-800-522-4700
+      </p>
+      <div class="footer-copy">© 2026 WC 2026 Empire</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function subscribe() {
+  const email = document.getElementById('hero-email').value.trim();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email, source: 'homepage' }) }).catch(() => {});
+  document.querySelector('.email-form').innerHTML = '<div style="padding:16px;text-align:center;color:#22C55E;font-weight:700;font-size:16px;">✓ You\'re in! First picks coming your way.</div>';
+}
+</script>
+</body>
+</html>

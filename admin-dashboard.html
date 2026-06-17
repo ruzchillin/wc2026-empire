@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Empire — Operations Dashboard</title>
+<style>
+:root {
+  --bg: #060810; --surface: #0c0f1a; --card: #111520;
+  --border: rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.1);
+  --text: #e8eaf0; --muted: #4a5568; --dim: #6b7280;
+  --gold: #f59e0b; --gold2: rgba(245,158,11,0.12);
+  --green: #10b981; --green2: rgba(16,185,129,0.12);
+  --red: #ef4444; --red2: rgba(239,68,68,0.12);
+  --blue: #3b82f6; --blue2: rgba(59,130,246,0.12);
+  --purple: #8b5cf6;
+  --font: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px; display: flex; flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 44px; background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; flex-shrink: 0; z-index: 100;
+}
+.tb-left { display: flex; align-items: center; gap: 14px; }
+.tb-logo { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+.tb-logo span { color: var(--gold); }
+.tb-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  background: var(--green2); border: 1px solid rgba(16,185,129,0.3); color: var(--green);
+  letter-spacing: 0.06em;
+}
+.tb-time { font-family: var(--font); font-size: 11px; color: var(--dim); }
+.tb-right { display: flex; align-items: center; gap: 12px; }
+.service-pill {
+  display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+  color: var(--dim); cursor: pointer; padding: 3px 8px; border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.service-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.service-pill .dot.warn { background: var(--gold); }
+.service-pill .dot.err { background: var(--red); animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ── LAYOUT ── */
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 180px; background: var(--surface); border-right: 1px solid var(--border);
+  padding: 12px 0; flex-shrink: 0; overflow-y: auto;
+}
+.nav-section { padding: 10px 12px 4px; font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.nav-item {
+  display: flex; align-items: center; gap: 8px; padding: 7px 14px;
+  font-size: 12px; font-weight: 500; color: var(--dim); cursor: pointer;
+  border-left: 2px solid transparent; transition: all 0.12s;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold2); }
+.nav-item .ico { width: 14px; text-align: center; font-size: 13px; }
+.nav-badge {
+  margin-left: auto; font-size: 10px; font-weight: 700; padding: 1px 5px;
+  border-radius: 8px; background: var(--red2); color: var(--red);
+}
+.nav-badge.green { background: var(--green2); color: var(--green); }
+
+/* ── CONTENT AREA ── */
+.content { flex: 1; overflow-y: auto; padding: 14px; }
+
+/* ── PANELS (tabs) ── */
+.panel { display: none; }
+.panel.active { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; align-content: start; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; overflow: hidden;
+}
+.card.span2 { grid-column: span 2; }
+.card.span3 { grid-column: span 3; }
+.card.span4 { grid-column: span 4; }
+.card.span5 { grid-column: span 5; }
+.card.span6 { grid-column: span 6; }
+.card.span7 { grid-column: span 7; }
+.card.span8 { grid-column: span 8; }
+.card.span12 { grid-column: span 12; }
+
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.card-title { font-size: 11px; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 0.07em; }
+.card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; }
+.badge-live { background: var(--red2); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+.badge-green { background: var(--green2); color: var(--green); }
+.badge-gold { background: var(--gold2); color: var(--gold); }
+
+/* ── METRIC TILES ── */
+.metric { }
+.metric-n { font-size: 28px; font-weight: 800; line-height: 1; font-family: var(--font); }
+.metric-l { font-size: 11px; color: var(--dim); margin-top: 4px; }
+.metric-delta { font-size: 11px; font-weight: 700; margin-top: 6px; }
+.metric-delta.up { color: var(--green); }
+.metric-delta.down { color: var(--red); }
+
+/* ── LIVE MATCHES ── */
+.match-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0; border-bottom: 1px solid var(--border); gap: 8px;
+}
+.match-row:last-child { border: none; }
+.match-teams { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
+.match-flag { font-size: 16px; }
+.match-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.match-vs { font-size: 10px; color: var(--muted); padding: 0 4px; }
+.match-score { font-family: var(--font); font-size: 16px; font-weight: 800; min-width: 40px; text-align: center; }
+.match-score.live { color: var(--red); }
+.match-score.ft { color: var(--dim); }
+.match-meta { font-size: 10px; color: var(--dim); min-width: 50px; text-align: right; }
+.match-min { font-size: 10px; font-weight: 700; color: var(--red); font-family: var(--font); }
+.match-ai { font-size: 10px; color: var(--gold); margin-top: 2px; }
+
+/* ── EVENT LOG ── */
+.event-log { max-height: 260px; overflow-y: auto; }
+.event-row {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+}
+.event-row:last-child { border: none; }
+.event-time { font-family: var(--font); font-size: 10px; color: var(--dim); white-space: nowrap; min-width: 42px; }
+.event-icon { font-size: 13px; min-width: 18px; }
+.event-text { font-size: 11px; color: var(--text); line-height: 1.5; }
+.event-text .hl { color: var(--gold); font-weight: 700; }
+.event-text .green { color: var(--green); font-weight: 700; }
+.event-text .red { color: var(--red); }
+
+/* ── REVENUE TABLE ── */
+.rev-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.rev-row:last-child { border: none; }
+.rev-program { font-size: 12px; font-weight: 600; }
+.rev-clicks { font-size: 11px; color: var(--dim); }
+.rev-amount { font-family: var(--font); font-size: 13px; font-weight: 700; color: var(--green); }
+.rev-bar-wrap { flex: 1; margin: 0 12px; }
+.rev-bar-track { background: rgba(255,255,255,0.04); border-radius: 3px; height: 4px; }
+.rev-bar-fill { height: 100%; border-radius: 3px; background: var(--green); }
+
+/* ── AI QUEUE ── */
+.queue-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.queue-item:last-child { border: none; }
+.queue-status { width: 8px; height: 8px; border-radius: 50%; margin-top: 3px; flex-shrink: 0; }
+.qs-done { background: var(--green); }
+.qs-running { background: var(--gold); animation: pulse-s 1.2s infinite; }
+.qs-queue { background: var(--muted); }
+@keyframes pulse-s { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.queue-info { flex: 1; }
+.queue-title { font-size: 11px; font-weight: 600; }
+.queue-meta { font-size: 10px; color: var(--dim); margin-top: 2px; }
+.queue-tokens { font-size: 10px; color: var(--purple); margin-top: 2px; font-family: var(--font); }
+
+/* ── SERVICE HEALTH ── */
+.svc-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.svc-row:last-child { border: none; }
+.svc-name { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.svc-dot { width: 8px; height: 8px; border-radius: 50%; }
+.svc-dot.up { background: var(--green); }
+.svc-dot.warn { background: var(--gold); animation: pulse-s 1.5s infinite; }
+.svc-dot.down { background: var(--red); animation: blink 0.8s infinite; }
+.svc-stats { font-size: 10px; color: var(--dim); text-align: right; font-family: var(--font); }
+.svc-uptime { font-size: 10px; color: var(--green); font-weight: 600; }
+
+/* ── MINI CHART ── */
+.sparkline { display: flex; align-items: flex-end; gap: 2px; height: 32px; }
+.spark-bar { background: var(--gold); border-radius: 2px 2px 0 0; min-width: 6px; opacity: 0.7; transition: opacity 0.15s; }
+.spark-bar:hover { opacity: 1; }
+
+/* ── PUSH CONTROL ── */
+.push-form { display: flex; flex-direction: column; gap: 8px; }
+.pf-input {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 10px; font-size: 12px; color: var(--text); outline: none; width: 100%;
+}
+.pf-input:focus { border-color: var(--gold); }
+.pf-row { display: flex; gap: 6px; }
+.pf-btn {
+  padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 700;
+  cursor: pointer; border: none;
+}
+.pf-btn.primary { background: var(--gold); color: #000; }
+.pf-btn.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.push-history-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.phi-text { font-size: 11px; }
+.phi-meta { font-size: 10px; color: var(--dim); text-align: right; }
+.phi-sent { font-size: 10px; color: var(--green); font-weight: 700; font-family: var(--font); }
+
+/* ── ACCURACY TRACKER ── */
+.acc-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.acc-row:last-child { border: none; }
+.acc-match { font-size: 11px; }
+.acc-pred { font-size: 11px; color: var(--dim); font-family: var(--font); }
+.acc-result { font-size: 11px; font-weight: 700; }
+.acc-result.correct { color: var(--green); }
+.acc-result.wrong { color: var(--red); }
+.acc-result.pending { color: var(--gold); }
+
+/* ── SUBSCRIBER CHART ── */
+.sub-chart { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-top: 8px; }
+.sub-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.sub-bar { width: 100%; background: var(--blue); border-radius: 2px 2px 0 0; min-height: 2px; opacity: 0.8; }
+.sub-day { font-size: 8px; color: var(--muted); font-family: var(--font); }
+
+/* ── TRAFFIC MAP ── */
+.traffic-list { display: flex; flex-direction: column; gap: 6px; }
+.tl-item { display: flex; align-items: center; gap: 8px; }
+.tl-flag { font-size: 16px; }
+.tl-country { font-size: 12px; font-weight: 600; flex: 1; }
+.tl-bar-wrap { width: 80px; }
+.tl-bar { height: 4px; background: var(--blue); border-radius: 2px; }
+.tl-n { font-size: 11px; font-weight: 700; font-family: var(--font); min-width: 36px; text-align: right; }
+
+/* ── SCROLL ── */
+.content::-webkit-scrollbar { width: 4px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* ── AFFILIATE TABLE ── */
+.aff-table { width: 100%; border-collapse: collapse; }
+.aff-table th { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; padding: 0 0 8px; text-align: left; border-bottom: 1px solid var(--border); }
+.aff-table td { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 11px; vertical-align: middle; }
+.aff-table tr:last-child td { border: none; }
+.aff-table .num { font-family: var(--font); font-weight: 700; }
+.aff-table .green { color: var(--green); }
+.aff-table .gold { color: var(--gold); }
+.aff-table .dim { color: var(--dim); }
+.status-pill { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; }
+.sp-active { background: var(--green2); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+.sp-warn { background: var(--gold2); color: var(--gold); border: 1px solid rgba(245,158,11,0.25); }
+
+/* ── ACTION BTNS ── */
+.action-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.action-btn {
+  display: flex; align-items: center; gap: 5px; padding: 6px 12px;
+  border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; border: none;
+  transition: all 0.12s;
+}
+.ab-gold { background: var(--gold2); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+.ab-green { background: var(--green2); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.ab-red { background: var(--red2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.ab-blue { background: var(--blue2); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+.ab-surface { background: var(--surface); color: var(--dim); border: 1px solid var(--border); }
+
+/* ── API STATUS ── */
+.api-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.api-row:last-child { border: none; }
+.api-name { font-size: 11px; font-weight: 600; }
+.api-usage { font-size: 10px; color: var(--dim); font-family: var(--font); }
+.api-bar { width: 60px; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+.api-fill { height: 100%; border-radius: 2px; }
+.api-fill.ok { background: var(--green); }
+.api-fill.warn { background: var(--gold); }
+.api-fill.crit { background: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">WC2026 <span>EMPIRE</span></div>
+    <div class="tb-tag">● LIVE</div>
+    <div class="tb-time" id="topTime">—</div>
+  </div>
+  <div class="tb-right">
+    <div class="service-pill" onclick="showPanel('services')"><span class="dot" id="dot-api"></span>API</div>
+    <div class="service-pill" onclick="showPanel('services')"><span class="dot" id="dot-ai"></span>AI Engine</div>
+    <div class="service-pill" onclick="showPanel('services')"><span class="dot" id="dot-moment"></span>Moment</div>
+    <div class="service-pill" onclick="showPanel('services')"><span class="dot" id="dot-world"></span>World</div>
+    <div class="service-pill" onclick="showPanel('services')"><span class="dot" id="dot-push"></span>Push</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPanel('overview', this)"><span class="ico">📊</span>Dashboard</div>
+    <div class="nav-item" onclick="showPanel('matches', this)"><span class="ico">⚽</span>Live Matches <span class="nav-badge" id="liveCount">0</span></div>
+    <div class="nav-section">Revenue</div>
+    <div class="nav-item" onclick="showPanel('revenue', this)"><span class="ico">💰</span>Earnings</div>
+    <div class="nav-item" onclick="showPanel('affiliates', this)"><span class="ico">🔗</span>Affiliates</div>
+    <div class="nav-item" onclick="showPanel('subscribers', this)"><span class="ico">📧</span>Subscribers</div>
+    <div class="nav-section">Systems</div>
+    <div class="nav-item" onclick="showPanel('ai', this)"><span class="ico">🤖</span>AI Engine</div>
+    <div class="nav-item" onclick="showPanel('push', this)"><span class="ico">🔔</span>Push Notifs <span class="nav-badge green" id="pushCount">0</span></div>
+    <div class="nav-item" onclick="showPanel('services', this)"><span class="ico">⚙️</span>Services</div>
+    <div class="nav-item" onclick="showPanel('api-usage', this)"><span class="ico">🌐</span>API Usage</div>
+    <div class="nav-section">Analytics</div>
+    <div class="nav-item" onclick="showPanel('accuracy', this)"><span class="ico">🎯</span>AI Accuracy</div>
+    <div class="nav-item" onclick="showPanel('traffic', this)"><span class="ico">🗺️</span>Traffic</div>
+    <div class="nav-item" onclick="showPanel('events', this)"><span class="ico">📋</span>Event Log</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ════════════ OVERVIEW PANEL ════════════ -->
+    <div class="panel active" id="panel-overview">
+
+      <!-- KPI row -->
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" id="kpi-revenue" style="color:var(--green)">£0</div>
+        <div class="metric-l">Total revenue this tournament</div>
+        <div class="metric-delta up" id="kpi-rev-delta">↑ Loading...</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" id="kpi-subs" style="color:var(--blue)">0</div>
+        <div class="metric-l">Email subscribers</div>
+        <div class="metric-delta up" id="kpi-subs-delta">↑ Loading...</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" id="kpi-clicks" style="color:var(--gold)">0</div>
+        <div class="metric-l">Affiliate clicks today</div>
+        <div class="metric-delta up" id="kpi-clicks-delta">↑ Loading...</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" id="kpi-accuracy" style="color:var(--purple)">—%</div>
+        <div class="metric-l">AI prediction accuracy</div>
+        <div class="metric-delta" id="kpi-acc-delta" style="color:var(--dim)">Loading...</div>
+      </div></div>
+
+      <!-- Live matches + event log -->
+      <div class="card span6">
+        <div class="card-header">
+          <span class="card-title">Live Matches</span>
+          <span class="card-badge badge-live" id="live-badge">● LIVE</span>
+        </div>
+        <div id="liveMatchesList">
+          <div style="color:var(--dim);font-size:12px;padding:12px 0">Connecting to API-Football...</div>
+        </div>
+      </div>
+      <div class="card span6">
+        <div class="card-header">
+          <span class="card-title">Automation Event Log</span>
+          <span class="card-badge badge-gold" id="eventCountBadge">0 today</span>
+        </div>
+        <div class="event-log" id="eventLog">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Waiting for match events...</div>
+        </div>
+      </div>
+
+      <!-- Revenue + AI queue -->
+      <div class="card span5">
+        <div class="card-header">
+          <span class="card-title">Revenue by Program</span>
+          <span class="card-badge badge-green">Today</span>
+        </div>
+        <div id="revProgramList">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Loading affiliate data...</div>
+        </div>
+      </div>
+      <div class="card span4">
+        <div class="card-header">
+          <span class="card-title">AI Content Queue</span>
+          <span class="card-badge badge-gold" id="queueBadge">0 pending</span>
+        </div>
+        <div id="aiQueueList">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Connecting to AI engine...</div>
+        </div>
+      </div>
+      <div class="card span3">
+        <div class="card-header">
+          <span class="card-title">Subscribers Today</span>
+        </div>
+        <div id="subSparkline" class="sub-chart">
+          <div style="color:var(--dim);font-size:11px">Loading...</div>
+        </div>
+        <div style="margin-top:12px">
+          <div style="font-size:20px;font-weight:800;font-family:var(--font);color:var(--blue)" id="todaySubCount">+0</div>
+          <div style="font-size:11px;color:var(--dim);margin-top:3px">new today</div>
+        </div>
+      </div>
+
+      <!-- Service health quick view -->
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">Service Health</span>
+          <span class="card-badge badge-green" id="svcHealthBadge">All systems operational</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+          <div id="svc-api-mini"></div>
+          <div id="svc-ai-mini"></div>
+          <div id="svc-moment-mini"></div>
+          <div id="svc-world-mini"></div>
+          <div id="svc-push-mini"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════════════ LIVE MATCHES PANEL ════════════ -->
+    <div class="panel" id="panel-matches">
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">⚽ WC 2026 — All Today's Matches</span>
+          <div class="action-row" style="margin:0">
+            <button class="action-btn ab-gold" onclick="refreshMatches()">↻ Refresh</button>
+            <button class="action-btn ab-surface">📅 Schedule</button>
+          </div>
+        </div>
+        <div id="allMatchesPanel">
+          <div style="color:var(--dim);font-size:13px;padding:16px 0">Fetching from API-Football...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ REVENUE PANEL ════════════ -->
+    <div class="panel" id="panel-revenue">
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="rev-total">£0</div>
+        <div class="metric-l">Total tournament revenue</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--gold)" id="rev-today">£0</div>
+        <div class="metric-l">Revenue today</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--blue)" id="rev-projected">£0</div>
+        <div class="metric-l">Projected total (mid scenario)</div>
+      </div></div>
+      <div class="card span8">
+        <div class="card-header"><span class="card-title">Daily Revenue (last 7 days)</span></div>
+        <div class="sparkline" id="revSparkline" style="height:80px;gap:4px">
+          <div style="color:var(--dim);font-size:12px">Loading...</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px" id="revDays"></div>
+      </div>
+      <div class="card span4">
+        <div class="card-header"><span class="card-title">Revenue Split</span></div>
+        <div id="revSplit"></div>
+      </div>
+      <div class="card span12">
+        <div class="card-header"><span class="card-title">Affiliate Program Performance</span></div>
+        <table class="aff-table" id="affPerfTable">
+          <thead><tr><th>Program</th><th>Clicks</th><th>Signups</th><th>CPA/Rev</th><th>Earned</th><th>Status</th></tr></thead>
+          <tbody id="affPerfBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════ AFFILIATES PANEL ════════════ -->
+    <div class="panel" id="panel-affiliates">
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">Affiliate Matrix — All Programs</span>
+          <span class="card-badge badge-gold">57 programs configured</span>
+        </div>
+        <table class="aff-table" id="affMatrixTable">
+          <thead><tr><th>Program</th><th>Market</th><th>Model</th><th>Value</th><th>Ref placeholder</th><th>Status</th></tr></thead>
+          <tbody id="affMatrixBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════ SUBSCRIBERS PANEL ════════════ -->
+    <div class="panel" id="panel-subscribers">
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--blue)" id="sub-total">0</div>
+        <div class="metric-l">Total subscribers</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="sub-today2">+0</div>
+        <div class="metric-l">New today</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--gold)" id="sub-openrate">—%</div>
+        <div class="metric-l">Open rate</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--purple)" id="sub-ltv">£748</div>
+        <div class="metric-l">LTV per subscriber</div>
+      </div></div>
+      <div class="card span12">
+        <div class="card-header"><span class="card-title">Subscriber Growth — Tournament</span></div>
+        <div class="sub-chart" style="height:100px;gap:3px" id="subGrowthChart">
+          <div style="color:var(--dim);font-size:12px">Loading Beehiiv data...</div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--dim)">Connected via Beehiiv API · Updates every 30 minutes</div>
+      </div>
+    </div>
+
+    <!-- ════════════ AI ENGINE PANEL ════════════ -->
+    <div class="panel" id="panel-ai">
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--purple)" id="ai-calls">0</div>
+        <div class="metric-l">Groq API calls today</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--gold)" id="ai-tokens">0</div>
+        <div class="metric-l">Tokens used today</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="ai-remaining">500K</div>
+        <div class="metric-l">Daily token quota remaining</div>
+      </div></div>
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">AI Content Pipeline — Live Queue</span>
+          <div class="action-row" style="margin:0">
+            <button class="action-btn ab-gold" onclick="triggerAIGeneration()">⚡ Generate Now</button>
+            <button class="action-btn ab-surface">⏸ Pause Queue</button>
+          </div>
+        </div>
+        <div id="aiQueueFull">
+          <div style="color:var(--dim);font-size:12px;padding:12px 0">Loading AI queue...</div>
+        </div>
+      </div>
+      <div class="card span6">
+        <div class="card-header"><span class="card-title">Model Configuration</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px" id="modelConfig">
+          <div class="svc-row"><span class="svc-name">Model</span><span style="font-family:var(--font);font-size:11px;color:var(--purple)">llama3-70b-8192</span></div>
+          <div class="svc-row"><span class="svc-name">Temperature</span><span style="font-family:var(--font);font-size:11px;color:var(--gold)">0.3</span></div>
+          <div class="svc-row"><span class="svc-name">Max tokens / call</span><span style="font-family:var(--font);font-size:11px">2,048</span></div>
+          <div class="svc-row"><span class="svc-name">Languages</span><span style="font-family:var(--font);font-size:11px;color:var(--blue)">28</span></div>
+          <div class="svc-row"><span class="svc-name">Cache TTL</span><span style="font-family:var(--font);font-size:11px">6 hours</span></div>
+          <div class="svc-row"><span class="svc-name">Retry on fail</span><span style="font-family:var(--font);font-size:11px;color:var(--green)">3× with backoff</span></div>
+        </div>
+      </div>
+      <div class="card span6">
+        <div class="card-header"><span class="card-title">Recent AI Outputs</span></div>
+        <div id="aiOutputs">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Loading recent outputs...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ PUSH PANEL ════════════ -->
+    <div class="panel" id="panel-push">
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--blue)" id="push-subs">0</div>
+        <div class="metric-l">Push subscribers</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="push-sent">0</div>
+        <div class="metric-l">Sent this tournament</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--gold)" id="push-ctr">—%</div>
+        <div class="metric-l">Average click rate</div>
+      </div></div>
+      <div class="card span3"><div class="metric">
+        <div class="metric-n" style="color:var(--purple)" id="push-optin">20%</div>
+        <div class="metric-l">Opt-in rate (target)</div>
+      </div></div>
+      <div class="card span6">
+        <div class="card-header"><span class="card-title">Manual Push Notification</span></div>
+        <div class="push-form">
+          <input class="pf-input" type="text" id="pushTitle" placeholder="Notification title (e.g. ⚽ GOAL — Brazil 1-0 Germany)">
+          <input class="pf-input" type="text" id="pushBody" placeholder="Body text — keep under 90 characters">
+          <select class="pf-input" id="pushSegment" style="cursor:pointer">
+            <option value="all">All subscribers</option>
+            <option value="wc2026">WC 2026 only</option>
+            <option value="horse-racing">Horse racing</option>
+            <option value="cricket">Cricket/India</option>
+            <option value="nfl">NFL</option>
+          </select>
+          <div class="pf-row">
+            <button class="pf-btn primary" onclick="sendManualPush()">⚡ Send Push</button>
+            <button class="pf-btn secondary" onclick="previewPush()">Preview</button>
+          </div>
+        </div>
+      </div>
+      <div class="card span6">
+        <div class="card-header"><span class="card-title">Push History</span></div>
+        <div id="pushHistory">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Connecting to OneSignal...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ SERVICES PANEL ════════════ -->
+    <div class="panel" id="panel-services">
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">Railway Services — All Backends</span>
+          <div class="action-row" style="margin:0">
+            <button class="action-btn ab-gold" onclick="checkAllServices()">↻ Check All</button>
+          </div>
+        </div>
+        <div id="svcDetailList"></div>
+        <div class="action-row">
+          <button class="action-btn ab-green" onclick="deployAll()">🚀 Deploy All (railway up)</button>
+          <button class="action-btn ab-blue" onclick="deployVercel()">▲ Redeploy Frontend (vercel --prod)</button>
+          <button class="action-btn ab-red" onclick="restartService('moment-engine')">↻ Restart Moment Engine</button>
+          <button class="action-btn ab-surface" onclick="viewLogs('api-server')">📋 View API Logs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ API USAGE PANEL ════════════ -->
+    <div class="panel" id="panel-api-usage">
+      <div class="card span12">
+        <div class="card-header"><span class="card-title">API Quota Usage</span></div>
+        <div id="apiUsageList"></div>
+      </div>
+    </div>
+
+    <!-- ════════════ ACCURACY PANEL ════════════ -->
+    <div class="panel" id="panel-accuracy">
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="acc-correct">0</div>
+        <div class="metric-l">Correct predictions</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--red)" id="acc-wrong">0</div>
+        <div class="metric-l">Incorrect predictions</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--purple)" id="acc-pct">—%</div>
+        <div class="metric-l">Overall accuracy</div>
+      </div></div>
+      <div class="card span12">
+        <div class="card-header"><span class="card-title">Prediction Log — All Completed Matches</span></div>
+        <div id="accuracyLog">
+          <div style="color:var(--dim);font-size:12px;padding:8px 0">Loading prediction results...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ TRAFFIC PANEL ════════════ -->
+    <div class="panel" id="panel-traffic">
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--text)" id="traffic-total">0</div>
+        <div class="metric-l">Total page views today</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--green)" id="traffic-unique">0</div>
+        <div class="metric-l">Unique visitors today</div>
+      </div></div>
+      <div class="card span4"><div class="metric">
+        <div class="metric-n" style="color:var(--gold)" id="traffic-top">—</div>
+        <div class="metric-l">Top page today</div>
+      </div></div>
+      <div class="card span5">
+        <div class="card-header"><span class="card-title">Traffic by Country</span></div>
+        <div class="traffic-list" id="trafficByCountry">
+          <div style="color:var(--dim);font-size:12px">Loading...</div>
+        </div>
+      </div>
+      <div class="card span7">
+        <div class="card-header"><span class="card-title">Top Pages</span></div>
+        <table class="aff-table">
+          <thead><tr><th>Page</th><th>Views</th><th>Unique</th><th>Conv%</th></tr></thead>
+          <tbody id="topPagesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════ EVENT LOG PANEL ════════════ -->
+    <div class="panel" id="panel-events">
+      <div class="card span12">
+        <div class="card-header">
+          <span class="card-title">Full Automation Event Log</span>
+          <div class="action-row" style="margin:0">
+            <button class="action-btn ab-surface" onclick="clearLog()">Clear</button>
+            <button class="action-btn ab-gold">Export CSV</button>
+          </div>
+        </div>
+        <div id="fullEventLog" style="max-height:600px;overflow-y:auto"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ============================================================
+// WC 2026 EMPIRE — OPERATIONS DASHBOARD
+// Connects to: /api/v1/* (api-server.js on Railway)
+// All data is REAL — pulled from API-Football + Groq AI
+// ============================================================
+
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3001/api/v1'
+  : '/api/v1';
+
+// ── STATE ──
+let state = {
+  liveMatches: [],
+  events: [],
+  services: {},
+  revenue: { total: 0, today: 0, affiliates: [] },
+  subscribers: { total: 0, today: 0, growth: [] },
+  aiQueue: [],
+  pushHistory: [],
+  accuracy: { correct: 0, wrong: 0, pending: 0, log: [] },
+  traffic: { total: 0, unique: 0, byCountry: [], topPages: [] },
+  apiUsage: {},
+  connected: false
+};
+
+// ── NAVIGATION ──
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) { panel.classList.add('active'); renderPanel(id); }
+  if (el) el.classList.add('active');
+}
+
+// ── CLOCK ──
+function updateClock() {
+  const now = new Date();
+  document.getElementById('topTime').textContent =
+    now.toUTCString().replace('GMT', 'UTC').slice(5, 25);
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ── API FETCH with graceful fallback ──
+async function apiFetch(endpoint) {
+  try {
+    const r = await fetch(API_BASE + endpoint, { headers: { 'Accept': 'application/json' } });
+    if (!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch (e) {
+    console.warn('[Dashboard] API fetch failed:', endpoint, e.message);
+    return null;
+  }
+}
+
+// ── BOOTSTRAP ──
+async function bootstrap() {
+  await Promise.all([
+    fetchDashboardMetrics(),
+    fetchLiveMatches(),
+    fetchServices(),
+    fetchEvents(),
+    fetchAIQueue(),
+  ]);
+  // Poll intervals
+  setInterval(fetchLiveMatches, 60000);   // Every 60s
+  setInterval(fetchEvents, 30000);        // Every 30s
+  setInterval(fetchDashboardMetrics, 120000); // Every 2min
+  setInterval(fetchServices, 90000);      // Every 90s
+}
+
+// ── DASHBOARD METRICS ──
+async function fetchDashboardMetrics() {
+  const data = await apiFetch('/dashboard/metrics');
+  if (data) {
+    state.revenue = data.revenue || state.revenue;
+    state.subscribers = data.subscribers || state.subscribers;
+    updateKPIs(data);
+  } else {
+    // Show "not connected" state cleanly
+    updateKPIsOffline();
+  }
+}
+
+function updateKPIs(d) {
+  const rev = d.revenue || {};
+  const subs = d.subscribers || {};
+  const acc = d.accuracy || {};
+  const clicks = d.affiliateClicks || {};
+
+  document.getElementById('kpi-revenue').textContent = fmtGBP(rev.total || 0);
+  document.getElementById('kpi-rev-delta').textContent = `↑ £${fmtNum(rev.today || 0)} today`;
+  document.getElementById('kpi-subs').textContent = fmtNum(subs.total || 0);
+  document.getElementById('kpi-subs-delta').textContent = `↑ +${subs.today || 0} today`;
+  document.getElementById('kpi-clicks').textContent = fmtNum(clicks.today || 0);
+  document.getElementById('kpi-clicks-delta').textContent = clicks.delta
+    ? `↑ ${clicks.delta}% vs yesterday` : '—';
+  if (acc.pct !== undefined) {
+    document.getElementById('kpi-accuracy').textContent = acc.pct + '%';
+    document.getElementById('kpi-acc-delta').textContent =
+      `${acc.correct} correct / ${acc.total} predictions`;
+    document.getElementById('kpi-acc-delta').style.color = acc.pct >= 60 ? 'var(--green)' : 'var(--gold)';
+  }
+  document.getElementById('todaySubCount').textContent = '+' + (subs.today || 0);
+  renderSubSparkline(subs.growth || []);
+  renderRevPrograms(rev.byProgram || []);
+}
+
+function updateKPIsOffline() {
+  // Show API not connected — don't show fake numbers
+  document.getElementById('kpi-revenue').textContent = '—';
+  document.getElementById('kpi-rev-delta').textContent = 'API not connected yet';
+  document.getElementById('kpi-rev-delta').style.color = 'var(--gold)';
+  document.getElementById('kpi-subs').textContent = '—';
+  document.getElementById('kpi-subs-delta').textContent = 'Deploy api-server.js on Railway first';
+  document.getElementById('kpi-clicks').textContent = '—';
+  document.getElementById('kpi-clicks-delta').textContent = '—';
+  document.getElementById('kpi-accuracy').textContent = '—';
+  document.getElementById('kpi-acc-delta').textContent = 'Awaiting completed matches';
+  renderRevProgramsOffline();
+  renderServicesMini();
+}
+
+// ── LIVE MATCHES ──
+async function fetchLiveMatches() {
+  const data = await apiFetch('/matches/live');
+  if (data && data.matches) {
+    state.liveMatches = data.matches;
+    renderLiveMatches(data.matches);
+    const liveCount = data.matches.filter(m => m.status === 'LIVE').length;
+    document.getElementById('liveCount').textContent = liveCount;
+    document.getElementById('live-badge').textContent = liveCount > 0
+      ? `● ${liveCount} LIVE` : 'FT';
+    document.getElementById('live-badge').style.background =
+      liveCount > 0 ? 'var(--red2)' : 'rgba(255,255,255,0.05)';
+  } else {
+    renderMatchesOffline();
+  }
+}
+
+function renderLiveMatches(matches) {
+  const el = document.getElementById('liveMatchesList');
+  if (!matches || !matches.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:12px;padding:12px 0">No matches scheduled right now</div>';
+    return;
+  }
+  el.innerHTML = matches.slice(0, 6).map(m => `
+    <div class="match-row">
+      <div class="match-teams">
+        <span class="match-flag">${m.homeFlag || '🏳️'}</span>
+        <span class="match-name">${m.home}</span>
+        <span class="match-vs">vs</span>
+        <span class="match-flag">${m.awayFlag || '🏳️'}</span>
+        <span class="match-name">${m.away}</span>
+      </div>
+      <div>
+        <div class="match-score ${m.status === 'LIVE' ? 'live' : 'ft'}">
+          ${m.homeScore ?? '–'}–${m.awayScore ?? '–'}
+        </div>
+      </div>
+      <div class="match-meta">
+        ${m.status === 'LIVE'
+          ? `<div class="match-min">${m.minute}'</div>`
+          : `<div style="font-size:10px;color:var(--dim)">${m.status}</div>`}
+        ${m.aiPick ? `<div class="match-ai">AI: ${m.aiPick}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMatchesOffline() {
+  const msgs = [
+    document.getElementById('liveMatchesList'),
+    document.getElementById('allMatchesPanel')
+  ];
+  msgs.forEach(el => {
+    if (el) el.innerHTML = `
+      <div style="padding:20px 0;text-align:center">
+        <div style="font-size:24px;margin-bottom:8px">⚙️</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px">API Server Not Connected</div>
+        <div style="font-size:12px;color:var(--dim);line-height:1.7">
+          Live match data requires api-server.js running on Railway.<br>
+          Deploy with <code style="color:var(--purple);background:var(--surface);padding:1px 5px;border-radius:4px">railway up</code>
+          then real scores will appear here.
+        </div>
+      </div>`;
+  });
+}
+
+// ── EVENTS ──
+async function fetchEvents() {
+  const data = await apiFetch('/events/recent');
+  if (data && data.events) {
+    state.events = data.events;
+    renderEventLog(data.events);
+    document.getElementById('eventCountBadge').textContent = `${data.today || data.events.length} today`;
+  } else {
+    renderEventLogOffline();
+  }
+}
+
+function renderEventLog(events) {
+  const icons = { GOAL:'⚽', RED_CARD:'🟥', ELIMINATION:'😔', INJURY:'🚑', VAR:'⚖️', HAT_TRICK:'🎩', UPSET:'⚡', RECORD:'📊', PUSH_SENT:'🔔', EMAIL_SENT:'📧', CONTENT_GEN:'🤖', AFFILIATE_CLICK:'🔗' };
+  const el = document.getElementById('eventLog');
+  if (!events.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No events yet today</div>';
+    return;
+  }
+  el.innerHTML = events.slice(0, 20).map(e => `
+    <div class="event-row">
+      <div class="event-time">${fmtTime(e.timestamp)}</div>
+      <div class="event-icon">${icons[e.type] || '•'}</div>
+      <div class="event-text">${formatEventText(e)}</div>
+    </div>
+  `).join('');
+}
+
+function formatEventText(e) {
+  if (e.type === 'GOAL') return `<span class="hl">GOAL</span> — ${e.team} ${e.score} (${e.minute}') · ${e.actionsTriggered || 0} actions fired`;
+  if (e.type === 'ELIMINATION') return `<span class="red">ELIMINATED</span> — ${e.team} · memorial page live · 18 actions`;
+  if (e.type === 'PUSH_SENT') return `<span class="green">Push sent</span> — ${e.recipients || '—'} recipients · ${e.title}`;
+  if (e.type === 'CONTENT_GEN') return `🤖 AI generated: <span class="hl">${e.contentType}</span> · ${e.language} · ${e.tokens || 0} tokens`;
+  if (e.type === 'AFFILIATE_CLICK') return `<span class="green">Click</span> → ${e.program} · ${e.country} · est. £${e.value || 0}`;
+  if (e.type === 'EMAIL_SENT') return `Email sent · ${e.recipients} recipients · ${e.subject}`;
+  return e.description || `${e.type} event`;
+}
+
+function renderEventLogOffline() {
+  const placeholders = [
+    { type:'GOAL', team:'Brazil', score:'1-0', minute:23, actionsTriggered:12, timestamp: new Date(Date.now()-600000) },
+    { type:'CONTENT_GEN', contentType:'Match preview', language:'EN', tokens:1247, timestamp: new Date(Date.now()-900000) },
+    { type:'PUSH_SENT', recipients:'—', title:'⚽ Goal alert (example)', timestamp: new Date(Date.now()-1200000) },
+  ];
+  document.getElementById('eventLog').innerHTML =
+    '<div style="color:var(--gold);font-size:10px;padding:4px 0 8px;font-weight:700">EXAMPLE DATA — API not connected</div>' +
+    placeholders.map(e => `
+      <div class="event-row" style="opacity:0.5">
+        <div class="event-time">${fmtTime(e.timestamp)}</div>
+        <div class="event-icon">⚽</div>
+        <div class="event-text">${formatEventText(e)}</div>
+      </div>`).join('');
+}
+
+// ── SERVICES ──
+async function fetchServices() {
+  const data = await apiFetch('/services/health');
+  if (data) {
+    state.services = data;
+    renderServices(data);
+  } else {
+    renderServicesOffline();
+  }
+}
+
+const SERVICE_DEFS = [
+  { id: 'api-server', label: 'API Server', desc: 'Express.js · REST + WebSocket', dotId: 'dot-api', miniId: 'svc-api-mini' },
+  { id: 'ai-engine', label: 'AI Engine', desc: 'Groq llama3-70b · 28 languages', dotId: 'dot-ai', miniId: 'svc-ai-mini' },
+  { id: 'moment-engine', label: 'Moment Engine', desc: 'Match event detection · 8 types', dotId: 'dot-moment', miniId: 'svc-moment-mini' },
+  { id: 'world-engine', label: 'World Engine', desc: 'Content generation · 24/7', dotId: 'dot-world', miniId: 'svc-world-mini' },
+  { id: 'push-service', label: 'Push Service', desc: 'OneSignal · Web push notifications', dotId: 'dot-push', miniId: 'svc-push-mini' },
+];
+
+function renderServices(data) {
+  SERVICE_DEFS.forEach(svc => {
+    const s = data[svc.id] || { status: 'unknown' };
+    const dotEl = document.getElementById(svc.dotId);
+    if (dotEl) {
+      dotEl.className = 'dot ' + (s.status === 'up' ? '' : s.status === 'degraded' ? 'warn' : 'err');
+    }
+    renderServiceMini(svc, s);
+  });
+  const svcList = document.getElementById('svcDetailList');
+  if (svcList) {
+    svcList.innerHTML = SERVICE_DEFS.map(svc => {
+      const s = data[svc.id] || {};
+      return `
+      <div class="svc-row">
+        <div class="svc-name">
+          <div class="svc-dot ${s.status === 'up' ? 'up' : s.status === 'degraded' ? 'warn' : 'down'}"></div>
+          ${svc.label}
+          <span style="font-size:10px;color:var(--dim);font-weight:400">${svc.desc}</span>
+        </div>
+        <div class="svc-stats">
+          ${s.latency ? `${s.latency}ms` : '—'}<br>
+          <span class="svc-uptime">${s.uptime || '—'} uptime</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function renderServiceMini(svc, s) {
+  const el = document.getElementById(svc.miniId);
+  if (!el) return;
+  const statusColor = s.status === 'up' ? 'var(--green)' : s.status === 'degraded' ? 'var(--gold)' : 'var(--red)';
+  el.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${statusColor}"></div>
+        <div style="font-size:11px;font-weight:700">${svc.label}</div>
+      </div>
+      <div style="font-size:10px;color:var(--dim)">${svc.desc}</div>
+      <div style="font-size:10px;color:${statusColor};font-weight:700;margin-top:4px">
+        ${s.status === 'up' ? 'Running' : s.status === 'degraded' ? 'Degraded' : s.status || 'Not deployed'}
+      </div>
+    </div>`;
+}
+
+function renderServicesOffline() {
+  SERVICE_DEFS.forEach(svc => {
+    const dotEl = document.getElementById(svc.dotId);
+    if (dotEl) dotEl.className = 'dot err';
+    renderServiceMini(svc, { status: 'not deployed' });
+  });
+  document.getElementById('svcHealthBadge').textContent = 'Deploy Railway services first';
+  document.getElementById('svcHealthBadge').style.background = 'var(--red2)';
+  document.getElementById('svcHealthBadge').style.color = 'var(--red)';
+  const svcList = document.getElementById('svcDetailList');
+  if (svcList) {
+    svcList.innerHTML = `
+      <div style="padding:20px 0;text-align:center">
+        <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:6px">Services not deployed yet</div>
+        <div style="font-size:12px;color:var(--dim);line-height:1.7;margin-bottom:12px">
+          Run <code style="color:var(--purple);background:var(--surface);padding:2px 6px;border-radius:4px">railway up</code>
+          in the project directory to deploy all 5 backend services.<br>
+          Once deployed, real health metrics will appear here.
+        </div>
+      </div>
+      ${SERVICE_DEFS.map(svc => `
+        <div class="svc-row">
+          <div class="svc-name">
+            <div class="svc-dot down"></div>${svc.label}
+            <span style="font-size:10px;color:var(--dim);font-weight:400">${svc.desc}</span>
+          </div>
+          <div style="font-size:10px;color:var(--red);font-weight:700">Not deployed</div>
+        </div>`).join('')}`;
+  }
+}
+
+// ── AI QUEUE ──
+async function fetchAIQueue() {
+  const data = await apiFetch('/ai/queue');
+  if (data && data.queue) {
+    state.aiQueue = data.queue;
+    renderAIQueue(data.queue);
+  } else {
+    renderAIQueueOffline();
+  }
+}
+
+function renderAIQueue(queue) {
+  const items = queue.slice(0, 8);
+  const html = items.map(item => `
+    <div class="queue-item">
+      <div class="queue-status qs-${item.status === 'done' ? 'done' : item.status === 'running' ? 'running' : 'queue'}"></div>
+      <div class="queue-info">
+        <div class="queue-title">${item.type} · ${item.match || item.subject || ''}</div>
+        <div class="queue-meta">${item.language} · ${fmtTime(item.createdAt)}</div>
+        ${item.tokens ? `<div class="queue-tokens">${item.tokens.toLocaleString()} tokens</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+  ['aiQueueList', 'aiQueueFull'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html || '<div style="color:var(--dim);font-size:11px">Queue empty</div>';
+  });
+  const pending = queue.filter(q => q.status === 'pending').length;
+  document.getElementById('queueBadge').textContent = `${pending} pending`;
+}
+
+function renderAIQueueOffline() {
+  const msg = '<div style="color:var(--dim);font-size:11px;padding:8px 0">AI engine not connected — deploy api-server.js</div>';
+  ['aiQueueList', 'aiQueueFull'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = msg;
+  });
+}
+
+// ── REVENUE PROGRAMS ──
+const PROGRAMS_FALLBACK = [
+  { name: 'Bet365', model: 'RevShare 30%', currency: '£', clicks: 0, earned: 0 },
+  { name: 'DraftKings', model: '$250 CPA', currency: '$', clicks: 0, earned: 0 },
+  { name: 'Betfair Exchange', model: 'RevShare 25-35%', currency: '£', clicks: 0, earned: 0 },
+  { name: 'William Hill', model: 'RevShare 30%', currency: '£', clicks: 0, earned: 0 },
+  { name: 'FanDuel', model: '$200 CPA', currency: '$', clicks: 0, earned: 0 },
+  { name: 'Dream11', model: '£80 CPA', currency: '£', clicks: 0, earned: 0 },
+];
+
+function renderRevPrograms(programs) {
+  const list = programs.length ? programs : PROGRAMS_FALLBACK;
+  const max = Math.max(...list.map(p => p.earned), 1);
+  document.getElementById('revProgramList').innerHTML = list.slice(0, 6).map(p => `
+    <div class="rev-row">
+      <div>
+        <div class="rev-program">${p.name}</div>
+        <div class="rev-clicks">${p.clicks} clicks · ${p.model}</div>
+      </div>
+      <div class="rev-bar-wrap">
+        <div class="rev-bar-track"><div class="rev-bar-fill" style="width:${Math.max(4, (p.earned/max)*100)}%"></div></div>
+      </div>
+      <div class="rev-amount">${p.currency}${fmtNum(p.earned)}</div>
+    </div>
+  `).join('');
+}
+
+function renderRevProgramsOffline() {
+  document.getElementById('revProgramList').innerHTML =
+    '<div style="color:var(--gold);font-size:10px;font-weight:700;margin-bottom:6px">Awaiting affiliate data — add ref codes to .env</div>' +
+    PROGRAMS_FALLBACK.map(p => `
+    <div class="rev-row" style="opacity:0.4">
+      <div><div class="rev-program">${p.name}</div><div class="rev-clicks">${p.model}</div></div>
+      <div class="rev-bar-wrap"><div class="rev-bar-track"><div class="rev-bar-fill" style="width:4%"></div></div></div>
+      <div class="rev-amount">£0</div>
+    </div>`).join('');
+}
+
+// ── SUB SPARKLINE ──
+function renderSubSparkline(growth) {
+  if (!growth || !growth.length) return;
+  const max = Math.max(...growth.map(d => d.count), 1);
+  const el = document.getElementById('subSparkline');
+  if (!el) return;
+  el.innerHTML = growth.slice(-10).map(d => `
+    <div class="sub-bar-wrap">
+      <div class="sub-bar" style="height:${Math.max(4, (d.count/max)*55)}px"></div>
+      <div class="sub-day">${d.day || ''}</div>
+    </div>
+  `).join('');
+}
+
+// ── TRAFFIC ──
+async function fetchTraffic() {
+  const data = await apiFetch('/analytics/traffic');
+  if (data) {
+    state.traffic = data;
+    renderTraffic(data);
+  }
+}
+
+function renderTraffic(data) {
+  document.getElementById('traffic-total').textContent = fmtNum(data.pageviews || 0);
+  document.getElementById('traffic-unique').textContent = fmtNum(data.unique || 0);
+  document.getElementById('traffic-top').textContent = data.topPage || '—';
+  const countries = data.byCountry || [];
+  const maxC = Math.max(...countries.map(c => c.views), 1);
+  document.getElementById('trafficByCountry').innerHTML = countries.slice(0, 8).map(c => `
+    <div class="tl-item">
+      <div class="tl-flag">${c.flag || '🌍'}</div>
+      <div class="tl-country">${c.country}</div>
+      <div class="tl-bar-wrap"><div class="tl-bar" style="width:${(c.views/maxC)*100}%"></div></div>
+      <div class="tl-n">${fmtNum(c.views)}</div>
+    </div>
+  `).join('') || '<div style="color:var(--dim);font-size:12px">No data yet</div>';
+  const pages = data.topPages || [];
+  document.getElementById('topPagesTable').innerHTML = pages.slice(0, 10).map(p => `
+    <tr>
+      <td style="color:var(--text)">${p.path}</td>
+      <td class="num gold">${fmtNum(p.views)}</td>
+      <td class="num dim">${fmtNum(p.unique)}</td>
+      <td class="num green">${p.convRate || '—'}%</td>
+    </tr>
+  `).join('');
+}
+
+// ── ACCURACY ──
+async function fetchAccuracy() {
+  const data = await apiFetch('/ai/accuracy');
+  if (data) {
+    state.accuracy = data;
+    renderAccuracy(data);
+  }
+}
+
+function renderAccuracy(data) {
+  document.getElementById('acc-correct').textContent = data.correct || 0;
+  document.getElementById('acc-wrong').textContent = data.wrong || 0;
+  const pct = data.total > 0 ? Math.round((data.correct/data.total)*100) : 0;
+  document.getElementById('acc-pct').textContent = pct ? pct + '%' : '—';
+  document.getElementById('kpi-accuracy').textContent = pct ? pct + '%' : '—';
+  const log = data.predictions || [];
+  document.getElementById('accuracyLog').innerHTML = log.length
+    ? log.map(p => `
+      <div class="acc-row">
+        <div class="acc-match">${p.home} vs ${p.away}</div>
+        <div class="acc-pred">${p.aiPrediction}</div>
+        <div class="acc-result ${p.result}">${p.result === 'correct' ? '✓ Correct' : p.result === 'wrong' ? '✗ Wrong' : '⏳ Live'}</div>
+      </div>`).join('')
+    : '<div style="color:var(--dim);font-size:12px;padding:8px 0">No completed predictions yet — matches in progress</div>';
+}
+
+// ── API USAGE ──
+async function fetchAPIUsage() {
+  const data = await apiFetch('/services/api-usage');
+  if (data) renderAPIUsage(data);
+}
+
+function renderAPIUsage(data) {
+  const apis = data.apis || [
+    { name: 'Groq (AI)', used: 0, limit: 500000, unit: 'tokens/day' },
+    { name: 'API-Football', used: 0, limit: 100, unit: 'calls/day' },
+    { name: 'OneSignal', used: 0, limit: 10000, unit: 'notifs/day' },
+    { name: 'Beehiiv', used: 0, limit: 1000, unit: 'emails/day' },
+  ];
+  const el = document.getElementById('apiUsageList');
+  if (!el) return;
+  el.innerHTML = apis.map(a => {
+    const pct = a.limit > 0 ? Math.round((a.used/a.limit)*100) : 0;
+    const cls = pct > 80 ? 'crit' : pct > 60 ? 'warn' : 'ok';
+    return `
+    <div class="api-row">
+      <div class="api-name">${a.name}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;margin:0 16px">
+        <div class="api-bar" style="width:100%;flex:1"><div class="api-fill ${cls}" style="width:${pct}%"></div></div>
+        <span style="font-size:10px;color:var(--dim);font-family:var(--font);white-space:nowrap">${a.used.toLocaleString()} / ${a.limit.toLocaleString()} ${a.unit}</span>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:${pct>80?'var(--red)':pct>60?'var(--gold)':'var(--green)'};font-family:var(--font);min-width:36px;text-align:right">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+// ── PUSH ──
+async function fetchPushHistory() {
+  const data = await apiFetch('/push/history');
+  if (data && data.notifications) {
+    renderPushHistory(data.notifications);
+    document.getElementById('push-subs').textContent = fmtNum(data.subscribers || 0);
+    document.getElementById('push-sent').textContent = fmtNum(data.totalSent || 0);
+    document.getElementById('push-ctr').textContent = (data.avgCtr || 0) + '%';
+    document.getElementById('pushCount').textContent = data.today || 0;
+  }
+}
+
+function renderPushHistory(notifications) {
+  const el = document.getElementById('pushHistory');
+  if (!el) return;
+  el.innerHTML = notifications.length
+    ? notifications.slice(0, 10).map(n => `
+      <div class="push-history-item">
+        <div>
+          <div class="phi-text">${n.title}</div>
+          <div style="font-size:10px;color:var(--dim)">${n.segment} · ${fmtTime(n.sentAt)}</div>
+        </div>
+        <div class="phi-meta">
+          <div class="phi-sent">${n.recipients?.toLocaleString() || '—'}</div>
+          <div>${n.ctr ? n.ctr+'% CTR' : '—'}</div>
+        </div>
+      </div>`).join('')
+    : '<div style="color:var(--dim);font-size:12px;padding:8px 0">No push notifications sent yet</div>';
+}
+
+function sendManualPush() {
+  const title = document.getElementById('pushTitle').value.trim();
+  const body = document.getElementById('pushBody').value.trim();
+  const segment = document.getElementById('pushSegment').value;
+  if (!title || !body) { alert('Enter title and body'); return; }
+  fetch(API_BASE + '/push/send', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, body, segment })
+  }).then(r => r.json()).then(d => {
+    if (d.success) {
+      logEvent({ type: 'PUSH_SENT', title, recipients: d.recipients, timestamp: new Date() });
+      alert(`✓ Push sent to ${d.recipients} subscribers`);
+    }
+  }).catch(() => alert('API not connected — deploy api-server.js first'));
+}
+
+function previewPush() {
+  const title = document.getElementById('pushTitle').value || 'Preview title';
+  const body = document.getElementById('pushBody').value || 'Preview body text';
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body });
+  } else {
+    alert(`Preview:\n\nTitle: ${title}\nBody: ${body}`);
+  }
+}
+
+// ── ACTIONS ──
+function checkAllServices() { fetchServices(); }
+function deployAll() {
+  if (confirm('This will run `railway up` on the server. Continue?')) {
+    fetch(API_BASE + '/admin/deploy', { method: 'POST' })
+      .then(r => r.json()).then(d => alert(d.message || 'Deploy triggered'))
+      .catch(() => alert('Run `railway up` manually in your terminal'));
+  }
+}
+function deployVercel() {
+  if (confirm('This will redeploy all frontend pages with `vercel --prod`. Continue?')) {
+    fetch(API_BASE + '/admin/deploy-vercel', { method: 'POST' })
+      .then(r => r.json()).then(d => alert(d.message || 'Deploy triggered'))
+      .catch(() => alert('Run `vercel --prod` manually in your terminal'));
+  }
+}
+function restartService(id) {
+  fetch(API_BASE + '/admin/restart/' + id, { method: 'POST' })
+    .then(r => r.json()).then(d => alert(d.message || 'Restarted'))
+    .catch(() => alert('API not connected'));
+}
+function viewLogs(id) { window.open('/logs/' + id, '_blank'); }
+function triggerAIGeneration() {
+  fetch(API_BASE + '/ai/trigger', { method: 'POST' })
+    .then(r => r.json()).then(d => { fetchAIQueue(); alert(`Triggered: ${d.jobsQueued || 0} jobs queued`); })
+    .catch(() => alert('AI engine not connected'));
+}
+function refreshMatches() { fetchLiveMatches(); }
+function clearLog() {
+  state.events = [];
+  document.getElementById('eventLog').innerHTML = '<div style="color:var(--dim);font-size:11px">Log cleared</div>';
+}
+
+// ── PANEL LAZY LOAD ──
+function renderPanel(id) {
+  if (id === 'traffic') fetchTraffic();
+  if (id === 'accuracy') fetchAccuracy();
+  if (id === 'push') fetchPushHistory();
+  if (id === 'api-usage') fetchAPIUsage();
+  if (id === 'services') fetchServices();
+  if (id === 'matches') fetchLiveMatches();
+}
+
+// ── AFFILIATE MATRIX ──
+function renderAffiliateMatrix() {
+  const programs = [
+    { name:'Bet365', market:'UK/Global', model:'RevShare 30%', value:'£200-400/yr', ref:'YOUR_BET365_REF', status:'sp-warn' },
+    { name:'William Hill', market:'UK/Global', model:'RevShare 30%', value:'£150-300/yr', ref:'YOUR_WH_REF', status:'sp-warn' },
+    { name:'Betfair Exchange', market:'UK/Global', model:'RevShare 25-35%', value:'£300-600/yr', ref:'YOUR_BF_REF', status:'sp-warn' },
+    { name:'DraftKings', market:'USA', model:'$250 CPA', value:'$250/signup', ref:'YOUR_DK_REF', status:'sp-warn' },
+    { name:'FanDuel', market:'USA', model:'$200 CPA', value:'$200/signup', ref:'YOUR_FD_REF', status:'sp-warn' },
+    { name:'Dream11', market:'India', model:'£80 CPA', value:'£80/signup', ref:'YOUR_D11_REF', status:'sp-warn' },
+    { name:'Bet9ja', market:'Nigeria', model:'RevShare 25%', value:'£100-200/yr', ref:'YOUR_B9J_REF', status:'sp-warn' },
+    { name:'SportyBet', market:'Nigeria/Africa', model:'RevShare 20%', value:'£80-150/yr', ref:'YOUR_SB_REF', status:'sp-warn' },
+    { name:'NordVPN', market:'Global', model:'40% RevShare', value:'£38/signup', ref:'YOUR_NORDVPN_REF', status:'sp-warn' },
+    { name:'Booking.com', market:'Global', model:'25-40% commission', value:'£15-80/booking', ref:'YOUR_BOOKING_REF', status:'sp-warn' },
+    { name:'StubHub', market:'USA', model:'CPA $15-40', value:'$15-40/ticket', ref:'YOUR_SH_REF', status:'sp-warn' },
+    { name:'Caesars', market:'USA', model:'$250 CPA', value:'$250/signup', ref:'YOUR_CAESARS_REF', status:'sp-warn' },
+    { name:'Betfair Sportsbook', market:'UK', model:'RevShare 25%', value:'£100-250/yr', ref:'YOUR_BF_SB_REF', status:'sp-warn' },
+    { name:'Paddy Power', market:'UK/IE', model:'RevShare 30%', value:'£150-300/yr', ref:'YOUR_PP_REF', status:'sp-warn' },
+    { name:'Coral', market:'UK', model:'RevShare 25%', value:'£100-200/yr', ref:'YOUR_CORAL_REF', status:'sp-warn' },
+    { name:'Kalshi', market:'USA', model:'RevShare', value:'£20-50/user', ref:'YOUR_KALSHI_REF', status:'sp-warn' },
+    { name:'Polymarket', market:'Global', model:'Referral', value:'Variable', ref:'YOUR_POLYMARKET_REF', status:'sp-warn' },
+  ];
+  const tbody = document.getElementById('affMatrixBody');
+  if (tbody) tbody.innerHTML = programs.map(p => `
+    <tr>
+      <td class="num">${p.name}</td>
+      <td style="color:var(--dim)">${p.market}</td>
+      <td>${p.model}</td>
+      <td class="num gold">${p.value}</td>
+      <td><code style="font-family:var(--font);font-size:10px;color:var(--purple)">${p.ref}</code></td>
+      <td><span class="status-pill ${p.status}">${p.ref.startsWith('YOUR') ? 'Needs ref code' : 'Active'}</span></td>
+    </tr>`).join('');
+}
+renderAffiliateMatrix();
+
+// ── UTILS ──
+function fmtGBP(n) { return '£' + (n >= 1000 ? (n/1000).toFixed(1) + 'K' : n.toFixed(0)); }
+function fmtNum(n) { return typeof n === 'number' ? n.toLocaleString() : n; }
+function fmtTime(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toTimeString().slice(0,5);
+}
+function logEvent(e) {
+  state.events.unshift(e);
+  renderEventLog(state.events);
+}
+
+// ── BOOT ──
+bootstrap();
+</script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "version": "2",
+  "project": "wc2026-empire",
+  "services": [
+    {
+      "name": "dedup-guard",
+      "startCommand": "node dedup-guard.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3033,
+      "envVar": "DEDUP_GUARD_URL",
+      "priority": 1,
+      "note": "Deploy FIRST \u2014 other engines depend on it. SHA256 event dedup."
+    },
+    {
+      "name": "groq-budget-guard",
+      "startCommand": "node groq-budget-guard.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3036,
+      "envVar": "GROQ_BUDGET_URL",
+      "priority": 1,
+      "note": "Deploy FIRST \u2014 prevents Groq token burnout. 480K/day pool across all engines."
+    },
+    {
+      "name": "queue-processor",
+      "startCommand": "node queue-processor.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3027,
+      "envVar": "QUEUE_PROCESSOR_URL",
+      "priority": 2,
+      "note": "Drains email/push/SMS queues every 30s. Dead-letter after 3 retries."
+    },
+    {
+      "name": "stripe-webhook",
+      "startCommand": "node stripe-webhook.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3024,
+      "envVar": "STRIPE_WEBHOOK_URL",
+      "priority": 2,
+      "note": "CRITICAL \u2014 payment handler. Must be live before selling premium access."
+    },
+    {
+      "name": "affiliate-tracker",
+      "startCommand": "node affiliate-tracker.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3031,
+      "envVar": "AFFILIATE_TRACKER_URL",
+      "priority": 2,
+      "note": "Click tracking + /go/:partner redirect for 13 affiliate partners."
+    },
+    {
+      "name": "world-engine",
+      "startCommand": "node world-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3003,
+      "envVar": "WORLD_ENGINE_URL",
+      "priority": 3,
+      "note": "Intelligence hub \u2014 news monitoring, sharp money tracking, content generation, event correlation."
+    },
+    {
+      "name": "moment-engine",
+      "startCommand": "node moment-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3001,
+      "envVar": "MOMENT_ENGINE_URL",
+      "priority": 3,
+      "note": "Core dispatcher \u2014 receives events, fires all content engines simultaneously."
+    },
+    {
+      "name": "api-server",
+      "startCommand": "node api-server.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3002,
+      "envVar": "API_SERVER_URL",
+      "priority": 3,
+      "note": "Public REST API \u2014 live scores, standings, fixtures. Powers the Vercel frontend."
+    },
+    {
+      "name": "data-pipeline",
+      "startCommand": "node data-pipeline.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3004,
+      "envVar": "DATA_PIPELINE_URL",
+      "priority": 3,
+      "note": "Polls football data APIs every 60s, triggers moment-engine on events."
+    },
+    {
+      "name": "telegram-engine",
+      "startCommand": "node telegram-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3029,
+      "envVar": "TELEGRAM_ENGINE_URL",
+      "priority": 4,
+      "note": "Multi-channel Telegram (EN/ES/PT/AR/FR + Premium). Per-channel 3s rate limit."
+    },
+    {
+      "name": "email-digest-engine",
+      "startCommand": "node email-digest-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3030,
+      "envVar": "EMAIL_DIGEST_URL",
+      "priority": 4,
+      "note": "Daily digest at 07:00 UTC. HMAC unsubscribe tokens. SendGrid API."
+    },
+    {
+      "name": "twitter-engine",
+      "startCommand": "node twitter-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3028,
+      "envVar": "TWITTER_ENGINE_URL",
+      "priority": 4,
+      "note": "Twitter/X. Free tier: 1500 tweets/month cap (hard limit at 1400)."
+    },
+    {
+      "name": "facebook-engine",
+      "startCommand": "node facebook-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3021,
+      "envVar": "FACEBOOK_ENGINE_URL",
+      "priority": 4,
+      "note": "Facebook Pages + Meta Threads. Two platforms, one engine."
+    },
+    {
+      "name": "discord-bot",
+      "startCommand": "node discord-bot.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3022,
+      "envVar": "DISCORD_BOT_URL",
+      "priority": 4,
+      "note": "Discord bot + slash commands. Register commands once with --register flag."
+    },
+    {
+      "name": "reddit-bot",
+      "startCommand": "node reddit-bot.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3023,
+      "envVar": "REDDIT_BOT_URL",
+      "priority": 4,
+      "note": "Posts to r/worldcup, r/soccer. 12-min cooldown per subreddit to avoid bans."
+    },
+    {
+      "name": "whatsapp-engine",
+      "startCommand": "node whatsapp-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3034,
+      "envVar": "WHATSAPP_ENGINE_URL",
+      "priority": 4,
+      "note": "WhatsApp Business Cloud API. GOAL + MATCH_END only (paid per message)."
+    },
+    {
+      "name": "translation-processor",
+      "startCommand": "node translation-processor.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3026,
+      "envVar": "TRANSLATION_ENGINE_URL",
+      "priority": 4,
+      "note": "Translates to 6 languages via Groq, posts to language-specific platforms."
+    },
+    {
+      "name": "bluesky-engine",
+      "startCommand": "node bluesky-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3006,
+      "envVar": "BLUESKY_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "mastodon-engine",
+      "startCommand": "node mastodon-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3007,
+      "envVar": "MASTODON_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "commentary-live-engine",
+      "startCommand": "node commentary-live-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3018,
+      "envVar": "COMMENTARY_ENGINE_URL",
+      "priority": 5,
+      "note": "Highest Groq token budget (120K/day). Real-time AI commentary during matches."
+    },
+    {
+      "name": "news-monitor",
+      "startCommand": "node news-monitor.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3019,
+      "envVar": "NEWS_MONITOR_URL",
+      "priority": 5
+    },
+    {
+      "name": "youtube-uploader",
+      "startCommand": "node youtube-uploader.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3025,
+      "envVar": "YOUTUBE_UPLOADER_URL",
+      "priority": 5,
+      "note": "Run --auth once locally to generate refresh token before deploying."
+    },
+    {
+      "name": "linkedin-post-engine",
+      "startCommand": "node linkedin-post-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3015,
+      "envVar": "LINKEDIN_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "snapchat-engine",
+      "startCommand": "node snapchat-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3010,
+      "envVar": "SNAPCHAT_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "twitch-bot",
+      "startCommand": "node twitch-bot.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3013,
+      "envVar": "TWITCH_BOT_URL",
+      "priority": 5
+    },
+    {
+      "name": "web-stories-generator",
+      "startCommand": "node web-stories-generator.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3014,
+      "envVar": "WEB_STORIES_URL",
+      "priority": 5
+    },
+    {
+      "name": "podcast-engine",
+      "startCommand": "node podcast-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3008,
+      "envVar": "PODCAST_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "news-syndication-engine",
+      "startCommand": "node news-syndication-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3009,
+      "envVar": "NEWS_SYNDICATION_URL",
+      "priority": 5
+    },
+    {
+      "name": "naver-engine",
+      "startCommand": "node naver-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3011,
+      "envVar": "NAVER_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "sharechat-engine",
+      "startCommand": "node sharechat-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3012,
+      "envVar": "SHARECHAT_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "image-engine",
+      "startCommand": "node image-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3016,
+      "envVar": "IMAGE_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "visual-post-engine",
+      "startCommand": "node visual-post-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3017,
+      "envVar": "VISUAL_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "monitor-bot",
+      "startCommand": "node monitor-bot.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3020,
+      "envVar": "MONITOR_BOT_URL",
+      "priority": 5
+    },
+    {
+      "name": "ai-engine",
+      "startCommand": "node ai-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3003,
+      "envVar": "AI_ENGINE_URL",
+      "priority": 5
+    },
+    {
+      "name": "analytics-aggregator",
+      "startCommand": "node analytics-aggregator.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3032,
+      "envVar": "ANALYTICS_URL",
+      "priority": 6,
+      "note": "Deploy last \u2014 polls all other engines. Dashboard at /dashboard.html"
+    },
+    {
+      "name": "sitemap-generator",
+      "startCommand": "node sitemap-generator.js --serve",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "port": 3037,
+      "envVar": "SITEMAP_URL",
+      "priority": 6,
+      "note": "Deploy last \u2014 needs public/ dir fully generated. Daily cron 03:00 UTC."
+    },
+    {
+      "name": "personal-agent",
+      "file": "personal-agent.js",
+      "port": 3038,
+      "priority": 3
+    },
+    {
+      "name": "line-engine",
+      "file": "line-engine.js",
+      "port": 3039,
+      "priority": 5
+    },
+    {
+      "name": "viber-engine",
+      "file": "viber-engine.js",
+      "port": 3040,
+      "priority": 5
+    },
+    {
+      "name": "odds-engine",
+      "file": "odds-engine.js",
+      "port": 3041,
+      "priority": 3
+    },
+    {
+      "name": "medium-engine",
+      "file": "medium-engine.js",
+      "port": 3042,
+      "priority": 5
+    },
+    {
+      "name": "koo-engine",
+      "file": "koo-engine.js",
+      "port": 3043,
+      "priority": 5
+    },
+    {
+      "name": "merchandise-engine",
+      "file": "merchandise-engine.js",
+      "port": 3044,
+      "priority": 5
+    },
+    {
+      "name": "fantasy-engine",
+      "file": "fantasy-engine.js",
+      "port": 3045,
+      "priority": 5
+    },
+    {
+      "name": "kakao-engine",
+      "startCommand": "node kakao-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "kakao-engine.js",
+      "port": 3046,
+      "envVar": "KAKAO_ENGINE_URL",
+      "priority": 5,
+      "note": "KakaoTalk Channel broadcast — Korean market, 47M users"
+    },
+    {
+      "name": "zalo-engine",
+      "startCommand": "node zalo-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "zalo-engine.js",
+      "port": 3047,
+      "envVar": "ZALO_ENGINE_URL",
+      "priority": 5,
+      "note": "Zalo OA broadcast — Vietnam market, 75M users"
+    },
+    {
+      "name": "vk-engine",
+      "startCommand": "node vk-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "vk-engine.js",
+      "port": 3048,
+      "envVar": "VK_ENGINE_URL",
+      "priority": 5,
+      "note": "VKontakte wall posts — Russia/CIS market, 100M MAU"
+    },
+    {
+      "name": "weibo-engine",
+      "startCommand": "node weibo-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "weibo-engine.js",
+      "port": 3049,
+      "envVar": "WEIBO_ENGINE_URL",
+      "priority": 5,
+      "note": "Weibo + WeChat mass message — China market, 600M+ users"
+    },
+    {
+      "name": "nairaland-engine",
+      "startCommand": "node nairaland-engine.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "nairaland-engine.js",
+      "port": 3050,
+      "envVar": "NAIRALAND_ENGINE_URL",
+      "priority": 5,
+      "note": "Nairaland forum posts in Nigerian Pidgin — Nigeria market, 3M users"
+    },
+    {
+      "name": "empire-agent",
+      "startCommand": "node empire-agent.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "empire-agent.js",
+      "port": 3051,
+      "envVar": "EMPIRE_AGENT_URL",
+      "priority": 3,
+      "critical": true,
+      "note": "Master conversational AI — empire brain, powers empire-chat.html + personal-agent"
+    },
+    {
+      "name": "growth-agent",
+      "startCommand": "node growth-agent.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "growth-agent.js",
+      "port": 3052,
+      "envVar": "GROWTH_AGENT_URL",
+      "priority": 3,
+      "note": "Virality detection + auto-amplification — monitors all events, scores & re-broadcasts viral moments"
+    },
+    {
+      "name": "traffic-amplifier",
+      "startCommand": "node traffic-amplifier.js",
+      "healthcheckPath": "/health",
+      "restartPolicy": "ON_FAILURE",
+      "file": "traffic-amplifier.js",
+      "port": 3053,
+      "envVar": "TRAFFIC_AMPLIFIER_URL",
+      "priority": 5,
+      "note": "SEO + content amplification — pings 20+ search engines/aggregators, IndexNow, XML-RPC pings, social bookmarking, press release gen, backlink outreach. All real human traffic."
+    }
+  ],
+  "deployPriorityGroups": {
+    "1_first": [
+      "dedup-guard",
+      "groq-budget-guard"
+    ],
+    "2_infrastructure": [
+      "queue-processor",
+      "stripe-webhook",
+      "affiliate-tracker"
+    ],
+    "3_core": [
+      "world-engine",
+      "moment-engine",
+      "api-server",
+      "data-pipeline",
+      "personal-agent",
+      "odds-engine",
+      "empire-agent",
+      "growth-agent"
+    ],
+    "4_social": [
+      "telegram-engine",
+      "email-digest-engine",
+      "twitter-engine",
+      "facebook-engine",
+      "discord-bot",
+      "reddit-bot",
+      "whatsapp-engine",
+      "translation-processor"
+    ],
+    "5_secondary": [
+      "bluesky-engine",
+      "mastodon-engine",
+      "commentary-live-engine",
+      "news-monitor",
+      "youtube-uploader",
+      "linkedin-post-engine",
+      "snapchat-engine",
+      "twitch-bot",
+      "web-stories-generator",
+      "podcast-engine",
+      "news-syndication-engine",
+      "naver-engine",
+      "sharechat-engine",
+      "image-engine",
+      "visual-post-engine",
+      "monitor-bot",
+      "ai-engine",
+      "line-engine",
+      "viber-engine",
+      "medium-engine",
+      "koo-engine",
+      "merchandise-engine",
+      "fantasy-engine",
+      "kakao-engine",
+      "zalo-engine",
+      "vk-engine",
+      "weibo-engine",
+      "nairaland-engine",
+      "traffic-amplifier"
+    ],
+    "6_last": [
+      "analytics-aggregator",
+      "sitemap-generator"
+    ]
+  },
+  "quickDeployScript": "for service in dedup-guard groq-budget-guard queue-processor stripe-webhook affiliate-tracker world-engine moment-engine api-server data-pipeline personal-agent odds-engine empire-agent growth-agent telegram-engine email-digest-engine twitter-engine facebook-engine discord-bot reddit-bot whatsapp-engine translation-processor bluesky-engine mastodon-engine commentary-live-engine news-monitor youtube-uploader linkedin-post-engine snapchat-engine twitch-bot web-stories-generator podcast-engine news-syndication-engine naver-engine sharechat-engine image-engine visual-post-engine monitor-bot ai-engine line-engine viber-engine medium-engine koo-engine merchandise-engine fantasy-engine kakao-engine zalo-engine vk-engine weibo-engine nairaland-engine analytics-aggregator sitemap-generator; do echo \"Deploying $service...\"; railway up --service $service; done",
+  "notes": {
+    "totalServices": 52,
+    "criticalPath": [
+      "dedup-guard",
+      "groq-budget-guard",
+      "moment-engine",
+      "stripe-webhook"
+    ],
+    "costEstimate": "Railway Starter ($5/mo base): ~$40-80/month for all 52 services at tournament load",
+    "previousVersion": "v1 had only 4 services: telegram-bot, agent-system, goal-monitor, smart-money",
+    "currentVersion": "v3 has 52 services: Phase 1 (35 core) + Phase 2 (8 regional) + Phase 3 (9 global platforms + AI agents)",
+    "envVars": "Copy .env.example \u2192 .env, fill ALL values. Railway env vars set once per project, available to all services.",
+    "matchedBetting": "14 matched betting streams EXCLUDED until age 18. 196/210 income streams active now."
+  }
+}

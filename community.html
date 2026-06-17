@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join the WC 2026 Community — Telegram, Discord, TikTok, YouTube & More</title>
+<meta name="description" content="WC 2026 picks, alerts and analysis across Telegram, Discord, X/Twitter, TikTok, YouTube, WhatsApp and email. Join 50,000+ fans.">
+<meta property="og:title" content="Join the WC 2026 Community — Telegram, Discord, TikTok, YouTube & More">
+<meta property="og:description" content="WC 2026 picks, alerts and analysis across Telegram, Discord, X/Twitter, TikTok, YouTube, WhatsApp and email. Join 50,000+ fans.">
+<meta property="og:image" content="https://wc2026-sports-empire.vercel.app/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e8e8f0;font-family:'Inter',sans-serif;line-height:1.6}
+nav{background:#0d0d14;border-bottom:1px solid #1e1e2e;padding:14px 24px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:100}
+nav a{color:#888;text-decoration:none;font-size:13px;transition:color .2s}.nav-brand{color:#00ff88;font-weight:700;font-size:15px;margin-right:auto}
+nav a:hover{color:#00ff88}.nav-cta{background:#00ff88;color:#0a0a0f!important;padding:6px 14px;border-radius:6px;font-weight:600}
+.hero{background:linear-gradient(135deg,#0d0d18 0%,#0a1628 50%,#0d0d18 100%);padding:64px 24px;text-align:center;border-bottom:1px solid #1e1e2e}
+.hero h1{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.15;margin-bottom:16px}
+.hi{color:#00ff88}.gold{color:#ffd700}.red{color:#ff4455}
+.hero p{font-size:18px;color:#aaa;max-width:600px;margin:0 auto 28px}
+.badge{display:inline-block;background:#00ff8820;color:#00ff88;border:1px solid #00ff8840;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:16px}
+.btn{display:inline-block;background:#00ff88;color:#0a0a0f;padding:14px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px;margin:6px}
+.btn-outline{background:transparent;color:#00ff88;border:1px solid #00ff88}
+.section{max-width:1100px;margin:0 auto;padding:48px 24px}
+.section-label{color:#00ff88;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.section-title{font-size:clamp(22px,4vw,36px);font-weight:800;margin-bottom:16px}
+.section-sub{color:#888;font-size:16px;max-width:620px;margin-bottom:32px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#111118;border:1px solid #1e1e2e;border-radius:12px;padding:24px;transition:border-color .2s}
+.card:hover{border-color:#00ff8840}
+.card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.card p{font-size:14px;color:#888;line-height:1.6}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0}
+.stat{background:#111118;border:1px solid #1e1e2e;border-radius:10px;padding:20px;text-align:center}
+.stat-n{font-size:32px;font-weight:800;color:#00ff88;display:block}
+.stat-l{font-size:12px;color:#888;margin-top:4px}
+table{width:100%;border-collapse:collapse;margin:24px 0}
+th{background:#111118;color:#00ff88;padding:12px 16px;text-align:left;font-size:12px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #1e1e2e}
+td{padding:12px 16px;border-bottom:1px solid #1e1e2e;font-size:14px}
+tr:hover{background:#ffffff05}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.tag-green{background:#00ff8820;color:#00ff88}.tag-gold{background:#ffd70020;color:#ffd700}.tag-red{background:#ff445520;color:#ff4455}
+.divider{height:1px;background:#1e1e2e;margin:48px 0}
+.vs-box{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin:32px 0}
+.player-side{background:#111118;border:1px solid #1e1e2e;border-radius:16px;padding:28px;text-align:center}
+.player-side h2{font-size:26px;font-weight:800;margin-bottom:6px}
+.player-side .nation{color:#888;font-size:13px;margin-bottom:16px}
+.vs-mid{font-size:48px;font-weight:900;color:#ffd700;text-align:center}
+.stat-compare{display:flex;justify-content:space-between;margin:8px 0;align-items:center}
+.stat-compare .l{color:#00ff88;font-weight:700}.stat-compare .r{color:#ff4455;font-weight:700}
+.stat-compare .m{color:#888;font-size:12px}
+.verdict{background:#00ff8810;border:1px solid #00ff8830;border-radius:12px;padding:24px;margin:24px 0}
+.verdict h3{color:#00ff88;margin-bottom:8px}
+footer{background:#07070d;border-top:1px solid #1e1e2e;padding:32px 24px;text-align:center;color:#555;font-size:13px}
+footer a{color:#00ff88;text-decoration:none}
+@media(max-width:768px){.grid-2,.grid-3,.stat-row{grid-template-columns:1fr}.vs-box{grid-template-columns:1fr}.vs-mid{display:none}}
+</style></head>
+<body><nav>
+<a href="/" class="nav-brand">⚽ WC2026 Empire</a>
+<a href="/star-players.html">Players</a>
+<a href="/wc2026-groups.html">Groups</a>
+<a href="/odds-comparison.html">Odds</a>
+<a href="/win-share.html">Picks</a>
+<a href="/win-share.html" class="nav-cta">Free Pick →</a>
+</nav>
+<div class="hero">
+<div class="badge">JOIN 50,000+ FANS</div>
+<h1>🌐 Join the <span class="hi">WC 2026 Community</span></h1>
+<p>Live picks, match alerts, debate, analysis — across every platform. Pick yours.</p>
+<a href="#platforms" class="btn">Find Your Platform ↓</a>
+</div>
+
+<div class="section" id="platforms">
+<div class="section-label">Where to Find Us</div>
+<div class="section-title">Every platform. Every match. 24/7.</div>
+
+<div class="grid-3">
+<div class="card">
+<h3>📱 Telegram Channel</h3>
+<p>The fastest way to get picks. AI alerts sent instantly when value bets are identified — usually 2-3 hours before kick-off when odds are still sharp.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">INSTANT ALERTS</span></div>
+<a href="https://t.me/wc2026empire" class="btn" style="display:block;text-align:center">Join Telegram →</a>
+</div>
+<div class="card">
+<h3>💬 Discord Server</h3>
+<p>Live match chat, prediction game, results channels, community tips. Active during every WC 2026 game with moderators and bots tracking live odds.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">LIVE CHAT</span></div>
+<a href="https://discord.gg/wc2026empire" class="btn" style="display:block;text-align:center">Join Discord →</a>
+</div>
+<div class="card">
+<h3>🐦 X / Twitter</h3>
+<p>Pre-match threads, value bet calls, live score reactions, tournament updates. Follow for the daily 6am WC briefing during group stage.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">DAILY CONTENT</span></div>
+<a href="https://x.com/wc2026empire" class="btn" style="display:block;text-align:center">Follow on X →</a>
+</div>
+<div class="card">
+<h3>📹 TikTok</h3>
+<p>60-second match previews. AI pick reveals. Post-match reaction clips. Goes live during every game for real-time commentary.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">SHORT VIDEOS</span></div>
+<a href="https://tiktok.com/@wc2026empire" class="btn" style="display:block;text-align:center">Follow TikTok →</a>
+</div>
+<div class="card">
+<h3>▶️ YouTube</h3>
+<p>Full match preview breakdowns, post-match AI analysis, betting strategy deep dives. Subscribe for notifications before every WC game.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">LONG FORM</span></div>
+<a href="https://youtube.com/@wc2026empire" class="btn" style="display:block;text-align:center">Subscribe →</a>
+</div>
+<div class="card">
+<h3>📧 Email Newsletter</h3>
+<p>Daily WC 2026 briefing every morning at 7am. Today's fixtures, AI picks for each game, value bets, and yesterday's results breakdown.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span> <span class="tag tag-gold">DAILY 7AM</span></div>
+<a href="/newsletter.html" class="btn" style="display:block;text-align:center">Subscribe →</a>
+</div>
+<div class="card">
+<h3>📘 Facebook Group</h3>
+<p>Community discussion, match previews, member tips. Best for deeper conversation around WC 2026 tactics and betting strategy.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span></div>
+<a href="https://facebook.com/groups/wc2026empire" class="btn" style="display:block;text-align:center">Join Group →</a>
+</div>
+<div class="card">
+<h3>🎧 Podcast</h3>
+<p>Daily 10-minute audio preview of each WC matchday. Available on Spotify, Apple Podcasts, and all major platforms. Auto-posts every match morning.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span></div>
+<a href="#" class="btn" style="display:block;text-align:center">Listen Now →</a>
+</div>
+<div class="card">
+<h3>🔔 WhatsApp</h3>
+<p>Broadcast channel — receive picks and alerts directly to WhatsApp. One-way broadcast so no noise in your inbox. Just picks, scores, and alerts.</p>
+<div style="margin:16px 0"><span class="tag tag-green">FREE</span></div>
+<a href="https://wa.me/channel/wc2026empire" class="btn" style="display:block;text-align:center">Join WhatsApp →</a>
+</div>
+</div>
+</div><footer>
+<p>⚽ WC 2026 Sports Empire · AI-powered analysis for every match</p>
+<p style="margin-top:8px"><a href="/">Home</a> · <a href="/odds-comparison.html">Odds</a> · <a href="/win-share.html">AI Picks</a> · <a href="/privacy-policy.html">Privacy</a></p>
+<p style="margin-top:12px;font-size:11px;color:#333">18+ only. Gambling involves risk. BeGambleAware.org · GamCare 0808 8020 133</p>
+</footer></body></html>

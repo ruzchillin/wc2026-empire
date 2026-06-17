@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Time Capsule | Leave a Message for 2030</title>
+<meta name="description" content="Write your WC 2026 predictions and memories. We'll email them back to you at the 2030 World Cup.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#0a0a1a,#1a0a2a);border-bottom:2px solid #9933ff;padding:30px 20px;text-align:center}
+header h1{font-size:2.2rem;color:#cc88ff;margin-bottom:8px}
+header p{color:#aaa;font-size:1rem}
+.countdown{display:flex;gap:16px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.count-item{text-align:center;background:#1a0a2a;border:1px solid #4a0a8a;border-radius:8px;padding:10px 18px;min-width:70px}
+.count-item .n{font-size:1.6rem;font-weight:700;color:#cc88ff}
+.count-item .l{font-size:0.7rem;color:#888}
+.main{max-width:800px;margin:30px auto;padding:0 20px}
+.capsule-box{background:#161616;border:2px solid #4a0a8a;border-radius:14px;padding:28px;margin-bottom:24px;position:relative;overflow:hidden}
+.capsule-box::before{content:'📬';position:absolute;top:-20px;right:20px;font-size:5rem;opacity:0.06}
+.capsule-box h2{color:#cc88ff;margin-bottom:6px;font-size:1.3rem}
+.capsule-box .sub{color:#888;font-size:0.9rem;margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:0.85rem;color:#cc88ff;margin-bottom:6px;font-weight:600}
+.form-group input,.form-group textarea,.form-group select{background:#1a1a2a;border:1px solid #4a0a8a;border-radius:8px;padding:10px 14px;color:#e5e5e5;width:100%;font-size:0.9rem;outline:none;font-family:inherit}
+.form-group textarea{resize:vertical;min-height:100px;line-height:1.5}
+.form-group input:focus,.form-group textarea:focus{border-color:#cc88ff}
+.questions-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.q-btn{background:#1a0a2a;border:2px solid #2a0a4a;border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;text-align:left}
+.q-btn:hover,.q-btn.active{border-color:#cc88ff;background:#2a0a4a}
+.q-btn .q-icon{font-size:1.2rem;margin-bottom:6px}
+.q-btn .q-text{font-size:0.8rem;color:#ccc}
+.submit-btn{background:linear-gradient(135deg,#6600cc,#9933ff);color:#fff;padding:14px 28px;border-radius:8px;font-weight:700;cursor:pointer;border:none;font-size:1rem;width:100%;transition:opacity .2s}
+.submit-btn:hover{opacity:0.9}
+.capsule-preview{background:#0a0a1a;border:1px solid #4a0a8a;border-radius:10px;padding:16px;margin-top:16px;display:none}
+.capsule-preview h4{color:#cc88ff;margin-bottom:10px;font-size:0.9rem}
+.capsule-preview p{color:#aaa;font-size:0.85rem;line-height:1.5}
+.seal{background:linear-gradient(135deg,#6600cc,#9933ff);color:#fff;padding:6px 16px;border-radius:20px;font-size:0.75rem;font-weight:700;display:inline-block;margin-top:10px}
+.examples-box{background:#161616;border:1px solid #2a2a2a;border-radius:10px;padding:20px;margin-bottom:20px}
+.examples-box h3{color:#cc88ff;margin-bottom:14px;font-size:1rem}
+.example-capsule{background:#1a1a2a;border-left:3px solid #9933ff;padding:12px;border-radius:0 8px 8px 0;margin-bottom:10px}
+.example-capsule .from{font-size:0.75rem;color:#888;margin-bottom:4px}
+.example-capsule .text{font-size:0.85rem;color:#ccc;line-height:1.5}
+.progress-bar{background:#1a0a2a;border-radius:4px;height:6px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#6600cc,#cc88ff);border-radius:4px;transition:width .3s}
+.char-count{font-size:0.75rem;color:#888;text-align:right;margin-top:4px}
+.success-box{background:#0a1a0a;border:2px solid #44cc44;border-radius:12px;padding:24px;text-align:center;display:none}
+.success-box h3{color:#44cc44;font-size:1.3rem;margin-bottom:8px}
+.success-box p{color:#aaa;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📬 WC 2026 Time Capsule</h1>
+  <p>Write your predictions and memories. We'll email them back at the 2030 World Cup.</p>
+  <div class="countdown" id="countdown"></div>
+</header>
+
+<div class="main">
+
+  <!-- EXAMPLES -->
+  <div class="examples-box">
+    <h3>📖 What others have written</h3>
+    <div class="example-capsule">
+      <div class="from">@carlos_mx · to be opened 2030</div>
+      <div class="text">"I'm writing this at 2am after watching Mexico beat Argentina. My son is 8 months old. By 2030, he'll be able to watch the games with me. Dear future me: I hope Mexico won it all this time."</div>
+    </div>
+    <div class="example-capsule">
+      <div class="from">@priya_k · to be opened 2030</div>
+      <div class="text">"My prediction: England WILL win one day, just probably not today. Argentina wins 2026. Messi retires unbeatable. Lamine Yamal becomes the best player on earth by 2030. Mark my words."</div>
+    </div>
+    <div class="example-capsule">
+      <div class="from">@david_l_capetown · to be opened 2030</div>
+      <div class="text">"Morocco semi-final in 2022. Who knows what's possible by 2030. An African team WILL win the World Cup this decade. Screenshot this."</div>
+    </div>
+  </div>
+
+  <!-- CAPSULE FORM -->
+  <div class="capsule-box" id="capsuleForm">
+    <h2>📝 Write Your Capsule</h2>
+    <div class="sub">Choose one or more prompts to answer — or write freely.</div>
+
+    <div class="questions-grid">
+      <div class="q-btn active" onclick="setQ(this,'winner')" data-q="winner">
+        <div class="q-icon">🏆</div>
+        <div class="q-text">Who will WIN WC 2026?</div>
+      </div>
+      <div class="q-btn" onclick="setQ(this,'surprise')" data-q="surprise">
+        <div class="q-icon">😮</div>
+        <div class="q-text">Your biggest surprise so far</div>
+      </div>
+      <div class="q-btn" onclick="setQ(this,'memory')" data-q="memory">
+        <div class="q-icon">💭</div>
+        <div class="q-text">A memory to preserve</div>
+      </div>
+      <div class="q-btn" onclick="setQ(this,'future')" data-q="future">
+        <div class="q-icon">🔮</div>
+        <div class="q-text">Message to your 2030 self</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Your message <span id="promptLabel" style="color:#888;font-weight:400">— Who will win WC 2026?</span></label>
+      <textarea id="messageInput" placeholder="Write your prediction, memory, or message to the future..." maxlength="500" oninput="updateCount()"></textarea>
+      <div class="char-count"><span id="charCount">0</span>/500</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="form-group">
+        <label>Your name (or alias)</label>
+        <input type="text" id="nameInput" placeholder="e.g. @carlos_mx">
+      </div>
+      <div class="form-group">
+        <label>Email (for the 2030 reveal)</label>
+        <input type="email" id="emailInput" placeholder="your@email.com">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Country you're supporting</label>
+      <select id="teamSelect">
+        <option value="">— Select team —</option>
+        <option>🇦🇷 Argentina</option><option>🇫🇷 France</option><option>🇧🇷 Brazil</option>
+        <option>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</option><option>🇪🇸 Spain</option><option>🇩🇪 Germany</option>
+        <option>🇳🇱 Netherlands</option><option>🇵🇹 Portugal</option><option>🇺🇸 USA</option>
+        <option>🇲🇽 Mexico</option><option>🇲🇦 Morocco</option><option>🇯🇵 Japan</option>
+        <option>🇸🇳 Senegal</option><option>🇳🇬 Nigeria</option><option>🇿🇦 South Africa</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="capsule-preview" id="capsulePreview">
+      <h4>📬 Preview your capsule</h4>
+      <p id="previewText"></p>
+      <div class="seal">🔒 Sealed until 2030</div>
+    </div>
+
+    <button class="submit-btn" onclick="submitCapsule()">🔒 Seal My Time Capsule</button>
+    <p style="color:#666;font-size:0.75rem;text-align:center;margin-top:10px">We'll email this to you at the start of the 2030 World Cup. No spam, ever.</p>
+  </div>
+
+  <div class="success-box" id="successBox">
+    <div style="font-size:3rem;margin-bottom:12px">📬</div>
+    <h3>Capsule Sealed!</h3>
+    <p>Your message to the future is safely stored. We'll send it back to you when the 2030 World Cup begins.<br><br>In 4 years, you'll be amazed at what you wrote today.</p>
+    <div style="background:#1a2a1a;border:1px solid #44cc44;border-radius:8px;padding:14px;margin-top:16px;text-align:left">
+      <div style="font-size:0.75rem;color:#888;margin-bottom:6px">Your capsule ID</div>
+      <div id="capsuleId" style="font-size:1rem;font-weight:700;color:#44cc44;font-family:monospace"></div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button onclick="shareTwitter()" style="background:#1da1f2;color:#fff;padding:10px 20px;border-radius:6px;border:none;font-weight:700;cursor:pointer">Share on X</button>
+      <button onclick="shareWhatsApp()" style="background:#25d366;color:#fff;padding:10px 20px;border-radius:6px;border:none;font-weight:700;cursor:pointer">Share on WhatsApp</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PROMPTS = {
+  winner: 'Who will win WC 2026?',
+  surprise: 'Your biggest surprise so far',
+  memory: 'A memory to preserve',
+  future: 'Message to your 2030 self',
+};
+
+let activePrompt = 'winner';
+
+function setQ(btn, key) {
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activePrompt = key;
+  document.getElementById('promptLabel').textContent = '— ' + PROMPTS[key];
+  document.getElementById('messageInput').placeholder = {
+    winner: 'Argentina wins it — Messi lifts the trophy one last time...',
+    surprise: 'Nobody expected Morocco to beat Germany in the group stage...',
+    memory: 'I watched the final with my dad and we both cried when...',
+    future: 'Hey 2030 me — I hope you\'re watching the World Cup with...',
+  }[key];
+
+  // Update preview
+  updatePreview();
+}
+
+function updateCount() {
+  const len = document.getElementById('messageInput').value.length;
+  document.getElementById('charCount').textContent = len;
+  updatePreview();
+}
+
+function updatePreview() {
+  const msg = document.getElementById('messageInput').value;
+  const name = document.getElementById('nameInput').value;
+  const team = document.getElementById('teamSelect').value;
+  if (msg.length > 20) {
+    document.getElementById('capsulePreview').style.display = 'block';
+    document.getElementById('previewText').textContent = 
+      `"${msg}" — ${name || 'Anonymous'} ${team ? '· ' + team : ''} · Written June 2026 · To be opened: 2030 World Cup`;
+  }
+}
+
+document.getElementById('messageInput').addEventListener('input', updatePreview);
+document.getElementById('nameInput').addEventListener('input', updatePreview);
+document.getElementById('teamSelect').addEventListener('change', updatePreview);
+
+async function submitCapsule() {
+  const message = document.getElementById('messageInput').value;
+  const name = document.getElementById('nameInput').value;
+  const email = document.getElementById('emailInput').value;
+  const team = document.getElementById('teamSelect').value;
+
+  if (!message || message.length < 20) { alert('Write at least 20 characters for your capsule!'); return; }
+  if (!email) { alert('Add your email so we can send it back in 2030!'); return; }
+
+  const capsuleId = 'CAP-2026-' + Math.random().toString(36).substr(2,8).toUpperCase();
+
+  try {
+    await fetch('/api/time-capsule', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ message, name, email, team, prompt:activePrompt, capsuleId, created:new Date().toISOString() }),
+    });
+  } catch(e) {}
+
+  document.getElementById('capsuleForm').style.display = 'none';
+  document.getElementById('capsuleId').textContent = capsuleId;
+  document.getElementById('successBox').style.display = 'block';
+  window._capsuleData = { message, name, team, capsuleId };
+}
+
+function shareTwitter() {
+  const d = window._capsuleData || {};
+  const text = `I just sealed a WC 2026 Time Capsule — to be opened at the 2030 World Cup! ${d.team || ''} "${d.message?.substring(0,60)}..." — seal yours: wc2026ai.com/time-capsule`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareWhatsApp() {
+  const d = window._capsuleData || {};
+  const text = `I just wrote a WC 2026 time capsule to be opened in 2030! Here's mine: "${d.message?.substring(0,80)}..." — Write yours: wc2026ai.com/time-capsule`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// Countdown to 2030 WC (June 2030 estimate)
+function updateCountdown() {
+  const wc2030 = new Date('2030-06-10T00:00:00');
+  const now = new Date();
+  const diff = wc2030 - now;
+  const days = Math.floor(diff / 86400000);
+  const years = Math.floor(days / 365);
+  const months = Math.floor((days % 365) / 30);
+  const remDays = Math.floor(days % 30);
+  document.getElementById('countdown').innerHTML = `
+    <div class="count-item"><div class="n">${years}</div><div class="l">Years</div></div>
+    <div class="count-item"><div class="n">${months}</div><div class="l">Months</div></div>
+    <div class="count-item"><div class="n">${remDays}</div><div class="l">Days</div></div>
+    <div class="count-item"><div class="n">${days.toLocaleString()}</div><div class="l">Total Days</div></div>`;
+}
+
+updateCountdown();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

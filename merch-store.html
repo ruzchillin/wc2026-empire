@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Official Merch Store — Jerseys, Flags, Scarves</title>
+<meta name="description" content="World Cup 2026 merchandise — all 48 teams. Jerseys, scarves, flags, mugs and more. Fast shipping worldwide.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e8e8f0; }
+
+  header { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); padding: 30px 20px; text-align: center; border-bottom: 2px solid #e94560; }
+  header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 900; color: #fff; }
+  header p { color: #a0a8c0; margin-top: 6px; }
+  .header-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+  .badge { background: #12122a; border: 1px solid #2a2a4a; padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; color: #a0a8c0; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; padding: 20px 0; }
+  .filter-btn { padding: 8px 16px; border-radius: 20px; border: 1px solid #2a2a4a; background: #12122a; color: #a0a8c0; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background: #e94560; border-color: #e94560; color: #fff; }
+
+  .search-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .search-row input { flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid #2a2a4a; background: #12122a; color: #e8e8f0; font-size: 0.95rem; outline: none; }
+  .search-row input:focus { border-color: #e94560; }
+
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px 0; }
+  .product-card { background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; overflow: hidden; transition: transform 0.2s, border-color 0.2s; cursor: pointer; }
+  .product-card:hover { transform: translateY(-4px); border-color: #e94560; }
+  .product-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: linear-gradient(135deg, #16162a, #12122a); }
+  .product-body { padding: 14px; }
+  .product-team { font-size: 0.78rem; color: #6060a0; text-transform: uppercase; letter-spacing: 1px; }
+  .product-name { font-weight: 700; color: #fff; margin: 4px 0 8px; font-size: 0.95rem; }
+  .product-footer { display: flex; justify-content: space-between; align-items: center; }
+  .product-price { font-size: 1.1rem; font-weight: 900; color: #4caf88; }
+  .product-old { font-size: 0.8rem; color: #6060a0; text-decoration: line-through; margin-left: 4px; }
+  .buy-btn { background: #e94560; color: #fff; padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; border: none; cursor: pointer; text-decoration: none; }
+  .buy-btn:hover { background: #ff5577; }
+
+  .section-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #2a2a4a; }
+
+  .trust-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; background: #12122a; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; margin: 30px 0; }
+  .trust-item { text-align: center; }
+  .trust-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .trust-title { font-weight: 700; color: #fff; font-size: 0.9rem; }
+  .trust-sub { color: #6060a0; font-size: 0.8rem; margin-top: 2px; }
+
+  .newsletter { background: linear-gradient(135deg, #1a0a2e, #0a1a2e); border: 1px solid #3a2a5a; border-radius: 14px; padding: 28px; text-align: center; margin: 30px 0; }
+  .newsletter h2 { color: #fff; margin-bottom: 8px; }
+  .newsletter p { color: #8080a0; margin-bottom: 16px; font-size: 0.9rem; }
+  .nl-form { display: flex; gap: 8px; max-width: 380px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .nl-form input { flex: 1; min-width: 180px; padding: 11px 14px; border-radius: 8px; border: 1px solid #3a3a5a; background: #12122a; color: #e8e8f0; font-size: 0.9rem; outline: none; }
+  .nl-form button { background: #e94560; color: #fff; padding: 11px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #12122a; border: 1px solid #2a2a4a; border-radius: 16px; max-width: 480px; width: 100%; padding: 28px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #6060a0; font-size: 1.4rem; cursor: pointer; }
+  .modal-flag { font-size: 4rem; margin-bottom: 10px; }
+  .modal-name { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .modal-price { font-size: 1.5rem; font-weight: 900; color: #4caf88; margin-bottom: 16px; }
+  .size-select { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .size-btn { padding: 8px 14px; border-radius: 6px; border: 1px solid #2a2a4a; background: #1a1a3a; color: #c8c8e8; cursor: pointer; font-size: 0.9rem; }
+  .size-btn.active { border-color: #e94560; background: #2a0a1e; color: #fff; }
+  .modal-buy { width: 100%; padding: 14px; background: #e94560; color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
+  .modal-buy:hover { background: #ff5577; }
+  .modal-note { color: #6060a0; font-size: 0.82rem; margin-top: 10px; text-align: center; }
+
+  footer { text-align: center; padding: 30px 20px; color: #404060; font-size: 0.82rem; border-top: 1px solid #1a1a2e; margin-top: 40px; }
+
+  @media(max-width:500px){ .products-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>⚽ WC 2026 Official Merch Store</h1>
+    <p>All 48 teams. Every item ships worldwide. No inventory risk.</p>
+    <div class="header-badges">
+      <span class="badge">🌍 Ships Worldwide</span>
+      <span class="badge">✅ Official Designs</span>
+      <span class="badge">⚡ Fast Dispatch</span>
+      <span class="badge">🔒 Secure Checkout</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="trust-bar">
+    <div class="trust-item"><div class="trust-icon">🚚</div><div class="trust-title">Free Shipping $50+</div><div class="trust-sub">Worldwide delivery</div></div>
+    <div class="trust-item"><div class="trust-icon">↩️</div><div class="trust-title">30-Day Returns</div><div class="trust-sub">No questions asked</div></div>
+    <div class="trust-item"><div class="trust-icon">🏆</div><div class="trust-title">WC 2026 Exclusive</div><div class="trust-sub">Tournament designs</div></div>
+    <div class="trust-item"><div class="trust-icon">💳</div><div class="trust-title">Secure Payment</div><div class="trust-sub">Visa, MC, PayPal, Apple Pay</div></div>
+  </div>
+
+  <!-- Category filters -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">All Items</button>
+    <button class="filter-btn" onclick="filterProducts('jersey', this)">👕 Jerseys</button>
+    <button class="filter-btn" onclick="filterProducts('scarf', this)">🧣 Scarves</button>
+    <button class="filter-btn" onclick="filterProducts('flag', this)">🚩 Flags</button>
+    <button class="filter-btn" onclick="filterProducts('mug', this)">☕ Mugs</button>
+    <button class="filter-btn" onclick="filterProducts('cap', this)">🧢 Caps</button>
+  </div>
+
+  <div class="search-row">
+    <input type="text" id="productSearch" placeholder="🔍 Search by team or product..." oninput="searchProducts(this.value)">
+  </div>
+
+  <div class="section-title">🔥 Fan Favourites</div>
+  <div class="products-grid" id="productsGrid"></div>
+
+  <!-- Newsletter -->
+  <div class="newsletter">
+    <h2>🏆 Early Access + 10% Off</h2>
+    <p>Join WC 2026 Intel and get 10% off your first order + daily match analysis.</p>
+    <div class="nl-form">
+      <input type="email" id="emailInput" placeholder="your@email.com">
+      <button onclick="subscribe()">Get 10% Off →</button>
+    </div>
+    <p id="subMsg" style="color:#4caf88; margin-top:8px; display:none">✅ Check your inbox for your code!</p>
+  </div>
+
+</div>
+
+<!-- Product Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div style="text-align:center; margin-bottom:16px">
+      <div class="modal-flag" id="modalFlag"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-price" id="modalPrice"></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:0.85rem; color:#6060a0; margin-bottom:8px">SELECT SIZE:</div>
+      <div class="size-select" id="sizeSelect">
+        <button class="size-btn" onclick="selectSize(this)">S</button>
+        <button class="size-btn active" onclick="selectSize(this)">M</button>
+        <button class="size-btn" onclick="selectSize(this)">L</button>
+        <button class="size-btn" onclick="selectSize(this)">XL</button>
+        <button class="size-btn" onclick="selectSize(this)">2XL</button>
+      </div>
+    </div>
+    <button class="modal-buy" id="modalBuyBtn" onclick="openPrintfulLink()">
+      Add to Cart — Buy Now →
+    </button>
+    <p class="modal-note">Fulfilled by Printful. Ships in 3-7 business days. Secure checkout.</p>
+  </div>
+</div>
+
+<footer>
+  WC 2026 Intel Merch Store | Products fulfilled by Printful (print-on-demand) |
+  <a href="#" style="color:#6060a0">Returns Policy</a> |
+  <a href="watch-guide.html" style="color:#6060a0">How to Watch WC 2026</a>
+</footer>
+
+<script>
+// ── Product catalog (connects to Printful in production) ─────────────────
+const PRODUCTS = [
+  // Jerseys
+  { id:1, team:'Brazil', flag:'🇧🇷', type:'jersey', name:'Brazil Away Jersey 2026', price:49.99, old:65, printfulId:'brazil-jersey', color:'#009c3b' },
+  { id:2, team:'Argentina', flag:'🇦🇷', type:'jersey', name:'Argentina Home Jersey 2026', price:49.99, old:65, printfulId:'arg-jersey', color:'#74acdf' },
+  { id:3, team:'France', flag:'🇫🇷', type:'jersey', name:'France Home Jersey 2026', price:49.99, old:65, printfulId:'fr-jersey', color:'#002395' },
+  { id:4, team:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', type:'jersey', name:'England Home Jersey 2026', price:49.99, old:65, printfulId:'eng-jersey', color:'#fff' },
+  { id:5, team:'Germany', flag:'🇩🇪', type:'jersey', name:'Germany Away Jersey 2026', price:49.99, old:65, printfulId:'de-jersey', color:'#000' },
+  { id:6, team:'Spain', flag:'🇪🇸', type:'jersey', name:'Spain Home Jersey 2026', price:49.99, old:65, printfulId:'sp-jersey', color:'#c60b1e' },
+  { id:7, team:'Nigeria', flag:'🇳🇬', type:'jersey', name:'Nigeria Home Jersey 2026', price:49.99, old:65, printfulId:'ng-jersey', color:'#008751' },
+  { id:8, team:'Mexico', flag:'🇲🇽', type:'jersey', name:'Mexico Home Jersey 2026', price:49.99, old:65, printfulId:'mx-jersey', color:'#006847' },
+  { id:9, team:'Portugal', flag:'🇵🇹', type:'jersey', name:'Portugal Home Jersey 2026', price:49.99, old:65, printfulId:'pt-jersey', color:'#006600' },
+  { id:10, team:'USA', flag:'🇺🇸', type:'jersey', name:'USA Home Jersey 2026', price:49.99, old:65, printfulId:'us-jersey', color:'#002868' },
+  { id:11, team:'Senegal', flag:'🇸🇳', type:'jersey', name:'Senegal Home Jersey 2026', price:44.99, old:60, printfulId:'sn-jersey', color:'#00853f' },
+  { id:12, team:'Morocco', flag:'🇲🇦', type:'jersey', name:'Morocco Home Jersey 2026', price:44.99, old:60, printfulId:'ma-jersey', color:'#c1272d' },
+  // Scarves
+  { id:13, team:'Brazil', flag:'🇧🇷', type:'scarf', name:'Brazil Fan Scarf WC 2026', price:19.99, old:28, printfulId:'brazil-scarf', color:'#009c3b' },
+  { id:14, team:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', type:'scarf', name:'England Fan Scarf WC 2026', price:19.99, old:28, printfulId:'eng-scarf', color:'#cf091a' },
+  { id:15, team:'Argentina', flag:'🇦🇷', type:'scarf', name:'Argentina Fan Scarf WC 2026', price:19.99, old:28, printfulId:'arg-scarf', color:'#74acdf' },
+  { id:16, team:'Germany', flag:'🇩🇪', type:'scarf', name:'Germany Fan Scarf WC 2026', price:19.99, old:28, printfulId:'de-scarf', color:'#000' },
+  { id:17, team:'France', flag:'🇫🇷', type:'scarf', name:'France Fan Scarf WC 2026', price:19.99, old:28, printfulId:'fr-scarf', color:'#002395' },
+  // Flags
+  { id:18, team:'WC 2026', flag:'🏆', type:'flag', name:'FIFA WC 2026 Tournament Flag', price:14.99, old:20, printfulId:'wc-flag', color:'#c9a227' },
+  { id:19, team:'Brazil', flag:'🇧🇷', type:'flag', name:'Brazil Fan Flag 3×5ft', price:14.99, old:20, printfulId:'brazil-flag', color:'#009c3b' },
+  { id:20, team:'USA', flag:'🇺🇸', type:'flag', name:'USA Host Nation Flag 3×5ft', price:14.99, old:20, printfulId:'us-flag', color:'#002868' },
+  // Mugs
+  { id:21, team:'Brazil', flag:'🇧🇷', type:'mug', name:'Brazil WC 2026 Ceramic Mug', price:16.99, old:22, printfulId:'brazil-mug', color:'#009c3b' },
+  { id:22, team:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', type:'mug', name:'"It\'s Coming Home" Mug', price:16.99, old:22, printfulId:'eng-mug', color:'#cf091a' },
+  { id:23, team:'WC 2026', flag:'⚽', type:'mug', name:'WC 2026 Champions Mug', price:16.99, old:22, printfulId:'champ-mug', color:'#c9a227' },
+  // Caps
+  { id:24, team:'WC 2026', flag:'🏆', type:'cap', name:'WC 2026 Dad Cap', price:24.99, old:32, printfulId:'wc-cap', color:'#2a2a4a' },
+  { id:25, team:'USA', flag:'🇺🇸', type:'cap', name:'USA Host Nation Cap', price:24.99, old:32, printfulId:'us-cap', color:'#002868' },
+  { id:26, team:'Mexico', flag:'🇲🇽', type:'cap', name:'Mexico Host Nation Cap', price:24.99, old:32, printfulId:'mx-cap', color:'#006847' },
+];
+
+let currentFilter = 'all';
+let currentSearch = '';
+let currentProduct = null;
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  let filtered = PRODUCTS;
+
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(p => p.type === currentFilter);
+  }
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(p =>
+      p.team.toLowerCase().includes(q) || p.name.toLowerCase().includes(q)
+    );
+  }
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" onclick="openModal(${p.id})">
+      <div class="product-img" style="background: linear-gradient(135deg, ${p.color}22, #12122a)">
+        <span>${p.flag}</span>
+      </div>
+      <div class="product-body">
+        <div class="product-team">${p.team}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-footer">
+          <div>
+            <span class="product-price">$${p.price}</span>
+            <span class="product-old">$${p.old}</span>
+          </div>
+          <span class="buy-btn">Buy →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  if (!filtered.length) {
+    grid.innerHTML = '<p style="color:#6060a0; grid-column:1/-1; padding:20px">No products found.</p>';
+  }
+}
+
+function filterProducts(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
+
+function searchProducts(q) {
+  currentSearch = q;
+  renderProducts();
+}
+
+function openModal(id) {
+  const p = PRODUCTS.find(p => p.id === id);
+  if (!p) return;
+  currentProduct = p;
+
+  document.getElementById('modalFlag').textContent = p.flag;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalPrice').textContent = `$${p.price}`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function openPrintfulLink() {
+  if (!currentProduct) return;
+  // In production: deep link to your Printful store product page
+  // Or integrate Printful API to add to cart directly
+  const size = document.querySelector('.size-btn.active')?.textContent || 'M';
+
+  // Track conversion
+  console.log(`Purchase: ${currentProduct.name}, Size: ${size}, Price: $${currentProduct.price}`);
+
+  // Redirect to store (Printful, Redbubble, or your own checkout)
+  window.open(`https://printful.com/wc2026-intel?product=${currentProduct.printfulId}&size=${size}`, '_blank');
+}
+
+function subscribe() {
+  const email = document.getElementById('emailInput').value;
+  if (!email) return;
+  document.getElementById('subMsg').style.display = 'block';
+  document.getElementById('emailInput').value = '';
+  // POST to Beehiiv in production
+}
+
+// Init
+renderProducts();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

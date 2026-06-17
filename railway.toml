@@ -1,0 +1,423 @@
+# WC 2026 Sports Empire — Railway Configuration
+# 35 services deployed in priority order
+# Deploy with: ./deploy.sh
+
+[build]
+builder = "nixpacks"
+buildCommand = "npm install"
+
+[[services]]
+name = "dedup-guard"
+startCommand = "node dedup-guard.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "groq-budget-guard"
+startCommand = "node groq-budget-guard.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "queue-processor"
+startCommand = "node queue-processor.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "stripe-webhook"
+startCommand = "node stripe-webhook.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "affiliate-tracker"
+startCommand = "node affiliate-tracker.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "world-engine"
+startCommand = "node world-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "moment-engine"
+startCommand = "node moment-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "api-server"
+startCommand = "node api-server.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "data-pipeline"
+startCommand = "node data-pipeline.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "telegram-engine"
+startCommand = "node telegram-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "email-digest-engine"
+startCommand = "node email-digest-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "twitter-engine"
+startCommand = "node twitter-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "facebook-engine"
+startCommand = "node facebook-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "discord-bot"
+startCommand = "node discord-bot.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "reddit-bot"
+startCommand = "node reddit-bot.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "whatsapp-engine"
+startCommand = "node whatsapp-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "translation-processor"
+startCommand = "node translation-processor.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "bluesky-engine"
+startCommand = "node bluesky-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "mastodon-engine"
+startCommand = "node mastodon-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "commentary-live-engine"
+startCommand = "node commentary-live-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "news-monitor"
+startCommand = "node news-monitor.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "youtube-uploader"
+startCommand = "node youtube-uploader.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "linkedin-post-engine"
+startCommand = "node linkedin-post-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "snapchat-engine"
+startCommand = "node snapchat-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "twitch-bot"
+startCommand = "node twitch-bot.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "web-stories-generator"
+startCommand = "node web-stories-generator.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "podcast-engine"
+startCommand = "node podcast-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "news-syndication-engine"
+startCommand = "node news-syndication-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "naver-engine"
+startCommand = "node naver-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "sharechat-engine"
+startCommand = "node sharechat-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "image-engine"
+startCommand = "node image-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "visual-post-engine"
+startCommand = "node visual-post-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "monitor-bot"
+startCommand = "node monitor-bot.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "ai-engine"
+startCommand = "node ai-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "analytics-aggregator"
+startCommand = "node analytics-aggregator.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "sitemap-generator"
+startCommand = "node sitemap-generator.js --serve"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "personal-agent"
+startCommand = "node personal-agent.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "line-engine"
+startCommand = "node line-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "viber-engine"
+startCommand = "node viber-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "odds-engine"
+startCommand = "node odds-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "medium-engine"
+startCommand = "node medium-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "koo-engine"
+startCommand = "node koo-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "merchandise-engine"
+startCommand = "node merchandise-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "fantasy-engine"
+startCommand = "node fantasy-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "kakao-engine"
+startCommand = "node kakao-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "zalo-engine"
+startCommand = "node zalo-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "vk-engine"
+startCommand = "node vk-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "weibo-engine"
+startCommand = "node weibo-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "nairaland-engine"
+startCommand = "node nairaland-engine.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "empire-agent"
+startCommand = "node empire-agent.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "growth-agent"
+startCommand = "node growth-agent.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[services]]
+name = "traffic-amplifier"
+startCommand = "node traffic-amplifier.js"
+healthcheckPath = "/health"
+[services.deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5

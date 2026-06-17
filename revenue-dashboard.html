@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Dashboard — WC 2026 AI Empire</title>
+<style>
+  :root {
+    --bg:#0a0a0a; --surface:#111; --card:#161616; --border:#222;
+    --green:#22c55e; --gold:#f59e0b; --blue:#3b82f6; --red:#ef4444; --purple:#a78bfa;
+    --text:#f0f0f0; --muted:#666;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:18px; font-weight:800; }
+  .live-badge { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--green); }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 1.5s infinite; }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .container { max-width:1200px; margin:0 auto; padding:24px; }
+
+  /* Top stats */
+  .top-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .stat { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .stat .val { font-size:30px; font-weight:900; }
+  .stat .lbl { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-top:4px; }
+  .stat .chg { font-size:12px; margin-top:8px; }
+  .chg.up   { color:var(--green); }
+  .chg.down { color:var(--red); }
+  .stat.green .val  { color:var(--green); }
+  .stat.gold .val   { color:var(--gold); }
+  .stat.blue .val   { color:var(--blue); }
+  .stat.purple .val { color:var(--purple); }
+
+  /* Grid layout */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+
+  .panel { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .panel-header { background:var(--surface); padding:12px 18px; display:flex; justify-content:space-between; align-items:center; }
+  .panel-header h3 { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .panel-header span { font-size:12px; color:var(--muted); }
+  .panel-body { padding:16px 18px; }
+
+  /* Stream table */
+  .stream-table { width:100%; border-collapse:collapse; }
+  .stream-table th { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); padding:0 0 10px; text-align:left; }
+  .stream-table td { padding:8px 0; border-top:1px solid var(--border); font-size:13px; }
+  .stream-table td:last-child { text-align:right; }
+  .stream-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:7px; }
+  .dot-green  { background:var(--green); }
+  .dot-gold   { background:var(--gold); }
+  .dot-blue   { background:var(--blue); }
+  .dot-purple { background:var(--purple); }
+
+  /* Bar chart */
+  .bar-chart { display:flex; flex-direction:column; gap:10px; }
+  .bar-row { display:grid; grid-template-columns:120px 1fr 60px; gap:8px; align-items:center; font-size:12px; }
+  .bar-row .label { color:var(--muted); }
+  .bar-track { background:var(--surface); border-radius:4px; height:8px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; transition:width .5s; }
+  .bar-val { text-align:right; font-weight:700; font-size:12px; }
+
+  /* Activity feed */
+  .feed { display:flex; flex-direction:column; gap:0; }
+  .feed-item { padding:10px 0; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:flex-start; gap:12px; font-size:12px; }
+  .feed-item:first-child { border-top:none; }
+  .feed-text { line-height:1.4; }
+  .feed-text strong { color:var(--text); }
+  .feed-text span   { color:var(--muted); display:block; font-size:11px; margin-top:2px; }
+  .feed-amount { font-weight:700; white-space:nowrap; }
+  .feed-amount.pos { color:var(--green); }
+  .feed-amount.neu { color:var(--blue); }
+
+  /* Market breakdown */
+  .market-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .market-item { background:var(--surface); border-radius:8px; padding:12px; }
+  .market-item .flag { font-size:20px; margin-bottom:4px; }
+  .market-item .mkt-name { font-size:12px; font-weight:700; }
+  .market-item .mkt-val  { font-size:18px; font-weight:900; margin:4px 0; }
+  .market-item .mkt-subs { font-size:10px; color:var(--muted); }
+
+  /* System status */
+  .systems { display:flex; flex-direction:column; gap:6px; }
+  .sys-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px solid var(--border); font-size:12px; }
+  .sys-row:first-child { border-top:none; }
+  .sys-name  { color:var(--muted); }
+  .sys-badge { padding:2px 10px; border-radius:20px; font-size:10px; font-weight:700; text-transform:uppercase; }
+  .badge-live    { background:rgba(34,197,94,.15); color:var(--green); }
+  .badge-pending { background:rgba(245,158,11,.15); color:var(--gold); }
+  .badge-offline { background:rgba(239,68,68,.15); color:var(--red); }
+
+  /* Inputs */
+  .manual-inputs { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
+  .input-group label { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); display:block; margin-bottom:4px; }
+  .input-group input { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; width:100%; font-weight:700; }
+  .save-btn { background:var(--green); color:#000; border:none; border-radius:8px; padding:9px 20px; font-size:13px; font-weight:800; cursor:pointer; width:100%; margin-top:8px; }
+
+  @media(max-width:900px) {
+    .top-stats { grid-template-columns:1fr 1fr; }
+    .grid-2,.grid-3 { grid-template-columns:1fr; }
+    .manual-inputs { grid-template-columns:1fr 1fr; }
+  }
+</style>
+<meta name="description" content="WC 2026 revenue dashboard — track affiliate earnings, ad revenue, subscriptions, and total income across all streams.">
+</head>
+<body>
+
+<header>
+  <h1>💰 Revenue Dashboard — WC 2026 AI Empire</h1>
+  <div class="live-badge"><div class="live-dot"></div> Live · Updates every 30s</div>
+</header>
+
+<div class="container">
+
+  <!-- Top stats -->
+  <div class="top-stats">
+    <div class="stat green">
+      <div class="val" id="total-today">$0</div>
+      <div class="lbl">Today's Revenue</div>
+      <div class="chg up" id="today-chg">+$0 last hour</div>
+    </div>
+    <div class="stat gold">
+      <div class="val" id="total-tournament">$0</div>
+      <div class="lbl">Tournament Total</div>
+      <div class="chg up" id="tournament-chg">Day 1 of 38</div>
+    </div>
+    <div class="stat blue">
+      <div class="val" id="total-subscribers">0</div>
+      <div class="lbl">Total Subscribers</div>
+      <div class="chg up" id="sub-chg">+0 today</div>
+    </div>
+    <div class="stat purple">
+      <div class="val" id="active-streams">0</div>
+      <div class="lbl">Active Streams</div>
+      <div class="chg up">earning right now</div>
+    </div>
+  </div>
+
+  <!-- Manual entry (update until APIs are connected) -->
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-header"><h3>📝 Update Revenue Manually</h3><span>Until APIs are connected</span></div>
+    <div class="panel-body">
+      <div class="manual-inputs">
+        <div class="input-group"><label>Affiliate ($)</label><input type="number" id="m-affiliate" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>Subscriptions ($)</label><input type="number" id="m-subs" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>SMS Revenue ($)</label><input type="number" id="m-sms" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>Ads + Other ($)</label><input type="number" id="m-other" placeholder="0" oninput="updateManual()"></div>
+      </div>
+      <div class="manual-inputs">
+        <div class="input-group"><label>Total Subscribers</label><input type="number" id="m-totalsubs" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>SMS Subscribers</label><input type="number" id="m-smssubs" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>Premium Users</label><input type="number" id="m-premium" placeholder="0" oninput="updateManual()"></div>
+        <div class="input-group"><label>Tournament Day</label><input type="number" id="m-day" placeholder="1" oninput="updateManual()"></div>
+      </div>
+      <button class="save-btn" onclick="saveData()">💾 Save to Local Storage</button>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Revenue by stream -->
+    <div class="panel">
+      <div class="panel-header"><h3>Revenue by Stream</h3><span id="stream-total">$0 total</span></div>
+      <div class="panel-body">
+        <div class="bar-chart" id="stream-bars">
+          <div class="bar-row">
+            <span class="label">Affiliate CPA</span>
+            <div class="bar-track"><div class="bar-fill" style="background:var(--green);width:0%" id="bar-affiliate"></div></div>
+            <span class="bar-val" id="val-affiliate">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="label">Subscriptions</span>
+            <div class="bar-track"><div class="bar-fill" style="background:var(--gold);width:0%" id="bar-subs"></div></div>
+            <span class="bar-val" id="val-subs">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="label">SMS</span>
+            <div class="bar-track"><div class="bar-fill" style="background:var(--blue);width:0%" id="bar-sms"></div></div>
+            <span class="bar-val" id="val-sms">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="label">Display Ads</span>
+            <div class="bar-track"><div class="bar-fill" style="background:var(--purple);width:0%" id="bar-ads"></div></div>
+            <span class="bar-val" id="val-ads">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="label">Per-Use (Bot)</span>
+            <div class="bar-track"><div class="bar-fill" style="background:#ec4899;width:0%" id="bar-peruse"></div></div>
+            <span class="bar-val" id="val-peruse">$0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System status -->
+    <div class="panel">
+      <div class="panel-header"><h3>System Status</h3><span id="systems-live">0 live</span></div>
+      <div class="panel-body">
+        <div class="systems" id="system-list">
+          <div class="sys-row"><span class="sys-name">goal-monitor.js</span><span class="sys-badge badge-pending" id="sys-goal">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">preview-engine.js</span><span class="sys-badge badge-pending" id="sys-preview">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">telegram-bot-v2.py</span><span class="sys-badge badge-pending" id="sys-bot">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">agent-system.py</span><span class="sys-badge badge-pending" id="sys-agent">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">sms-system.py</span><span class="sys-badge badge-pending" id="sys-sms">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">smart-money-tracker.js</span><span class="sys-badge badge-pending" id="sys-smart">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">multi-platform-engine.js</span><span class="sys-badge badge-pending" id="sys-multi">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">programmatic-seo.js</span><span class="sys-badge badge-pending" id="sys-seo">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">Vercel (HTML tools)</span><span class="sys-badge badge-pending" id="sys-vercel">Pending Deploy</span></div>
+          <div class="sys-row"><span class="sys-name">Beehiiv Newsletter</span><span class="sys-badge badge-pending" id="sys-beehiiv">Setup Required</span></div>
+          <div class="sys-row"><span class="sys-name">Affiliate Programs</span><span class="sys-badge badge-pending" id="sys-aff">Apply Required</span></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted)">Click a system name to mark it live after deployment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <!-- Market breakdown -->
+    <div class="panel">
+      <div class="panel-header"><h3>Top Markets</h3></div>
+      <div class="panel-body">
+        <div class="market-grid" id="market-grid">
+          <div class="market-item"><div class="flag">🇳🇬</div><div class="mkt-name">Nigeria</div><div class="mkt-val" id="mkt-ng">$0</div><div class="mkt-subs" id="mkt-ng-s">0 SMS subs</div></div>
+          <div class="market-item"><div class="flag">🇰🇪</div><div class="mkt-name">Kenya</div><div class="mkt-val" id="mkt-ke">$0</div><div class="mkt-subs" id="mkt-ke-s">0 SMS subs</div></div>
+          <div class="market-item"><div class="flag">🇮🇳</div><div class="mkt-name">India</div><div class="mkt-val" id="mkt-in">$0</div><div class="mkt-subs" id="mkt-in-s">0 SMS subs</div></div>
+          <div class="market-item"><div class="flag">🇧🇷</div><div class="mkt-name">Brazil</div><div class="mkt-val" id="mkt-br">$0</div><div class="mkt-subs" id="mkt-br-s">0 SMS subs</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projections -->
+    <div class="panel">
+      <div class="panel-header"><h3>Tournament Projections</h3></div>
+      <div class="panel-body">
+        <table class="stream-table">
+          <thead><tr><th>Scenario</th><th style="text-align:right">Total</th></tr></thead>
+          <tbody>
+            <tr><td><span class="stream-dot dot-green"></span>Conservative</td><td style="text-align:right;color:var(--green)" id="proj-cons">$455K</td></tr>
+            <tr><td><span class="stream-dot dot-gold"></span>Realistic</td><td style="text-align:right;color:var(--gold)" id="proj-real">$2.35M</td></tr>
+            <tr><td><span class="stream-dot dot-purple"></span>If one hits big</td><td style="text-align:right;color:var(--purple)" id="proj-ceil">$15M+</td></tr>
+            <tr style="border-top:2px solid var(--border)"><td><strong>Current pace</strong></td><td style="text-align:right;font-weight:900" id="proj-pace">—</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;font-size:11px;color:var(--muted);line-height:1.6">
+          Pace calculated from day 1 revenue × 38 days.<br>
+          Updates as you enter actuals above.
+        </div>
+      </div>
+    </div>
+
+    <!-- To-do: next actions -->
+    <div class="panel">
+      <div class="panel-header"><h3>Next Actions</h3></div>
+      <div class="panel-body">
+        <div class="systems" id="todo-list">
+          <div class="sys-row"><span class="sys-name">Create Railway account</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Create Vercel account</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Create Groq API key</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Create Telegram bot</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Apply to 1xBet affiliate</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Apply to NordVPN affiliate</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Push code to GitHub</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Deploy to Railway</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Deploy to Vercel</span><span class="sys-badge badge-pending">Tonight</span></div>
+          <div class="sys-row"><span class="sys-name">Submit to Google Search Console</span><span class="sys-badge badge-pending">Tonight</span></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:10px">Click any item to mark complete</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity feed -->
+  <div class="panel">
+    <div class="panel-header"><h3>Activity Feed</h3><span>Manual log until webhooks connected</span></div>
+    <div class="panel-body">
+      <div class="feed" id="activity-feed">
+        <div class="feed-item">
+          <div class="feed-text">
+            <strong>System ready for deployment</strong>
+            <span>All code files built — awaiting account creation</span>
+          </div>
+          <div class="feed-amount neu">Ready</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <input id="activity-input" placeholder="Log an event (e.g. First affiliate click — $45)" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:13px;outline:none">
+        <input id="activity-amount" placeholder="$" style="width:80px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:13px;outline:none;text-align:center">
+        <button onclick="logActivity()" style="background:var(--green);color:#000;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:800;cursor:pointer">+ Log</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Load saved data
+  const DATA_KEY = 'wc2026_revenue';
+  let data = JSON.parse(localStorage.getItem(DATA_KEY) || '{}');
+
+  function loadSaved() {
+    if (data.affiliate)  document.getElementById('m-affiliate').value  = data.affiliate  || 0;
+    if (data.subs)       document.getElementById('m-subs').value       = data.subs       || 0;
+    if (data.sms)        document.getElementById('m-sms').value        = data.sms        || 0;
+    if (data.other)      document.getElementById('m-other').value      = data.other      || 0;
+    if (data.totalsubs)  document.getElementById('m-totalsubs').value  = data.totalsubs  || 0;
+    if (data.smssubs)    document.getElementById('m-smssubs').value    = data.smssubs    || 0;
+    if (data.premium)    document.getElementById('m-premium').value    = data.premium    || 0;
+    if (data.day)        document.getElementById('m-day').value        = data.day        || 1;
+    updateManual();
+    if (data.activity)   renderActivity(data.activity);
+    if (data.systems)    renderSystems(data.systems);
+  }
+
+  function updateManual() {
+    const affiliate = parseFloat(document.getElementById('m-affiliate').value) || 0;
+    const subs      = parseFloat(document.getElementById('m-subs').value)      || 0;
+    const sms       = parseFloat(document.getElementById('m-sms').value)       || 0;
+    const other     = parseFloat(document.getElementById('m-other').value)     || 0;
+    const totalsubs = parseInt(document.getElementById('m-totalsubs').value)   || 0;
+    const day       = parseInt(document.getElementById('m-day').value)         || 1;
+
+    const total = affiliate + subs + sms + other;
+    const max   = Math.max(affiliate, subs, sms, other, 1);
+
+    document.getElementById('total-today').textContent      = '$' + total.toLocaleString(undefined, {maximumFractionDigits:0});
+    document.getElementById('total-tournament').textContent = '$' + (total * day).toLocaleString(undefined, {maximumFractionDigits:0});
+    document.getElementById('total-subscribers').textContent= totalsubs.toLocaleString();
+    document.getElementById('tournament-chg').textContent   = `Day ${day} of 38`;
+
+    // Bars
+    setBar('affiliate', affiliate, max);
+    setBar('subs',      subs,      max);
+    setBar('sms',       sms,       max);
+    setBar('ads',       other * 0.3, max);
+    setBar('peruse',    other * 0.2, max);
+
+    document.getElementById('stream-total').textContent = '$' + total.toLocaleString(undefined, {maximumFractionDigits:0}) + ' today';
+
+    // Pace projection
+    if (total > 0) {
+      const pace = total * 38;
+      document.getElementById('proj-pace').textContent = '$' + pace.toLocaleString(undefined, {maximumFractionDigits:0});
+    }
+  }
+
+  function setBar(id, val, max) {
+    const pct = max > 0 ? Math.min((val / max) * 100, 100) : 0;
+    document.getElementById('bar-' + id).style.width = pct + '%';
+    document.getElementById('val-' + id).textContent = '$' + val.toLocaleString(undefined, {maximumFractionDigits:0});
+  }
+
+  function saveData() {
+    data = {
+      affiliate:  parseFloat(document.getElementById('m-affiliate').value)  || 0,
+      subs:       parseFloat(document.getElementById('m-subs').value)       || 0,
+      sms:        parseFloat(document.getElementById('m-sms').value)        || 0,
+      other:      parseFloat(document.getElementById('m-other').value)      || 0,
+      totalsubs:  parseInt(document.getElementById('m-totalsubs').value)    || 0,
+      smssubs:    parseInt(document.getElementById('m-smssubs').value)      || 0,
+      premium:    parseInt(document.getElementById('m-premium').value)      || 0,
+      day:        parseInt(document.getElementById('m-day').value)          || 1,
+      activity:   data.activity || [],
+      systems:    data.systems  || {},
+    };
+    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+    alert('✅ Saved!');
+  }
+
+  // Activity log
+  function logActivity() {
+    const text   = document.getElementById('activity-input').value.trim();
+    const amount = document.getElementById('activity-amount').value.trim();
+    if (!text) return;
+
+    const entry = { text, amount: amount || '', time: new Date().toLocaleTimeString() };
+    data.activity = data.activity || [];
+    data.activity.unshift(entry);
+    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+
+    document.getElementById('activity-input').value  = '';
+    document.getElementById('activity-amount').value = '';
+    renderActivity(data.activity);
+  }
+
+  function renderActivity(log) {
+    const feed = document.getElementById('activity-feed');
+    feed.innerHTML = log.slice(0, 20).map(e => `
+      <div class="feed-item">
+        <div class="feed-text">
+          <strong>${e.text}</strong>
+          <span>${e.time}</span>
+        </div>
+        ${e.amount ? `<div class="feed-amount pos">${e.amount.startsWith('$') ? '' : '$'}${e.amount}</div>` : '<div class="feed-amount neu">Logged</div>'}
+      </div>
+    `).join('');
+  }
+
+  // System status toggles
+  document.querySelectorAll('.sys-row').forEach(row => {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', () => {
+      const badge = row.querySelector('.sys-badge');
+      if (badge.classList.contains('badge-pending')) {
+        badge.classList.replace('badge-pending', 'badge-live');
+        badge.textContent = 'Live ✓';
+        const liveCount = document.querySelectorAll('.badge-live').length;
+        document.getElementById('systems-live').textContent = liveCount + ' live';
+        document.getElementById('active-streams').textContent = liveCount;
+      } else {
+        badge.classList.replace('badge-live', 'badge-pending');
+        badge.textContent = 'Pending';
+        const liveCount = document.querySelectorAll('.badge-live').length;
+        document.getElementById('systems-live').textContent = liveCount + ' live';
+        document.getElementById('active-streams').textContent = liveCount;
+      }
+    });
+  });
+
+  loadSaved();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

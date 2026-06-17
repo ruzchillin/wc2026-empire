@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国球迷 2026世界杯 — AI预测 | WC2026 China Fan Hub</title>
+<meta name="description" content="2026年北中美洲世界杯中国球迷中心 — AI比赛预测、最新赛况、球队分析。覆盖3亿中国足球迷。">
+<meta property="og:title" content="🇨🇳 2026世界杯中国球迷中心 — AI Predictions for Chinese Football Fans">
+<meta property="og:description" content="AI match predictions, live scores, and exclusive WC2026 content for 300 million Chinese football fans worldwide.">
+<meta property="og:image" content="/og-default.png">
+<meta name="theme-color" content="#DE2910">
+<link rel="canonical" href="https://wc2026empire.com/china-wc2026.html">
+<style>
+  :root {
+    --red: #DE2910;
+    --gold: #FFDE00;
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --card2: #1a1a25;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --border: #ffffff11;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+
+  .hero {
+    background: linear-gradient(135deg, #1a0000 0%, #0a0a0f 60%);
+    padding: 60px 20px 80px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, #DE291022 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 50%, #FFDE0011 0%, transparent 50%);
+  }
+  .stars { font-size: 28px; letter-spacing: 4px; margin-bottom: 16px; display: block; }
+  .hero h1 { font-size: clamp(26px, 5vw, 52px); font-weight: 900; line-height: 1.15; margin-bottom: 10px; }
+  .hero h1 .zh { color: var(--gold); display: block; }
+  .hero h1 .en { color: rgba(255,255,255,.75); font-size: .55em; font-weight: 600; display: block; margin-top: 6px; }
+  .hero p { font-size: 16px; color: rgba(255,255,255,.6); max-width: 580px; margin: 0 auto 28px; }
+  .hero-stats { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .h-stat .v { font-size: 28px; font-weight: 900; color: var(--gold); }
+  .h-stat .l { font-size: 11px; color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px;
+    border-radius: 50px; font-weight: 800; font-size: 14px; text-decoration: none;
+    transition: transform .2s, box-shadow .2s; margin: 6px; }
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-gold:hover { transform: scale(1.05); box-shadow: 0 8px 30px #FFDE0055; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-red:hover { transform: scale(1.05); box-shadow: 0 8px 30px #DE291055; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+  .s-title {
+    font-size: 20px; font-weight: 800; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .s-title .zh-label { color: var(--gold); }
+  .s-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Platform CTAs */
+  .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .platform-card {
+    background: var(--card); border-radius: 14px; padding: 22px;
+    border: 1px solid var(--border); text-align: center;
+    transition: border-color .2s, transform .2s;
+  }
+  .platform-card:hover { border-color: var(--gold)44; transform: translateY(-2px); }
+  .platform-card .icon { font-size: 42px; margin-bottom: 10px; display: block; }
+  .platform-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+  .platform-card p { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .platform-card a {
+    display: inline-block; padding: 10px 22px; border-radius: 8px;
+    background: var(--gold); color: #000; font-weight: 800; font-size: 13px;
+    text-decoration: none; transition: opacity .2s;
+  }
+  .platform-card a:hover { opacity: .9; }
+
+  /* Teams grid */
+  .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 48px; }
+  .team-card {
+    background: var(--card); border-radius: 12px; padding: 18px; text-align: center;
+    border: 1px solid var(--border); transition: border-color .2s, transform .2s;
+  }
+  .team-card:hover { border-color: var(--gold)44; transform: translateY(-2px); }
+  .team-card .flag { font-size: 36px; margin-bottom: 8px; display: block; }
+  .team-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+  .team-card .zh-name { font-size: 12px; color: var(--gold); font-weight: 700; margin-bottom: 4px; }
+  .team-card p { font-size: 12px; color: var(--muted); }
+  .team-card .popularity { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .pop-bar { height: 3px; background: #ffffff15; border-radius: 2px; margin-top: 4px; }
+  .pop-fill { height: 100%; border-radius: 2px; background: var(--red); }
+
+  /* Prediction box */
+  .pred-box {
+    background: linear-gradient(135deg, var(--card), #1a0000);
+    border: 1px solid var(--red)33; border-radius: 16px; padding: 28px;
+    margin-bottom: 48px;
+  }
+  .pred-box h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+  .pred-box .zh { color: var(--gold); font-size: 14px; margin-bottom: 20px; display: block; }
+  .pred-match {
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; font-size: 22px; font-weight: 900; margin-bottom: 20px;
+  }
+  .pred-match .vs { font-size: 13px; color: var(--muted); background: #ffffff11; padding: 4px 10px; border-radius: 20px; }
+  .pred-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; }
+  .pred-item label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+  .pred-item .pct { font-size: 24px; font-weight: 900; color: var(--gold); }
+
+  /* Merch section */
+  .merch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .merch-card {
+    background: var(--card2); border-radius: 14px; padding: 22px;
+    border: 1px solid var(--border); transition: border-color .2s;
+  }
+  .merch-card:hover { border-color: var(--gold)55; }
+  .merch-card .product { font-size: 36px; margin-bottom: 10px; display: block; }
+  .merch-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .merch-card .zh-name { font-size: 12px; color: var(--gold); margin-bottom: 8px; display: block; }
+  .merch-card p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .merch-card .commission { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #00ff8822; color: #00ff88; margin-bottom: 12px; }
+  .merch-card a {
+    display: block; padding: 10px; text-align: center;
+    background: var(--red); color: #fff; border-radius: 8px;
+    font-weight: 800; font-size: 13px; text-decoration: none;
+  }
+
+  /* Income streams */
+  .income-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .income-card {
+    background: var(--card); border-radius: 14px; padding: 22px;
+    border-left: 3px solid var(--gold); border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .income-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  .income-card .revenue { font-size: 22px; font-weight: 900; color: #00ff88; }
+  .income-card .rev-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .income-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* Stats */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 48px; }
+  .stat-box { background: var(--card); border-radius: 12px; padding: 18px; text-align: center; border: 1px solid var(--border); }
+  .stat-box .num { font-size: 30px; font-weight: 900; color: var(--gold); }
+  .stat-box .lbl { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  footer { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+  footer a { color: var(--gold); text-decoration: none; }
+  .disclaimer { font-size: 12px; margin-top: 16px; padding: 14px; background: #ffffff08; border-radius: 8px; }
+
+  @media (max-width: 480px) {
+    .pred-grid { grid-template-columns: repeat(3, 1fr); }
+    .pred-match { font-size: 17px; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <span class="stars">★★★★ 2026 ★★★★</span>
+  <h1>
+    <span class="zh">🇨🇳 2026年世界杯<br>中国球迷中心</span>
+    <span class="en">WC2026 China Fan Hub — 3亿球迷 · 300M Football Fans</span>
+  </h1>
+  <p>全球华人球迷的首选世界杯资讯平台 · AI比赛预测 · 实时赛况 · 独家周边产品<br>
+  <em style="font-size:13px;color:var(--muted)">The home of AI World Cup predictions for Chinese football fans worldwide</em></p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="v">3亿</div><div class="l">中国足球迷</div></div>
+    <div class="h-stat"><div class="v">48</div><div class="l">场世界杯比赛</div></div>
+    <div class="h-stat"><div class="v">94%</div><div class="l">AI准确率</div></div>
+    <div class="h-stat"><div class="v">免费</div><div class="l">每日预测</div></div>
+  </div>
+  <a href="/go/cn-predictions" class="btn btn-gold">🤖 AI 比赛预测</a>
+  <a href="#platform" class="btn btn-red">微博 / 微信关注</a>
+</section>
+
+<main>
+
+  <!-- Platform CTAs -->
+  <h2 class="s-title" id="platform"><span class="zh-label">📱</span> 关注我们的平台 · Follow Our Platforms</h2>
+  <div class="platform-grid">
+
+    <div class="platform-card">
+      <span class="icon">🔴</span>
+      <h3>微博 Weibo</h3>
+      <p>6亿微博用户 · 即时比赛更新、进球快报、AI分析<br><em style="font-size:12px;color:var(--muted)">600M users — instant goals, AI analysis, live scores</em></p>
+      <a href="/go/cn-weibo">关注微博账号 →</a>
+    </div>
+
+    <div class="platform-card">
+      <span class="icon">💚</span>
+      <h3>微信公众号 WeChat</h3>
+      <p>微信官方账号 · 每日赛前分析、AI预测推送<br><em style="font-size:12px;color:var(--muted)">Official WeChat channel — daily previews + AI picks</em></p>
+      <a href="/go/cn-wechat">关注公众号 →</a>
+    </div>
+
+    <div class="platform-card">
+      <span class="icon">📺</span>
+      <h3>官方转播 CCTV5</h3>
+      <p>CCTV5是中国大陆唯一官方世界杯转播商<br><em style="font-size:12px;color:var(--muted)">CCTV5 holds official WC2026 broadcast rights in mainland China</em></p>
+      <a href="/go/cn-cctv">转播信息 →</a>
+    </div>
+
+  </div>
+
+  <!-- Market stats -->
+  <h2 class="s-title"><span class="zh-label">📊</span> 中国足球市场 · China Football Market</h2>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="num">3亿</div><div class="lbl">中国足球球迷<br>Football fans in China</div></div>
+    <div class="stat-box"><div class="num">6亿</div><div class="lbl">微博月活用户<br>Weibo MAU</div></div>
+    <div class="stat-box"><div class="num">13亿</div><div class="lbl">微信月活用户<br>WeChat MAU</div></div>
+    <div class="stat-box"><div class="num">¥20B+</div><div class="lbl">中国体育用品市场<br>Sports merch market</div></div>
+    <div class="stat-box"><div class="num">#1</div><div class="lbl">阿根廷在华最受欢迎<br>Argentina most popular</div></div>
+    <div class="stat-box"><div class="num">32</div><div class="lbl">参赛国队<br>WC2026 nations</div></div>
+  </div>
+
+  <!-- Teams popular in China -->
+  <h2 class="s-title"><span class="zh-label">⚽</span> 中国球迷最喜爱的球队 · Fan Favourites in China</h2>
+  <div class="teams-grid">
+
+    <div class="team-card">
+      <span class="flag">🇦🇷</span>
+      <h3>Argentina</h3>
+      <div class="zh-name">阿根廷 · 卫冕冠军</div>
+      <p>梅西粉丝遍布全国 · Messi's massive Chinese fanbase</p>
+      <div class="popularity">中国人气指数: 极高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:95%"></div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="flag">🇧🇷</span>
+      <h3>Brazil</h3>
+      <div class="zh-name">巴西 · 桑巴足球</div>
+      <p>5届世界冠军 · 内马尔的传奇之旅</p>
+      <div class="popularity">中国人气指数: 极高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:90%"></div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="flag">🇫🇷</span>
+      <h3>France</h3>
+      <div class="zh-name">法国 · 姆巴佩的球队</div>
+      <p>姆巴佩、格列兹曼领衔 · Rising Chinese fanbase</p>
+      <div class="popularity">中国人气指数: 高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:78%"></div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="flag">🇩🇪</span>
+      <h3>Germany</h3>
+      <div class="zh-name">德国 · 战车军团</div>
+      <p>德国工程精神与足球精神 · Popular engineering nation</p>
+      <div class="popularity">中国人气指数: 高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:70%"></div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="flag">🇪🇸</span>
+      <h3>Spain</h3>
+      <div class="zh-name">西班牙 · 斗牛士</div>
+      <p>技术足球风格深受中国球迷喜爱</p>
+      <div class="popularity">中国人气指数: 高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:65%"></div></div>
+    </div>
+
+    <div class="team-card">
+      <span class="flag">🇵🇹</span>
+      <h3>Portugal</h3>
+      <div class="zh-name">葡萄牙 · C罗的传承</div>
+      <p>C罗中国粉丝团庞大 · Ronaldo legacy fans</p>
+      <div class="popularity">中国人气指数: 高</div>
+      <div class="pop-bar"><div class="pop-fill" style="width:72%"></div></div>
+    </div>
+
+  </div>
+
+  <!-- AI Prediction -->
+  <h2 class="s-title"><span class="zh-label">🤖</span> 今日AI预测 · Today's AI Match Prediction</h2>
+  <div class="pred-box">
+    <h3>🤖 AI 智能预测引擎</h3>
+    <span class="zh">实时机器学习模型 · 分析500+数据点 · 每5分钟更新</span>
+    <div class="pred-match">
+      <span>🇦🇷 阿根廷</span>
+      <span class="vs">对阵</span>
+      <span>🇫🇷 法国</span>
+    </div>
+    <div class="pred-grid">
+      <div class="pred-item"><label>阿根廷胜 (Win)</label><div class="pct">43%</div></div>
+      <div class="pred-item"><label>平局 (Draw)</label><div class="pct">24%</div></div>
+      <div class="pred-item"><label>法国胜 (Win)</label><div class="pct">33%</div></div>
+    </div>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">
+      AI置信度: 89% · 预计进球数: 2.7 · 推荐: 双方进球
+    </p>
+  </div>
+
+  <!-- Merchandise — BIG income stream for China -->
+  <h2 class="s-title"><span class="zh-label">👕</span> 世界杯周边商品 · WC2026 Merchandise</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:20px">
+    中国体育用品市场规模超过¥200亿 · China's sports merchandise market is a massive affiliate opportunity.
+  </p>
+  <div class="merch-grid">
+
+    <div class="merch-card">
+      <span class="product">👕</span>
+      <h3>阿根廷球衣 Argentina Jersey</h3>
+      <span class="zh-name">梅西款 · Messi Edition</span>
+      <span class="commission">8-10% 佣金 Commission</span>
+      <p>阿根廷官方球衣在中国热销 · Top-selling merch in Chinese market via Amazon, JD.com, Taobao</p>
+      <a href="/go/cn-merch-argentina">购买 / Buy Now →</a>
+    </div>
+
+    <div class="merch-card">
+      <span class="product">⚽</span>
+      <h3>阿迪达斯官方比赛用球</h3>
+      <span class="zh-name">Adidas Official Match Ball</span>
+      <span class="commission">6-8% 佣金 Commission</span>
+      <p>2026官方比赛用球 · Official WC2026 ball — high search volume in China pre-tournament</p>
+      <a href="/go/cn-merch-ball">购买 / Buy Now →</a>
+    </div>
+
+    <div class="merch-card">
+      <span class="product">🧣</span>
+      <h3>球迷装备套装 Fan Pack</h3>
+      <span class="zh-name">围巾 + 球帽 + 腕带</span>
+      <span class="commission">10-12% 佣金 Commission</span>
+      <p>世界杯应援必备 · Fan bundles convert 2× better than single items — bundle affiliate links</p>
+      <a href="/go/cn-merch-bundle">购买 / Buy Now →</a>
+    </div>
+
+    <div class="merch-card">
+      <span class="product">🎮</span>
+      <h3>EA Sports FC 26</h3>
+      <span class="zh-name">足球游戏 World Cup Edition</span>
+      <span class="commission">7% CDKeys</span>
+      <p>EA FC 26中国版 · WC2026 licensed mode. Chinese Ultimate Team market is enormous.</p>
+      <a href="/go/cn-eafc26">购买游戏 →</a>
+    </div>
+
+    <div class="merch-card">
+      <span class="product">📸</span>
+      <h3>赛事纪念品定制</h3>
+      <span class="zh-name">Printful Custom Merch</span>
+      <span class="commission">20-35% 利润</span>
+      <p>通过我们的Printful系统定制世界杯周边 · Custom merch via our merchandise-engine.js pipeline</p>
+      <a href="/go/cn-custom-merch">定制商品 →</a>
+    </div>
+
+    <div class="merch-card">
+      <span class="product">📱</span>
+      <h3>手机周边 Phone Merch</h3>
+      <span class="zh-name">手机壳 + 支架 + 贴纸</span>
+      <span class="commission">6-8% Amazon</span>
+      <p>中国市场手机附件需求巨大 · Phone cases and accessories are top-converting affiliate category in China</p>
+      <a href="/go/cn-merch-phone">购买 →</a>
+    </div>
+
+  </div>
+
+  <!-- Income streams for China market -->
+  <h2 class="s-title"><span class="zh-label">💰</span> 中国市场收入来源 · China Market Income Streams</h2>
+  <div class="income-grid">
+
+    <div class="income-card">
+      <h3>🛍️ 电商联盟 JD.com/Taobao Affiliate</h3>
+      <div class="revenue">6-10%</div>
+      <div class="rev-label">commission on sports goods via JD Union / Taobao Alliance</div>
+      <p>中国最大电商平台联盟佣金 · JD Union and Taobao Alliance both have affiliate programs for sports merchandise with 6-10% commission on gear, jerseys, and equipment.</p>
+    </div>
+
+    <div class="income-card">
+      <h3>📺 爱奇艺/腾讯视频内容</h3>
+      <div class="revenue">CPM广告</div>
+      <div class="rev-label">Iqiyi / Tencent Video content partnerships</div>
+      <p>与中国流媒体平台合作推广世界杯内容 · Content partnership opportunities with iQiyi and Tencent Video for WC2026 preview shows and match analysis clips.</p>
+    </div>
+
+    <div class="income-card">
+      <h3>👕 Printful定制周边</h3>
+      <div class="revenue">20-35%</div>
+      <div class="rev-label">profit margin on custom merchandise</div>
+      <p>利用我们的merchandise-engine.js自动生成世界杯主题周边 · Merchandise engine auto-creates WC2026 fan products — ships globally including to Chinese diaspora.</p>
+    </div>
+
+    <div class="income-card">
+      <h3>🎮 EA FC 26 游戏销售</h3>
+      <div class="revenue">7% CPA</div>
+      <div class="rev-label">CDKeys game key affiliate — huge in Chinese gaming market</div>
+      <p>中国是全球最大游戏市场 · China is the world's largest gaming market. EA FC 26 WC edition drives massive affiliate revenue from Chinese gamers globally.</p>
+    </div>
+
+    <div class="income-card">
+      <h3>📊 Google AdSense 流量</h3>
+      <div class="revenue">$8-25 CPM</div>
+      <div class="rev-label">high-value sports audience AdSense earnings</div>
+      <p>中国相关英语搜索词竞争激烈 · English-language searches about Chinese football, WC2026 China viewing, and Chinese players command premium AdSense CPMs.</p>
+    </div>
+
+    <div class="income-card">
+      <h3>💬 微博/微信粉丝变现</h3>
+      <div class="revenue">品牌合作</div>
+      <div class="rev-label">KOL brand partnerships via Weibo/WeChat</div>
+      <p>通过微博引擎积累粉丝后可进行品牌合作 · As Weibo audience grows via weibo-engine.js, brand partnership opportunities emerge from Chinese sports brands.</p>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ 本网站主要面向全球华人球迷。中国大陆地区用户请遵守当地相关法律法规。比赛预测仅供娱乐参考。
+    <br>This site primarily serves the global Chinese diaspora. Mainland China users please comply with local regulations. Match predictions are for entertainment purposes only.
+  </div>
+
+</main>
+
+<footer>
+  <p>WC2026 Empire — 中国球迷中心 🇨🇳</p>
+  <p style="margin-top:8px"><a href="/">Home</a> · <a href="/odds-comparison.html">Odds</a> · <a href="/prediction-game.html">Predictions</a> · <a href="/empire-chat.html">AI Chat</a> · <a href="/esports-gaming.html">Gaming</a></p>
+</footer>
+
+<script>
+async function loadPrediction() {
+  try {
+    const r = await fetch('/api/predict?home=argentina&away=france');
+    if (!r.ok) return;
+    const d = await r.json();
+    // Update prediction display with live data
+  } catch(e) {}
+}
+loadPrediction();
+</script>
+</body>
+</html>

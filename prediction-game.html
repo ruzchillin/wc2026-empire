@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Prediction Challenge — Win Real Prizes</title>
+<meta name="description" content="Predict World Cup 2026 match scores and win prizes. Free to enter. Leaderboard updated live.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0f1e; --surface: #111827; --surface2: #1a2235; --border: rgba(255,255,255,0.08);
+  --accent: #6366f1; --accent2: #10b981; --text: #f1f5f9; --muted: #94a3b8; --red: #ef4444; --gold: #f59e0b;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── CONFIG (fill in) ── */
+/* OWNER_TELEGRAM = your Telegram channel link */
+/* ENTRY_FEE_LINK = Stripe/PayPal link for paid rounds */
+/* PRIZE_POOL_PERCENT = 70 (you keep 30%) */
+
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+nav .brand { font-size: 16px; font-weight: 700; }
+nav .brand span { color: var(--accent); }
+nav .nav-links { display: flex; gap: 6px; }
+nav .nav-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
+nav .nav-btn.active, nav .nav-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+.hero { text-align: center; padding: 32px 20px 20px; }
+.hero h1 { font-size: clamp(22px, 4vw, 36px); font-weight: 800; margin-bottom: 8px; }
+.hero h1 span { color: var(--accent); }
+.hero p { color: var(--muted); font-size: 14px; max-width: 500px; margin: 0 auto 20px; }
+.stats-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.stat-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 8px 16px; font-size: 12px; }
+.stat-pill strong { color: var(--accent2); }
+
+.tabs { display: flex; gap: 4px; padding: 0 16px; max-width: 900px; margin: 0 auto 16px; border-bottom: 1px solid var(--border); }
+.tab { padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); transition: all 0.15s; }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.page { display: none; max-width: 900px; margin: 0 auto; padding: 0 16px 40px; }
+.page.active { display: block; }
+
+/* ── PREDICTIONS PAGE ── */
+.round-header { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.round-header .round-info h2 { font-size: 16px; font-weight: 700; }
+.round-header .round-info p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.round-header .prize-box { text-align: right; }
+.round-header .prize-amount { font-size: 22px; font-weight: 800; color: var(--gold); }
+.round-header .prize-label { font-size: 11px; color: var(--muted); }
+
+.match-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+.match-card .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.match-card .match-info { font-size: 11px; color: var(--muted); }
+.match-card .match-badge { font-size: 10px; background: rgba(99,102,241,0.2); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+.match-card .teams { display: flex; align-items: center; gap: 8px; }
+.match-card .team { flex: 1; }
+.match-card .team .flag { font-size: 28px; line-height: 1; }
+.match-card .team .name { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.match-card .team .odds { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.match-card .score-input { display: flex; align-items: center; gap: 8px; justify-content: center; }
+.score-input input { width: 44px; height: 44px; text-align: center; font-size: 18px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; }
+.score-input input:focus { border-color: var(--accent); }
+.score-input .separator { font-size: 18px; color: var(--muted); font-weight: 300; }
+.result-buttons { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+.res-btn { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
+.res-btn:hover, .res-btn.sel { background: var(--accent); color: white; border-color: var(--accent); }
+.points-preview { font-size: 11px; color: var(--accent2); text-align: center; margin-top: 8px; }
+
+.submit-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 16px; }
+.submit-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-field label { font-size: 11px; color: var(--muted); font-weight: 500; }
+.form-field input { padding: 9px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; outline: none; }
+.form-field input:focus { border-color: var(--accent); }
+.submit-btn { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 6px; transition: opacity 0.15s; }
+.submit-btn:hover { opacity: 0.9; }
+.paid-btn { background: var(--gold); color: #111; }
+.entry-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.entry-opt { border: 1px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.15s; }
+.entry-opt.sel { border-color: var(--accent); background: rgba(99,102,241,0.1); }
+.entry-opt .opt-title { font-size: 13px; font-weight: 700; }
+.entry-opt .opt-detail { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.entry-opt .opt-prize { font-size: 12px; color: var(--accent2); margin-top: 5px; font-weight: 600; }
+
+/* ── LEADERBOARD ── */
+.lb-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.lb-header { background: var(--surface2); padding: 14px 20px; display: grid; grid-template-columns: 48px 1fr 60px 60px 70px; gap: 8px; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.lb-row { padding: 12px 20px; display: grid; grid-template-columns: 48px 1fr 60px 60px 70px; gap: 8px; align-items: center; border-top: 1px solid var(--border); transition: background 0.15s; }
+.lb-row:hover { background: var(--surface2); }
+.lb-row .rank { font-size: 16px; font-weight: 800; }
+.lb-row .rank.gold { color: var(--gold); }
+.lb-row .rank.silver { color: #94a3b8; }
+.lb-row .rank.bronze { color: #cd7c3a; }
+.lb-row .player { display: flex; align-items: center; gap: 8px; }
+.lb-row .player .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.lb-row .player .pname { font-size: 13px; font-weight: 600; }
+.lb-row .player .pctry { font-size: 11px; color: var(--muted); }
+.lb-row .pts { font-size: 14px; font-weight: 700; color: var(--accent2); text-align: center; }
+.lb-row .acc { font-size: 13px; color: var(--muted); text-align: center; }
+.lb-row .prize { font-size: 12px; font-weight: 700; color: var(--gold); text-align: right; }
+
+/* ── HOW IT WORKS ── */
+.how-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.how-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.how-card .step-num { font-size: 28px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+.how-card .step-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.how-card .step-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.points-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+.pt-row { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.pt-row:last-child { border: none; }
+.pt-row .pt-label { color: var(--muted); }
+.pt-row .pt-val { font-weight: 700; color: var(--accent2); }
+.cta-box { background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(16,185,129,0.2)); border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 20px; text-align: center; }
+.cta-box h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.cta-box p { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+.cta-box a { display: inline-block; padding: 10px 24px; background: var(--accent); color: white; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; margin: 4px; }
+.cta-box a.green { background: var(--accent2); }
+
+/* ── SCORING EXPLANATION ── */
+.scoring-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 12px; margin: 4px; }
+.scoring-pill .pts { font-weight: 700; color: var(--accent2); min-width: 28px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">WC<span>2026</span> Prediction Challenge</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showTab('predict')">Predict</button>
+    <button class="nav-btn" onclick="showTab('leaderboard')">Leaderboard</button>
+    <button class="nav-btn" onclick="showTab('howto')">How it works</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Predict. Compete. <span>Win.</span></h1>
+  <p>Make your score predictions for every World Cup 2026 match. Earn points, climb the leaderboard, and win real prizes.</p>
+  <div class="stats-row">
+    <div class="stat-pill">👥 <strong id="player-count">1,247</strong> players entered</div>
+    <div class="stat-pill">🏆 Prize pool: <strong id="prize-pool">$847</strong></div>
+    <div class="stat-pill">⚽ <strong>64</strong> matches to predict</div>
+    <div class="stat-pill">🌍 <strong>50+</strong> languages</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('predict')">Today's Matches</div>
+  <div class="tab" onclick="showTab('leaderboard')">Leaderboard</div>
+  <div class="tab" onclick="showTab('howto')">How It Works</div>
+</div>
+
+<!-- ── PREDICT PAGE ── -->
+<div class="page active" id="page-predict">
+  <div class="round-header">
+    <div class="round-info">
+      <h2>Round 1 — Group Stage, June 11</h2>
+      <p>Predictions lock at kickoff · Results updated live</p>
+    </div>
+    <div class="prize-box">
+      <div class="prize-amount" id="display-prize">$847</div>
+      <div class="prize-label">prize pool</div>
+    </div>
+  </div>
+
+  <div id="matches-container"></div>
+
+  <div class="submit-section">
+    <h3>Submit your predictions</h3>
+    <div class="entry-options">
+      <div class="entry-opt sel" id="opt-free" onclick="selectEntry('free')">
+        <div class="opt-title">Free entry</div>
+        <div class="opt-detail">Predict all matches, earn points, climb the leaderboard</div>
+        <div class="opt-prize">No prize · Bragging rights</div>
+      </div>
+      <div class="entry-opt" id="opt-paid" onclick="selectEntry('paid')">
+        <div class="opt-title">Paid entry — $9.99</div>
+        <div class="opt-detail">Same predictions, added to prize pool (70% back to winners)</div>
+        <div class="opt-prize" id="your-prize-share">Win up to $847+ in prizes</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Your name or username</label>
+        <input type="text" id="player-name" placeholder="@YourHandle">
+      </div>
+      <div class="form-field">
+        <label>Email (for prize notification)</label>
+        <input type="email" id="player-email" placeholder="your@email.com">
+      </div>
+    </div>
+    <div class="form-field" style="margin-bottom:10px;">
+      <label>Country (shows your flag on leaderboard)</label>
+      <input type="text" id="player-country" placeholder="e.g. Brazil, Nigeria, USA">
+    </div>
+    <div id="entry-type" style="display:none;">free</div>
+    <button class="submit-btn" id="submit-btn" onclick="submitPredictions()">Submit Free Predictions</button>
+    <p style="font-size:11px; color: var(--muted); text-align:center; margin-top:8px;">
+      📲 Join <a href="#" style="color: var(--accent);">t.me/WC2026AIPicks</a> to see AI predictions for every match
+    </p>
+  </div>
+</div>
+
+<!-- ── LEADERBOARD PAGE ── -->
+<div class="page" id="page-leaderboard">
+  <div class="lb-card">
+    <div class="lb-header">
+      <div>Rank</div>
+      <div>Player</div>
+      <div style="text-align:center;">Points</div>
+      <div style="text-align:center;">Accuracy</div>
+      <div style="text-align:right;">Prize</div>
+    </div>
+    <div id="leaderboard-rows"></div>
+  </div>
+  <p style="font-size:12px; color: var(--muted); text-align:center; margin-top:12px;">
+    Updated after every match · Prize distribution: 1st 40% · 2nd 25% · 3rd 15% · 4th–10th share 20%
+  </p>
+</div>
+
+<!-- ── HOW IT WORKS PAGE ── -->
+<div class="page" id="page-howto">
+  <div class="how-grid">
+    <div class="how-card"><div class="step-num">1</div><div class="step-title">Make predictions</div><div class="step-desc">Predict the exact score for each match before kickoff. Free entry gets you on the leaderboard. Paid entry ($9.99) adds to the prize pool.</div></div>
+    <div class="how-card"><div class="step-num">2</div><div class="step-title">Earn points</div><div class="step-desc">Exact score: 10 pts. Correct outcome + goal diff: 7 pts. Correct outcome only: 4 pts. Bonus points for predicting upsets and golden boot scorer.</div></div>
+    <div class="how-card"><div class="step-num">3</div><div class="step-title">Climb the leaderboard</div><div class="step-desc">Points accumulate across all 64 matches. Leaderboard updates live. 50+ languages — compete globally.</div></div>
+    <div class="how-card"><div class="step-num">4</div><div class="step-title">Win prizes</div><div class="step-desc">Prize pool grows with every paid entry. 70% goes back to top 10 players at end of tournament. Paid via PayPal, Wise, or crypto.</div></div>
+  </div>
+
+  <div style="margin-bottom:14px; font-size:13px; font-weight:600; color: var(--muted); text-transform:uppercase; letter-spacing:0.05em;">Points system</div>
+  <div class="points-table">
+    <div class="pt-row"><span class="pt-label">Exact score (e.g. 2-1)</span><span class="pt-val">10 points</span></div>
+    <div class="pt-row"><span class="pt-label">Correct result + goal difference (e.g. predicted 3-1, actual 2-0)</span><span class="pt-val">7 points</span></div>
+    <div class="pt-row"><span class="pt-label">Correct result only (win/draw/loss)</span><span class="pt-val">4 points</span></div>
+    <div class="pt-row"><span class="pt-label">Bonus: predicted an upset (underdog wins, odds > +300)</span><span class="pt-val">+5 points</span></div>
+    <div class="pt-row"><span class="pt-label">Bonus: correct 0-0 draw prediction</span><span class="pt-val">+3 points</span></div>
+    <div class="pt-row"><span class="pt-label">Wrong result</span><span class="pt-val">0 points</span></div>
+  </div>
+
+  <div class="cta-box">
+    <h3>Get the AI's predictions before submitting yours</h3>
+    <p>Our AI has been right 68% of the time in major tournaments. Use the predictions to inform your picks.</p>
+    <a href="#" onclick="showTab('predict'); return false;" class="green">Make predictions →</a>
+    <a href="#">Join Telegram for AI picks</a>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────
+const TELEGRAM_LINK = 'https://t.me/WC2026AIPicks';
+const PAID_ENTRY_LINK = '#'; // Replace with Stripe/PayPal link
+const ENTRY_FEE = 9.99;
+const PRIZE_PERCENT = 0.70;
+
+// ── MATCH DATA (auto-update from API-Football in production) ─
+const TODAY_MATCHES = [
+  { id: 1, home: 'Mexico', away: 'South Africa', homeFlag: '🇲🇽', awayFlag: '🇿🇦', time: '3:00 PM ET', homeOdds: '-130', drawOdds: '+260', awayOdds: '+380', group: 'Group A' },
+  { id: 2, home: 'South Korea', away: 'Czechia', homeFlag: '🇰🇷', awayFlag: '🇨🇿', time: '9:00 PM ET', homeOdds: '-115', drawOdds: '+240', awayOdds: '+320', group: 'Group B' },
+  { id: 3, home: 'USA', away: 'Canada', homeFlag: '🇺🇸', awayFlag: '🇨🇦', time: '6:00 PM ET', homeOdds: '-145', drawOdds: '+280', awayOdds: '+400', group: 'Group C' },
+  { id: 4, home: 'Brazil', away: 'Nigeria', homeFlag: '🇧🇷', awayFlag: '🇳🇬', time: '12:00 PM ET', homeOdds: '-200', drawOdds: '+320', awayOdds: '+560', group: 'Group D' }
+];
+
+// ── DEMO LEADERBOARD ─────────────────────────────────────────
+const DEMO_LEADERS = [
+  { name: 'Chiamaka_FC', country: '🇳🇬', pts: 287, acc: '71%', prize: '$338' },
+  { name: 'TacticsMaster', country: '🇩🇪', pts: 264, acc: '66%', prize: '$211' },
+  { name: 'Palpite_Rei', country: '🇧🇷', pts: 251, acc: '63%', prize: '$127' },
+  { name: 'LionsOfTeranga', country: '🇸🇳', pts: 238, acc: '60%', prize: '$42' },
+  { name: 'OranjeExpert', country: '🇳🇱', pts: 225, acc: '56%', prize: '$42' },
+  { name: 'BafanaFan2026', country: '🇿🇦', pts: 218, acc: '55%', prize: '$42' },
+  { name: 'Kerala_Kicker', country: '🇮🇳', pts: 207, acc: '52%', prize: '$42' },
+  { name: 'PinoyFooty', country: '🇵🇭', pts: '194', acc: '49%', prize: '$42' },
+];
+
+const predictions = {};
+let entryType = 'free';
+let paidEntries = 127;
+
+function buildMatches() {
+  const container = document.getElementById('matches-container');
+  container.innerHTML = TODAY_MATCHES.map(m => `
+    <div class="match-card">
+      <div class="match-header">
+        <span class="match-info">⏰ ${m.time} · ${m.group}</span>
+        <span class="match-badge">Group Stage</span>
+      </div>
+      <div class="teams">
+        <div class="team" style="text-align:left;">
+          <div class="flag">${m.homeFlag}</div>
+          <div class="name">${m.home}</div>
+          <div class="odds">${m.homeOdds}</div>
+        </div>
+        <div style="flex:1;">
+          <div class="score-input">
+            <input type="number" id="h${m.id}" min="0" max="20" value="" placeholder="-" oninput="updatePrediction(${m.id})">
+            <span class="separator">—</span>
+            <input type="number" id="a${m.id}" min="0" max="20" value="" placeholder="-" oninput="updatePrediction(${m.id})">
+          </div>
+          <div class="result-buttons">
+            <button class="res-btn" onclick="quickSet(${m.id}, 1, 0)">1-0</button>
+            <button class="res-btn" onclick="quickSet(${m.id}, 0, 0)">0-0</button>
+            <button class="res-btn" onclick="quickSet(${m.id}, 1, 1)">1-1</button>
+            <button class="res-btn" onclick="quickSet(${m.id}, 0, 1)">0-1</button>
+          </div>
+          <div class="points-preview" id="preview${m.id}">Predict the score to earn points</div>
+        </div>
+        <div class="team" style="text-align:right;">
+          <div class="flag">${m.awayFlag}</div>
+          <div class="name">${m.away}</div>
+          <div class="odds">${m.awayOdds}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function quickSet(matchId, home, away) {
+  document.getElementById(`h${matchId}`).value = home;
+  document.getElementById(`a${matchId}`).value = away;
+  updatePrediction(matchId);
+}
+
+function updatePrediction(matchId) {
+  const h = document.getElementById(`h${matchId}`).value;
+  const a = document.getElementById(`a${matchId}`).value;
+  const preview = document.getElementById(`preview${matchId}`);
+  if (h !== '' && a !== '') {
+    predictions[matchId] = { home: parseInt(h), away: parseInt(a) };
+    const result = h > a ? 'Home win' : h < a ? 'Away win' : 'Draw';
+    preview.textContent = `${result} predicted · Up to 10 points available`;
+    preview.style.color = '#10b981';
+  } else {
+    preview.textContent = 'Predict the score to earn points';
+    preview.style.color = '';
+  }
+}
+
+function selectEntry(type) {
+  entryType = type;
+  document.getElementById('opt-free').classList.toggle('sel', type === 'free');
+  document.getElementById('opt-paid').classList.toggle('sel', type === 'paid');
+  const btn = document.getElementById('submit-btn');
+  if (type === 'paid') {
+    btn.textContent = `Submit + Pay $${ENTRY_FEE} to win prizes`;
+    btn.classList.add('paid-btn');
+    const pool = Math.round(((paidEntries + 1) * ENTRY_FEE * PRIZE_PERCENT));
+    document.getElementById('your-prize-share').textContent = `Prize pool grows to ~$${pool}+`;
+  } else {
+    btn.textContent = 'Submit Free Predictions';
+    btn.classList.remove('paid-btn');
+  }
+}
+
+function submitPredictions() {
+  const name = document.getElementById('player-name').value.trim();
+  const email = document.getElementById('player-email').value.trim();
+  const filled = Object.keys(predictions).length;
+
+  if (!name) { alert('Please enter your username'); return; }
+  if (!email) { alert('Please enter your email'); return; }
+  if (filled === 0) { alert('Please predict at least one match'); return; }
+
+  if (entryType === 'paid') {
+    // In production: redirect to Stripe/PayPal, pass predictions in URL params
+    alert(`Redirecting to payment... Your ${filled} predictions will be saved after payment.`);
+    window.open(PAID_ENTRY_LINK, '_blank');
+    return;
+  }
+
+  // Free entry: save to localStorage + show success
+  const entry = { name, email, predictions, timestamp: Date.now() };
+  localStorage.setItem('wc2026_prediction', JSON.stringify(entry));
+
+  // Increment demo counter
+  const count = parseInt(document.getElementById('player-count').textContent.replace(',',''));
+  document.getElementById('player-count').textContent = (count + 1).toLocaleString();
+
+  // OneSignal: tag this subscriber as a prediction-game player
+  if (window.OneSignal) {
+    window.OneSignal.push(function() {
+      window.OneSignal.sendTags({
+        segment:       'prediction_game',
+        entered_game:  '1',
+        entry_type:    entryType,
+        entry_date:    new Date().toISOString().slice(0,10)
+      });
+    });
+  }
+
+  // Build viral share text
+  const pageUrl      = encodeURIComponent(window.location.origin + '/prediction-game.html');
+  const predCount    = Object.keys(predictions).length;
+  const tweetText    = encodeURIComponent(`I just submitted my ${predCount} WC 2026 predictions on @WC2026Live! Think you can beat me? Enter free at`);
+  const tweetUrl     = `https://twitter.com/intent/tweet?text=${tweetText}&url=${pageUrl}&hashtags=WC2026,WorldCup2026,Predictions`;
+  const waText       = encodeURIComponent(`I just entered the WC 2026 Prediction Challenge! Join for free and beat me on the leaderboard 👉 ${decodeURIComponent(pageUrl)}`);
+  const waUrl        = `https://wa.me/?text=${waText}`;
+  const fbUrl        = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+  const blueskyText  = encodeURIComponent(`Just entered the WC 2026 Prediction Challenge — ${predCount} matches predicted. Free to enter, live leaderboard. Join me 👇 ${decodeURIComponent(pageUrl)} #WC2026 #WorldCup2026`);
+  const blueskyUrl   = `https://bsky.app/intent/compose?text=${blueskyText}`;
+
+  // Show success + viral share
+  document.getElementById('page-predict').innerHTML = `
+    <div style="text-align:center; padding: 40px 20px; background: var(--surface); border-radius: 16px; border: 1px solid var(--border);">
+      <div style="font-size:48px; margin-bottom:16px;">🎉</div>
+      <h2 style="font-size:24px; font-weight:800; margin-bottom:10px;">Predictions locked in, ${name}!</h2>
+      <p style="color:var(--muted); margin-bottom:20px;">${filled} match predictions submitted. You're on the leaderboard — good luck!</p>
+
+      <!-- VIRAL SHARE SECTION -->
+      <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.3); border-radius:12px; padding:20px; margin-bottom:20px;">
+        <p style="font-size:14px; font-weight:700; margin-bottom:6px;">🚀 Challenge your friends — who predicts best?</p>
+        <p style="color:var(--muted); font-size:12px; margin-bottom:14px;">Share your entry. If they sign up, you both get bonus points!</p>
+        <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+          <a href="${tweetUrl}" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:6px; padding:10px 16px; background:#000; color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:13px;">
+            𝕏 Share on X
+          </a>
+          <a href="${waUrl}" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:6px; padding:10px 16px; background:#25D366; color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:13px;">
+            📱 WhatsApp
+          </a>
+          <a href="${fbUrl}" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:6px; padding:10px 16px; background:#1877F2; color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:13px;">
+            Facebook
+          </a>
+          <a href="${blueskyUrl}" target="_blank" rel="noopener"
+             style="display:inline-flex; align-items:center; gap:6px; padding:10px 16px; background:#0085ff; color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:13px;">
+            🦋 Bluesky
+          </a>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px; align-items:center; justify-content:center;">
+          <input id="share-link-input" value="${decodeURIComponent(pageUrl)}" readonly
+                 style="flex:1; max-width:280px; padding:8px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--muted); font-size:12px; outline:none;">
+          <button onclick="navigator.clipboard.writeText('${decodeURIComponent(pageUrl)}').then(()=>{this.textContent='✅ Copied!'; setTimeout(()=>this.textContent='Copy link',1500)})"
+                  style="padding:8px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:12px; cursor:pointer; white-space:nowrap;">
+            Copy link
+          </button>
+        </div>
+      </div>
+
+      <!-- TELEGRAM CTA -->
+      <p style="color:var(--muted); font-size:13px; margin-bottom:12px;">Get live goal alerts + AI picks on Telegram:</p>
+      <a href="${TELEGRAM_LINK}" target="_blank" style="display:inline-block; padding:12px 28px; background:var(--accent); color:white; border-radius:8px; font-weight:700; text-decoration:none; font-size:15px;">Join t.me/WC2026AIPicks →</a>
+      <br><br>
+      <button onclick="showTab('leaderboard')" style="background:transparent; border:1px solid var(--border); color:var(--muted); padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px;">View Leaderboard</button>
+    </div>`;
+}
+
+function buildLeaderboard() {
+  const tbody = document.getElementById('leaderboard-rows');
+  const rankIcons = ['🥇','🥈','🥉'];
+  tbody.innerHTML = DEMO_LEADERS.map((p, i) => `
+    <div class="lb-row">
+      <div class="rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${rankIcons[i] || i+1}</div>
+      <div class="player">
+        <div class="avatar">${p.name[0]}</div>
+        <div>
+          <div class="pname">${p.name}</div>
+          <div class="pctry">${p.country}</div>
+        </div>
+      </div>
+      <div class="pts">${p.pts}</div>
+      <div class="acc">${p.acc}</div>
+      <div class="prize">${p.prize}</div>
+    </div>`).join('');
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['predict','leaderboard','howto'][i]===tab));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', ['predict','leaderboard','howto'][i]===tab));
+}
+
+// Update prize pool display
+function updatePrizeDisplay() {
+  const pool = Math.round(paidEntries * ENTRY_FEE * PRIZE_PERCENT);
+  document.getElementById('prize-pool').textContent = '$' + pool.toLocaleString();
+  document.getElementById('display-prize').textContent = '$' + pool.toLocaleString();
+}
+
+buildMatches();
+buildLeaderboard();
+updatePrizeDisplay();
+</script>
+
+<script src="/squeeze-engine.js"></script>
+
+<!-- OneSignal push: set subscriber tags on page load so prediction-game players
+     get targeted match alerts for their predicted matches -->
+<script>
+(function() {
+  function segmentSubscriber() {
+    if (!window.OneSignal) return;
+    window.OneSignal.push(function() {
+      // Tag subscriber with page context for targeted push
+      window.OneSignal.sendTags({
+        page:           'prediction_game',
+        interests:      'football,wc2026,predictions',
+        last_visit:     new Date().toISOString().slice(0,10),
+        // Check for saved predictions and tag accordingly
+        has_predictions: localStorage.getItem('wc2026_prediction') ? '1' : '0'
+      }).then(function() {
+        console.log('[OneSignal] prediction-game tags set');
+      });
+    });
+  }
+
+  // Run segmentation on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', segmentSubscriber);
+  } else {
+    segmentSubscriber();
+  }
+
+  // Also re-tag when user submits predictions (handled in submitPredictions())
+  // See OneSignal.sendTags call inside submitPredictions() above
+})();
+</script>
+</body>
+</html>

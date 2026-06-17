@@ -1,0 +1,82 @@
+{
+  "name": "WC 2026 Intel",
+  "short_name": "WC2026",
+  "description": "Live scores, AI predictions and match alerts for World Cup 2026",
+  "start_url": "/live-scores.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ff88",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/live-scores.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Live WC 2026 Scores"
+    }
+  ],
+  "categories": ["sports", "news"],
+  "lang": "en",
+  "shortcuts": [
+    {
+      "name": "Live Scores",
+      "short_name": "Live",
+      "description": "View live WC 2026 scores",
+      "url": "/live-scores.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Group Standings",
+      "short_name": "Groups",
+      "description": "View WC 2026 group tables",
+      "url": "/group-standings.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Golden Boot",
+      "short_name": "Scorer",
+      "description": "Top scorers leaderboard",
+      "url": "/golden-boot-tracker.html",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}

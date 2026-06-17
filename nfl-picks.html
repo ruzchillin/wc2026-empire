@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFL AI Picks 2026-27 Season | Best Bets, Parlays, Fantasy Football</title>
+<meta name="description" content="AI NFL picks for every game in the 2026-27 season. Best bets, same-game parlays, prop bets, fantasy football advice. DraftKings, FanDuel, BetMGM, ESPN Bet.">
+<meta name="keywords" content="NFL picks today, AI NFL predictions, NFL betting tips, best NFL bets week 1, DraftKings NFL, FanDuel NFL, NFL fantasy picks, NFL parlays 2026">
+<style>
+  :root {
+    --nfl-blue: #013087;
+    --nfl-red: #D50A0A;
+    --nfl-silver: #A5ACAF;
+    --dark: #080C14;
+    --dark-card: #0D1220;
+    --dark-border: #1A2440;
+    --dark-border-light: #243060;
+    --text: #E8EDF5;
+    --text-muted: #8A9DC0;
+    --text-dim: #4A6090;
+    --green: #00C853;
+    --green-dark: #00871C;
+    --gold: #FFB800;
+    --red: #FF3D3D;
+    --purple: #7C4DFF;
+    --orange: #FF6D00;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--dark); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+  /* NAV */
+  nav { background: var(--dark-card); border-bottom: 1px solid var(--dark-border); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .nav-logo span { color: var(--text); font-weight: 400; }
+  .nav-links { display: flex; gap: 16px; }
+  .nav-link { font-size: 12px; color: var(--text-muted); text-decoration: none; }
+  .nav-link:hover { color: var(--gold); }
+  .nav-season { background: var(--nfl-blue); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, var(--nfl-blue) 0%, #001555 50%, #0A0014 100%); padding: 48px 20px 40px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: '🏈'; font-size: 140px; position: absolute; right: -20px; top: -20px; opacity: 0.07; }
+  .hero-badge { display: inline-block; background: rgba(255,184,0,0.12); border: 1px solid rgba(255,184,0,0.4); color: var(--gold); font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero h1 { font-size: clamp(22px, 5vw, 38px); font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 560px; margin: 0 auto 24px; }
+  .countdown-box { display: inline-flex; gap: 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; }
+  .cd-unit { text-align: center; }
+  .cd-val { font-size: 28px; font-weight: 700; color: var(--gold); display: block; }
+  .cd-label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
+  .hero-stats { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+  .h-stat { text-align: center; }
+  .h-stat-val { font-size: 22px; font-weight: 700; color: var(--gold); }
+  .h-stat-label { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* TRANSITION BANNER */
+  .transition-banner { background: linear-gradient(90deg, #013087, #7C4DFF, #D50A0A); padding: 12px 20px; text-align: center; font-size: 13px; color: #fff; font-weight: 500; }
+  .transition-banner em { color: var(--gold); font-style: normal; }
+
+  /* CONTAINER */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  /* SECTION */
+  .section { padding: 32px 0; }
+  .section-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+
+  /* WEEK PICKS CARD */
+  .week-header { background: linear-gradient(90deg, var(--nfl-blue), #0A1A50); border-radius: 10px 10px 0 0; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .week-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .week-meta { font-size: 11px; color: rgba(255,255,255,0.65); }
+  .week-record { font-size: 12px; color: var(--green); font-weight: 600; }
+
+  /* GAME PICK CARD */
+  .game { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .game-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--dark-border); }
+  .game-teams { font-size: 14px; font-weight: 600; color: var(--text); }
+  .game-time { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .game-network { font-size: 10px; color: var(--text-dim); }
+  .game-right { text-align: right; }
+  .game-spread { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .game-line { font-size: 11px; color: var(--text-dim); }
+  .game-body { padding: 14px; }
+  .pick-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,200,83,0.1); border: 1px solid rgba(0,200,83,0.3); border-radius: 6px; padding: 6px 10px; margin-bottom: 10px; }
+  .pick-badge .pick-label { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em; }
+  .pick-badge .pick-val { font-size: 13px; font-weight: 700; color: var(--text); }
+  .pick-confidence { font-size: 11px; color: var(--text-dim); }
+  .ai-reasoning { background: rgba(255,184,0,0.06); border: 1px solid rgba(255,184,0,0.15); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--text); line-height: 1.6; margin-top: 10px; }
+  .ai-reasoning .label { font-size: 10px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .key-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .ks { background: var(--dark-border); border-radius: 4px; padding: 3px 8px; font-size: 10px; color: var(--text-muted); }
+
+  /* BOOK CTA inline */
+  .book-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .book-link { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 5px; text-decoration: none; }
+  .dk { background: #000; color: #FFB800; border: 1px solid #333; }
+  .fd { background: #1493FF; color: #fff; }
+  .mgm { background: #D4AF37; color: #000; }
+  .espn { background: #D50A0A; color: #fff; }
+  .cs { background: #003087; color: #fff; }
+
+  /* PARLAY BUILDER */
+  .parlay-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+  .parlay-header { background: linear-gradient(90deg, var(--purple), #4A00AA); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .parlay-title { font-size: 14px; font-weight: 600; color: #fff; }
+  .parlay-payout { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .parlay-body { padding: 14px; }
+  .parlay-leg { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--dark-border); font-size: 12px; }
+  .parlay-leg:last-child { border: none; }
+  .pl-num { min-width: 22px; height: 22px; background: var(--purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .pl-pick { flex: 1; color: var(--text); }
+  .pl-odds { color: var(--gold); font-weight: 600; min-width: 40px; text-align: right; }
+  .parlay-footer { background: rgba(124,77,255,0.08); border-top: 1px solid var(--dark-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .pf-stake { font-size: 12px; color: var(--text-dim); }
+  .pf-return { font-size: 14px; font-weight: 600; color: var(--green); }
+
+  /* FANTASY */
+  .fantasy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .fantasy-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; }
+  .fc-pos { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+  .fc-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .fc-team { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; }
+  .fc-proj { font-size: 24px; font-weight: 700; color: var(--gold); }
+  .fc-proj-label { font-size: 10px; color: var(--text-dim); }
+  .fc-reason { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+  .fc-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+  .fc-tag { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+  .tag-start { background: rgba(0,200,83,0.15); color: var(--green); }
+  .tag-sit { background: rgba(255,61,61,0.12); color: var(--red); }
+  .tag-flex { background: rgba(255,184,0,0.12); color: var(--gold); }
+  .tag-hot { background: rgba(255,109,0,0.12); color: var(--orange); }
+
+  /* PROP BETS */
+  .prop-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .prop-table th { padding: 8px 12px; text-align: left; background: var(--dark-border); color: var(--text-dim); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .prop-table td { padding: 10px 12px; border-bottom: 1px solid var(--dark-border); color: var(--text); }
+  .prop-table tr:last-child td { border: none; }
+  .prop-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .prop-result { font-weight: 600; }
+  .pr-over { color: var(--green); }
+  .pr-under { color: var(--red); }
+
+  /* BOOKS */
+  .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .book-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; }
+  .book-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .book-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .book-bonus { font-size: 11px; color: var(--green); font-weight: 600; }
+  .book-detail { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 10px; }
+  .book-cta { display: block; width: 100%; padding: 9px; font-size: 12px; font-weight: 700; text-align: center; border-radius: 6px; text-decoration: none; }
+  .cta-dk { background: #000; color: #FFB800; border: 1px solid #333; }
+  .cta-fd { background: #1493FF; color: #fff; }
+  .cta-mgm { background: #D4AF37; color: #000; }
+  .cta-espn { background: #D50A0A; color: #fff; }
+  .cta-cs { background: #003087; color: #fff; }
+
+  /* SUPER BOWL COUNTDOWN */
+  .sb-box { background: linear-gradient(135deg, #1A0A00, #3A1500, #1A0A00); border: 1px solid rgba(255,184,0,0.3); border-radius: 12px; padding: 20px; text-align: center; margin: 20px 0; }
+  .sb-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .sb-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 16px; }
+  .sb-odds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .sb-team { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; }
+  .sb-team-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .sb-team-odds { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .sb-team-label { font-size: 9px; color: var(--text-dim); }
+  .sb-cta { display: inline-block; background: var(--gold); color: var(--dark); font-size: 13px; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none; }
+
+  /* NEWSLETTER */
+  .newsletter { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0; }
+  .newsletter h3 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+  .newsletter p { font-size: 12px; color: var(--text-dim); margin-bottom: 14px; }
+  .nl-form { display: flex; gap: 8px; max-width: 400px; margin: 0 auto; }
+  .nl-input { flex: 1; background: var(--dark); border: 1px solid var(--dark-border); border-radius: 6px; padding: 10px 14px; color: var(--text); font-size: 13px; outline: none; }
+  .nl-input:focus { border-color: var(--gold); }
+  .nl-btn { background: var(--gold); color: var(--dark); font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; }
+
+  /* BADGES */
+  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; margin-left: 4px; }
+  .badge-green { background: rgba(0,200,83,0.15); color: var(--green); }
+  .badge-gold { background: rgba(255,184,0,0.12); color: var(--gold); }
+  .badge-red { background: rgba(255,61,61,0.12); color: var(--red); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--dark-border); margin-bottom: 20px; overflow-x: auto; }
+  .tab { padding: 10px 16px; font-size: 13px; color: var(--text-dim); cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 500; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* CONF GUIDE */
+  .conf-guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .cg-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; }
+  .cg-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .cg-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .cg-odds { font-size: 13px; font-weight: 600; color: var(--gold); }
+  .cg-teams { font-size: 11px; color: var(--text-muted); line-height: 1.7; }
+
+  /* FOOTER */
+  footer { background: var(--dark-card); border-top: 1px solid var(--dark-border); padding: 24px 16px; text-align: center; font-size: 11px; color: var(--text-dim); line-height: 1.8; }
+  footer a { color: var(--text-muted); }
+  .disclaimer-bar { background: rgba(255,255,255,0.03); border-top: 1px solid var(--dark-border); padding: 8px 16px; text-align: center; font-size: 10px; color: var(--text-dim); }
+  .rg-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+  .rg-links a { color: var(--text-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🏈 NFL<span>Picks.ai</span></div>
+  <div class="nav-links">
+    <a href="#picks" class="nav-link">Weekly Picks</a>
+    <a href="#parlays" class="nav-link">Parlays</a>
+    <a href="#fantasy" class="nav-link">Fantasy</a>
+    <a href="#props" class="nav-link">Props</a>
+    <a href="#superbowl" class="nav-link">Super Bowl</a>
+  </div>
+  <span class="nav-season">2026–27 Season</span>
+</nav>
+
+<div class="disclaimer-bar">
+  21+ only in legal betting states · Gambling problem? Call 1-800-GAMBLER · #ResponsibleGaming
+  <div class="rg-links">
+    <a href="https://www.ncpgambling.org" target="_blank">Problem Gambling Help</a>
+    <a href="https://www.responsiblegambling.org" target="_blank">ResponsibleGambling.org</a>
+  </div>
+</div>
+
+<div class="transition-banner">
+  ⚡ World Cup 2026 ended. NFL 2026 season starts September 3rd — <em>same analysis engine, bigger stakes</em> ⚡
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-badge">AI-Powered NFL Analysis · Every Week</div>
+    <h1>NFL Picks That Actually<br><em>Explain Why</em></h1>
+    <p class="hero-sub">Every game. Every week. The AI tells you not just who to pick — but why the line is wrong and where the edge is. Spreads, totals, SGPs, props, and fantasy all in one place.</p>
+
+    <div class="countdown-box" id="countdown">
+      <div class="cd-unit"><span class="cd-val" id="cd-days">83</span><span class="cd-label">Days</span></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-hours">14</span><span class="cd-label">Hours</span></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-mins">22</span><span class="cd-label">Mins</span></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-secs">08</span><span class="cd-label">Secs</span></div>
+    </div>
+    <p style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:20px">Until NFL Kickoff Weekend 2026 — KC Chiefs vs Baltimore Ravens · Sep 3 · 8:20pm ET NBC</p>
+
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-val">272</div><div class="h-stat-label">games per season</div></div>
+      <div class="h-stat"><div class="h-stat-val">$10B+</div><div class="h-stat-label">US NFL betting handle/yr</div></div>
+      <div class="h-stat"><div class="h-stat-val">$250</div><div class="h-stat-label">DraftKings new user CPA</div></div>
+      <div class="h-stat"><div class="h-stat-val">18 weeks</div><div class="h-stat-label">regular season + playoffs</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- WEEK 1 PREVIEW PICKS -->
+  <div class="section" id="picks">
+    <div class="section-title">Week 1 Preview — AI Best Bets</div>
+    <div class="section-sub">Full weekly picks go live Wednesday after injury reports. These are season-opening AI projections based on offseason moves, depth charts, and line analysis.</div>
+
+    <!-- GAME 1 -->
+    <div class="game">
+      <div class="game-header">
+        <div>
+          <div class="game-teams">🏈 Kansas City Chiefs <span style="color:var(--text-dim)">at</span> Baltimore Ravens</div>
+          <div class="game-time">Thursday September 3 · 8:20pm ET</div>
+          <div class="game-network">📺 NBC / Peacock · 🏟️ M&T Bank Stadium</div>
+        </div>
+        <div class="game-right">
+          <div class="game-spread">BAL -2.5</div>
+          <div class="game-line">O/U 48.5 · BAL -120 ML</div>
+        </div>
+      </div>
+      <div class="game-body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <div class="pick-badge">
+            <span class="pick-label">AI Pick: Spread</span>
+            <span class="pick-val">BAL -2.5 (-110)</span>
+          </div>
+          <div class="pick-badge" style="background:rgba(124,77,255,0.1);border-color:rgba(124,77,255,0.3)">
+            <span class="pick-label" style="color:var(--purple)">AI Pick: Total</span>
+            <span class="pick-val">UNDER 48.5 (-110)</span>
+          </div>
+        </div>
+        <div class="ai-reasoning">
+          <div class="label">🤖 AI Analysis</div>
+          Baltimore is 7-2 in home openers over the last decade. The Chiefs lost WR depth in the offseason and Mahomes' completion percentage in opening week has been below his season average in 4 of the last 5 years — new routes, new timing. The Ravens' defense added two elite pass rushers; the AI models the edge they create against a Chiefs O-line that finished 24th in pass block win rate last season. The UNDER plays because both defenses are ahead of their offenses in early September, and the O/U opened at 51 before sharp money moved it 2.5 points — the public pushed it back to 48.5 on the over, creating value for the under at the current number.
+        </div>
+        <div class="key-stats">
+          <div class="ks">BAL home opener: 7-2 L10</div>
+          <div class="ks">KC Week 1 ATS: 3-7 L10</div>
+          <div class="ks">Lamar Jackson vs. blitz: 112.4 passer rating</div>
+          <div class="ks">Opening line moved BAL -1 → -2.5</div>
+          <div class="ks">Both defenses top-5 DVOA projection</div>
+        </div>
+        <div class="book-links">
+          <a href="https://www.draftkings.com/?ref=YOUR_DK_REF" class="book-link dk" target="_blank" rel="nofollow">DraftKings +$250 bonus</a>
+          <a href="https://www.fanduel.com/?ref=YOUR_FD_REF" class="book-link fd" target="_blank" rel="nofollow">FanDuel +$150</a>
+          <a href="https://www.betmgm.com/?ref=YOUR_MGM_REF" class="book-link mgm" target="_blank" rel="nofollow">BetMGM +$1,500</a>
+          <a href="https://espnbet.com/?ref=YOUR_ESPN_REF" class="book-link espn" target="_blank" rel="nofollow">ESPN Bet +$250</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 2 -->
+    <div class="game">
+      <div class="game-header">
+        <div>
+          <div class="game-teams">🏈 Philadelphia Eagles <span style="color:var(--text-dim)">at</span> Green Bay Packers</div>
+          <div class="game-time">Sunday September 7 · 4:25pm ET</div>
+          <div class="game-network">📺 FOX · 🏟️ Lambeau Field</div>
+        </div>
+        <div class="game-right">
+          <div class="game-spread">GB -3 (-110)</div>
+          <div class="game-line">O/U 45.5 · GB -165 ML</div>
+        </div>
+      </div>
+      <div class="game-body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <div class="pick-badge">
+            <span class="pick-label">AI Pick</span>
+            <span class="pick-val">PHI +3 (+100) <span class="badge badge-green">Value</span></span>
+          </div>
+        </div>
+        <div class="ai-reasoning">
+          <div class="label">🤖 AI Analysis</div>
+          The AI is on Philly getting the points here. Green Bay is 2-7 ATS as a home favourite of 3 or more in Week 1 specifically. Philly kept their entire offensive line intact — last season's QB pressure rate of 17% was league-best. Jordan Love had a shaky late-season statistically but the market is overweighting his 2024 playoffs: in Weeks 1–5 of 2025 his QBR was 58.2. The Eagles' offense is ready Day 1; the Packers' typically needs 4–5 weeks to click. At +100 (even money) on Philly +3, the AI sees clear value.
+        </div>
+        <div class="key-stats">
+          <div class="ks">GB Week 1 home fav 3+: 2-7 ATS</div>
+          <div class="ks">PHI OL: #1 pass block win rate 2025</div>
+          <div class="ks">Love QBR Weeks 1-5: 58.2 (2025)</div>
+          <div class="ks">PHI away vs NFC: 6-2 ATS L8</div>
+        </div>
+        <div class="book-links">
+          <a href="https://www.draftkings.com/?ref=YOUR_DK_REF" class="book-link dk" target="_blank" rel="nofollow">Best on DK +$250</a>
+          <a href="https://caesars.com/sportsbook?ref=YOUR_CS_REF" class="book-link cs" target="_blank" rel="nofollow">Caesars +$1,000</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 3 - MNF -->
+    <div class="game">
+      <div class="game-header">
+        <div>
+          <div class="game-teams">🏈 Dallas Cowboys <span style="color:var(--text-dim)">vs</span> New York Giants</div>
+          <div class="game-time">Monday September 8 · 8:15pm ET</div>
+          <div class="game-network">📺 ESPN / ABC · 🏟️ AT&T Stadium</div>
+        </div>
+        <div class="game-right">
+          <div class="game-spread">DAL -7 (-110)</div>
+          <div class="game-line">O/U 41.5 · DAL -320 ML</div>
+        </div>
+      </div>
+      <div class="game-body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <div class="pick-badge" style="background:rgba(255,61,61,0.08);border-color:rgba(255,61,61,0.25)">
+            <span class="pick-label" style="color:var(--red)">AI Fade</span>
+            <span class="pick-val">Avoid DAL -7 · Back NYG +7</span>
+          </div>
+          <div class="pick-badge" style="background:rgba(255,184,0,0.08);border-color:rgba(255,184,0,0.25)">
+            <span class="pick-label" style="color:var(--gold)">AI Total Pick</span>
+            <span class="pick-val">OVER 41.5 (-110)</span>
+          </div>
+        </div>
+        <div class="ai-reasoning">
+          <div class="label">🤖 AI Analysis — Monday Night</div>
+          Dallas laying 7 on MNF in Week 1 is a public fade candidate. The Cowboys are 3-9 ATS as 7+ point favourites in primetime over the past 4 seasons — they win, but they don't cover because the game often turns into a style-pointed affair once the lead is comfortable. The Giants are switching to a new offensive system that typically produces early-season confusion on both sides of the ball, pushing the total up. The AI recommends taking NYG +7 AND betting the OVER — the Giants will keep it from being a blowout, and both teams' new systems will produce more points than this low total implies.
+        </div>
+        <div class="key-stats">
+          <div class="ks">DAL 7+ fav in primetime: 3-9 ATS</div>
+          <div class="ks">NYG new OC: first game usually 20+ pts</div>
+          <div class="ks">O/U 41.5 is 3rd-lowest Week 1 total</div>
+          <div class="ks">MNF Game: historically higher-scoring</div>
+        </div>
+        <div class="book-links">
+          <a href="https://www.draftkings.com/?ref=YOUR_DK_REF" class="book-link dk" target="_blank" rel="nofollow">DraftKings $250 bonus</a>
+          <a href="https://www.fanduel.com/?ref=YOUR_FD_REF" class="book-link fd" target="_blank" rel="nofollow">FanDuel $150 bonus</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARLAY BUILDER -->
+  <div class="section" id="parlays">
+    <div class="section-title">AI Week 1 Parlays</div>
+    <div class="section-sub">Pre-built same-game and multi-game parlays. Stake small — they hit big.</div>
+
+    <div class="parlay-card">
+      <div class="parlay-header">
+        <div>
+          <div class="parlay-title">🎯 Week 1 Value Parlay</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px">4-leg multi-game · AI confidence: HIGH</div>
+        </div>
+        <div class="parlay-payout">+1,180</div>
+      </div>
+      <div class="parlay-body">
+        <div class="parlay-leg"><div class="pl-num">1</div><span class="pl-pick">BAL -2.5 vs KC (Thursday Night)</span><span class="pl-odds">-110</span></div>
+        <div class="parlay-leg"><div class="pl-num">2</div><span class="pl-pick">PHI +3 vs GB (Sunday 4:25)</span><span class="pl-odds">+100</span></div>
+        <div class="parlay-leg"><div class="pl-num">3</div><span class="pl-pick">NYG +7 vs DAL (Monday Night)</span><span class="pl-odds">-110</span></div>
+        <div class="parlay-leg"><div class="pl-num">4</div><span class="pl-pick">KC vs BAL UNDER 48.5</span><span class="pl-odds">-110</span></div>
+      </div>
+      <div class="parlay-footer">
+        <span class="pf-stake">$10 stake</span>
+        <span class="pf-return">Returns $128 (+$118 profit)</span>
+      </div>
+    </div>
+
+    <div class="parlay-card">
+      <div class="parlay-header" style="background:linear-gradient(90deg,#7C0000,#D50A0A)">
+        <div>
+          <div class="parlay-title">🚀 High-Risk Week 1 Mega Parlay</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px">6-leg · Picks with highest individual confidence</div>
+        </div>
+        <div class="parlay-payout">+4,800</div>
+      </div>
+      <div class="parlay-body">
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">1</div><span class="pl-pick">Lamar Jackson OVER 2.5 TDs</span><span class="pl-odds">+120</span></div>
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">2</div><span class="pl-pick">BAL to win by 1-6 pts (exact margin)</span><span class="pl-odds">+200</span></div>
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">3</div><span class="pl-pick">CeeDee Lamb OVER 85.5 receiving yards</span><span class="pl-odds">-115</span></div>
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">4</div><span class="pl-pick">PHI to cover vs GB</span><span class="pl-odds">+100</span></div>
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">5</div><span class="pl-pick">Total TDs scored in MNF: OVER 4.5</span><span class="pl-odds">-110</span></div>
+        <div class="parlay-leg"><div class="pl-num" style="background:var(--red)">6</div><span class="pl-pick">DAL vs NYG: BOTH teams score in each half</span><span class="pl-odds">-130</span></div>
+      </div>
+      <div class="parlay-footer" style="background:rgba(213,10,10,0.08)">
+        <span class="pf-stake">$5 stake</span>
+        <span class="pf-return">Returns $245 (+$240 profit if hits)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FANTASY SECTION -->
+  <div class="section" id="fantasy">
+    <div class="section-title">Fantasy Football — Week 1 AI Rankings</div>
+    <div class="section-sub">Start/Sit advice based on matchup analysis, Vegas implied points, and snap-count projections</div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab2('qb')">QB</div>
+      <div class="tab" onclick="switchTab2('rb')">RB</div>
+      <div class="tab" onclick="switchTab2('wr')">WR</div>
+      <div class="tab" onclick="switchTab2('te')">TE / DEF</div>
+    </div>
+
+    <div id="tab-qb" class="tab-content active">
+      <div class="fantasy-grid">
+        <div class="fantasy-card">
+          <div class="fc-pos">QB1</div>
+          <div class="fc-name">Lamar Jackson</div>
+          <div class="fc-team">BAL Ravens · vs KC</div>
+          <div class="fc-proj">32.4 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">Elite matchup at home. His rushing floor alone projects 8–10 pts. Ravens implied 26 pts. AI projects 2.4 TDs + 260 pass yds.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start</span><span class="fc-tag tag-hot">Hot</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">QB2</div>
+          <div class="fc-name">Patrick Mahomes</div>
+          <div class="fc-team">KC Chiefs · at BAL</div>
+          <div class="fc-proj">26.8 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">Strong game total creates a floor. Playing from behind likely — that boosts volume. AI projects 290 pass yds, 2 TDs, 1 INT.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">QB — Avoid</div>
+          <div class="fc-name">Jordan Love</div>
+          <div class="fc-team">GB Packers · vs PHI</div>
+          <div class="fc-proj">18.2 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">PHI defense is strongest vs pass. AI models Love's early-season tendency to under-target receivers pre-chemistry. Low ceiling Week 1.</div>
+          <div class="fc-tags"><span class="fc-tag tag-sit">Sit if possible</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">Streamer</div>
+          <div class="fc-name">Geno Smith</div>
+          <div class="fc-team">SEA Seahawks · vs LAR</div>
+          <div class="fc-proj">22.1 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">Rams' secondary had 29th-ranked DVOA vs pass in 2025. Home game. If you're streaming this week, Geno in a dome-like environment is the value play.</div>
+          <div class="fc-tags"><span class="fc-tag tag-flex">Streamer</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-rb" class="tab-content">
+      <div class="fantasy-grid">
+        <div class="fantasy-card">
+          <div class="fc-pos">RB1</div>
+          <div class="fc-name">Derrick Henry</div>
+          <div class="fc-team">BAL Ravens · vs KC</div>
+          <div class="fc-proj">24.6 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">At 32 years old he keeps defying gravity. Baltimore's scheme gives him 22+ carries in run-heavy matchups. KC's rush defense was 28th in yards-after-contact surrendered.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start everywhere</span><span class="fc-tag tag-hot">Hot</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">RB2</div>
+          <div class="fc-name">Saquon Barkley</div>
+          <div class="fc-team">PHI Eagles · at GB</div>
+          <div class="fc-proj">21.4 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">Lambeau is cold — that's a run game. PHI will lean on Barkley to control the clock and exploit GB's linebackers in pass protection. Receiving PPR floor: 5 catches.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">Handcuff</div>
+          <div class="fc-name">Isiah Pacheco</div>
+          <div class="fc-team">KC Chiefs · at BAL</div>
+          <div class="fc-proj">14.8 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">KC trails → fewer runs. But his receiving work in catch-up mode (6+ targets when losing) gives a PPR floor. Upside if KC keeps it close.</div>
+          <div class="fc-tags"><span class="fc-tag tag-flex">Flex</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-wr" class="tab-content">
+      <div class="fantasy-grid">
+        <div class="fantasy-card">
+          <div class="fc-pos">WR1</div>
+          <div class="fc-name">CeeDee Lamb</div>
+          <div class="fc-team">DAL Cowboys · vs NYG</div>
+          <div class="fc-proj">26.2 <span class="fc-proj-label">pts PPR</span></div>
+          <div class="fc-reason">NYG's CB corps is rebuilding. Lamb is DAL's entire passing game — 38% of air yards last season. AI projects 9 targets, 6.5 catches, 92 yds, 1 TD. Lock.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start</span><span class="fc-tag tag-hot">Elite</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">WR — Boom/Bust</div>
+          <div class="fc-name">Davante Adams</div>
+          <div class="fc-team">GB Packers · vs PHI</div>
+          <div class="fc-proj">19.4 <span class="fc-proj-label">pts PPR</span></div>
+          <div class="fc-reason">Week 1 chemistry issue: Adams and Love historically slow to sync in September. Love under-targets him early in seasons. PHI's CB room is top-3. Boom or bust — not a safe start.</div>
+          <div class="fc-tags"><span class="fc-tag tag-flex">Boom/Bust</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">Sleeper WR</div>
+          <div class="fc-name">Rashod Bateman</div>
+          <div class="fc-team">BAL Ravens · vs KC</div>
+          <div class="fc-proj">16.8 <span class="fc-proj-label">pts PPR</span></div>
+          <div class="fc-reason">With the Ravens at home, expect passing volume. Bateman is now the clear WR1 target share behind Lamar. KC's DBs were a concern in early-season 2025. Value pick in Week 1 drafts.</div>
+          <div class="fc-tags"><span class="fc-tag tag-flex">Sleeper</span><span class="fc-tag tag-hot">Hot</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-te" class="tab-content">
+      <div class="fantasy-grid">
+        <div class="fantasy-card">
+          <div class="fc-pos">TE1</div>
+          <div class="fc-name">Travis Kelce</div>
+          <div class="fc-team">KC Chiefs · at BAL</div>
+          <div class="fc-proj">18.4 <span class="fc-proj-label">pts PPR</span></div>
+          <div class="fc-reason">Even at 36, Kelce dominates the red zone. KC trailing means extra routes. Ravens' LBs are their soft coverage spot — Kelce exploits exactly that. Must-start all leagues.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Start everywhere</span></div>
+        </div>
+        <div class="fantasy-card">
+          <div class="fc-pos">DEF</div>
+          <div class="fc-name">Baltimore Ravens D</div>
+          <div class="fc-team">vs KC Chiefs</div>
+          <div class="fc-proj">12.6 <span class="fc-proj-label">pts</span></div>
+          <div class="fc-reason">Home defense vs. an O-line that ranked 24th in pass block win rate. AI projects 2 sacks, 1 INT, 1 FF. Ravens defense gave up 17.2 pts/game last season — elite.</div>
+          <div class="fc-tags"><span class="fc-tag tag-start">Streamable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROP BETS -->
+  <div class="section" id="props">
+    <div class="section-title">AI Prop Bet Picks — Week 1</div>
+    <div class="section-sub">Player props are where the real edge lives. Books take longer to shade these lines.</div>
+    <div class="game" style="padding:0">
+      <table class="prop-table" style="width:100%">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Prop</th>
+            <th>Line</th>
+            <th>AI Pick</th>
+            <th>Odds</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>L. Jackson</strong></td><td>Pass TDs</td><td>2.5</td><td class="prop-result pr-over">OVER</td><td>-125</td><td style="font-size:10px;color:var(--text-dim)">Home opener vs. weaker KC secondary. 3+ TDs in 6 of last 8 home openers.</td></tr>
+          <tr><td><strong>D. Henry</strong></td><td>Rushing Yards</td><td>85.5</td><td class="prop-result pr-over">OVER</td><td>-115</td><td style="font-size:10px;color:var(--text-dim)">KC rush D was 28th in DVOA 2025. Henry averages 22 carries vs. AFC opponents.</td></tr>
+          <tr><td><strong>C. Lamb</strong></td><td>Receiving Yards</td><td>88.5</td><td class="prop-result pr-over">OVER</td><td>-110</td><td style="font-size:10px;color:var(--text-dim)">NYG CB depth rebuilt around a rookie. Lamb is 65%+ of DAL's air yards. MNF spotlight = high targets.</td></tr>
+          <tr><td><strong>T. Kelce</strong></td><td>Receptions</td><td>5.5</td><td class="prop-result pr-over">OVER</td><td>-120</td><td style="font-size:10px;color:var(--text-dim)">BAL LBs are soft in coverage. KC likely trails → Kelce becomes primary safety valve. 6+ catches in 7 of last 8 vs BAL.</td></tr>
+          <tr><td><strong>J. Love</strong></td><td>Pass Attempts</td><td>37.5</td><td class="prop-result pr-under">UNDER</td><td>-115</td><td style="font-size:10px;color:var(--text-dim)">PHI's pass rush is elite. GB will run more to protect Love on opening drive rhythm. Under-45 in 4 of last 5 season openers.</td></tr>
+          <tr><td><strong>P. Mahomes</strong></td><td>Interceptions</td><td>0.5</td><td class="prop-result pr-over">OVER (1+)</td><td>+155</td><td style="font-size:10px;color:var(--text-dim)">BAL defense forces the most turnovers in the league. Mahomes has thrown 1+ INT in 6 of last 8 road games vs. top-5 defenses.</td></tr>
+          <tr><td><strong>ANYTIME TD</strong></td><td>1st TD scorer</td><td>–</td><td class="prop-result" style="color:var(--gold)">D. Henry</td><td>+800</td><td style="font-size:10px;color:var(--text-dim)">Ravens love to establish the run early. Henry scored on the first drive 5 times in 2025. Home crowd, Home opener.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:10px">
+      <a href="https://www.draftkings.com/?ref=YOUR_DK_REF" class="book-link dk" style="display:inline-block;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:12px" target="_blank" rel="nofollow">🏈 Bet Props on DraftKings — $250 New User Bonus →</a>
+    </div>
+  </div>
+
+  <!-- SUPER BOWL ODDS -->
+  <div class="sb-box" id="superbowl">
+    <div class="sb-title">🏆 Super Bowl LXI — February 2027</div>
+    <div class="sb-sub">Hard Rock Stadium, Miami · February 1, 2027 · Current championship odds</div>
+    <div class="sb-odds-grid">
+      <div class="sb-team"><div class="sb-team-name">Kansas City Chiefs</div><div class="sb-team-odds">+500</div><div class="sb-team-label">4-time recent champions</div></div>
+      <div class="sb-team"><div class="sb-team-name">Baltimore Ravens</div><div class="sb-team-odds">+600</div><div class="sb-team-label">AI Projected Champion</div></div>
+      <div class="sb-team"><div class="sb-team-name">Philadelphia Eagles</div><div class="sb-team-odds">+700</div><div class="sb-team-label">Loaded roster</div></div>
+      <div class="sb-team"><div class="sb-team-name">San Francisco 49ers</div><div class="sb-team-odds">+900</div><div class="sb-team-label">Brock Purdy era</div></div>
+      <div class="sb-team"><div class="sb-team-name">Buffalo Bills</div><div class="sb-team-odds">+1000</div><div class="sb-team-label">Josh Allen hunting rings</div></div>
+      <div class="sb-team"><div class="sb-team-name">Dallas Cowboys</div><div class="sb-team-odds">+1400</div><div class="sb-team-label">Public money magnet</div></div>
+    </div>
+    <a href="https://www.draftkings.com/sportsbook/nfl?ref=YOUR_DK_REF" class="sb-cta" target="_blank" rel="nofollow">Bet Super Bowl Futures on DraftKings →</a>
+  </div>
+
+  <!-- BOOKMAKERS -->
+  <div class="section">
+    <div class="section-title">Best NFL Sportsbooks 2026</div>
+    <div class="section-sub">All operating legally in 38 US states with sports betting · Ranked by new user offer and SGP quality</div>
+    <div class="book-grid">
+      <div class="book-card">
+        <div class="book-top"><span class="book-name">🏈 DraftKings</span><span class="book-bonus">Up to $250 Bonus</span></div>
+        <div class="book-detail">Best same-game parlay builder in the industry. Huge NFL prop market. Daily SGP boosts. Best mobile app. Fastest payouts. #1 choice for serious NFL bettors.</div>
+        <a href="https://www.draftkings.com/?ref=YOUR_DK_REF" class="book-cta cta-dk" target="_blank" rel="nofollow">Get $250 DraftKings Bonus →</a>
+      </div>
+      <div class="book-card">
+        <div class="book-top"><span class="book-name">🟣 FanDuel</span><span class="book-bonus">$150 Bonus Bets</span></div>
+        <div class="book-detail">Best no-sweat first bet offer. Strong same-game parlay odds. Best live in-play NFL market. Daily "Same Game Parlay+" multi-game builder available.</div>
+        <a href="https://www.fanduel.com/?ref=YOUR_FD_REF" class="book-cta cta-fd" target="_blank" rel="nofollow">Claim $150 FanDuel Bonus →</a>
+      </div>
+      <div class="book-card">
+        <div class="book-top"><span class="book-name">💎 BetMGM</span><span class="book-bonus">First Bet Up to $1,500</span></div>
+        <div class="book-detail">Biggest welcome offer in the industry. Strong prop market. "One Game Parlay" feature. MGM Rewards loyalty programme for frequent bettors. Best for high-stakes.</div>
+        <a href="https://www.betmgm.com/?ref=YOUR_MGM_REF" class="book-cta cta-mgm" target="_blank" rel="nofollow">Claim $1,500 BetMGM Offer →</a>
+      </div>
+      <div class="book-card">
+        <div class="book-top"><span class="book-name">🔴 ESPN Bet</span><span class="book-bonus">$250 Bonus Bets</span></div>
+        <div class="book-detail">Integrated with ESPN+ — watch and bet in the same app. "ESPN Bet Boosts" on major games every week. Strong NFL coverage with Scott Van Pelt picks integration.</div>
+        <a href="https://espnbet.com/?ref=YOUR_ESPN_REF" class="book-cta cta-espn" target="_blank" rel="nofollow">Get ESPN Bet $250 →</a>
+      </div>
+      <div class="book-card">
+        <div class="book-top"><span class="book-name">⚔️ Caesars</span><span class="book-bonus">First Bet Up to $1,000</span></div>
+        <div class="book-detail">Caesars Rewards is the best NFL loyalty programme — points for hotel stays, dining. Strong competitive spread market. Good for casual bettors who want perks beyond wagering.</div>
+        <a href="https://caesars.com/sportsbook?ref=YOUR_CS_REF" class="book-cta cta-cs" target="_blank" rel="nofollow">Get Caesars $1,000 Offer →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NFL EXPLAINER FOR WC AUDIENCE -->
+  <div class="section">
+    <div class="section-title">🌍 New to American Football? (World Cup Fans, Welcome.)</div>
+    <div class="section-sub">If you followed WC 2026 and want to understand NFL betting, here's everything you need in 2 minutes.</div>
+    <div style="background:var(--dark-card);border:1px solid var(--dark-border);border-radius:12px;padding:20px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px">The Spread</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Like a handicap in football. "KC -3" means KC must win by MORE than 3 points. "BAL +3" means Baltimore can lose by up to 2 and your bet still wins. Same concept as Asian handicap.</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px">The Total (O/U)</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Bet on combined points scored by both teams. "Over 48.5" wins if the combined score is 49+. Like betting on over 2.5 goals in football — but NFL scores are 17–35 typically.</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px">The Moneyline</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Just pick the winner. Shown as -120 (favourite, bet $120 to win $100) or +150 (underdog, bet $100 to win $150). No draws in NFL — there's overtime. Works like a Match Result in football.</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px">Same-Game Parlay</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Combine multiple bets from ONE game into one ticket for bigger odds. Example: KC wins + Mahomes 2+ TDs + Kelce 60+ yards = much higher payout. Like a 3-fold accumulator on the same match.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <h3>🏈 Free NFL Picks — Every Wednesday</h3>
+    <p>AI analysis for every game. Best bets, parlays, fantasy rankings, and props. In your inbox Wednesday morning.</p>
+    <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+    <div class="nl-form">
+      <input type="email" class="nl-input" placeholder="your@email.com">
+      <button class="nl-btn">Get Picks</button>
+    </div>
+    <p style="font-size:10px;color:var(--text-dim);margin-top:8px">Free forever · 10,000+ subscribers · Unsubscribe anytime</p>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <div style="max-width:800px;margin:0 auto">
+    <strong>NFLPicks.ai — AI NFL Predictions & Betting Analysis</strong><br>
+    For entertainment and information purposes only. Sports betting involves financial risk and you may lose money.<br>
+    Sports betting is only legal in 38 US states. Check your state's laws before betting. This site is not available to persons under 21.<br>
+    This site earns commission from sportsbooks when you click affiliate links and sign up. This does not affect the independence of our analysis.<br>
+    Odds shown are indicative and change frequently — always verify before placing bets.<br><br>
+    If gambling is becoming a problem: call 1-800-GAMBLER (1-800-426-2537) · Text HOME to 74747 · <a href="https://www.ncpgambling.org">ncpgambling.org</a>
+  </div>
+</footer>
+
+<script>
+function switchTab2(id) {
+  const ids = ['qb','rb','wr','te'];
+  document.querySelectorAll('.tabs .tab').forEach((t,i) => t.classList.toggle('active', ids[i] === id));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + id));
+}
+
+// Countdown to NFL Kickoff Sep 3 2026
+function updateCountdown() {
+  const kickoff = new Date('2026-09-03T20:20:00-04:00');
+  const now = new Date();
+  const diff = kickoff - now;
+  if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div style="color:var(--gold);font-size:20px;font-weight:700">🏈 NFL IS LIVE</div>'; return; }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>

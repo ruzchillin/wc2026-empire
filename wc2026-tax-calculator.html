@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Betting Tax Calculator 2026 — US State by State | WC 2026</title>
+<meta name="description" content="Calculate exactly how much tax you owe on your sports betting winnings. All 50 US states + DC. Updated for 2026 tax year. DraftKings, FanDuel, Caesars.">
+<style>
+:root {
+  --bg: #07090c; --card: #0d1117; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+  --blue: #3b82f6; --green: #22c55e; --red: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+
+.header { padding: 36px 20px 20px; text-align: center; }
+.header h1 { font-size: clamp(22px, 5vw, 38px); font-weight: 800; }
+.header p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+.disclaimer-pill { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 12px; margin-top: 8px; }
+
+.container { max-width: 640px; margin: 0 auto; padding: 0 16px 48px; }
+
+.calc-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+.field-group { margin-bottom: 18px; }
+.field-label { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; display: block; }
+.field-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 12px 16px;
+  font-size: 16px; outline: none; transition: border-color 0.15s;
+}
+.field-input:focus { border-color: var(--gold); }
+.field-select {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 12px 16px;
+  font-size: 15px; outline: none; cursor: pointer; transition: border-color 0.15s;
+}
+.field-select:focus { border-color: var(--gold); }
+.field-hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+.calc-btn {
+  width: 100%; background: var(--gold); color: #000; border: none;
+  border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 800;
+  cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+}
+.calc-btn:hover { opacity: 0.9; }
+
+/* RESULTS */
+.results { display: none; }
+.results.show { display: block; }
+
+.result-hero { background: var(--card); border: 1px solid rgba(34,197,94,0.25); border-radius: 16px; padding: 24px; margin-bottom: 12px; text-align: center; }
+.rh-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.rh-n { font-size: 48px; font-weight: 800; color: var(--red); }
+.rh-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.rh-takehome { font-size: 22px; font-weight: 700; color: var(--green); margin-top: 16px; }
+
+.breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.bg-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.bgi-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.bgi-n { font-size: 20px; font-weight: 800; }
+.bgi-n.fed { color: var(--blue); }
+.bgi-n.state { color: var(--amber, #f59e0b); }
+.bgi-n.net { color: var(--green); }
+
+.state-note { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.sn-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.sn-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.sn-tip { font-size: 12px; color: var(--gold); margin-top: 8px; font-weight: 600; }
+
+.affiliate-section { background: var(--card); border: 1px solid rgba(59,130,246,0.25); border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+.aff-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.aff-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.aff-grid { display: grid; gap: 8px; }
+.aff-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-decoration: none; }
+.aff-item:hover { border-color: var(--blue); }
+.aff-name { font-size: 14px; font-weight: 700; }
+.aff-offer { font-size: 12px; color: var(--green); margin-top: 2px; }
+.aff-cta { font-size: 12px; font-weight: 700; color: var(--blue); }
+
+.w2g-section { background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.w2g-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.w2g-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.faq { margin-top: 24px; }
+.faq-item { border-bottom: 1px solid var(--border); padding: 16px 0; cursor: pointer; }
+.faq-item:last-child { border: none; }
+.faq-q { font-size: 15px; font-weight: 700; display: flex; justify-content: space-between; }
+.faq-a { font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 10px; display: none; }
+.faq-a.open { display: block; }
+
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧮 Sports Betting Tax Calculator</h1>
+  <p>WC 2026 winnings? Calculate exactly what you owe — by state — in 60 seconds.</p>
+  <div class="disclaimer-pill">⚠️ For informational purposes only — not tax advice</div>
+</div>
+
+<div class="container">
+
+<div class="calc-card">
+  <div class="field-group">
+    <label class="field-label">💰 Total winnings this year ($)</label>
+    <input type="number" class="field-input" id="winnings" placeholder="e.g. 5000" min="0">
+    <div class="field-hint">Include all sportsbook winnings — DraftKings, FanDuel, Caesars, BetMGM, etc.</div>
+  </div>
+  <div class="field-group">
+    <label class="field-label">📉 Total losses / wagers this year ($)</label>
+    <input type="number" class="field-input" id="losses" placeholder="e.g. 2000" min="0">
+    <div class="field-hint">You can deduct losses up to your winnings if you itemize deductions.</div>
+  </div>
+  <div class="field-group">
+    <label class="field-label">🗺️ Your state</label>
+    <select class="field-select" id="stateSelect">
+      <option value="">Select your state...</option>
+      <option value="AL">Alabama — 5.0% state tax</option>
+      <option value="AK">Alaska — No state income tax</option>
+      <option value="AZ">Arizona — 2.5%</option>
+      <option value="AR">Arkansas — 4.7%</option>
+      <option value="CA">California — up to 13.3%</option>
+      <option value="CO">Colorado — 4.4%</option>
+      <option value="CT">Connecticut — 6.99%</option>
+      <option value="DC">Washington DC — 8.5%</option>
+      <option value="DE">Delaware — 6.6%</option>
+      <option value="FL">Florida — No state income tax</option>
+      <option value="GA">Georgia — 5.49%</option>
+      <option value="HI">Hawaii — up to 11.0%</option>
+      <option value="ID">Idaho — 5.8%</option>
+      <option value="IL">Illinois — 4.95%</option>
+      <option value="IN">Indiana — 3.05%</option>
+      <option value="IA">Iowa — 6.0%</option>
+      <option value="KS">Kansas — 5.7%</option>
+      <option value="KY">Kentucky — 4.0%</option>
+      <option value="LA">Louisiana — 4.25%</option>
+      <option value="ME">Maine — 7.15%</option>
+      <option value="MD">Maryland — 5.75%</option>
+      <option value="MA">Massachusetts — 5.0%</option>
+      <option value="MI">Michigan — 4.25%</option>
+      <option value="MN">Minnesota — up to 9.85%</option>
+      <option value="MS">Mississippi — 5.0%</option>
+      <option value="MO">Missouri — 4.95%</option>
+      <option value="MT">Montana — 6.75%</option>
+      <option value="NE">Nebraska — 5.84%</option>
+      <option value="NV">Nevada — No state income tax</option>
+      <option value="NH">New Hampshire — No income tax on wages</option>
+      <option value="NJ">New Jersey — 10.75%</option>
+      <option value="NM">New Mexico — 5.9%</option>
+      <option value="NY">New York — up to 10.9%</option>
+      <option value="NC">North Carolina — 4.5%</option>
+      <option value="ND">North Dakota — 2.5%</option>
+      <option value="OH">Ohio — 3.5%</option>
+      <option value="OK">Oklahoma — 4.75%</option>
+      <option value="OR">Oregon — up to 9.9%</option>
+      <option value="PA">Pennsylvania — 3.07%</option>
+      <option value="RI">Rhode Island — 5.99%</option>
+      <option value="SC">South Carolina — 6.5%</option>
+      <option value="SD">South Dakota — No state income tax</option>
+      <option value="TN">Tennessee — No state income tax</option>
+      <option value="TX">Texas — No state income tax</option>
+      <option value="UT">Utah — 4.65%</option>
+      <option value="VT">Vermont — 6.75%</option>
+      <option value="VA">Virginia — 5.75%</option>
+      <option value="WA">Washington — No state income tax</option>
+      <option value="WV">West Virginia — 6.5%</option>
+      <option value="WI">Wisconsin — 7.65%</option>
+      <option value="WY">Wyoming — No state income tax</option>
+    </select>
+  </div>
+  <div class="field-group">
+    <label class="field-label">📊 Your federal income bracket</label>
+    <select class="field-select" id="fedBracket">
+      <option value="10">10% — Income under $11,000</option>
+      <option value="12">12% — $11,001–$44,725</option>
+      <option value="22" selected>22% — $44,726–$95,375 (most common)</option>
+      <option value="24">24% — $95,376–$182,150</option>
+      <option value="32">32% — $182,151–$231,250</option>
+      <option value="35">35% — $231,251–$578,125</option>
+      <option value="37">37% — Over $578,125</option>
+    </select>
+  </div>
+  <button class="calc-btn" onclick="calculate()">Calculate My Tax Liability →</button>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+
+  <div class="result-hero">
+    <div class="rh-label">Total estimated tax owed on gambling winnings</div>
+    <div class="rh-n" id="totalTax">$0</div>
+    <div class="rh-sub" id="taxSub">Based on $0 net winnings in <span id="stateName">your state</span></div>
+    <div class="rh-takehome">You keep: <span id="takeHome">$0</span></div>
+  </div>
+
+  <div class="breakdown-grid">
+    <div class="bg-item"><div class="bgi-label">Federal tax</div><div class="bgi-n fed" id="fedTax">$0</div></div>
+    <div class="bg-item"><div class="bgi-label">State tax</div><div class="bgi-n state" id="stateTax">$0</div></div>
+    <div class="bg-item"><div class="bgi-label">Net winnings (after deductions)</div><div class="bgi-n" id="netWinnings">$0</div></div>
+    <div class="bg-item"><div class="bgi-label">Effective rate</div><div class="bgi-n" id="effectiveRate">0%</div></div>
+  </div>
+
+  <div class="state-note" id="stateNote">
+    <div class="sn-title" id="snTitle">State tax note</div>
+    <div class="sn-body" id="snBody">Select a state to see specific rules.</div>
+    <div class="sn-tip" id="snTip"></div>
+  </div>
+
+  <div class="w2g-section">
+    <div class="w2g-title">📋 W-2G threshold: $600 or 300x your bet</div>
+    <div class="w2g-body">Sportsbooks must issue a W-2G form if you win $600+ AND the payout is 300x or more your wager. DraftKings, FanDuel, and Caesars will send these automatically. <strong>You must report ALL gambling winnings</strong> — even if you don't receive a W-2G. The IRS receives copies of all W-2G forms.</div>
+  </div>
+
+  <div class="affiliate-section">
+    <div class="aff-title">🎯 Maximize your post-tax returns</div>
+    <div class="aff-sub">Top sportsbooks for WC 2026 — compare welcome bonuses and find the best value for your WC bets. New customer offers can offset your tax liability on winning bets.</div>
+    <div class="aff-grid">
+      <a href="https://www.draftkings.com?ref=YOUR_DK_REF" class="aff-item" target="_blank" rel="nofollow">
+        <div><div class="aff-name">DraftKings</div><div class="aff-offer">Bet $5, Get $200 in bonus bets</div></div>
+        <div class="aff-cta">Get offer →</div>
+      </a>
+      <a href="https://www.fanduel.com?ref=YOUR_FD_REF" class="aff-item" target="_blank" rel="nofollow">
+        <div><div class="aff-name">FanDuel</div><div class="aff-offer">$1000 no-sweat first bet</div></div>
+        <div class="aff-cta">Get offer →</div>
+      </a>
+      <a href="https://www.caesars.com/sportsbook?ref=YOUR_CAESARS_REF" class="aff-item" target="_blank" rel="nofollow">
+        <div><div class="aff-name">Caesars</div><div class="aff-offer">First bet on Caesars up to $1,000</div></div>
+        <div class="aff-cta">Get offer →</div>
+      </a>
+      <a href="https://www.betmgm.com?ref=YOUR_BETMGM_REF" class="aff-item" target="_blank" rel="nofollow">
+        <div><div class="aff-name">BetMGM</div><div class="aff-offer">First bet up to $1,500 paid in bonus</div></div>
+        <div class="aff-cta">Get offer →</div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- end results -->
+
+<!-- FAQ -->
+<div class="faq">
+  <div style="font-size:18px;font-weight:700;margin-bottom:4px">❓ Frequently asked questions</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Everything you need to know about US sports betting taxes</div>
+
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">Do I have to pay tax on WC 2026 betting winnings? <span>+</span></div>
+    <div class="faq-a">Yes. The IRS treats gambling winnings as ordinary taxable income. This includes winnings from sportsbooks like DraftKings, FanDuel, and Caesars. You must report winnings even if the sportsbook doesn't send you a W-2G form. All gambling winnings go on Schedule 1, Line 8b of your Form 1040.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">Can I deduct my losses? <span>+</span></div>
+    <div class="faq-a">Yes — but only if you itemize deductions (Schedule A). You can deduct gambling losses up to the amount of your gambling winnings. You cannot deduct losses that exceed your winnings. Keep records of all bets placed (date, type, amount, location). Most people take the standard deduction, in which case losses can't be deducted.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">What is a W-2G form? <span>+</span></div>
+    <div class="faq-a">A W-2G is issued by the sportsbook when you win $600 or more AND the payout is at least 300x your wager. DraftKings, FanDuel, and other major books send these automatically by January 31. You still must report all winnings — the IRS receives copies of W-2Gs and will cross-reference your return.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">Do states tax gambling winnings differently? <span>+</span></div>
+    <div class="faq-a">Yes, significantly. Nine states have no income tax at all (Texas, Florida, Nevada, etc.) — no state tax on winnings. Most states use a flat rate. New York has the highest effective rate (up to 10.9% state + NYC local). California taxes all income at up to 13.3% but does NOT allow deduction of gambling losses at the state level.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">What if I win big from a parlay? <span>+</span></div>
+    <div class="faq-a">Parlay winnings are fully taxable as ordinary income. A $10 parlay that wins $10,000 means $10,000 in taxable income. If the payout is 300x or more your wager AND exceeds $600, the sportsbook will issue a W-2G. The full winnings amount is taxable — not just the profit.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFAQ(this)">
+    <div class="faq-q">Should I consult a tax professional? <span>+</span></div>
+    <div class="faq-a">This calculator provides estimates for informational purposes only. For significant winnings (generally $5,000+), consulting a CPA or tax professional is strongly recommended. State laws vary, and individual circumstances (other income, filing status, deductions) significantly affect your actual liability.</div>
+  </div>
+</div>
+
+<!-- EMAIL -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;margin-top:24px">
+  <div style="font-size:18px;font-weight:700;margin-bottom:6px">📧 AI picks for WC 2026 — maximize your winnings</div>
+  <div style="font-size:14px;color:var(--muted);margin-bottom:16px">Our AI analyses every WC match. Win more, worry about tax later.</div>
+  <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+</div>
+
+</div>
+
+<div class="rg-bar">
+  21+ where applicable | Gambling problem? 1-800-522-4700 | This calculator is for informational purposes only — consult a tax professional for advice specific to your situation
+</div>
+
+<script>
+const STATE_RATES = {
+  AL:{rate:5.0,name:'Alabama',note:'Alabama taxes gambling winnings as ordinary income at 5%. Losses can be deducted if you itemize.'},
+  AK:{rate:0,name:'Alaska',note:'Alaska has no state income tax. Your winnings are only subject to federal tax.',tip:'No state tax — one of the best states for gamblers.'},
+  AZ:{rate:2.5,name:'Arizona',note:'Arizona has one of the lowest flat income tax rates in the US at 2.5%. Sports betting launched in 2021.'},
+  AR:{rate:4.7,name:'Arkansas',note:'Arkansas taxes gambling winnings at 4.7% flat rate.'},
+  CA:{rate:9.3,name:'California',note:'California taxes gambling winnings as ordinary income, up to 13.3% for high earners. Note: California does NOT allow deduction of gambling losses at the state level — you may owe state tax even if you itemize federally.',tip:'⚠️ California does not allow state deduction of losses — unusual and punishing.'},
+  CO:{rate:4.4,name:'Colorado',note:'Colorado has a flat 4.4% income tax rate. Sports betting is legal and regulated.'},
+  CT:{rate:6.99,name:'Connecticut',note:'Connecticut taxes gambling winnings at 6.99%. Sports betting is legal in CT.'},
+  DC:{rate:8.5,name:'Washington DC',note:'DC taxes gambling winnings at 8.5%. GamBetDC is the official DC lottery sportsbook.'},
+  DE:{rate:6.6,name:'Delaware',note:'Delaware taxes gambling winnings at 6.6%. One of the first states to legalize sports betting.'},
+  FL:{rate:0,name:'Florida',note:'Florida has no state income tax. Winnings are only subject to federal tax.',tip:'No state tax on winnings in Florida.'},
+  GA:{rate:5.49,name:'Georgia',note:'Georgia taxes income at 5.49%. Note: retail sports betting is not yet legal in Georgia, but online bills are pending.'},
+  HI:{rate:8.25,name:'Hawaii',note:'Hawaii taxes gambling winnings as income at rates up to 11%. Note: sports betting is not legal in Hawaii.'},
+  ID:{rate:5.8,name:'Idaho',note:'Idaho taxes gambling winnings at 5.8% flat rate.'},
+  IL:{rate:4.95,name:'Illinois',note:'Illinois has a flat 4.95% tax rate. Sports betting launched in 2020. Illinois does NOT allow deduction of gambling losses at the state level.',tip:'⚠️ Illinois: no state deduction for losses.'},
+  IN:{rate:3.05,name:'Indiana',note:'Indiana has one of the lowest flat tax rates at 3.05%. Sports betting launched in 2019.'},
+  IA:{rate:6.0,name:'Iowa',note:'Iowa taxes gambling winnings at 6.0%. Sports betting is legal in Iowa.'},
+  KS:{rate:5.7,name:'Kansas',note:'Kansas taxes winnings at 5.7%. Sports betting launched in September 2022.'},
+  KY:{rate:4.0,name:'Kentucky',note:'Kentucky has a 4% flat tax rate. Sports betting launched in September 2023.'},
+  LA:{rate:4.25,name:'Louisiana',note:'Louisiana taxes gambling winnings at 4.25% flat. Online sports betting launched in January 2022.'},
+  ME:{rate:7.15,name:'Maine',note:'Maine taxes income up to 7.15% at higher income levels. Sports betting launched in 2023.'},
+  MD:{rate:5.75,name:'Maryland',note:'Maryland taxes winnings at 5.75%. Online sports betting launched in November 2022.'},
+  MA:{rate:5.0,name:'Massachusetts',note:'Massachusetts taxes gambling winnings at 5.0% flat. Online sports betting launched in March 2023.'},
+  MI:{rate:4.25,name:'Michigan',note:'Michigan has a 4.25% flat tax rate. Comprehensive online gambling launched in 2021.'},
+  MN:{rate:7.85,name:'Minnesota',note:'Minnesota taxes income up to 9.85% for higher earners. Sports betting was signed into law in 2023.'},
+  MS:{rate:5.0,name:'Mississippi',note:'Mississippi taxes gambling winnings at 5.0% flat rate.'},
+  MO:{rate:4.95,name:'Missouri',note:'Missouri taxes gambling income at 4.95%.'},
+  MT:{rate:6.75,name:'Montana',note:'Montana taxes gambling winnings at up to 6.75%.'},
+  NE:{rate:5.84,name:'Nebraska',note:'Nebraska taxes gambling income at 5.84% flat. Sports betting launched in 2022.'},
+  NV:{rate:0,name:'Nevada',note:'Nevada has no state income tax. The gambling capital of the world — only subject to federal tax.',tip:'No state tax — Nevada remains the most tax-efficient state for bettors.'},
+  NH:{rate:0,name:'New Hampshire',note:'New Hampshire has no tax on earned income. Gambling winnings are not subject to state tax.',tip:'No state tax on gambling winnings in New Hampshire.'},
+  NJ:{rate:10.75,name:'New Jersey',note:'New Jersey has one of the highest income tax rates for top earners at 10.75%. One of the most active sports betting states.',tip:'⚠️ High earners in NJ face significant state tax on winnings.'},
+  NM:{rate:5.9,name:'New Mexico',note:'New Mexico taxes gambling winnings at 5.9% flat rate.'},
+  NY:{rate:10.9,name:'New York',note:'New York has the highest state income tax rate at up to 10.9% (plus NYC local tax of up to 3.876% for NYC residents). The most taxed state for gamblers.',tip:'⚠️ NYC residents face combined state+local rates of nearly 15%. Highest in the nation.'},
+  NC:{rate:4.5,name:'North Carolina',note:'North Carolina has a 4.5% flat tax. Online sports betting launched in March 2024.'},
+  ND:{rate:2.5,name:'North Dakota',note:'North Dakota has a flat 2.5% tax rate — among the lowest in the US.'},
+  OH:{rate:3.5,name:'Ohio',note:'Ohio has a 3.5% flat tax rate. Online sports betting launched in January 2023.'},
+  OK:{rate:4.75,name:'Oklahoma',note:'Oklahoma taxes gambling winnings at 4.75%.'},
+  OR:{rate:8.75,name:'Oregon',note:'Oregon taxes income at up to 9.9% for higher earners.'},
+  PA:{rate:3.07,name:'Pennsylvania',note:'Pennsylvania has a flat 3.07% tax rate. One of the most active legal sports betting states in the US.'},
+  RI:{rate:5.99,name:'Rhode Island',note:'Rhode Island taxes gambling winnings at 5.99%.'},
+  SC:{rate:6.5,name:'South Carolina',note:'South Carolina taxes income at 6.5%. Sports betting is not yet legal in South Carolina.'},
+  SD:{rate:0,name:'South Dakota',note:'South Dakota has no state income tax. Winnings are only subject to federal tax.',tip:'No state tax on winnings.'},
+  TN:{rate:0,name:'Tennessee',note:'Tennessee has no state income tax on wages or gambling winnings. Online sports betting launched in November 2020.',tip:'No state tax — Tennessee online sports betting with zero state tax on winnings.'},
+  TX:{rate:0,name:'Texas',note:'Texas has no state income tax. Winnings are only subject to federal tax. Note: retail and online sports betting are not yet legal in Texas (legislation pending).',tip:'No state tax — largest US state with zero state income tax.'},
+  UT:{rate:4.65,name:'Utah',note:'Utah taxes income at 4.65% flat. Note: sports betting is illegal in Utah.'},
+  VT:{rate:6.75,name:'Vermont',note:'Vermont taxes gambling winnings at up to 6.75%. Sports betting launched in 2024.'},
+  VA:{rate:5.75,name:'Virginia',note:'Virginia taxes gambling income at 5.75%. Online sports betting launched January 2021.'},
+  WA:{rate:0,name:'Washington',note:'Washington has no state income tax. Winnings are only subject to federal tax. Note: online sports betting is not legal in Washington state (tribal retail only).',tip:'No state tax on gambling winnings.'},
+  WV:{rate:6.5,name:'West Virginia',note:'West Virginia taxes gambling winnings at 6.5%. Was one of the first states to legalize online sports betting after PASPA.'},
+  WI:{rate:7.65,name:'Wisconsin',note:'Wisconsin taxes gambling winnings at 7.65%.'},
+  WY:{rate:0,name:'Wyoming',note:'Wyoming has no state income tax. Online sports betting launched September 2021.',tip:'No state tax — Wyoming is one of the most tax-efficient states for bettors.'}
+};
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+function calculate() {
+  const winnings = parseFloat(document.getElementById('winnings').value) || 0;
+  const losses = parseFloat(document.getElementById('losses').value) || 0;
+  const stateCode = document.getElementById('stateSelect').value;
+  const fedRate = parseFloat(document.getElementById('fedBracket').value) / 100;
+  if (!stateCode) { document.getElementById('stateSelect').focus(); return; }
+  const stateData = STATE_RATES[stateCode];
+  const netWinnings = Math.max(0, winnings - losses);
+  const fedTax = netWinnings * fedRate;
+  const stateTax = netWinnings * (stateData.rate / 100);
+  const totalTax = fedTax + stateTax;
+  const takeHome = winnings - totalTax;
+  const effectiveRate = netWinnings > 0 ? ((totalTax / netWinnings) * 100).toFixed(1) : 0;
+  document.getElementById('results').classList.add('show');
+  document.getElementById('totalTax').textContent = fmt(totalTax);
+  document.getElementById('taxSub').innerHTML = `Based on ${fmt(netWinnings)} net winnings in ${stateData.name}`;
+  document.getElementById('takeHome').textContent = fmt(takeHome);
+  document.getElementById('fedTax').textContent = fmt(fedTax);
+  document.getElementById('stateTax').textContent = stateData.rate === 0 ? '$0 (no state tax)' : fmt(stateTax);
+  document.getElementById('netWinnings').textContent = fmt(netWinnings);
+  document.getElementById('effectiveRate').textContent = effectiveRate + '%';
+  document.getElementById('snTitle').textContent = `${stateData.name} — ${stateData.rate}% state rate`;
+  document.getElementById('snBody').textContent = stateData.note;
+  document.getElementById('snTip').textContent = stateData.tip || '';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleFAQ(el) {
+  const a = el.querySelector('.faq-a');
+  const s = el.querySelector('.faq-q span');
+  a.classList.toggle('open');
+  s.textContent = a.classList.contains('open') ? '−' : '+';
+}
+
+// Allow Enter key to calculate
+document.addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
+</script>
+</body>
+</html>

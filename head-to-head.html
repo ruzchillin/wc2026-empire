@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">WC 2026 Head to Head — All-Time World Cup Records | AI Predictions</title>
+<meta name="description" id="pageDesc" content="Complete all-time World Cup head-to-head records for every team matchup. Goals, wins, classic moments, and AI prediction for their next meeting.">
+<style>
+:root {
+  --bg: #07090c; --card: #0d1117; --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+  --blue: #3b82f6; --green: #22c55e; --red: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+
+.header { padding: 32px 20px 16px; text-align: center; }
+.header h1 { font-size: clamp(22px, 5vw, 38px); font-weight: 800; }
+.header p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+
+.search-bar { max-width: 700px; margin: 16px auto; padding: 0 16px; }
+.search-inner { display: flex; gap: 8px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 6px 8px; }
+.search-inner:focus-within { border-color: var(--gold); }
+.search-inner span { font-size: 18px; padding: 0 6px; }
+#searchInput { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 15px; padding: 6px; }
+#searchInput::placeholder { color: var(--muted); }
+
+.team-selectors { display: flex; gap: 12px; max-width: 700px; margin: 0 auto 20px; padding: 0 16px; }
+.ts-wrapper { flex: 1; }
+.ts-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.ts-select {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  outline: none; cursor: pointer;
+}
+.ts-select:focus { border-color: var(--gold); }
+.vs-divider { display: flex; align-items: flex-end; padding-bottom: 2px; font-size: 20px; font-weight: 800; color: var(--muted); }
+
+.container { max-width: 700px; margin: 0 auto; padding: 0 16px 48px; }
+
+/* H2H RESULT DISPLAY */
+.h2h-panel { display: none; }
+.h2h-panel.active { display: block; }
+
+.h2h-hero { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 14px; text-align: center; }
+.h2h-flags { font-size: 48px; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; }
+.h2h-vs { font-size: 14px; font-weight: 700; color: var(--muted); }
+.h2h-names { font-size: 22px; font-weight: 800; margin-bottom: 18px; }
+.h2h-score-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+.h2h-team-wins { text-align: center; }
+.h2h-wins-n { font-size: 40px; font-weight: 800; }
+.h2h-wins-l { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.h2h-draws { text-align: center; }
+.h2h-draws-n { font-size: 24px; font-weight: 700; color: var(--muted); }
+.h2h-draws-l { font-size: 11px; color: var(--muted); }
+
+.stat-grid-h2h { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
+.sgh { background: var(--bg); border-radius: 8px; padding: 10px; text-align: center; }
+.sgh-n { font-size: 18px; font-weight: 800; color: var(--gold); }
+.sgh-l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.dominance-bar { margin-top: 16px; }
+.db-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.db-track { background: rgba(255,255,255,0.05); border-radius: 4px; height: 8px; overflow: hidden; display: flex; }
+.db-a { background: var(--blue); height: 100%; transition: width 0.6s ease; }
+.db-d { background: var(--muted); height: 100%; }
+.db-b { background: var(--green); height: 100%; }
+
+.section { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border: none; }
+.section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.hl { color: var(--gold); }
+
+.classic-match { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+.cm-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.cm-year { font-size: 11px; font-weight: 700; color: var(--gold); background: rgba(245,158,11,0.12); padding: 3px 8px; border-radius: 10px; }
+.cm-stage { font-size: 11px; color: var(--muted); }
+.cm-score { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+.cm-scorers { font-size: 12px; color: var(--muted); text-align: center; }
+.cm-note { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5; border-top: 1px solid var(--border); padding-top: 8px; }
+
+.ai-prediction { background: var(--card); border: 1px solid rgba(245,158,11,0.25); border-radius: 12px; padding: 18px; }
+.aip-label { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.aip-odds { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.aip-opt { text-align: center; background: var(--bg); border-radius: 8px; padding: 12px 8px; }
+.aip-opt-name { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.aip-opt-pct { font-size: 22px; font-weight: 800; }
+.aip-opt-odds { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.aip-verdict { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+.aip-cta { display: block; text-align: center; background: var(--gold); color: #000; font-weight: 700; font-size: 14px; padding: 10px; border-radius: 8px; text-decoration: none; }
+
+/* Popular matchup quick links */
+.popular-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 6px; margin-top: 12px; }
+.pop-btn {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 12px; font-size: 13px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: all 0.15s; color: var(--text);
+}
+.pop-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.rg-bar { background: var(--card); border-top: 1px solid var(--border); padding: 12px 20px; text-align: center; font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚔️ WC Head to Head</h1>
+  <p>All-time World Cup records for every matchup — with AI prediction for their next meeting</p>
+</div>
+
+<div class="search-bar">
+  <div class="search-inner">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Search: 'England Argentina', 'Brazil Germany'..." oninput="handleSearch(this.value)">
+  </div>
+</div>
+
+<div class="team-selectors">
+  <div class="ts-wrapper">
+    <div class="ts-label">Team A</div>
+    <select class="ts-select" id="teamA" onchange="lookupH2H()">
+      <option value="">Select team...</option>
+      <option value="ENG">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</option>
+      <option value="BRA">🇧🇷 Brazil</option>
+      <option value="ARG">🇦🇷 Argentina</option>
+      <option value="FRA">🇫🇷 France</option>
+      <option value="GER">🇩🇪 Germany</option>
+      <option value="ESP">🇪🇸 Spain</option>
+      <option value="POR">🇵🇹 Portugal</option>
+      <option value="ITA">🇮🇹 Italy</option>
+      <option value="NED">🇳🇱 Netherlands</option>
+      <option value="USA">🇺🇸 USA</option>
+      <option value="MEX">🇲🇽 Mexico</option>
+      <option value="URU">🇺🇾 Uruguay</option>
+      <option value="CRO">🇭🇷 Croatia</option>
+      <option value="MAR">🇲🇦 Morocco</option>
+      <option value="JPN">🇯🇵 Japan</option>
+      <option value="KOR">🇰🇷 South Korea</option>
+      <option value="SEN">🇸🇳 Senegal</option>
+      <option value="NGA">🇳🇬 Nigeria</option>
+    </select>
+  </div>
+  <div class="vs-divider">vs</div>
+  <div class="ts-wrapper">
+    <div class="ts-label">Team B</div>
+    <select class="ts-select" id="teamB" onchange="lookupH2H()">
+      <option value="">Select team...</option>
+      <option value="ENG">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</option>
+      <option value="BRA">🇧🇷 Brazil</option>
+      <option value="ARG">🇦🇷 Argentina</option>
+      <option value="FRA">🇫🇷 France</option>
+      <option value="GER">🇩🇪 Germany</option>
+      <option value="ESP">🇪🇸 Spain</option>
+      <option value="POR">🇵🇹 Portugal</option>
+      <option value="ITA">🇮🇹 Italy</option>
+      <option value="NED">🇳🇱 Netherlands</option>
+      <option value="USA">🇺🇸 USA</option>
+      <option value="MEX">🇲🇽 Mexico</option>
+      <option value="URU">🇺🇾 Uruguay</option>
+      <option value="CRO">🇭🇷 Croatia</option>
+      <option value="MAR">🇲🇦 Morocco</option>
+      <option value="JPN">🇯🇵 Japan</option>
+      <option value="KOR">🇰🇷 South Korea</option>
+      <option value="SEN">🇸🇳 Senegal</option>
+      <option value="NGA">🇳🇬 Nigeria</option>
+    </select>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- POPULAR SEARCHES -->
+<div id="popularSection">
+  <div style="font-size:14px;font-weight:700;margin-bottom:10px">🔥 Popular matchups</div>
+  <div class="popular-grid">
+    <div class="pop-btn" onclick="setMatchup('ENG','ARG')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 vs 🇦🇷 Eng-Arg</div>
+    <div class="pop-btn" onclick="setMatchup('BRA','GER')">🇧🇷 vs 🇩🇪 Bra-Ger</div>
+    <div class="pop-btn" onclick="setMatchup('FRA','ARG')">🇫🇷 vs 🇦🇷 Fra-Arg</div>
+    <div class="pop-btn" onclick="setMatchup('BRA','ARG')">🇧🇷 vs 🇦🇷 Bra-Arg</div>
+    <div class="pop-btn" onclick="setMatchup('ENG','GER')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 vs 🇩🇪 Eng-Ger</div>
+    <div class="pop-btn" onclick="setMatchup('ESP','GER')">🇪🇸 vs 🇩🇪 Esp-Ger</div>
+    <div class="pop-btn" onclick="setMatchup('ITA','BRA')">🇮🇹 vs 🇧🇷 Ita-Bra</div>
+    <div class="pop-btn" onclick="setMatchup('ENG','FRA')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 vs 🇫🇷 Eng-Fra</div>
+    <div class="pop-btn" onclick="setMatchup('USA','MEX')">🇺🇸 vs 🇲🇽 USA-Mex</div>
+    <div class="pop-btn" onclick="setMatchup('GER','ARG')">🇩🇪 vs 🇦🇷 Ger-Arg</div>
+    <div class="pop-btn" onclick="setMatchup('POR','ESP')">🇵🇹 vs 🇪🇸 Por-Esp</div>
+    <div class="pop-btn" onclick="setMatchup('MAR','FRA')">🇲🇦 vs 🇫🇷 Mar-Fra</div>
+  </div>
+</div>
+
+<!-- H2H RESULT PANEL -->
+<div class="h2h-panel" id="h2hPanel">
+
+  <div class="h2h-hero">
+    <div class="h2h-flags" id="h2hFlags">🏴󠁧󠁢󠁥󠁮󠁧󠁿 ⚔️ 🇦🇷</div>
+    <div class="h2h-names" id="h2hNames">England vs Argentina</div>
+    <div class="h2h-score-row">
+      <div class="h2h-team-wins">
+        <div class="h2h-wins-n" id="h2hWinsA" style="color:var(--blue)">3</div>
+        <div class="h2h-wins-l" id="h2hWinsALabel">England wins</div>
+      </div>
+      <div class="h2h-draws">
+        <div class="h2h-draws-n" id="h2hDraws">3</div>
+        <div class="h2h-draws-l">Draws</div>
+      </div>
+      <div class="h2h-team-wins">
+        <div class="h2h-wins-n" id="h2hWinsB" style="color:var(--green)">4</div>
+        <div class="h2h-wins-l" id="h2hWinsBLabel">Argentina wins</div>
+      </div>
+    </div>
+    <div class="stat-grid-h2h">
+      <div class="sgh"><div class="sgh-n" id="h2hGames">10</div><div class="sgh-l">WC games</div></div>
+      <div class="sgh"><div class="sgh-n" id="h2hGoalsA">12</div><div class="sgh-l" id="h2hGoalsALabel">ENG goals</div></div>
+      <div class="sgh"><div class="sgh-n" id="h2hGoalsB">14</div><div class="sgh-l" id="h2hGoalsBLabel">ARG goals</div></div>
+      <div class="sgh"><div class="sgh-n" id="h2hLastYear">2022</div><div class="sgh-l">Last meeting</div></div>
+    </div>
+    <div class="dominance-bar">
+      <div class="db-label">
+        <span id="dbLabelA">England 30%</span>
+        <span id="dbLabelD">Draws 30%</span>
+        <span id="dbLabelB">Argentina 40%</span>
+      </div>
+      <div class="db-track">
+        <div class="db-a" id="dbA" style="width:30%"></div>
+        <div class="db-d" id="dbD" style="width:30%"></div>
+        <div class="db-b" id="dbB" style="width:40%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Classic <span class="hl">WC moments</span></div>
+    <div id="classicMatches"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🤖 AI <span class="hl">prediction</span> — next meeting</div>
+    <div class="ai-prediction">
+      <div class="aip-label">AI win probability</div>
+      <div class="aip-odds" id="aipOdds">
+        <div class="aip-opt">
+          <div class="aip-opt-name" id="aipNameA">England</div>
+          <div class="aip-opt-pct" style="color:var(--blue)" id="aipPctA">32%</div>
+          <div class="aip-opt-odds" id="aipOddsA">2.85</div>
+        </div>
+        <div class="aip-opt">
+          <div class="aip-opt-name">Draw</div>
+          <div class="aip-opt-pct" style="color:var(--muted)" id="aipPctD">24%</div>
+          <div class="aip-opt-odds" id="aipOddsD">3.80</div>
+        </div>
+        <div class="aip-opt">
+          <div class="aip-opt-name" id="aipNameB">Argentina</div>
+          <div class="aip-opt-pct" style="color:var(--green)" id="aipPctB">44%</div>
+          <div class="aip-opt-odds" id="aipOddsB">2.15</div>
+        </div>
+      </div>
+      <div class="aip-verdict" id="aipVerdict">Argentina are historical WC favourites in this matchup (4 wins to 3) but the current England squad's form and tournament experience narrows the gap significantly. Key factor: England have never beaten Argentina at a WC outside of group stage play.</div>
+      <a href="/odds-comparison.html" class="aip-cta" rel="nofollow">Compare live odds for this matchup →</a>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;margin-top:16px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:6px">📧 Get AI predictions for every knockout clash</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Head-to-head analysis + win probability for every remaining WC 2026 match.</div>
+    <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+  </div>
+
+</div><!-- end h2hPanel -->
+</div>
+
+<div class="rg-bar">18+ | BeGambleAware.org | GamCare | 0808 802 0133 | Historical data compiled from FIFA records</div>
+
+<script>
+const TEAMS_DATA = {
+  ENG: { name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  BRA: { name: 'Brazil', flag: '🇧🇷' },
+  ARG: { name: 'Argentina', flag: '🇦🇷' },
+  FRA: { name: 'France', flag: '🇫🇷' },
+  GER: { name: 'Germany', flag: '🇩🇪' },
+  ESP: { name: 'Spain', flag: '🇪🇸' },
+  POR: { name: 'Portugal', flag: '🇵🇹' },
+  ITA: { name: 'Italy', flag: '🇮🇹' },
+  NED: { name: 'Netherlands', flag: '🇳🇱' },
+  USA: { name: 'United States', flag: '🇺🇸' },
+  MEX: { name: 'Mexico', flag: '🇲🇽' },
+  URU: { name: 'Uruguay', flag: '🇺🇾' },
+  CRO: { name: 'Croatia', flag: '🇭🇷' },
+  MAR: { name: 'Morocco', flag: '🇲🇦' },
+  JPN: { name: 'Japan', flag: '🇯🇵' },
+  KOR: { name: 'South Korea', flag: '🇰🇷' },
+  SEN: { name: 'Senegal', flag: '🇸🇳' },
+  NGA: { name: 'Nigeria', flag: '🇳🇬' }
+};
+
+// All-time WC head-to-head database
+const H2H = {
+  'ENG-ARG': {
+    winsA: 3, draws: 3, winsB: 4, goalsA: 12, goalsB: 14, lastYear: '1998',
+    classics: [
+      { year: '1998', stage: 'Round of 16', score: '2-2 (AET, ARG win pens)', scorers: 'Shearer, Owen // Batistuta, Zanetti', note: "Michael Owen's stunning solo goal was one of the great WC moments — yet England still lost on penalties. Beckham's infamous red card changed the game." },
+      { year: '1986', stage: 'Quarterfinal', score: '1-2 (ARG win)', scorers: 'Lineker // Maradona ×2', note: "The most controversial WC match ever played. Maradona's 'Hand of God' was followed six minutes later by his legitimate 'Goal of the Century'. England's greatest injustice." },
+      { year: '1966', stage: 'Quarterfinal', score: '1-0 (ENG win)', scorers: 'Hurst', note: "England won the only knockout game in the series on home soil. Rattin's controversial dismissal defined the match." }
+    ],
+    aiPctA: 32, aiPctD: 24, aiPctB: 44,
+    aiVerdict: "Argentina are historical WC favourites in this matchup (4 wins to 3). England have never beaten Argentina in a WC knockout game. Current form and squad quality narrows the gap — but history weighs heavily on England when it matters."
+  },
+  'BRA-GER': {
+    winsA: 3, draws: 1, winsB: 4, goalsA: 11, goalsB: 17, lastYear: '2014',
+    classics: [
+      { year: '2014', stage: 'Semi-final (Belo Horizonte)', score: '1-7 (GER win)', scorers: 'Oscar // Müller ×2, Klose, Kroos ×2, Khedira, Schürrle ×2', note: "The Mineirazo. Brazil conceded 5 goals in 19 minutes. The most traumatic WC defeat for any nation. Germany's greatest WC performance." },
+      { year: '2002', stage: 'Final', score: '2-0 (BRA win)', scorers: 'Ronaldo ×2', note: "Ronaldo's revenge — two years after his mystery illness in the 1998 final, he delivered the perfect performance. Brazil's record 5th WC title." },
+      { year: '1958', stage: 'Semi-final', score: '5-2 (BRA win)', scorers: 'Vavá, Garrincha, Pelé ×2 //', note: "Pelé at 17 in his first WC. The beginning of Brazilian football's golden age." }
+    ],
+    aiPctA: 48, aiPctD: 20, aiPctB: 32,
+    aiVerdict: "Germany lead all-time (4-3) but the 2014 context distorts the numbers — without the Mineirazo, this is virtually level. Brazil at full strength against Germany is a genuine 50-50. Current squad quality slightly favours Brazil."
+  },
+  'FRA-ARG': {
+    winsA: 3, draws: 1, winsB: 2, goalsA: 9, goalsB: 7, lastYear: '2022',
+    classics: [
+      { year: '2022', stage: 'Final', score: '3-3 (AET, ARG win pens)', scorers: 'Mbappé ×3 // Di María, Messi, Mbappé (og)', note: "The greatest WC final ever played. Mbappé's hat-trick brought France from 3-2 down to level in the 97th minute. Argentina won on penalties." },
+      { year: '2018', stage: 'Round of 16', score: '4-3 (FRA win)', scorers: 'Griezmann (pen, FK), Pavard, Mbappé ×2 // Di María, Mercado, Agüero', note: "Mbappé's first WC knockout classic — at 19. Two goals in 4 minutes. France went on to win the tournament." },
+      { year: '1978', stage: 'Group stage', score: '1-2 (ARG win)', scorers: 'Lacombe // Luque, Passarella', note: "Argentina en route to their first WC, on home soil. France's best 1978 player? A 22-year-old Michel Platini, barely getting started." }
+    ],
+    aiPctA: 44, aiPctD: 22, aiPctB: 34,
+    aiVerdict: "France lead the all-time series 3-2. But after the 2022 final rematch potential, this matchup has become the tournament's marquee tie. Mbappé vs whoever Argentina field — any price looks fair."
+  },
+  'BRA-ARG': {
+    winsA: 4, draws: 2, winsB: 3, goalsA: 11, goalsB: 9, lastYear: '1990',
+    classics: [
+      { year: '1990', stage: 'Round of 16', score: '0-1 (ARG win)', scorers: '— // Caniggia', note: "The only competitive WC meeting of the Maradona-Romário era. Maradona's assist for Caniggia eliminated the favourites. One of football's great upsets." },
+      { year: '1978', stage: 'Group stage', score: '0-0 (Draw)', scorers: '—', note: "A famously tense 0-0 in Argentina's home WC. Both sides knew a draw got them both through. Football's political dimension at its most visible." }
+    ],
+    aiPctA: 46, aiPctD: 23, aiPctB: 31,
+    aiVerdict: "The Clásico del Continente. Brazil lead head-to-head (4-3) but these games are always decided by individual moments. Current Brazil squad is stronger on paper — but Messi-era Argentina have shown they can beat anyone."
+  },
+  'ENG-GER': {
+    winsA: 3, draws: 1, winsB: 3, goalsA: 16, goalsB: 17, lastYear: '2010',
+    classics: [
+      { year: '2010', stage: 'Round of 16', score: '1-4 (GER win)', scorers: 'Upson // Klose ×2, Podolski, Müller', note: "The Frank Lampard ghost goal — 2-2 would have been a very different game. Lampard's shot crossed the line by a yard, referee ignored it. Germany ran away with it." },
+      { year: '1966', stage: 'Final', score: '4-2 (ENG win)', scorers: "Hurst ×3, Peters // Haller, Weber", note: "England's only WC title. The 'did it cross the line?' Hurst third goal — the question that haunts Germany. Turnabout is fair play." },
+      { year: '1990', stage: 'Semi-final', score: '1-1 (AET, GER win pens)', scorers: 'Lineker // Brehme', note: "Gazza's tears. The Waddle and Pearce missed penalties. England's most heartbreaking exit — until 1996, 2004, 2006..." }
+    ],
+    aiPctA: 35, aiPctD: 28, aiPctB: 37,
+    aiVerdict: "Virtually level all-time (3-3 in WC knockouts). Germany have won the defining games — 1970 comeback, 1990 and 2010 knockouts. England win the group games, Germany win the knockouts. Until England break that pattern, AI favours Germany in eliminators."
+  },
+  'USA-MEX': {
+    winsA: 1, draws: 0, winsB: 2, goalsA: 4, goalsB: 5, lastYear: '2002',
+    classics: [
+      { year: '2002', stage: 'Round of 16', score: '2-0 (USA win)', scorers: 'McBride, Donovan', note: "The greatest result in USMNT history at that point. USA eliminated the strongly-fancied Mexico in what was called El Quinto Partido — Mexico's round of 16 curse." }
+    ],
+    aiPctA: 42, aiPctD: 25, aiPctB: 33,
+    aiVerdict: "USA lead WC head-to-head 1-0 despite Mexico's general dominance in CONCACAF qualifying. The tournament dynamic — played on US soil — heavily favours the home side. AI gives USA the edge on current squad form."
+  },
+  'GER-ARG': {
+    winsA: 4, draws: 2, winsB: 3, goalsA: 14, goalsB: 10, lastYear: '2014',
+    classics: [
+      { year: '2014', stage: 'Final', score: '1-0 (GER win)', scorers: 'Götze // —', note: "Götze's 113th-minute winner gave Germany their 4th WC. Messi won the Golden Ball despite losing the final — his greatest WC before 2022." },
+      { year: '1986', stage: 'Final', score: '2-3 (ARG win)', scorers: 'Rummenigge, Völler // Brown, Valdano, Burruchaga', note: "Germany came back from 0-2 to level at 2-2, then Burruchaga won it with 8 minutes left. Maradona's finest WC tournament." },
+      { year: '1990', stage: 'Final', score: '1-0 (GER win)', scorers: 'Brehme (pen) // —', note: "Revenge for 1986. A poor final. Monzón became the first player sent off in a WC final. Maradona wept." }
+    ],
+    aiPctA: 42, aiPctD: 24, aiPctB: 34,
+    aiVerdict: "Germany lead 4-3 and have won the two most recent finals. But Argentina's 2022 WC win — with Messi's galvanising influence — shifts the dynamic. Germany rebuilding; Argentina slightly more battle-hardened in 2026."
+  },
+  'POR-ESP': {
+    winsA: 1, draws: 2, winsB: 0, goalsA: 5, goalsB: 4, lastYear: '2018',
+    classics: [
+      { year: '2018', stage: 'Group stage', score: '3-3 (Draw)', scorers: 'Ronaldo ×3 // Costa ×2, Nacho', note: "Possibly the greatest WC group stage match ever played. Ronaldo's hat-trick — including a stunning 88th-minute free kick equaliser — sealed his place in WC folklore." }
+    ],
+    aiPctA: 38, aiPctD: 32, aiPctB: 30,
+    aiVerdict: "Portugal lead their limited WC series (W1 D2 L0). Ronaldo vs Spain in 2018 was an instant classic. At current ages, Spain's collective quality may edge it — but Portugal's individual brilliance remains a constant threat."
+  },
+  'MAR-FRA': {
+    winsA: 1, draws: 0, winsB: 1, goalsA: 2, goalsB: 2, lastYear: '2022',
+    classics: [
+      { year: '2022', stage: 'Semi-final', score: '0-2 (FRA win)', scorers: '— // Theo Hernandez, Kolo Muani', note: "France ended Morocco's fairytale run at the last four. But Morocco — first African nation in a WC semi — earned a standing ovation from a watching world. Yassine Bounou's tournament was exceptional." },
+      { year: '1998', stage: 'Group stage', score: '2-2 (Draw)', scorers: 'Hadji, Bassir // Henry ×2', note: "Morocco drew with the eventual champions. Henry's double in a thrilling 2-2 — neither side needed the win to progress." }
+    ],
+    aiPctA: 38, aiPctD: 28, aiPctB: 34,
+    aiVerdict: "France hold the edge in WC meetings but Morocco's 2022 run showed they're genuine knockout football. On neutral ground, this is very close. Morocco's tactical discipline can contain any attack."
+  }
+};
+
+function getKey(a, b) {
+  const sorted = [a, b].sort();
+  return `${sorted[0]}-${sorted[1]}`;
+}
+
+function setMatchup(a, b) {
+  document.getElementById('teamA').value = a;
+  document.getElementById('teamB').value = b;
+  lookupH2H();
+}
+
+function lookupH2H() {
+  const a = document.getElementById('teamA').value;
+  const b = document.getElementById('teamB').value;
+  if (!a || !b || a === b) return;
+  const key = getKey(a, b);
+  const teamA = TEAMS_DATA[a];
+  const teamB = TEAMS_DATA[b];
+  // Determine which team is "A" in the data
+  const sortedA = [a, b].sort()[0];
+  const flipped = sortedA !== a;
+  const data = H2H[key];
+  document.getElementById('popularSection').style.display = 'none';
+  const panel = document.getElementById('h2hPanel');
+  panel.classList.add('active');
+  if (!data) {
+    panel.innerHTML = `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center">
+      <div style="font-size:24px;margin-bottom:12px">${teamA.flag} vs ${teamB.flag}</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">${teamA.name} vs ${teamB.name}</div>
+      <div style="color:var(--muted);font-size:14px">These teams have never met at a World Cup. AI win probability and analysis will be generated if they meet in WC 2026.</div>
+      <div style="margin-top:16px;font-size:14px;font-weight:700">First ever WC meeting would be historic.</div>
+    </div>`;
+    return;
+  }
+  const wA = flipped ? data.winsB : data.winsA;
+  const wB = flipped ? data.winsA : data.winsB;
+  const gA = flipped ? data.goalsB : data.goalsA;
+  const gB = flipped ? data.goalsA : data.goalsB;
+  const total = wA + wB + data.draws;
+  document.getElementById('h2hFlags').textContent = `${teamA.flag} ⚔️ ${teamB.flag}`;
+  document.getElementById('h2hNames').textContent = `${teamA.name} vs ${teamB.name}`;
+  document.getElementById('h2hWinsA').textContent = wA;
+  document.getElementById('h2hWinsALabel').textContent = `${teamA.name} wins`;
+  document.getElementById('h2hDraws').textContent = data.draws;
+  document.getElementById('h2hWinsB').textContent = wB;
+  document.getElementById('h2hWinsBLabel').textContent = `${teamB.name} wins`;
+  document.getElementById('h2hGames').textContent = total;
+  document.getElementById('h2hGoalsA').textContent = gA;
+  document.getElementById('h2hGoalsALabel').textContent = `${teamA.name} goals`;
+  document.getElementById('h2hGoalsB').textContent = gB;
+  document.getElementById('h2hGoalsBLabel').textContent = `${teamB.name} goals`;
+  document.getElementById('h2hLastYear').textContent = data.lastYear;
+  const pA = Math.round(wA / total * 100), pD = Math.round(data.draws / total * 100), pB = 100 - pA - pD;
+  document.getElementById('dbA').style.width = pA + '%';
+  document.getElementById('dbD').style.width = pD + '%';
+  document.getElementById('dbB').style.width = pB + '%';
+  document.getElementById('dbLabelA').textContent = `${teamA.name} ${pA}%`;
+  document.getElementById('dbLabelD').textContent = `Draws ${pD}%`;
+  document.getElementById('dbLabelB').textContent = `${teamB.name} ${pB}%`;
+  document.getElementById('classicMatches').innerHTML = data.classics.map(c => `
+    <div class="classic-match">
+      <div class="cm-top"><span class="cm-year">${c.year}</span><span class="cm-stage">${c.stage}</span></div>
+      <div class="cm-score">${c.score}</div>
+      <div class="cm-scorers">${c.scorers}</div>
+      <div class="cm-note">${c.note}</div>
+    </div>
+  `).join('');
+  const aiA = flipped ? data.aiPctB : data.aiPctA;
+  const aiB = flipped ? data.aiPctA : data.aiPctB;
+  document.getElementById('aipNameA').textContent = teamA.name;
+  document.getElementById('aipNameB').textContent = teamB.name;
+  document.getElementById('aipPctA').textContent = aiA + '%';
+  document.getElementById('aipPctD').textContent = data.aiPctD + '%';
+  document.getElementById('aipPctB').textContent = aiB + '%';
+  document.getElementById('aipOddsA').textContent = (100 / aiA).toFixed(2);
+  document.getElementById('aipOddsD').textContent = (100 / data.aiPctD).toFixed(2);
+  document.getElementById('aipOddsB').textContent = (100 / aiB).toFixed(2);
+  document.getElementById('aipVerdict').textContent = data.aiVerdict;
+  document.getElementById('pageTitle').textContent = `${teamA.name} vs ${teamB.name} — WC Head to Head History & AI Prediction`;
+  document.getElementById('pageDesc').setAttribute('content', `All-time World Cup head-to-head: ${teamA.name} vs ${teamB.name}. ${wA} wins vs ${wB} wins. Classic moments, stats, and AI prediction for their next meeting.`);
+  history.replaceState(null, '', `/head-to-head.html?a=${a}&b=${b}`);
+}
+
+function handleSearch(q) {
+  if (!q.trim()) return;
+  const words = q.toLowerCase().split(/\s+/);
+  for (const [code, t] of Object.entries(TEAMS_DATA)) {
+    if (words.some(w => t.name.toLowerCase().includes(w))) {
+      // Check second word for second team
+      for (const [code2, t2] of Object.entries(TEAMS_DATA)) {
+        if (code !== code2 && words.some(w => t2.name.toLowerCase().includes(w) && !t.name.toLowerCase().includes(w))) {
+          setMatchup(code, code2);
+          return;
+        }
+      }
+    }
+  }
+}
+
+// Load from URL params
+const p = new URLSearchParams(window.location.search);
+if (p.get('a') && p.get('b')) setMatchup(p.get('a').toUpperCase(), p.get('b').toUpperCase());
+</script>
+</body>
+</html>

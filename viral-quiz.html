@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which World Cup 2026 Team Are You? — Take the Quiz</title>
+<meta name="description" content="Find out which FIFA World Cup 2026 team matches your personality. Take the quiz and share your result!">
+<meta property="og:title" content="Which World Cup 2026 Team Are You? 🏆">
+<meta property="og:description" content="Answer 6 questions and find your perfect WC 2026 nation. Share your result!">
+<meta property="og:image" content="https://wc2026intel.com/og-quiz.jpg">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e8e8f0; min-height: 100vh; }
+
+  header { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); padding: 30px 20px; text-align: center; }
+  header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 900; color: #fff; }
+  header p { color: #a0a8c0; margin-top: 8px; }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 30px 20px; }
+
+  /* Quiz card */
+  .quiz-card { background: #12122a; border: 1px solid #2a2a4a; border-radius: 16px; padding: 30px; }
+
+  .progress-bar { height: 6px; background: #2a2a4a; border-radius: 3px; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #e94560, #f4a261); border-radius: 3px; transition: width 0.4s ease; }
+  .progress-text { text-align: right; font-size: 0.82rem; color: #6060a0; margin-bottom: 8px; }
+
+  .question-num { font-size: 0.85rem; color: #6060a0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .question-text { font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 700; color: #fff; margin-bottom: 24px; line-height: 1.4; }
+
+  .options { display: grid; gap: 12px; }
+  .option-btn { background: #1a1a3a; border: 2px solid #2a2a4a; border-radius: 10px; padding: 14px 18px; text-align: left; cursor: pointer; transition: all 0.2s; color: #c8c8e8; font-size: 1rem; display: flex; align-items: center; gap: 12px; }
+  .option-btn:hover { border-color: #e94560; background: #1a0a2e; color: #fff; }
+  .option-btn.selected { border-color: #e94560; background: #2a0a1e; color: #fff; }
+  .option-emoji { font-size: 1.4rem; flex-shrink: 0; }
+  .option-text { flex: 1; }
+
+  .nav-btn { width: 100%; padding: 16px; margin-top: 20px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .nav-btn.primary { background: #e94560; color: #fff; }
+  .nav-btn.primary:hover { background: #ff5577; }
+  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Result card */
+  .result-card { display: none; text-align: center; }
+  .result-flag { font-size: 5rem; margin: 10px 0; animation: bounceIn 0.6s ease; }
+  @keyframes bounceIn { 0%{transform:scale(0)} 60%{transform:scale(1.1)} 100%{transform:scale(1)} }
+  .result-team { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 900; color: #fff; margin: 10px 0; }
+  .result-tagline { font-size: 1rem; color: #e94560; font-weight: 700; margin-bottom: 16px; }
+  .result-description { color: #a0a8c0; line-height: 1.7; margin-bottom: 24px; font-size: 1rem; }
+
+  .result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .stat-box { background: #1a1a3a; border-radius: 10px; padding: 14px; }
+  .stat-value { font-size: 1.4rem; font-weight: 900; color: #fff; }
+  .stat-label { font-size: 0.78rem; color: #6060a0; margin-top: 3px; }
+
+  .share-section { margin-top: 24px; }
+  .share-section h3 { color: #fff; margin-bottom: 12px; }
+  .share-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .share-btn { padding: 12px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s; }
+  .share-btn:hover { opacity: 0.85; }
+  .tw { background: #1da1f2; color: #fff; }
+  .wa { background: #25d366; color: #fff; }
+  .tg { background: #0088cc; color: #fff; }
+  .copy-btn { background: #2a2a4a; color: #c8c8e8; }
+
+  .retry-btn { background: transparent; border: 2px solid #2a2a4a; color: #8080a0; margin-top: 12px; }
+  .retry-btn:hover { border-color: #6060a0; color: #c8c8e8; }
+
+  .email-cta { background: linear-gradient(135deg, #1a0a2e, #0a1a2e); border: 1px solid #3a2a5a; border-radius: 12px; padding: 20px; margin-top: 24px; }
+  .email-cta h3 { color: #fff; margin-bottom: 6px; }
+  .email-cta p { color: #8080a0; font-size: 0.9rem; margin-bottom: 14px; }
+  .email-form { display: flex; gap: 8px; flex-wrap: wrap; }
+  .email-form input { flex: 1; min-width: 180px; padding: 10px 14px; border-radius: 8px; border: 1px solid #3a3a5a; background: #12122a; color: #e8e8f0; font-size: 0.9rem; outline: none; }
+  .email-form button { background: #e94560; color: #fff; padding: 10px 18px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+  footer { text-align: center; padding: 30px 20px; color: #404060; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚽ Which World Cup 2026 Team Are You?</h1>
+  <p>6 questions. Your perfect nation. Share the result.</p>
+</header>
+
+<div class="container">
+  <div class="quiz-card" id="quizCard">
+    <div class="progress-text" id="progressText">Question 1 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16%"></div></div>
+    <div class="question-num" id="qNum">QUESTION 1</div>
+    <div class="question-text" id="qText"></div>
+    <div class="options" id="optionsGrid"></div>
+    <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+  </div>
+
+  <div class="result-card quiz-card" id="resultCard">
+    <p style="color:#6060a0; margin-bottom:4px; font-size:0.9rem">YOUR WORLD CUP TEAM IS</p>
+    <div class="result-flag" id="resultFlag"></div>
+    <div class="result-team" id="resultTeam"></div>
+    <div class="result-tagline" id="resultTagline"></div>
+    <p class="result-description" id="resultDesc"></p>
+
+    <div class="result-stats" id="resultStats"></div>
+
+    <div class="share-section">
+      <h3>Share your result 🔥</h3>
+      <div class="share-btns">
+        <a class="share-btn tw" id="twitterShare" target="_blank">🐦 Twitter</a>
+        <a class="share-btn wa" id="whatsappShare" target="_blank">💬 WhatsApp</a>
+        <a class="share-btn tg" id="telegramShare" target="_blank">✈️ Telegram</a>
+        <button class="share-btn copy-btn" onclick="copyResult()">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="email-cta">
+      <h3>🏆 Get daily WC 2026 picks — free</h3>
+      <p>AI-powered match previews, goal alerts, and tips before every game.</p>
+      <div class="email-form">
+        <input type="email" id="emailInput" placeholder="your@email.com">
+        <button onclick="subscribe()">Get Free Tips →</button>
+      </div>
+      <p id="subMsg" style="color:#4caf88; margin-top:8px; display:none">✅ You're in!</p>
+    </div>
+
+    <button class="nav-btn retry-btn" onclick="resetQuiz()">↺ Retake quiz</button>
+  </div>
+</div>
+
+<footer>WC 2026 Intel · <a href="watch-guide.html" style="color:#6060a0">How to Watch WC 2026 →</a></footer>
+
+<script>
+const QUESTIONS = [
+  {
+    text: "It's the 90th minute, you're down 1-0. What's your move?",
+    options: [
+      { emoji: "⚡", text: "All-out attack. No fear. We go for it.", weight: { BR: 3, AR: 3, FR: 2, PT: 2 } },
+      { emoji: "🧠", text: "Keep possession, wait for the moment.", weight: { SP: 3, DE: 3, NL: 2 } },
+      { emoji: "🔒", text: "Protect the result. A draw away from home is fine.", weight: { IT: 3, EN: 2, NG: 2 } },
+      { emoji: "🎲", text: "Send everyone forward. All or nothing.", weight: { MX: 3, CO: 3, SN: 2 } },
+    ]
+  },
+  {
+    text: "Pick your playing style:",
+    options: [
+      { emoji: "🎨", text: "Beautiful, expressive, free-flowing football", weight: { BR: 3, AR: 2, NL: 2 } },
+      { emoji: "⚙️", text: "Tactical, disciplined, system-based", weight: { DE: 3, SP: 2, IT: 2 } },
+      { emoji: "💪", text: "Physical, direct, never say die", weight: { EN: 3, NG: 3, US: 2 } },
+      { emoji: "⚡", text: "Fast, counter-attacking, clinical", weight: { FR: 3, PT: 3, MX: 2 } },
+    ]
+  },
+  {
+    text: "Where are you watching the final?",
+    options: [
+      { emoji: "🏟️", text: "At the stadium — I'm there live", weight: { MX: 3, US: 3, CA: 2 } },
+      { emoji: "🏠", text: "House party with the whole neighbourhood", weight: { BR: 3, NG: 3, CO: 2 } },
+      { emoji: "🍺", text: "Pub with 500 strangers who become my family", weight: { EN: 3, DE: 2, IE: 2 } },
+      { emoji: "📺", text: "Perfect setup at home, analysing every tactical detail", weight: { DE: 3, IT: 2, SP: 2 } },
+    ]
+  },
+  {
+    text: "Your team's best weapon is:",
+    options: [
+      { emoji: "🌟", text: "One generational genius who can win it alone", weight: { AR: 3, PT: 3, FR: 2 } },
+      { emoji: "👥", text: "A collective system greater than any individual", weight: { SP: 3, DE: 3, NL: 2 } },
+      { emoji: "🎯", text: "Clinical finishing. Pure goal-scoring ruthlessness.", weight: { FR: 3, EN: 2, SE: 2 } },
+      { emoji: "🔥", text: "Pure desire. Hunger. Passion. Nothing technical.", weight: { SN: 3, NG: 3, MX: 2 } },
+    ]
+  },
+  {
+    text: "Your football motto:",
+    options: [
+      { emoji: "💃", text: "\"Play beautiful football or don't play at all\"", weight: { BR: 3, AR: 2, CO: 2 } },
+      { emoji: "🏆", text: "\"Winning is the only thing that matters\"", weight: { DE: 3, IT: 3, FR: 2 } },
+      { emoji: "❤️", text: "\"Football is life. It belongs to the people.\"", weight: { NG: 3, SN: 3, GH: 2 } },
+      { emoji: "📊", text: "\"Every detail matters. Every percentage point counts.\"", weight: { SP: 3, NL: 3, EN: 2 } },
+    ]
+  },
+  {
+    text: "Final question: You concede a goal in the 89th minute to lose 1-0. You:",
+    options: [
+      { emoji: "😤", text: "Devastated. Then immediately analyzing what went wrong.", weight: { DE: 3, IT: 2, SP: 2 } },
+      { emoji: "😭", text: "Cry. Fully. Publicly. Football is emotion.", weight: { BR: 3, AR: 3, PT: 2 } },
+      { emoji: "💪", text: "Head up. We'll be back. We don't stay down.", weight: { EN: 3, NG: 3, US: 2 } },
+      { emoji: "🎭", text: "Drama. Controversy. Blame the referee.", weight: { AR: 2, IT: 3, MX: 2 } },
+    ]
+  }
+];
+
+const TEAMS = {
+  BR: {
+    name: "Brazil 🇧🇷",
+    flag: "🇧🇷",
+    tagline: "The Beautiful Game — Pure & Untamed",
+    desc: "You are Brazil. You don't just play football — you express yourself through it. Where others see structure, you see art. You have natural flair, infectious energy, and a joy for life that's impossible to ignore. When you're on, nobody can touch you.",
+    stats: [{ v: "5×", l: "World Champs" }, { v: "⚡", l: "Pure Flair" }, { v: "😍", l: "World's Favourite" }]
+  },
+  AR: {
+    name: "Argentina 🇦🇷",
+    flag: "🇦🇷",
+    tagline: "Driven by Passion, Fueled by Genius",
+    desc: "You are Argentina. There's something poetic about how you carry yourself — equal parts brilliance and drama. You believe in individual genius. You've waited long for your moment, and when it comes, you seize it completely.",
+    stats: [{ v: "3×", l: "World Champs" }, { v: "🐐", l: "GOAT Energy" }, { v: "🎭", l: "Pure Drama" }]
+  },
+  FR: {
+    name: "France 🇫🇷",
+    flag: "🇫🇷",
+    tagline: "Clinical. Cold. Unstoppable.",
+    desc: "You are France. Ruthlessly efficient. You have all the talent in the world but you channel it with cold precision. You win through ruthless execution. People underestimate you — then you score three in 20 minutes.",
+    stats: [{ v: "2×", l: "World Champs" }, { v: "🎯", l: "Clinical" }, { v: "⚡", l: "Generational Talent" }]
+  },
+  DE: {
+    name: "Germany 🇩🇪",
+    flag: "🇩🇪",
+    tagline: "System Over Everything. Always.",
+    desc: "You are Germany. Precise. Organised. Reliable. You believe in the system, in preparation, in marginal gains. You're never the flashiest — but you're always there at the end. The machine always delivers.",
+    stats: [{ v: "4×", l: "World Champs" }, { v: "⚙️", l: "Pure System" }, { v: "🏆", l: "Ice Cold" }]
+  },
+  SP: {
+    name: "Spain 🇪🇸",
+    flag: "🇪🇸",
+    tagline: "Possession is Power. Patience is Lethal.",
+    desc: "You are Spain. You see the game differently. Where others chase the ball, you control it. You're the most technically gifted person in any room, and you know exactly when to strike.",
+    stats: [{ v: "1×", l: "World Champ" }, { v: "🎨", l: "Tiki-Taka" }, { v: "🧠", l: "IQ Off The Charts" }]
+  },
+  EN: {
+    name: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    tagline: "It's Coming Home... Eventually.",
+    desc: "You are England. Full of talent, full of hope, full of heart. You've been on the edge of greatness for years. This time feels different. You believe — and maybe, just maybe, this is your year.",
+    stats: [{ v: "1×", l: "World Champ (1966)" }, { v: "💪", l: "Never Give Up" }, { v: "🎵", l: "Three Lions" }]
+  },
+  PT: {
+    name: "Portugal 🇵🇹",
+    flag: "🇵🇹",
+    tagline: "A Team Bigger Than Any One Star",
+    desc: "You are Portugal. You've always had the talent. Now it's time to prove the team is bigger than any individual. Your golden generation has matured. You combine experience with hunger.",
+    stats: [{ v: "🌟", l: "Golden Gen." }, { v: "⚡", l: "Attack-Minded" }, { v: "❤️", l: "Passionate" }]
+  },
+  NG: {
+    name: "Nigeria 🇳🇬",
+    flag: "🇳🇬",
+    tagline: "Raw Power. Pure Heart. Super Eagles Soar.",
+    desc: "You are Nigeria. Athletic, explosive, fearless. You play with pure passion and physical intensity that terrifies opponents. When you're in the zone, no team on earth can handle you.",
+    stats: [{ v: "⚡", l: "Pure Electric" }, { v: "💪", l: "Physical Beast" }, { v: "🔥", l: "On Fire" }]
+  },
+  MX: {
+    name: "Mexico 🇲🇽",
+    flag: "🇲🇽",
+    tagline: "Home Advantage. No Limits.",
+    desc: "You are Mexico. Playing at home in WC 2026 — in your own stadiums, in front of your own people. The noise, the colour, the passion is unmatched. You fight for every ball like your life depends on it.",
+    stats: [{ v: "🏟️", l: "Host Nation" }, { v: "🌮", l: "Fan Favourite" }, { v: "💥", l: "Grito Power" }]
+  },
+  SN: {
+    name: "Senegal 🇸🇳",
+    flag: "🇸🇳",
+    tagline: "Africa's Pride. Nobody's Afterthought.",
+    desc: "You are Senegal. The reigning AFCON champions. Athletic, organised, dangerous. You refuse to be called an underdog. You are here to compete — and shock — the world.",
+    stats: [{ v: "🌍", l: "Africa's Best" }, { v: "💪", l: "Physical" }, { v: "🦁", l: "Teranga Lions" }]
+  },
+  IT: {
+    name: "Italy 🇮🇹",
+    flag: "🇮🇹",
+    tagline: "La Bella Figura. Always.",
+    desc: "You are Italy. Elegant, tactical, deeply proud. You might not always be the most attacking team — but you know how to win ugly when you need to. And when you're flowing, you're the most beautiful team in the world.",
+    stats: [{ v: "4×", l: "World Champs" }, { v: "🛡️", l: "Defensive Art" }, { v: "🎭", l: "Maximum Drama" }]
+  },
+  NL: {
+    name: "Netherlands 🇳🇱",
+    flag: "🇳🇱",
+    tagline: "Total Football Never Died.",
+    desc: "You are the Netherlands. Technically brilliant, tactically innovative, aesthetically obsessed. You invented Total Football and you still play like it. Orange everywhere.",
+    stats: [{ v: "🧡", l: "Total Football" }, { v: "🏆", l: "3× Finalists" }, { v: "🧠", l: "Most Innovative" }]
+  },
+};
+
+// Score tracking
+let scores = { BR:0, AR:0, FR:0, DE:0, SP:0, EN:0, PT:0, NG:0, MX:0, SN:0, IT:0, NL:0 };
+let currentQ = 0;
+let selectedOption = null;
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('qNum').textContent = `QUESTION ${currentQ + 1}`;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progressText').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = `${((currentQ + 1) / QUESTIONS.length) * 100}%`;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-emoji">${opt.emoji}</span><span class="option-text">${opt.text}</span>`;
+    btn.onclick = () => selectOption(i, opt.weight);
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('nextBtn').disabled = true;
+  selectedOption = null;
+
+  const isLast = currentQ === QUESTIONS.length - 1;
+  document.getElementById('nextBtn').textContent = isLast ? 'See My Result 🏆' : 'Next →';
+}
+
+function selectOption(index, weight) {
+  document.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === index);
+  });
+  selectedOption = weight;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  if (!selectedOption) return;
+
+  // Add scores
+  Object.entries(selectedOption).forEach(([team, pts]) => {
+    scores[team] = (scores[team] || 0) + pts;
+  });
+
+  currentQ++;
+  if (currentQ < QUESTIONS.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  // Find top team
+  const winner = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+  const team = TEAMS[winner] || TEAMS['BR'];
+
+  document.getElementById('resultFlag').textContent = team.flag;
+  document.getElementById('resultTeam').textContent = team.name;
+  document.getElementById('resultTagline').textContent = team.tagline;
+  document.getElementById('resultDesc').textContent = team.desc;
+
+  // Stats
+  const statsEl = document.getElementById('resultStats');
+  statsEl.innerHTML = team.stats.map(s => `
+    <div class="stat-box">
+      <div class="stat-value">${s.v}</div>
+      <div class="stat-label">${s.l}</div>
+    </div>
+  `).join('');
+
+  // Share links
+  const text = `🏆 I got ${team.name} in the "Which WC 2026 Team Are You?" quiz! ${team.tagline} ⚽ Take it here:`;
+  const url = encodeURIComponent(window.location.href);
+  const msgText = encodeURIComponent(`${text} ${window.location.href}`);
+
+  document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${msgText}`;
+  document.getElementById('whatsappShare').href = `https://wa.me/?text=${msgText}`;
+  document.getElementById('telegramShare').href = `https://t.me/share/url?url=${url}&text=${encodeURIComponent(text)}`;
+
+  // Switch cards
+  document.getElementById('quizCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'block';
+}
+
+function copyResult() {
+  const team = document.getElementById('resultTeam').textContent;
+  const text = `I got ${team} in the WC 2026 personality quiz! ${window.location.href}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+function subscribe() {
+  const email = document.getElementById('emailInput').value;
+  if (!email) return;
+  // POST to Beehiiv API in production
+  document.getElementById('subMsg').style.display = 'block';
+  document.getElementById('emailInput').value = '';
+}
+
+function resetQuiz() {
+  scores = { BR:0, AR:0, FR:0, DE:0, SP:0, EN:0, PT:0, NG:0, MX:0, SN:0, IT:0, NL:0 };
+  currentQ = 0;
+  selectedOption = null;
+  document.getElementById('quizCard').style.display = 'block';
+  document.getElementById('resultCard').style.display = 'none';
+  renderQuestion();
+}
+
+// Init
+renderQuestion();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

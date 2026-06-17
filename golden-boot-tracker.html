@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Golden Boot — Top Scorers Live Leaderboard</title>
+<meta name="description" content="Live World Cup 2026 Golden Boot tracker. Top scorers leaderboard updated after every goal. Who will win the WC 2026 top scorer award?">
+<meta property="og:title" content="WC 2026 Golden Boot — Top Scorers Live">
+<meta property="og:description" content="Live leaderboard of all WC 2026 top scorers. Updated after every goal.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Facebook Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','PIXEL_ID');fbq('track','PageView');</script>
+<!-- Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SportsEvent","name":"FIFA World Cup 2026 Golden Boot","url":"https://wc2026intel.vercel.app/golden-boot-tracker.html","description":"Live top scorer leaderboard for the 2026 FIFA World Cup"}
+</script>
+<style>
+  :root { --bg:#0a0a0a; --card:#141414; --border:#2a2a2a; --text:#f0f0f0; --muted:#888; --accent:#FFD700; --accent2:#00ff88; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); }
+
+  nav { background:#111; border-bottom:1px solid var(--border); padding:12px 20px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+  .nav-brand { font-weight:700; color:var(--accent2); text-decoration:none; }
+  .nav-links a { color:var(--muted); text-decoration:none; margin-left:14px; font-size:0.85rem; }
+
+  .page-header { background:linear-gradient(135deg,#2b1a00,#1a1000); padding:32px 20px; text-align:center; border-bottom:1px solid #3a2a00; }
+  .boot-icon { font-size:3rem; margin-bottom:8px; }
+  .page-header h1 { font-size:1.8rem; font-weight:800; }
+  .page-header p { color:var(--muted); margin-top:8px; }
+  .live-badge { display:inline-flex; align-items:center; gap:6px; background:#1a1a1a; border:1px solid #333; border-radius:20px; padding:4px 14px; font-size:0.8rem; margin-top:12px; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--accent2); animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .container { max-width:820px; margin:0 auto; padding:0 16px 80px; }
+
+  /* FILTER */
+  .filter-row { display:flex; gap:8px; flex-wrap:wrap; margin:20px 0; }
+  .filter-btn { background:var(--card); border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:6px 14px; cursor:pointer; font-size:0.85rem; transition:all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background:var(--accent); color:#000; border-color:var(--accent); font-weight:700; }
+
+  /* PODIUM */
+  .podium { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin:28px 0; flex-wrap:wrap; }
+  .podium-item { text-align:center; flex:1; min-width:120px; max-width:180px; }
+  .podium-crown { font-size:1.5rem; margin-bottom:4px; }
+  .podium-avatar { font-size:3rem; }
+  .podium-name { font-size:0.9rem; font-weight:700; margin:6px 0 2px; }
+  .podium-country { font-size:0.8rem; color:var(--muted); }
+  .podium-goals { font-size:2rem; font-weight:900; color:var(--accent); }
+  .podium-assists { font-size:0.75rem; color:var(--muted); }
+  .podium-bar { border-radius:8px 8px 0 0; margin-top:8px; }
+  .p1-bar { background:linear-gradient(180deg,var(--accent),#b8860b); height:80px; }
+  .p2-bar { background:linear-gradient(180deg,#C0C0C0,#808080); height:60px; }
+  .p3-bar { background:linear-gradient(180deg,#CD7F32,#8B4513); height:44px; }
+
+  /* FULL TABLE */
+  .scorers-table { width:100%; border-collapse:collapse; background:var(--card); border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+  .scorers-table th { padding:10px 12px; text-align:left; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid var(--border); }
+  .scorers-table th.num { text-align:center; }
+  .scorers-table td { padding:12px; border-bottom:1px solid var(--border); font-size:0.88rem; }
+  .scorers-table td.num { text-align:center; }
+  .scorers-table tr:last-child td { border-bottom:none; }
+  .scorers-table tr:hover { background:#1a1a1a; }
+  .rank-1 td { background:rgba(255,215,0,0.05); }
+  .rank-2 td { background:rgba(192,192,192,0.05); }
+  .rank-3 td { background:rgba(205,127,50,0.05); }
+
+  .player-cell { display:flex; align-items:center; gap:12px; }
+  .player-avatar { font-size:1.5rem; }
+  .player-info .player-name { font-weight:700; }
+  .player-info .player-team { font-size:0.75rem; color:var(--muted); }
+  .goals-num { font-weight:900; font-size:1.2rem; color:var(--accent); text-align:center; }
+  .rank-badge { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; }
+  .rb-1 { background:var(--accent); color:#000; }
+  .rb-2 { background:#C0C0C0; color:#000; }
+  .rb-3 { background:#CD7F32; color:#000; }
+  .rb-n { background:var(--border); color:var(--muted); }
+
+  .minutes-bar { background:#1a1a1a; border-radius:4px; height:6px; overflow:hidden; min-width:60px; }
+  .minutes-fill { background:var(--accent2); height:100%; border-radius:4px; }
+
+  /* EMAIL CAPTURE */
+  .email-capture { background:linear-gradient(135deg,#1a1500,#2b2000); border:1px solid #3a3000; border-radius:12px; padding:24px; margin:32px 0; text-align:center; }
+  .email-capture h3 { font-size:1.1rem; margin-bottom:8px; }
+  .email-capture p { font-size:0.85rem; color:var(--muted); margin-bottom:16px; }
+  .email-form { display:flex; gap:10px; max-width:400px; margin:0 auto; }
+  .email-form input { flex:1; background:#1a1a1a; border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--text); font-size:0.9rem; }
+  .email-form button { background:var(--accent); color:#000; border:none; border-radius:8px; padding:10px 20px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+  /* BETTING CTA */
+  .bet-cta-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin:24px 0; }
+  .bet-cta-card h3 { font-size:1rem; margin-bottom:12px; }
+  .bet-odds-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .bet-odds-item { flex:1; min-width:120px; background:#1a1a1a; border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; text-decoration:none; color:var(--text); }
+  .bet-odds-item .name { font-size:0.8rem; color:var(--muted); }
+  .bet-odds-item .odds { font-size:1.3rem; font-weight:700; color:var(--accent); display:block; margin-top:4px; }
+
+  /* TELEGRAM CTA */
+  .tg-cta { background:#0a2a3a; border:1px solid #1a4a6a; border-radius:12px; padding:16px 20px; margin:20px 0; display:flex; align-items:center; gap:16px; }
+  .tg-btn { margin-left:auto; background:#229ED9; color:#fff; border:none; border-radius:8px; padding:10px 18px; font-weight:700; text-decoration:none; white-space:nowrap; font-size:0.85rem; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#111; border-top:1px solid var(--border); display:flex; justify-content:space-around; padding:10px 0; z-index:99; }
+  .bottom-nav a { color:var(--muted); text-decoration:none; font-size:0.65rem; text-align:center; display:flex; flex-direction:column; gap:2px; }
+  .bottom-nav .icon { font-size:1.2rem; }
+
+  /* EXIT INTENT */
+  .exit-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; justify-content:center; align-items:center; }
+  .exit-overlay.show { display:flex; }
+  .exit-modal { background:var(--card); border:1px solid var(--accent); border-radius:16px; padding:32px; max-width:420px; text-align:center; position:relative; }
+  .exit-close { position:absolute; top:12px; right:16px; cursor:pointer; color:var(--muted); font-size:1.2rem; }
+
+  @media(max-width:600px) {
+    .hide-mobile { display:none; }
+    .email-form { flex-direction:column; }
+    .tg-cta { flex-direction:column; text-align:center; }
+    .tg-btn { margin:0; }
+    .podium { gap:8px; }
+    .podium-item { min-width:90px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Exit Intent -->
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-modal">
+    <span class="exit-close" onclick="document.getElementById('exitOverlay').classList.remove('show')">✕</span>
+    <div style="font-size:2.5rem;margin-bottom:8px">🥾</div>
+    <h3>Who scores next?</h3>
+    <p style="color:var(--muted);font-size:0.9rem;margin:8px 0 20px">Get AI predictions for every WC 2026 match delivered to your inbox — free.</p>
+    <div class="email-form" style="flex-direction:column">
+      <input type="email" id="exitEmail" placeholder="your@email.com" style="margin-bottom:10px">
+      <button onclick="submitExitEmail()">Get Predictions →</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="/" class="nav-brand">⚡ WC 2026 Intel</a>
+  <div class="nav-links">
+    <a href="/live-scores.html">Live</a>
+    <a href="/group-standings.html">Groups</a>
+    <a href="/watch-guide.html">Watch</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="boot-icon">🥾</div>
+  <h1>WC 2026 Golden Boot</h1>
+  <p>Live top scorer leaderboard — updated after every goal</p>
+  <div class="live-badge"><span class="dot"></span> Live data</div>
+</div>
+
+<div class="container">
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all')">All Scorers</button>
+    <button class="filter-btn" onclick="setFilter('group')">Group Stage</button>
+    <button class="filter-btn" onclick="setFilter('r32')">Round of 32+</button>
+    <button class="filter-btn" onclick="setFilter('goals')">Goals Only</button>
+    <button class="filter-btn" onclick="setFilter('gaplus')">Goals + Assists</button>
+  </div>
+
+  <!-- PODIUM TOP 3 -->
+  <div class="podium" id="podium">
+    <!-- rendered by JS -->
+  </div>
+
+  <!-- BETTING ODDS CTA -->
+  <div class="bet-cta-card">
+    <h3>🏆 Golden Boot Odds (via bet365)</h3>
+    <div class="bet-odds-row" id="goldenBootOdds">
+      <a href="https://www.bet365.com/?affiliate=YOUR_ID" target="_blank" rel="nofollow" class="bet-odds-item">
+        <span class="name">Mbappé 🇫🇷</span>
+        <span class="odds">4.50</span>
+      </a>
+      <a href="https://www.bet365.com/?affiliate=YOUR_ID" target="_blank" rel="nofollow" class="bet-odds-item">
+        <span class="name">Ronaldo 🇵🇹</span>
+        <span class="odds">7.00</span>
+      </a>
+      <a href="https://www.bet365.com/?affiliate=YOUR_ID" target="_blank" rel="nofollow" class="bet-odds-item">
+        <span class="name">Vinicius Jr 🇧🇷</span>
+        <span class="odds">8.00</span>
+      </a>
+      <a href="https://www.bet365.com/?affiliate=YOUR_ID" target="_blank" rel="nofollow" class="bet-odds-item">
+        <span class="name">Messi 🇦🇷</span>
+        <span class="odds">9.00</span>
+      </a>
+    </div>
+    <p style="font-size:0.7rem;color:#555;text-align:center;margin-top:12px">18+ | Gamble Responsibly | begambleaware.org</p>
+  </div>
+
+  <!-- FULL LEADERBOARD -->
+  <h2 style="font-size:1.1rem;font-weight:700;margin:24px 0 12px;color:#fff;border-left:3px solid var(--accent);padding-left:12px">📋 Full Leaderboard</h2>
+  <table class="scorers-table" id="scorersTable">
+    <thead>
+      <tr>
+        <th style="width:36px">#</th>
+        <th>Player</th>
+        <th class="num">⚽</th>
+        <th class="num hide-mobile">🅰️</th>
+        <th class="num hide-mobile">MP</th>
+        <th class="num hide-mobile">Mins</th>
+        <th class="hide-mobile">G/90</th>
+      </tr>
+    </thead>
+    <tbody id="scorerRows">
+      <!-- rendered by JS -->
+    </tbody>
+  </table>
+
+  <!-- EMAIL CAPTURE -->
+  <div class="email-capture">
+    <h3>🔔 Get goal alerts instantly</h3>
+    <p>Every WC 2026 goal lands in your inbox + AI prediction for the next match. 100% free.</p>
+    <div class="email-form">
+      <input type="email" id="heroEmail" placeholder="your@email.com">
+      <button onclick="subscribeEmail('heroEmail')">Get Alerts →</button>
+    </div>
+  </div>
+
+  <!-- TELEGRAM CTA -->
+  <div class="tg-cta">
+    <div style="font-size:2rem">✈️</div>
+    <div>
+      <strong>Instant goal alerts on Telegram</strong>
+      <p style="font-size:0.8rem;color:var(--muted);margin:0">Every goal, assist and red card — live</p>
+    </div>
+    <a href="https://t.me/wc2026intel" target="_blank" class="tg-btn">Join Free →</a>
+  </div>
+
+  <!-- AFFILIATE STRIP -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;text-align:center">
+    <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px">WATCH EVERY GOAL LIVE</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://nordvpn.com/ref/wc2026intel" target="_blank" rel="nofollow" style="background:#4687FF;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem">🔒 NordVPN — Stream Free</a>
+      <a href="https://www.bet365.com/?affiliate=YOUR_ID" target="_blank" rel="nofollow" style="background:#027b5b;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem">⚽ Bet on Top Scorer</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <a href="/live-scores.html"><span class="icon">⚽</span>Live</a>
+  <a href="/group-standings.html"><span class="icon">📊</span>Groups</a>
+  <a href="/golden-boot-tracker.html"><span class="icon">🥾</span>Scorer</a>
+  <a href="/watch-guide.html"><span class="icon">📺</span>Watch</a>
+  <a href="/viral-quiz.html"><span class="icon">🧠</span>Quiz</a>
+</div>
+
+<script>
+// ── Seed data (updated via API) ───────────────────────────────────────────────
+let SCORERS = [
+  { name:'Kylian Mbappé',      country:'France',      flag:'🇫🇷', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Vinicius Jr',        country:'Brazil',      flag:'🇧🇷', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Cristiano Ronaldo',  country:'Portugal',    flag:'🇵🇹', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Lionel Messi',       country:'Argentina',   flag:'🇦🇷', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Harry Kane',         country:'England',     flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Erling Haaland',     country:'Norway',      flag:'🇳🇴', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Lamine Yamal',       country:'Spain',       flag:'🇪🇸', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Victor Osimhen',     country:'Nigeria',     flag:'🇳🇬', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Rodri',              country:'Spain',       flag:'🇪🇸', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Jude Bellingham',    country:'England',     flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Neymar Jr',          country:'Brazil',      flag:'🇧🇷', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Antoine Griezmann',  country:'France',      flag:'🇫🇷', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Memphis Depay',      country:'Netherlands', flag:'🇳🇱', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Sadio Mané',         country:'Senegal',     flag:'🇸🇳', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Bukayo Saka',        country:'England',     flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Achraf Hakimi',      country:'Morocco',     flag:'🇲🇦', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Hirving Lozano',     country:'Mexico',      flag:'🇲🇽', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Christian Pulisic',  country:'USA',         flag:'🇺🇸', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Pedri',              country:'Spain',       flag:'🇪🇸', goals:0, assists:0, mp:0, minutes:0 },
+  { name:'Son Heung-min',      country:'South Korea', flag:'🇰🇷', goals:0, assists:0, mp:0, minutes:0 },
+];
+
+let currentFilter = 'all';
+
+function rankBadge(i) {
+  if (i === 0) return '<div class="rank-badge rb-1">1</div>';
+  if (i === 1) return '<div class="rank-badge rb-2">2</div>';
+  if (i === 2) return '<div class="rank-badge rb-3">3</div>';
+  return `<div class="rank-badge rb-n">${i + 1}</div>`;
+}
+
+function renderPodium(sorted) {
+  if (sorted[0].goals === 0) {
+    document.getElementById('podium').innerHTML = `
+      <div style="text-align:center;padding:32px;color:var(--muted);width:100%">
+        <div style="font-size:2rem;margin-bottom:8px">⏳</div>
+        <div>No goals scored yet — tournament just started!</div>
+        <div style="margin-top:8px;font-size:0.85rem">Check back after the first match</div>
+      </div>`;
+    return;
+  }
+
+  const top3 = sorted.slice(0, 3);
+  const barClasses = ['p1-bar', 'p2-bar', 'p3-bar'];
+  const crowns = ['🥇', '🥈', '🥉'];
+  const order = [1, 0, 2]; // Display order: 2nd, 1st, 3rd
+
+  document.getElementById('podium').innerHTML = order.map(i => {
+    const p = top3[i];
+    if (!p) return '';
+    return `
+    <div class="podium-item">
+      <div class="podium-crown">${crowns[i]}</div>
+      <div class="podium-avatar">${p.flag}</div>
+      <div class="podium-name">${p.name.split(' ').pop()}</div>
+      <div class="podium-country">${p.country}</div>
+      <div class="podium-goals">${p.goals}</div>
+      <div class="podium-assists">${p.assists} ast</div>
+      <div class="podium-bar ${barClasses[i]}"></div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable(sorted) {
+  const tbody = document.getElementById('scorerRows');
+  tbody.innerHTML = sorted.map((p, i) => {
+    const gPer90 = p.minutes > 0 ? ((p.goals / p.minutes) * 90).toFixed(2) : '—';
+    const minsPercent = Math.min((p.minutes / 270) * 100, 100); // 270 = max group stage mins
+    return `
+    <tr class="${i < 3 ? 'rank-' + (i+1) : ''}">
+      <td>${rankBadge(i)}</td>
+      <td>
+        <div class="player-cell">
+          <span class="player-avatar">${p.flag}</span>
+          <div class="player-info">
+            <div class="player-name">${p.name}</div>
+            <div class="player-team">${p.country}</div>
+          </div>
+        </div>
+      </td>
+      <td class="goals-num">${p.goals}</td>
+      <td class="num hide-mobile">${p.assists}</td>
+      <td class="num hide-mobile">${p.mp}</td>
+      <td class="hide-mobile">
+        <div class="minutes-bar" title="${p.minutes} minutes">
+          <div class="minutes-fill" style="width:${minsPercent}%"></div>
+        </div>
+      </td>
+      <td class="num hide-mobile" style="font-size:0.8rem;color:var(--muted)">${gPer90}</td>
+    </tr>`;
+  }).join('');
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  let data = [...SCORERS];
+
+  // Sort
+  if (currentFilter === 'gaplus') {
+    data.sort((a, b) => (b.goals + b.assists) - (a.goals + a.assists) || b.goals - a.goals);
+  } else {
+    data.sort((a, b) => b.goals - a.goals || b.assists - a.assists);
+  }
+
+  // Filter out zero scorers for cleaner display (unless nobody has scored)
+  const hasGoals = data.some(p => p.goals > 0);
+  if (hasGoals) data = data.filter(p => p.goals > 0 || p.assists > 0);
+
+  renderPodium(data);
+  renderTable(data);
+}
+
+// ── Fetch live data ────────────────────────────────────────────────────────────
+async function fetchScorers() {
+  try {
+    const resp = await fetch('/api/scorers');
+    if (!resp.ok) throw new Error('API unavailable');
+    const data = await resp.json();
+    if (data && data.length) {
+      // Merge with existing players
+      data.forEach(player => {
+        const idx = SCORERS.findIndex(p =>
+          p.name.toLowerCase().includes(player.name.toLowerCase().split(' ').pop())
+        );
+        if (idx >= 0) {
+          SCORERS[idx] = { ...SCORERS[idx], ...player };
+        } else {
+          SCORERS.push(player);
+        }
+      });
+    }
+  } catch (e) {
+    // Use seed data
+  }
+  renderLeaderboard();
+}
+
+// ── Email ─────────────────────────────────────────────────────────────────────
+function subscribeEmail(inputId) {
+  const email = document.getElementById(inputId).value;
+  if (!email || !email.includes('@')) { alert('Please enter a valid email'); return; }
+  document.querySelector('.email-capture').innerHTML = '<p style="color:var(--accent2);font-weight:700;text-align:center;padding:20px">✅ You\'re in! Goal alerts will land in your inbox.</p>';
+}
+
+function submitExitEmail() {
+  subscribeEmail('exitEmail');
+  setTimeout(() => document.getElementById('exitOverlay').classList.remove('show'), 1500);
+}
+
+// ── Exit intent ───────────────────────────────────────────────────────────────
+let exitShown = false;
+document.addEventListener('mouseleave', e => {
+  if (e.clientY <= 0 && !exitShown) {
+    exitShown = true;
+    document.getElementById('exitOverlay').classList.add('show');
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderLeaderboard();
+fetchScorers();
+setInterval(fetchScorers, 60000);
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

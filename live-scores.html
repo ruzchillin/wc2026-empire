@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>WC 2026 Live Scores — World Cup 2026 Results & Goals</title>
+<meta name="description" content="FIFA World Cup 2026 live scores, results, and goal alerts. Real-time updates for all 104 matches. Free.">
+<meta name="keywords" content="World Cup 2026 live score, WC 2026 results, FIFA 2026 live, World Cup live today">
+<meta property="og:title" content="WC 2026 Live Scores">
+<meta property="og:description" content="Real-time World Cup 2026 scores. Goals, results, fixtures.">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12122a;
+    --border: #2a2a4a;
+    --text: #e8e8f0;
+    --muted: #6060a0;
+    --red: #e94560;
+    --green: #4caf88;
+    --gold: #f4a261;
+    --blue: #4488ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* Header */
+  .header { position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:1.1rem; font-weight:900; color:#fff; }
+  .logo span { color:var(--red); }
+  .live-dot { display:inline-block; width:8px; height:8px; background:var(--red); border-radius:50%; animation:pulse 1.5s infinite; margin-right:6px; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .install-btn { background:var(--red); color:#fff; border:none; padding:7px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; display:none; }
+  .refresh-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:7px 12px; border-radius:20px; font-size:0.8rem; cursor:pointer; }
+  .refresh-btn:active { background:var(--border); }
+
+  /* Tabs */
+  .tabs { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { padding:12px 20px; font-size:0.9rem; font-weight:600; color:var(--muted); border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:all 0.2s; }
+  .tab.active { color:#fff; border-bottom-color:var(--red); }
+
+  /* Notification banner */
+  .notif-banner { background:linear-gradient(135deg,#1a0a2e,#0a1a2e); border-bottom:1px solid #3a2a5a; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .notif-banner p { font-size:0.85rem; color:#a0a8c0; flex:1; }
+  .notif-btn { background:var(--red); color:#fff; border:none; padding:8px 14px; border-radius:8px; font-size:0.82rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .notif-banner.hidden { display:none; }
+
+  /* Match cards */
+  .container { max-width:700px; margin:0 auto; padding:0 0 100px; }
+  .date-group { padding:10px 16px 6px; font-size:0.78rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+
+  .match-card { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 16px; cursor:pointer; transition:background 0.15s; position:relative; }
+  .match-card:hover { background:#16163a; }
+  .match-card.live { border-left:3px solid var(--red); }
+  .match-card.finished { opacity:0.8; }
+
+  .match-status { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+  .status-badge { font-size:0.72rem; font-weight:700; padding:3px 8px; border-radius:4px; }
+  .status-live { background:var(--red); color:#fff; animation:pulseBg 2s infinite; }
+  @keyframes pulseBg { 0%,100%{opacity:1} 50%{opacity:0.75} }
+  .status-ht { background:#f4a261; color:#000; }
+  .status-ft { background:#2a2a4a; color:var(--muted); }
+  .status-ns { background:transparent; color:var(--muted); border:1px solid var(--border); }
+  .match-minute { font-size:0.78rem; color:var(--red); font-weight:700; }
+  .match-round { font-size:0.72rem; color:var(--muted); margin-left:auto; }
+
+  .match-teams { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; }
+  .team { display:flex; align-items:center; gap:8px; }
+  .team.away { flex-direction:row-reverse; text-align:right; }
+  .team-flag { font-size:1.5rem; flex-shrink:0; }
+  .team-name { font-weight:600; font-size:0.95rem; color:#fff; }
+  .team-name.winner { color:var(--green); }
+
+  .score-box { display:flex; align-items:center; gap:6px; }
+  .score { font-size:1.6rem; font-weight:900; color:#fff; min-width:22px; text-align:center; }
+  .score-sep { font-size:1.2rem; color:var(--muted); }
+  .score.ns { color:var(--muted); font-size:1rem; }
+
+  .match-footer { margin-top:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .goal-scorer { font-size:0.78rem; color:var(--muted); }
+  .goal-scorer span { color:#c8c8e8; }
+  .venue-tag { font-size:0.75rem; color:var(--muted); margin-left:auto; }
+
+  /* Bottom nav */
+  .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:var(--bg); border-top:1px solid var(--border); display:grid; grid-template-columns:repeat(4,1fr); safe-area-inset-bottom:env(safe-area-inset-bottom); }
+  .nav-item { padding:10px 4px 12px; text-align:center; cursor:pointer; color:var(--muted); font-size:0.7rem; transition:color 0.2s; }
+  .nav-item.active { color:var(--red); }
+  .nav-icon { font-size:1.3rem; display:block; margin-bottom:2px; }
+
+  /* Telegram CTA */
+  .tg-cta { background:linear-gradient(135deg,#001a2e,#002a3e); border:1px solid #1a4a6a; border-radius:12px; padding:16px; margin:16px; display:flex; align-items:center; gap:12px; }
+  .tg-cta-text { flex:1; }
+  .tg-cta-text h4 { color:#fff; font-size:0.9rem; }
+  .tg-cta-text p { color:#6080a0; font-size:0.78rem; margin-top:2px; }
+  .tg-cta-btn { background:#0088cc; color:#fff; padding:9px 14px; border-radius:8px; font-size:0.82rem; font-weight:700; text-decoration:none; white-space:nowrap; }
+
+  /* Email capture */
+  .email-capture { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin:16px; text-align:center; }
+  .email-capture h4 { color:#fff; margin-bottom:6px; }
+  .email-capture p { color:var(--muted); font-size:0.82rem; margin-bottom:12px; }
+  .email-row { display:flex; gap:8px; flex-wrap:wrap; }
+  .email-row input { flex:1; min-width:160px; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:0.9rem; outline:none; }
+  .email-row button { background:var(--red); color:#fff; padding:10px 16px; border-radius:8px; border:none; font-weight:700; font-size:0.85rem; cursor:pointer; }
+
+  /* Affiliate strip */
+  .affiliate-strip { display:flex; gap:10px; overflow-x:auto; padding:12px 16px; scrollbar-width:none; }
+  .affiliate-strip::-webkit-scrollbar { display:none; }
+  .aff-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 14px; flex-shrink:0; text-decoration:none; display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .aff-card-icon { font-size:1.2rem; }
+  .aff-card-text { }
+  .aff-card-name { font-size:0.82rem; font-weight:700; color:#fff; }
+  .aff-card-sub { font-size:0.72rem; color:var(--muted); }
+
+  /* Loading */
+  .loading { text-align:center; padding:40px; color:var(--muted); }
+  .spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--red); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  /* Toast */
+  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#222240; border:1px solid var(--border); color:#fff; padding:10px 18px; border-radius:20px; font-size:0.88rem; z-index:100; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo"><span>WC</span> 2026 Live</div>
+  <div class="header-right">
+    <button class="install-btn" id="installBtn" onclick="installApp()">+ Install App</button>
+    <button class="refresh-btn" onclick="refresh()">↻ Refresh</button>
+  </div>
+</div>
+
+<!-- Push notification banner -->
+<div class="notif-banner" id="notifBanner">
+  <p>⚽ Get goal alerts the instant they happen — before your TV shows it.</p>
+  <button class="notif-btn" onclick="requestNotifications()">Enable Alerts</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('today', this)">⚽ Today</div>
+  <div class="tab" onclick="switchTab('tomorrow', this)">📅 Tomorrow</div>
+  <div class="tab" onclick="switchTab('results', this)">✅ Results</div>
+  <div class="tab" onclick="switchTab('groups', this)">🏆 Groups</div>
+  <div class="tab" onclick="switchTab('bracket', this)">🔥 Knockout</div>
+</div>
+
+<div class="container">
+
+  <!-- Affiliate strip -->
+  <div class="affiliate-strip">
+    <a class="aff-card" href="https://nordvpn.com" target="_blank" rel="nofollow">
+      <span class="aff-card-icon">🔒</span>
+      <div class="aff-card-text"><div class="aff-card-name">NordVPN</div><div class="aff-card-sub">Watch from anywhere</div></div>
+    </a>
+    <a class="aff-card" href="https://espnplus.com" target="_blank" rel="nofollow">
+      <span class="aff-card-icon">📺</span>
+      <div class="aff-card-text"><div class="aff-card-name">ESPN+</div><div class="aff-card-sub">All 104 matches</div></div>
+    </a>
+    <a class="aff-card" href="https://1xbet.com" target="_blank" rel="nofollow">
+      <span class="aff-card-icon">⚽</span>
+      <div class="aff-card-text"><div class="aff-card-name">1xBet</div><div class="aff-card-sub">Best WC odds</div></div>
+    </a>
+    <a class="aff-card" href="watch-guide.html">
+      <span class="aff-card-icon">📡</span>
+      <div class="aff-card-text"><div class="aff-card-name">Watch Guide</div><div class="aff-card-sub">Free in your country</div></div>
+    </a>
+  </div>
+
+  <!-- Main content area -->
+  <div id="mainContent">
+    <div class="loading"><div class="spinner"></div><p>Loading live scores...</p></div>
+  </div>
+
+  <!-- Telegram CTA -->
+  <div class="tg-cta">
+    <span style="font-size:2rem">⚡</span>
+    <div class="tg-cta-text">
+      <h4>Goal alerts before your TV</h4>
+      <p>Join 50,000+ fans getting instant WC 2026 notifications</p>
+    </div>
+    <a class="tg-cta-btn" href="https://t.me/wc2026intel" target="_blank">Join →</a>
+  </div>
+
+  <!-- Email capture -->
+  <div class="email-capture">
+    <h4>📧 Daily WC 2026 Preview</h4>
+    <p>Match breakdowns, picks, and stats before every game. Free.</p>
+    <div class="email-row">
+      <input type="email" id="emailInput" placeholder="your@email.com">
+      <button onclick="subscribe()">Subscribe Free</button>
+    </div>
+    <p id="subMsg" style="color:var(--green);margin-top:8px;display:none;font-size:0.85rem">✅ You're in!</p>
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchTab('today', null, this)">
+    <span class="nav-icon">⚽</span>Scores
+  </div>
+  <div class="nav-item" onclick="window.location.href='viral-quiz.html'">
+    <span class="nav-icon">🧩</span>Quiz
+  </div>
+  <div class="nav-item" onclick="window.location.href='watch-guide.html'">
+    <span class="nav-icon">📺</span>Watch
+  </div>
+  <div class="nav-item" onclick="window.location.href='merch-store.html'">
+    <span class="nav-icon">👕</span>Shop
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── WC 2026 match data (seed data — replaced by API in production) ─────────
+const WC_MATCHES = {
+  today: [
+    {
+      id: 1001, round: 'Group A — Matchday 1',
+      home: { name: 'Mexico', flag: '🇲🇽' },
+      away: { name: 'Ecuador', flag: '🇪🇨' },
+      status: 'LIVE', minute: '67',
+      score: { home: 1, away: 1 },
+      venue: 'Estadio Azteca, Mexico City',
+      goals: {
+        home: [{ scorer: 'Jiménez', minute: '23' }],
+        away: [{ scorer: 'Valencia', minute: '45' }],
+      }
+    },
+    {
+      id: 1002, round: 'Group B — Matchday 1',
+      home: { name: 'USA', flag: '🇺🇸' },
+      away: { name: 'Jamaica', flag: '🇯🇲' },
+      status: 'NS', kickoff: '20:00',
+      score: { home: null, away: null },
+      venue: 'SoFi Stadium, Los Angeles',
+      goals: { home: [], away: [] }
+    },
+    {
+      id: 1003, round: 'Group C — Matchday 1',
+      home: { name: 'Argentina', flag: '🇦🇷' },
+      away: { name: 'Saudi Arabia', flag: '🇸🇦' },
+      status: 'NS', kickoff: '17:00',
+      score: { home: null, away: null },
+      venue: 'AT&T Stadium, Dallas',
+      goals: { home: [], away: [] }
+    },
+  ],
+  results: [
+    {
+      id: 1000, round: 'Opening Match',
+      home: { name: 'Canada', flag: '🇨🇦' },
+      away: { name: 'France', flag: '🇫🇷' },
+      status: 'FT',
+      score: { home: 1, away: 2 },
+      venue: 'BMO Field, Toronto',
+      goals: {
+        home: [{ scorer: 'David', minute: '71' }],
+        away: [{ scorer: 'Mbappé', minute: '12' }, { scorer: 'Giroud', minute: '88' }],
+      }
+    },
+  ],
+  tomorrow: [
+    {
+      id: 1010, round: 'Group D — Matchday 1',
+      home: { name: 'Brazil', flag: '🇧🇷' },
+      away: { name: 'Serbia', flag: '🇷🇸' },
+      status: 'NS', kickoff: '18:00',
+      score: { home: null, away: null },
+      venue: 'MetLife Stadium, New Jersey',
+      goals: { home: [], away: [] }
+    },
+    {
+      id: 1011, round: 'Group E — Matchday 1',
+      home: { name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+      away: { name: 'Iran', flag: '🇮🇷' },
+      status: 'NS', kickoff: '15:00',
+      score: { home: null, away: null },
+      venue: 'Gillette Stadium, Boston',
+      goals: { home: [], away: [] }
+    },
+    {
+      id: 1012, round: 'Group F — Matchday 1',
+      home: { name: 'Germany', flag: '🇩🇪' },
+      away: { name: 'Japan', flag: '🇯🇵' },
+      status: 'NS', kickoff: '21:00',
+      score: { home: null, away: null },
+      venue: 'Arrowhead Stadium, Kansas City',
+      goals: { home: [], away: [] }
+    },
+  ]
+};
+
+// ── API fetch (production: replace with your Railway backend) ─────────────
+async function fetchLiveScores() {
+  try {
+    const resp = await fetch('/api/scores', { signal: AbortSignal.timeout(5000) });
+    if (resp.ok) return await resp.json();
+  } catch (e) { /* fallback to seed data */ }
+  return null;
+}
+
+// ── Render matches ────────────────────────────────────────────────────────
+function renderMatch(m) {
+  const isLive    = m.status === 'LIVE' || m.status === 'HT';
+  const isFinished = m.status === 'FT' || m.status === 'AET' || m.status === 'PEN';
+  const isNS      = m.status === 'NS';
+
+  const statusBadge = isLive
+    ? `<span class="status-badge status-live">${m.status === 'HT' ? 'HT' : 'LIVE'}</span>`
+    : isFinished
+    ? `<span class="status-badge status-ft">FT</span>`
+    : `<span class="status-badge status-ns">${m.kickoff || 'TBC'}</span>`;
+
+  const minuteBadge = isLive && m.minute
+    ? `<span class="match-minute">${m.minute}'</span>`
+    : '';
+
+  const homeScore = isNS ? `<span class="score ns">—</span>` : `<span class="score">${m.score.home}</span>`;
+  const awayScore = isNS ? `<span class="score ns">—</span>` : `<span class="score">${m.score.away}</span>`;
+
+  // Goal scorers
+  const homeGoals = (m.goals?.home || []).map(g => `<span>${g.scorer} ${g.minute}'</span>`).join(', ');
+  const awayGoals = (m.goals?.away || []).map(g => `<span>${g.scorer} ${g.minute}'</span>`).join(', ');
+
+  return `
+    <div class="match-card ${isLive?'live':''} ${isFinished?'finished':''}" onclick="openMatch(${m.id})">
+      <div class="match-status">
+        ${statusBadge}
+        ${minuteBadge}
+        <span class="match-round">${m.round || ''}</span>
+      </div>
+      <div class="match-teams">
+        <div class="team">
+          <span class="team-flag">${m.home.flag}</span>
+          <span class="team-name ${isFinished && m.score.home > m.score.away ? 'winner':''}">${m.home.name}</span>
+        </div>
+        <div class="score-box">
+          ${homeScore}
+          <span class="score-sep">:</span>
+          ${awayScore}
+        </div>
+        <div class="team away">
+          <span class="team-flag">${m.away.flag}</span>
+          <span class="team-name ${isFinished && m.score.away > m.score.home ? 'winner':''}">${m.away.name}</span>
+        </div>
+      </div>
+      ${(homeGoals || awayGoals) ? `
+      <div class="match-footer">
+        ${homeGoals ? `<div class="goal-scorer">⚽ ${homeGoals}</div>` : ''}
+        <div class="venue-tag">📍 ${m.venue || ''}</div>
+        ${awayGoals ? `<div class="goal-scorer" style="margin-left:auto">⚽ ${awayGoals}</div>` : ''}
+      </div>` : `<div class="match-footer"><div class="venue-tag">📍 ${m.venue || ''}</div></div>`}
+    </div>`;
+}
+
+function renderSection(matches, label) {
+  if (!matches || !matches.length) return `<div class="loading"><p style="padding:30px;color:var(--muted)">No matches scheduled.</p></div>`;
+  return `<div class="date-group">${label}</div>` + matches.map(renderMatch).join('');
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+let activeTab = 'today';
+
+function switchTab(tab, btnEl, navEl) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  loadTab(tab);
+}
+
+function loadTab(tab) {
+  const el = document.getElementById('mainContent');
+  const d = WC_MATCHES;
+
+  if (tab === 'today') {
+    el.innerHTML = renderSection(d.today, '🔴 Today — June 11, 2026');
+  } else if (tab === 'tomorrow') {
+    el.innerHTML = renderSection(d.tomorrow, '📅 Tomorrow — June 12, 2026');
+  } else if (tab === 'results') {
+    el.innerHTML = renderSection(d.results, '✅ Completed Matches');
+  } else if (tab === 'groups') {
+    el.innerHTML = `<div style="padding:20px; text-align:center; color:var(--muted)">Group tables coming after matchday 1 completes.</div>`;
+  } else if (tab === 'bracket') {
+    el.innerHTML = `<div style="padding:20px; text-align:center; color:var(--muted)">Knockout bracket unlocks after group stage.</div>`;
+  }
+}
+
+function openMatch(id) {
+  showToast('Full match stats → Premium. Join below.');
+}
+
+// ── Auto-refresh every 60 seconds when live matches ───────────────────────
+let refreshInterval;
+function startAutoRefresh() {
+  clearInterval(refreshInterval);
+  refreshInterval = setInterval(async () => {
+    if (activeTab === 'today') {
+      const fresh = await fetchLiveScores();
+      if (fresh && fresh.today) {
+        WC_MATCHES.today = fresh.today;
+        loadTab('today');
+      }
+    }
+  }, 60000);
+}
+
+function refresh() {
+  showToast('Refreshing scores...');
+  loadTab(activeTab);
+  startAutoRefresh();
+}
+
+// ── Push notifications ────────────────────────────────────────────────────
+async function requestNotifications() {
+  if (!('Notification' in window)) {
+    showToast('Notifications not supported on this device.');
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    document.getElementById('notifBanner').classList.add('hidden');
+    showToast('✅ Goal alerts enabled!');
+    new Notification('⚽ WC 2026 Intel', {
+      body: 'Goal alerts are ON. You\'ll know before your TV does.',
+      icon: '/icon-192.png'
+    });
+  }
+}
+
+// ── PWA install prompt ────────────────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').style.display = 'block';
+});
+
+async function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') showToast('✅ App installed!');
+    deferredPrompt = null;
+  }
+}
+
+// ── Email subscribe ───────────────────────────────────────────────────────
+function subscribe() {
+  const email = document.getElementById('emailInput').value;
+  if (!email) return;
+  document.getElementById('subMsg').style.display = 'block';
+  document.getElementById('emailInput').value = '';
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Hide notif banner if already granted ─────────────────────────────────
+if (Notification?.permission === 'granted') {
+  document.getElementById('notifBanner').classList.add('hidden');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+loadTab('today');
+startAutoRefresh();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:340px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;background:#fff}
+.header{background:linear-gradient(135deg,#002868,#BF0A30);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.header-title{font-size:14px;font-weight:700}
+.header-sub{font-size:11px;opacity:.7;margin-top:2px}
+.live-dot{width:8px;height:8px;background:#10b981;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.matches{padding:8px 0}
+.match{padding:10px 16px;border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background .1s}
+.match:hover{background:#f9fafb}
+.match-teams{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
+.match-score{font-size:15px;font-weight:800;color:#002868;padding:0 12px}
+.match-info{display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin-top:4px}
+.live-badge{background:#ef4444;color:#fff;font-size:9px;padding:2px 5px;border-radius:3px;font-weight:700}
+.upcoming-badge{background:#f3f4f6;color:#6b7280;font-size:9px;padding:2px 5px;border-radius:3px;font-weight:600}
+.promo-bar{margin:8px 12px;background:linear-gradient(135deg,#002868,#BF0A30);color:#fff;border-radius:8px;padding:10px 14px;cursor:pointer;text-decoration:none;display:block}
+.promo-title{font-size:12px;font-weight:700}
+.promo-sub{font-size:10px;opacity:.8;margin-top:2px}
+.promo-cta{display:inline-block;background:#fff;color:#002868;font-size:10px;font-weight:800;padding:3px 8px;border-radius:4px;margin-top:6px}
+.section-label{font-size:10px;font-weight:700;color:#9ca3af;padding:8px 16px 4px;text-transform:uppercase;letter-spacing:.05em}
+.odds-row{display:flex;gap:6px;padding:4px 12px 8px}
+.odds-btn{flex:1;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:6px;padding:6px 4px;text-align:center;cursor:pointer;text-decoration:none;color:#1a1a1a}
+.odds-btn:hover{background:#002868;color:#fff;border-color:#002868}
+.odds-team{font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.odds-val{font-size:13px;font-weight:800;color:#002868;margin-top:2px}
+.odds-btn:hover .odds-val{color:#fff}
+.footer{padding:8px 12px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.footer a{font-size:10px;color:#9ca3af;text-decoration:none}
+.footer a:hover{color:#002868}
+.refresh-btn{background:none;border:none;cursor:pointer;color:#9ca3af;font-size:10px;display:flex;align-items:center;gap:4px}
+.empty{padding:20px;text-align:center;color:#9ca3af;font-size:12px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="header-title">⚽ WC 2026 Live</div>
+    <div class="header-sub" id="last-updated">Loading...</div>
+  </div>
+  <div class="live-dot" id="live-dot"></div>
+</div>
+
+<div id="matches-container"><div class="empty">Loading matches...</div></div>
+
+<a href="https://sportsbook.draftkings.com/promos?sport=soccer" target="_blank" class="promo-bar" rel="nofollow" id="promo-bar">
+  <div class="promo-title">🎰 DraftKings WC 2026 Special</div>
+  <div class="promo-sub">Bet $5 on any match • Get $200 in bonus bets</div>
+  <div class="promo-cta">Claim free bets →</div>
+</a>
+
+<div class="section-label">Quick bets — next match</div>
+<div class="odds-row" id="odds-row">
+  <a href="https://sportsbook.draftkings.com" target="_blank" rel="nofollow" class="odds-btn">
+    <div class="odds-team" id="odds-home">Home</div>
+    <div class="odds-val" id="odds-home-val">+140</div>
+  </a>
+  <a href="https://sportsbook.draftkings.com" target="_blank" rel="nofollow" class="odds-btn">
+    <div class="odds-team">Draw</div>
+    <div class="odds-val" id="odds-draw">+220</div>
+  </a>
+  <a href="https://sportsbook.draftkings.com" target="_blank" rel="nofollow" class="odds-btn">
+    <div class="odds-team" id="odds-away">Away</div>
+    <div class="odds-val" id="odds-away-val">+175</div>
+  </a>
+</div>
+
+<div class="footer">
+  <a href="https://YOUR-DOMAIN.com" target="_blank">Full predictions →</a>
+  <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  <a href="https://YOUR-DOMAIN.com/tools" target="_blank">All tools →</a>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>

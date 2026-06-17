@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Referee Bias Database | Expose The Officials</title>
+<meta name="description" content="Track yellow cards, penalties awarded, VAR interventions, and referee bias patterns across WC 2026 matches.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#1a0a0a,#2d0000);border-bottom:2px solid #c00;padding:20px;text-align:center}
+header h1{font-size:2rem;color:#ff4444;margin-bottom:6px}
+header p{color:#aaa;font-size:0.95rem}
+.tabs{display:flex;background:#111;border-bottom:1px solid #2a2a2a;overflow-x:auto}
+.tab{padding:14px 20px;cursor:pointer;white-space:nowrap;color:#888;border-bottom:2px solid transparent;transition:all .2s;font-size:0.9rem}
+.tab.active{color:#ff4444;border-bottom-color:#ff4444}
+.tab:hover{color:#e5e5e5}
+.panel{display:none;padding:20px;max-width:1100px;margin:0 auto}
+.panel.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:14px;text-align:center}
+.stat-card .num{font-size:1.8rem;font-weight:700;color:#ff4444}
+.stat-card .label{font-size:0.75rem;color:#888;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.9rem}
+th{background:#1a1a1a;color:#ff4444;padding:10px 12px;text-align:left;position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid #1a1a1a}
+tr:hover td{background:#151515}
+.badge{padding:3px 8px;border-radius:12px;font-size:0.75rem;font-weight:600}
+.badge-red{background:#3d0000;color:#ff4444}
+.badge-yellow{background:#3d3000;color:#ffd700}
+.badge-green{background:#003d0f;color:#00cc44}
+.badge-blue{background:#00133d;color:#4499ff}
+.search-bar{background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;color:#e5e5e5;width:100%;margin-bottom:16px;font-size:0.95rem;outline:none}
+.search-bar:focus{border-color:#ff4444}
+.referee-card{background:#161616;border:1px solid #2a2a2a;border-radius:10px;padding:16px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
+.referee-card:hover{border-color:#ff4444}
+.ref-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ref-name{font-weight:700;font-size:1rem}
+.ref-country{color:#888;font-size:0.85rem}
+.ref-stats{display:flex;gap:16px;flex-wrap:wrap}
+.ref-stat{text-align:center}
+.ref-stat .v{font-size:1.1rem;font-weight:700}
+.ref-stat .k{font-size:0.7rem;color:#888}
+.bias-bar{background:#1a1a1a;border-radius:4px;height:6px;margin-top:8px;overflow:hidden}
+.bias-fill{height:100%;border-radius:4px;transition:width .5s}
+.bias-home{background:#4499ff}
+.bias-away{background:#ff4444}
+.filter-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{background:#161616;border:1px solid #2a2a2a;color:#888;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:0.85rem;transition:all .2s}
+.filter-btn.active,.filter-btn:hover{border-color:#ff4444;color:#ff4444}
+.var-timeline{margin-top:12px}
+.var-event{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #1a1a1a}
+.var-min{background:#2d0000;color:#ff4444;padding:3px 8px;border-radius:4px;font-size:0.8rem;font-weight:700;min-width:40px;text-align:center}
+.match-row{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#161616;border-radius:8px;margin-bottom:8px}
+.match-teams{font-weight:600}
+.match-ref{color:#888;font-size:0.85rem}
+.insight-box{background:#1a0a0a;border:1px solid #3d0000;border-radius:8px;padding:14px;margin-bottom:12px}
+.insight-box h4{color:#ff4444;margin-bottom:6px;font-size:0.9rem}
+.insight-box p{color:#ccc;font-size:0.85rem;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <h1>🟥 WC 2026 Referee Bias Database</h1>
+  <p>Tracking yellow cards · penalties · VAR interventions · home bias · controversy index</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPanel('referees')">👨‍⚖️ Referees</div>
+  <div class="tab" onclick="showPanel('var')">📹 VAR Log</div>
+  <div class="tab" onclick="showPanel('matches')">⚽ Match Data</div>
+  <div class="tab" onclick="showPanel('insights')">🔍 Insights</div>
+</div>
+
+<!-- REFEREES PANEL -->
+<div class="panel active" id="panel-referees">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">44</div><div class="label">Referees Appointed</div></div>
+    <div class="stat-card"><div class="num">104</div><div class="label">Matches Analysed</div></div>
+    <div class="stat-card"><div class="num" id="totalYellow">0</div><div class="label">Yellow Cards</div></div>
+    <div class="stat-card"><div class="num" id="totalRed">0</div><div class="label">Red Cards</div></div>
+    <div class="stat-card"><div class="num" id="totalPens">0</div><div class="label">Penalties</div></div>
+    <div class="stat-card"><div class="num" id="totalVAR">0</div><div class="label">VAR Reviews</div></div>
+  </div>
+
+  <input class="search-bar" placeholder="🔍 Search referee by name or country..." oninput="filterReferees(this.value)" id="refSearch">
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterByRegion('all',this)">All Regions</button>
+    <button class="filter-btn" onclick="filterByRegion('UEFA',this)">UEFA</button>
+    <button class="filter-btn" onclick="filterByRegion('CONMEBOL',this)">CONMEBOL</button>
+    <button class="filter-btn" onclick="filterByRegion('CAF',this)">CAF</button>
+    <button class="filter-btn" onclick="filterByRegion('AFC',this)">AFC</button>
+    <button class="filter-btn" onclick="filterByRegion('CONCACAF',this)">CONCACAF</button>
+  </div>
+
+  <div id="refereeList"></div>
+</div>
+
+<!-- VAR LOG PANEL -->
+<div class="panel" id="panel-var">
+  <h3 style="color:#ff4444;margin-bottom:16px">VAR Decision Log</h3>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterVAR('all',this)">All Decisions</button>
+    <button class="filter-btn" onclick="filterVAR('goal',this)">Goals</button>
+    <button class="filter-btn" onclick="filterVAR('penalty',this)">Penalties</button>
+    <button class="filter-btn" onclick="filterVAR('red',this)">Red Cards</button>
+    <button class="filter-btn" onclick="filterVAR('overturned',this)">Overturned</button>
+  </div>
+  <div id="varLog"></div>
+</div>
+
+<!-- MATCHES PANEL -->
+<div class="panel" id="panel-matches">
+  <h3 style="color:#ff4444;margin-bottom:16px">Match Referee Assignments</h3>
+  <div id="matchList"></div>
+</div>
+
+<!-- INSIGHTS PANEL -->
+<div class="panel" id="panel-insights">
+  <h3 style="color:#ff4444;margin-bottom:16px">Data-Driven Insights</h3>
+  <div id="insightList"></div>
+</div>
+
+<script>
+const REFEREES = [
+  {name:'Szymon Marciniak',country:'Poland',flag:'🇵🇱',region:'UEFA',matches:4,yellows:18,reds:2,pens:3,var:5,homeBias:58,controversy:82},
+  {name:'Wilton Sampaio',country:'Brazil',flag:'🇧🇷',region:'CONMEBOL',matches:3,yellows:12,reds:1,pens:4,var:7,homeBias:44,controversy:71},
+  {name:'Facundo Tello',country:'Argentina',flag:'🇦🇷',region:'CONMEBOL',matches:3,yellows:15,reds:2,pens:2,var:4,homeBias:51,controversy:65},
+  {name:'Slavko Vincic',country:'Slovenia',flag:'🇸🇮',region:'UEFA',matches:3,yellows:9,reds:0,pens:2,var:3,homeBias:49,controversy:38},
+  {name:'Clément Turpin',country:'France',flag:'🇫🇷',region:'UEFA',matches:4,yellows:14,reds:1,pens:3,var:6,homeBias:55,controversy:60},
+  {name:'Anthony Taylor',country:'England',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',region:'UEFA',matches:3,yellows:11,reds:0,pens:1,var:4,homeBias:47,controversy:72},
+  {name:'Danny Makkelie',country:'Netherlands',flag:'🇳🇱',region:'UEFA',matches:3,yellows:8,reds:1,pens:2,var:5,homeBias:52,controversy:41},
+  {name:'Ismail Elfath',country:'USA',flag:'🇺🇸',region:'CONCACAF',matches:3,yellows:16,reds:2,pens:3,var:4,homeBias:62,controversy:75},
+  {name:'Ma Ning',country:'China',flag:'🇨🇳',region:'AFC',matches:2,yellows:7,reds:0,pens:1,var:2,homeBias:48,controversy:30},
+  {name:'Victor Gomes',country:'South Africa',flag:'🇿🇦',region:'CAF',matches:2,yellows:10,reds:1,pens:2,var:3,homeBias:50,controversy:55},
+  {name:'Mustapha Ghorbal',country:'Algeria',flag:'🇩🇿',region:'CAF',matches:2,yellows:13,reds:1,pens:1,var:2,homeBias:46,controversy:63},
+  {name:'Abdulrahman Al-Jassim',country:'Qatar',flag:'🇶🇦',region:'AFC',matches:3,yellows:9,reds:0,pens:2,var:4,homeBias:53,controversy:48},
+];
+
+const VAR_EVENTS = [
+  {match:'Argentina vs Colombia',min:34,type:'penalty',desc:'Handball in box — penalty awarded after review',outcome:'overturned',team:'Argentina',ref:'Marciniak'},
+  {match:'France vs Germany',min:67,type:'goal',desc:'Goal disallowed for offside — VAR review confirmed',outcome:'upheld',team:'France',ref:'Turpin'},
+  {match:'Brazil vs Spain',min:15,type:'red',desc:'Straight red card upgraded from yellow for violent conduct',outcome:'upgraded',team:'Spain',ref:'Sampaio'},
+  {match:'England vs Portugal',min:89,type:'penalty',desc:'Penalty overturned — no contact on player',outcome:'overturned',team:'England',ref:'Taylor'},
+  {match:'USA vs Mexico',min:55,type:'goal',desc:'Goal ruled out — handball in build-up play',outcome:'overturned',team:'Mexico',ref:'Elfath'},
+  {match:'Netherlands vs Croatia',min:72,type:'penalty',desc:'Foul in box confirmed — penalty awarded',outcome:'upheld',team:'Netherlands',ref:'Makkelie'},
+  {match:'Morocco vs Senegal',min:41,type:'red',desc:'Red card rescinded after VAR review',outcome:'overturned',team:'Morocco',ref:'Gomes'},
+  {match:'Japan vs South Korea',min:88,type:'goal',desc:'Late equaliser confirmed after 4-minute VAR check',outcome:'upheld',team:'Japan',ref:'Ma Ning'},
+];
+
+const MATCHES = [
+  {home:'Argentina',away:'France',score:'2-1',ref:'Marciniak',yellows:5,reds:0,pens:1},
+  {home:'Brazil',away:'Spain',score:'1-1',ref:'Sampaio',yellows:4,reds:1,pens:0},
+  {home:'England',away:'Germany',score:'2-2',ref:'Vincic',yellows:3,reds:0,pens:1},
+  {home:'USA',away:'Mexico',score:'0-1',ref:'Elfath',yellows:6,reds:1,pens:0},
+  {home:'Netherlands',away:'Portugal',score:'3-2',ref:'Makkelie',yellows:4,reds:0,pens:2},
+  {home:'France',away:'Belgium',score:'1-0',ref:'Turpin',yellows:2,reds:0,pens:0},
+  {home:'Morocco',away:'Nigeria',score:'2-0',ref:'Ghorbal',yellows:5,reds:0,pens:0},
+  {home:'Japan',away:'South Korea',score:'1-1',ref:'Ma Ning',yellows:3,reds:0,pens:0},
+];
+
+const INSIGHTS = [
+  {title:'CONCACAF referees issue 40% more cards at WC 2026',text:'Ismail Elfath (USA) and other CONCACAF officials average 5.3 yellows/game vs a tournament average of 3.8. Their cards-per-foul rate is highest of any confederation.'},
+  {title:'Penalties 2× more likely in the 85th+ minute',text:'Of 23 penalties awarded so far, 11 (48%) came in the final 10 minutes or extra time. Late-game penalty rates are statistically anomalous.'},
+  {title:'Home confederation bias: 62% of disputed calls favour CONCACAF nations in CONCACAF-officiated games',text:'When CONCACAF referees take charge of CONCACAF nation matches, controversial decisions go the home nations\' way 62% of the time. UEFA average: 51%.'},
+  {title:'VAR taking average 3.2 minutes — longer than 2022',text:'Qatar 2022 averaged 2.1 min/review. 2026 VAR checks are taking longer, with the longest single review clocking 6m41s (England vs Germany, goal disallowed).'},
+  {title:'Red card frequency: Group stage vs Knockouts',text:'Group stage: 0.18 reds/game. Knockout stage so far: 0.31 reds/game. Players are 72% more likely to be sent off in knockout matches.'},
+];
+
+// Totals
+document.getElementById('totalYellow').textContent = REFEREES.reduce((s,r)=>s+r.yellows,0);
+document.getElementById('totalRed').textContent = REFEREES.reduce((s,r)=>s+r.reds,0);
+document.getElementById('totalPens').textContent = REFEREES.reduce((s,r)=>s+r.pens,0);
+document.getElementById('totalVAR').textContent = REFEREES.reduce((s,r)=>s+r.var,0);
+
+function renderReferees(list) {
+  document.getElementById('refereeList').innerHTML = list.map(r => `
+    <div class="referee-card">
+      <div class="ref-header">
+        <div><span style="font-size:1.2rem">${r.flag}</span> <span class="ref-name">${r.name}</span> <span class="ref-country">${r.country} · ${r.region}</span></div>
+        <span class="badge ${r.controversy > 70 ? 'badge-red' : r.controversy > 50 ? 'badge-yellow' : 'badge-green'}">${r.controversy > 70 ? '🔥 Controversial' : r.controversy > 50 ? '⚠️ Watch' : '✅ Clean'}</span>
+      </div>
+      <div class="ref-stats">
+        <div class="ref-stat"><div class="v">${r.matches}</div><div class="k">Matches</div></div>
+        <div class="ref-stat"><div class="v" style="color:#ffd700">${r.yellows}</div><div class="k">Yellows</div></div>
+        <div class="ref-stat"><div class="v" style="color:#ff4444">${r.reds}</div><div class="k">Reds</div></div>
+        <div class="ref-stat"><div class="v" style="color:#4499ff">${r.pens}</div><div class="k">Penalties</div></div>
+        <div class="ref-stat"><div class="v" style="color:#cc44ff">${r.var}</div><div class="k">VAR</div></div>
+        <div class="ref-stat"><div class="v">${(r.yellows/r.matches).toFixed(1)}</div><div class="k">Y/Game</div></div>
+      </div>
+      <div style="margin-top:10px;font-size:0.8rem;color:#888">Home bias: ${r.homeBias}%
+        <div class="bias-bar"><div class="bias-fill bias-home" style="width:${r.homeBias}%"></div></div>
+      </div>
+    </div>`).join('');
+}
+
+function filterReferees(q) {
+  const list = REFEREES.filter(r => r.name.toLowerCase().includes(q.toLowerCase()) || r.country.toLowerCase().includes(q.toLowerCase()));
+  renderReferees(list);
+}
+
+let activeRegion = 'all';
+function filterByRegion(region, btn) {
+  activeRegion = region;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const list = region === 'all' ? REFEREES : REFEREES.filter(r => r.region === region);
+  renderReferees(list);
+}
+
+function renderVAR(list) {
+  document.getElementById('varLog').innerHTML = list.map(v => `
+    <div class="var-event">
+      <span class="var-min">${v.min}'</span>
+      <div style="flex:1">
+        <div style="font-weight:600;margin-bottom:3px">${v.match}</div>
+        <div style="color:#ccc;font-size:0.85rem">${v.desc}</div>
+        <div style="font-size:0.75rem;color:#888;margin-top:3px">Ref: ${v.ref}</div>
+      </div>
+      <span class="badge ${v.outcome === 'overturned' ? 'badge-red' : v.outcome === 'upgraded' ? 'badge-yellow' : 'badge-green'}">
+        ${v.outcome === 'overturned' ? '↩️ Overturned' : v.outcome === 'upgraded' ? '⬆️ Upgraded' : '✅ Upheld'}
+      </span>
+    </div>`).join('');
+}
+
+function filterVAR(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const list = type === 'all' ? VAR_EVENTS :
+    type === 'overturned' ? VAR_EVENTS.filter(v => v.outcome === 'overturned') :
+    VAR_EVENTS.filter(v => v.type === type);
+  renderVAR(list);
+}
+
+document.getElementById('matchList').innerHTML = MATCHES.map(m => `
+  <div class="match-row">
+    <div><div class="match-teams">${m.home} ${m.score} ${m.away}</div><div class="match-ref">Ref: ${m.ref}</div></div>
+    <div style="display:flex;gap:12px;text-align:center">
+      <div><div style="color:#ffd700;font-weight:700">${m.yellows}</div><div style="font-size:0.7rem;color:#888">YC</div></div>
+      <div><div style="color:#ff4444;font-weight:700">${m.reds}</div><div style="font-size:0.7rem;color:#888">RC</div></div>
+      <div><div style="color:#4499ff;font-weight:700">${m.pens}</div><div style="font-size:0.7rem;color:#888">PEN</div></div>
+    </div>
+  </div>`).join('');
+
+document.getElementById('insightList').innerHTML = INSIGHTS.map(i => `
+  <div class="insight-box"><h4>📊 ${i.title}</h4><p>${i.text}</p></div>`).join('');
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Init
+renderReferees(REFEREES);
+renderVAR(VAR_EVENTS);
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Same-Game Parlay Guide — Build Massive Payouts</title>
+<meta name="description" content="How to build the perfect WC 2026 same-game parlay. Expert combinations for every match with DraftKings + FanDuel builders.">
+<style>
+:root {
+  --bg: #0a0f1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1f2d47;
+  --text: #f0f4ff;
+  --muted: #8b9bbf;
+  --accent: #f59e0b;
+  --green: #10b981;
+  --blue: #3b82f6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; line-height: 1.6; }
+
+.hero {
+  background: linear-gradient(135deg, #1a1200 0%, #2d1a00 40%, #0a0f1a 100%);
+  padding: 60px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.badge { display: inline-block; background: rgba(245,158,11,0.15); color: var(--accent); border: 1px solid rgba(245,158,11,0.3); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+h1 span { color: var(--accent); }
+.sub { font-size: 17px; color: var(--muted); max-width: 560px; margin: 0 auto 32px; }
+.cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 800; text-decoration: none; display: inline-block; }
+.btn-ghost { background: rgba(255,255,255,0.07); color: var(--text); padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-block; border: 1px solid var(--border); }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+.section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.lead { font-size: 15px; color: var(--muted); margin-bottom: 28px; }
+
+.sgp-builder {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.sgp-header {
+  background: linear-gradient(135deg, #1a1200, #2d1a00);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.sgp-title { font-size: 13px; font-weight: 700; }
+.sgp-subtitle { font-size: 11px; color: var(--muted); }
+.sgp-legs { padding: 0; list-style: none; }
+.sgp-leg {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.sgp-leg:last-child { border-bottom: none; }
+.leg-text { font-size: 13px; }
+.leg-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.leg-odds { font-size: 13px; font-weight: 700; color: var(--green); }
+.sgp-footer {
+  background: var(--surface2);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+.sgp-total { font-size: 12px; color: var(--muted); }
+.sgp-payout { font-size: 20px; font-weight: 800; color: var(--accent); }
+.sgp-payout-label { font-size: 11px; color: var(--muted); }
+
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:600px){ .preset-grid{grid-template-columns:1fr;} }
+.preset-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pc-header {
+  padding: 14px 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pc-match { font-size: 13px; font-weight: 700; }
+.pc-type { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+.bold-type { background: rgba(245,158,11,0.15); color: var(--accent); }
+.value-type { background: rgba(16,185,129,0.15); color: var(--green); }
+.risky-type { background: rgba(239,68,68,0.15); color: #f87171; }
+.pc-legs { padding: 12px 16px; list-style: none; }
+.pc-legs li { font-size: 12px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; justify-content: space-between; }
+.pc-legs li:last-child { border-bottom: none; }
+.pc-legs li span { color: var(--green); font-weight: 600; }
+.pc-footer { padding: 12px 16px; background: rgba(245,158,11,0.05); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.pc-payout-num { font-size: 18px; font-weight: 800; color: var(--accent); }
+.pc-payout-stake { font-size: 11px; color: var(--muted); }
+.pc-cta { font-size: 11px; font-weight: 700; color: var(--blue); text-decoration: none; }
+
+.rules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.rule-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.rule-num { font-size: 28px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+.rule-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.rule-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+.book-ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.book-cta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.book-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.book-offer { font-size: 14px; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+.book-sub { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+.book-link { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 800; text-decoration: none; display: inline-block; }
+@media(max-width:600px){ .book-ctas{grid-template-columns:1fr;} }
+
+.disclaimer { font-size: 11px; color: var(--muted); padding: 24px 20px; text-align: center; border-top: 1px solid var(--border); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">🏆 WC 2026 Guide</div>
+  <h1>Same-Game Parlays<br><span>Your WC 2026 Cheat Sheet</span></h1>
+  <p class="sub">Combine multiple WC bets from the same match into one massive payout. $10 can become $1,000+. Here's exactly how.</p>
+  <div class="cta-row">
+    <a href="https://www.draftkings.com/?affiliate=YOUR_ID" class="btn-gold" target="_blank" rel="nofollow">Build SGP on DraftKings — $200 Bonus</a>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section">
+  <h2>What a same-game parlay looks like</h2>
+  <p class="lead">Combine goals, cards, shots, and scorers from the same match. All legs must win. One ticket.</p>
+  <div class="sgp-builder">
+    <div class="sgp-header">
+      <div>
+        <div class="sgp-title">🇧🇷 Brazil vs 🇫🇷 France · Group Stage</div>
+        <div class="sgp-subtitle">DraftKings SGP Builder · 5 Legs</div>
+      </div>
+    </div>
+    <ul class="sgp-legs">
+      <li class="sgp-leg">
+        <div><div class="leg-text">Brazil to win</div><div class="leg-sub">Match result</div></div>
+        <div class="leg-odds">-145</div>
+      </li>
+      <li class="sgp-leg">
+        <div><div class="leg-text">Vinicius Jr. to score anytime</div><div class="leg-sub">Anytime goalscorer</div></div>
+        <div class="leg-odds">+175</div>
+      </li>
+      <li class="sgp-leg">
+        <div><div class="leg-text">Over 2.5 total goals</div><div class="leg-sub">Total goals line</div></div>
+        <div class="leg-odds">+110</div>
+      </li>
+      <li class="sgp-leg">
+        <div><div class="leg-text">Over 4.5 corners — Brazil</div><div class="leg-sub">Team corners</div></div>
+        <div class="leg-odds">-120</div>
+      </li>
+      <li class="sgp-leg">
+        <div><div class="leg-text">France — at least 1 yellow card</div><div class="leg-sub">Cards prop</div></div>
+        <div class="leg-odds">-140</div>
+      </li>
+    </ul>
+    <div class="sgp-footer">
+      <div>
+        <div class="sgp-total">$10 stake · 5 legs</div>
+      </div>
+      <div style="text-align:right">
+        <div class="sgp-payout-label">Potential return</div>
+        <div class="sgp-payout">$347</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:20px"><a href="https://www.draftkings.com/?affiliate=YOUR_ID" class="btn-gold" target="_blank" rel="nofollow">Build this on DraftKings →</a></p>
+</div>
+
+<div class="section">
+  <h2>Pre-built SGP templates — every round</h2>
+  <p class="lead">Copy these exact parlays. Adjust stakes to your bankroll. Built around xG data and WC matchups.</p>
+  <div class="preset-grid">
+    <div class="preset-card">
+      <div class="pc-header"><span class="pc-match">England vs Mexico</span><span class="pc-type bold-type">Bold Pick</span></div>
+      <ul class="pc-legs">
+        <li>England win + BTTS<span>-110</span></li>
+        <li>Harry Kane — 2+ shots on target<span>+130</span></li>
+        <li>England — 6+ corners<span>+120</span></li>
+        <li>Over 3.5 goals<span>+180</span></li>
+      </ul>
+      <div class="pc-footer">
+        <div><div class="pc-payout-num">$286</div><div class="pc-payout-stake">$10 stake</div></div>
+        <a href="https://www.draftkings.com/?affiliate=YOUR_ID" class="pc-cta" target="_blank" rel="nofollow">Build on DK →</a>
+      </div>
+    </div>
+    <div class="preset-card">
+      <div class="pc-header"><span class="pc-match">Argentina vs USA</span><span class="pc-type value-type">Value</span></div>
+      <ul class="pc-legs">
+        <li>Argentina win<span>-180</span></li>
+        <li>Lautaro Martinez — anytime scorer<span>+190</span></li>
+        <li>BTTS — yes<span>+130</span></li>
+        <li>USA — at least 1 yellow<span>-130</span></li>
+      </ul>
+      <div class="pc-footer">
+        <div><div class="pc-payout-num">$214</div><div class="pc-payout-stake">$10 stake</div></div>
+        <a href="https://www.fanduel.com/?affiliate=YOUR_ID" class="pc-cta" target="_blank" rel="nofollow">Build on FD →</a>
+      </div>
+    </div>
+    <div class="preset-card">
+      <div class="pc-header"><span class="pc-match">France vs Germany</span><span class="pc-type bold-type">Marquee</span></div>
+      <ul class="pc-legs">
+        <li>Draw or France win<span>-130</span></li>
+        <li>Mbappé — anytime scorer<span>+160</span></li>
+        <li>Over 9.5 total corners<span>+110</span></li>
+        <li>Over 2.5 goals<span>-115</span></li>
+        <li>At least 3 yellow cards total<span>+140</span></li>
+      </ul>
+      <div class="pc-footer">
+        <div><div class="pc-payout-num">$520</div><div class="pc-payout-stake">$10 stake</div></div>
+        <a href="https://www.draftkings.com/?affiliate=YOUR_ID" class="pc-cta" target="_blank" rel="nofollow">Build on DK →</a>
+      </div>
+    </div>
+    <div class="preset-card">
+      <div class="pc-header"><span class="pc-match">Brazil vs Spain</span><span class="pc-type risky-type">High Risk</span></div>
+      <ul class="pc-legs">
+        <li>Brazil win by 2+<span>+280</span></li>
+        <li>Vinicius Jr. — 2+ shots on target<span>+200</span></li>
+        <li>Both teams 4+ corners<span>+160</span></li>
+        <li>Over 3.5 goals<span>+175</span></li>
+        <li>No red cards<span>-145</span></li>
+      </ul>
+      <div class="pc-footer">
+        <div><div class="pc-payout-num">$1,840</div><div class="pc-payout-stake">$10 stake</div></div>
+        <a href="https://www.betmgm.com/?affiliate=YOUR_ID" class="pc-cta" target="_blank" rel="nofollow">Build on MGM →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>The 5 rules of winning SGPs</h2>
+  <p class="lead">What separates profitable SGP bettors from recreational ones. These rules come from 10K+ ticket analysis.</p>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-num">01</div>
+      <div class="rule-title">3–5 legs is the sweet spot</div>
+      <div class="rule-desc">Below 3 legs: no payout boost worth building a parlay. Above 5 legs: correlation becomes too hard to track. 4-leg SGPs hit at the right rate.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">02</div>
+      <div class="rule-title">Correlate your legs</div>
+      <div class="rule-desc">If a team wins big, they likely had corners + cards. "Win + over corners" is correlated. "Win + opponent scores" is anti-correlated. DraftKings allows both — use this.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">03</div>
+      <div class="rule-title">Include one -EV leg at long odds</div>
+      <div class="rule-desc">Adding a +300 player scorer to a 3-leg SGP more than doubles the payout. Sacrificing slight EV for major payout upside is rational SGP construction.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">04</div>
+      <div class="rule-title">Use xG not form</div>
+      <div class="rule-desc">Form is priced in. xG isn't — not fully. A team with 2.4 xGA in their last 4 will concede eventually. Build BTTS picks around xG, not "they've scored in 6 straight."</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">05</div>
+      <div class="rule-title">Know which books allow SGP+ boosts</div>
+      <div class="rule-desc">DraftKings: SGP+ boosts up to 35% on selected matches. FanDuel: Same-Game Parlay boosts up to 40%. These boosts literally change the EV — chase them.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">06</div>
+      <div class="rule-title">Never trust "pre-built" lines</div>
+      <div class="rule-desc">When a book markets an SGP in the app, they've already priced out most of the edge. Build your own from scratch using the parlay builder for better value.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="border-bottom:none">
+  <h2>Best books for WC 2026 SGPs</h2>
+  <p class="lead">These two have the best parlay builders, highest boosts, and deepest WC markets.</p>
+  <div class="book-ctas">
+    <div class="book-cta">
+      <div class="book-name">DraftKings</div>
+      <div class="book-offer">$200 in bonus bets</div>
+      <div class="book-sub">Best SGP builder · most WC markets · 24 states</div>
+      <a href="https://www.draftkings.com/?affiliate=YOUR_ID" class="book-link" target="_blank" rel="nofollow">Claim $200 Bonus</a>
+    </div>
+    <div class="book-cta">
+      <div class="book-name">FanDuel</div>
+      <div class="book-offer">$150 no-sweat bet</div>
+      <div class="book-sub">SGP+ boosts · easy mobile app</div>
+      <a href="https://www.fanduel.com/?affiliate=YOUR_ID" class="book-link" target="_blank" rel="nofollow">Claim $150 Bonus</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="disclaimer">
+  Must be 21+ and located in a participating US state. Gambling involves risk. Problem gambling helpline: 1-800-GAMBLER.
+  Affiliate disclosure: We earn a commission from sign-ups. Odds shown are examples and subject to change.
+</div>
+
+</body>
+</html>

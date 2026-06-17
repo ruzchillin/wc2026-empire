@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle Race — Beat the AI | WC 2026</title>
+<meta name="description" content="$50 entry. $100,000 prize pool. Can you beat an AI predicting WC 2026? The Oracle Race is live.">
+<style>
+  :root {
+    --bg: #0a0a0a; --surface: #141414; --card: #1a1a1a; --border: #262626;
+    --green: #22c55e; --gold: #f59e0b; --red: #ef4444; --blue: #3b82f6;
+    --text: #f0f0f0; --muted: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 50%, #0a0a0a 100%); padding: 60px 20px 40px; text-align: center; border-bottom: 1px solid var(--border); }
+  .hero-badge { display: inline-block; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: var(--gold); font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.1; margin-bottom: 16px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 18px; color: var(--muted); max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
+
+  /* Prize pool */
+  .prize-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .prize-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 28px; text-align: center; min-width: 140px; }
+  .prize-card .amount { font-size: 28px; font-weight: 900; }
+  .prize-card .label  { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .prize-card.gold  { border-color: rgba(245,158,11,0.4); }
+  .prize-card.gold .amount { color: var(--gold); }
+  .prize-card.green .amount { color: var(--green); }
+  .prize-card.blue .amount  { color: var(--blue); }
+
+  /* CTA button */
+  .btn-primary { display: inline-block; background: var(--gold); color: #000; font-size: 18px; font-weight: 800; padding: 16px 40px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { display: inline-block; background: transparent; color: var(--text); font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 10px; border: 1px solid var(--border); text-decoration: none; cursor: pointer; margin-left: 12px; }
+
+  /* Main layout */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .section-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .section-title span { color: var(--gold); }
+
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+  .step-num { width: 36px; height: 36px; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--gold); font-size: 16px; margin-bottom: 14px; }
+  .step h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .step p  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* Prize breakdown */
+  .prize-table { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 48px; }
+  .prize-table table { width: 100%; border-collapse: collapse; }
+  .prize-table th { background: var(--surface); padding: 12px 20px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .prize-table td { padding: 14px 20px; border-top: 1px solid var(--border); font-size: 14px; }
+  .prize-table tr:first-child td { color: var(--gold); font-weight: 700; font-size: 16px; }
+  .prize-table tr:nth-child(2) td { color: #c0c0c0; font-weight: 600; }
+  .prize-table tr:nth-child(3) td { color: #cd7f32; font-weight: 600; }
+
+  /* Entry form */
+  .entry-card { background: var(--card); border: 2px solid rgba(245,158,11,0.3); border-radius: 16px; padding: 32px; margin-bottom: 48px; }
+  .entry-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .entry-card p  { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+  .form-group input, .form-group select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 14px; outline: none; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--surface); }
+  .entry-note { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+  .entry-note a { color: var(--gold); }
+
+  /* Leaderboard preview */
+  .leaderboard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 48px; }
+  .lb-header { background: var(--surface); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .lb-header h3 { font-size: 14px; font-weight: 700; }
+  .lb-header span { font-size: 12px; color: var(--muted); }
+  .lb-row { padding: 12px 20px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 40px 1fr auto auto; gap: 12px; align-items: center; font-size: 13px; }
+  .lb-rank { font-weight: 900; color: var(--muted); }
+  .lb-rank.gold   { color: var(--gold); }
+  .lb-rank.silver { color: #c0c0c0; }
+  .lb-rank.bronze { color: #cd7f32; }
+  .lb-name { font-weight: 600; }
+  .lb-score { color: var(--green); font-weight: 700; }
+  .lb-country { font-size: 18px; }
+  .lb-ai-row { background: rgba(59,130,246,0.06); border-left: 3px solid var(--blue); }
+  .lb-ai-row .lb-name { color: var(--blue); }
+
+  /* FAQ */
+  .faq { margin-bottom: 48px; }
+  .faq-item { border-top: 1px solid var(--border); padding: 16px 0; }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-q { font-size: 15px; font-weight: 700; margin-bottom: 8px; cursor: pointer; }
+  .faq-a { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.8; }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* Live counter */
+  .live-counter { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); border-radius: 10px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .live-counter span { font-size: 14px; }
+  .live-counter strong { color: var(--green); }
+
+  @media(max-width:600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .prize-row .prize-card { min-width: 100px; padding: 14px 18px; }
+    .prize-card .amount { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">🏆 WC 2026 Prediction Competition</div>
+  <h1>The <span>Oracle Race</span><br>Can You Beat Our AI?</h1>
+  <p>Our AI predicted matches with verified accuracy throughout WC 2026. Now it's your turn. Enter the Oracle Race — predict all 64 matches. Beat the AI. Win the prize pool.</p>
+
+  <div class="prize-row">
+    <div class="prize-card gold"><div class="amount">$100K</div><div class="label">Prize Pool</div></div>
+    <div class="prize-card green"><div class="amount">$50</div><div class="label">Entry Fee</div></div>
+    <div class="prize-card blue"><div class="amount">10,000</div><div class="label">Max Entrants</div></div>
+    <div class="prize-card"><div class="amount">64</div><div class="label">Matches</div></div>
+  </div>
+
+  <a href="#enter" class="btn-primary">🎯 Enter the Oracle Race — $50</a>
+  <a href="#how" class="btn-secondary">How it works</a>
+</div>
+
+<div class="container">
+
+  <!-- Live counter -->
+  <div class="live-counter">
+    <div class="live-dot"></div>
+    <span><strong id="entry-count">847</strong> entries so far — <strong id="spots-left">9,153</strong> spots remaining. Closes at tournament kickoff.</span>
+  </div>
+
+  <!-- How it works -->
+  <div id="how">
+    <div class="section-title">How the <span>Oracle Race</span> Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Pay $50 Entry</h3>
+        <p>One-time entry fee. Secure payment via Stripe. Your entry is locked in for all 64 WC 2026 matches.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Predict All 64 Matches</h3>
+        <p>Pick the winner (or draw) for every WC 2026 group stage and knockout match. Deadline: before each match kicks off.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Outscore the AI</h3>
+        <p>Our AI makes the same predictions publicly. If you outscore the AI, you're a verified Oracle. Leaderboard updates after every match.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Win the Prize Pool</h3>
+        <p>Top 10 scorers split $100,000. Top scorer takes $50,000. All wins verified, all payouts guaranteed via Stripe escrow.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prize breakdown -->
+  <div class="section-title">Prize <span>Breakdown</span></div>
+  <div class="prize-table">
+    <table>
+      <thead>
+        <tr><th>Position</th><th>Prize</th><th>% of Pool</th><th>Requirements</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>🥇 1st Place</td><td>$50,000</td><td>50%</td><td>Highest correct predictions</td></tr>
+        <tr><td>🥈 2nd Place</td><td>$20,000</td><td>20%</td><td></td></tr>
+        <tr><td>🥉 3rd Place</td><td>$10,000</td><td>10%</td><td></td></tr>
+        <tr><td>4th–5th</td><td>$5,000 each</td><td>10%</td><td></td></tr>
+        <tr><td>6th–10th</td><td>$2,000 each</td><td>10%</td><td></td></tr>
+        <tr><td>Bonus: Beat the AI</td><td>$1,000</td><td>Extra</td><td>Any entrant who outscores our AI</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Entry form -->
+  <div id="enter" class="entry-card">
+    <h2>Enter the Oracle Race</h2>
+    <p>Complete your entry. You'll submit predictions before each match via the dashboard. Entry fee: $50 (held in Stripe escrow until tournament ends).</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="fname" placeholder="Ruz">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="lname" placeholder="Smith">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="ruz@example.com">
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <select id="country">
+          <option value="">Select country...</option>
+          <option value="NG">Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="ZA">South Africa</option>
+          <option value="GH">Ghana</option>
+          <option value="IN">India</option>
+          <option value="ID">Indonesia</option>
+          <option value="PH">Philippines</option>
+          <option value="BR">Brazil</option>
+          <option value="CO">Colombia</option>
+          <option value="MX">Mexico</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="MA">Morocco</option>
+          <option value="EG">Egypt</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>Favourite Team (optional — for your fan badge)</label>
+      <input type="text" id="team" placeholder="e.g. Brazil, Morocco, Nigeria...">
+    </div>
+
+    <button class="btn-primary" onclick="initiatePayment()" style="width:100%;font-size:16px">
+      🎯 Pay $50 Entry — Secure via Stripe
+    </button>
+
+    <p class="entry-note">
+      ✅ Entry fee held in <strong>Stripe escrow</strong> — not released until tournament ends.<br>
+      ✅ Full refund if fewer than 1,000 entries received (tournament threshold).<br>
+      ✅ Predictions submitted via your personal dashboard link (emailed on entry).<br>
+      ✅ This is a <strong>skill-based prediction contest</strong>, not gambling. Legal in most jurisdictions.<br>
+      ⚠️ By entering you confirm you are 18+ and competition terms are accepted. <a href="#faq">Full rules below.</a>
+    </p>
+  </div>
+
+  <!-- AI vs Human leaderboard preview -->
+  <div class="section-title">Live <span>Leaderboard</span></div>
+  <div class="leaderboard">
+    <div class="lb-header">
+      <h3>Oracle Race — Top Predictors</h3>
+      <span>Updates after every match</span>
+    </div>
+    <div class="lb-row lb-ai-row">
+      <div class="lb-rank gold">AI</div>
+      <div class="lb-name">🤖 WC 2026 AI Oracle</div>
+      <div class="lb-score" id="ai-score">—</div>
+      <div class="lb-country">🌍</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank gold">1</div>
+      <div class="lb-name">Anonymous Oracle</div>
+      <div class="lb-score">—</div>
+      <div class="lb-country">🇳🇬</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank silver">2</div>
+      <div class="lb-name">Anonymous Oracle</div>
+      <div class="lb-score">—</div>
+      <div class="lb-country">🇧🇷</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank bronze">3</div>
+      <div class="lb-name">Anonymous Oracle</div>
+      <div class="lb-score">—</div>
+      <div class="lb-country">🇮🇳</div>
+    </div>
+    <div style="padding:12px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)">
+      Leaderboard goes live after Group Stage Day 1 results. Your position updates automatically.
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div id="faq" class="faq">
+    <div class="section-title">Frequently <span>Asked</span></div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this gambling?</div>
+      <div class="faq-a">No. The Oracle Race is a skill-based prediction competition, similar to fantasy sports or pub quizzes. Winning depends on your knowledge and prediction accuracy, not chance. This format is legal in most jurisdictions globally. Always verify local laws.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What happens if the AI wins?</div>
+      <div class="faq-a">The prize pool is still awarded to the top 10 human predictors. The AI competing is for entertainment and to prove the system's accuracy. An extra $1,000 bonus is given to any human who outscores the AI.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I submit my predictions?</div>
+      <div class="faq-a">After paying, you receive a personal dashboard link by email. Before each match (up to kickoff), log in and submit your prediction. Late submissions are locked out.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How is the prize paid out?</div>
+      <div class="faq-a">Prize payments are made via Stripe bank transfer within 7 days of the WC final. The full $100K prize pool is held in Stripe escrow throughout the tournament — neither party can access it until results are final.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if I miss a prediction?</div>
+      <div class="faq-a">Missed predictions count as incorrect. The system auto-submits "Draw" for any prediction not submitted by kickoff. We recommend submitting all predictions for the group stage in one session.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I enter more than once?</div>
+      <div class="faq-a">One entry per person. Multiple entries from the same person are disqualified. Use your real name and email.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Oracle Race is operated by WC 2026 AI Intelligence. This is a skill-based competition.</p>
+  <p>Entry fees held in Stripe escrow. Full terms at <a href="#">wc2026ai.com/terms</a>.</p>
+  <p>⚠️ 18+ only. Not available in jurisdictions where prediction competitions are prohibited.</p>
+</footer>
+
+<script>
+  // Animate entry counter
+  let count = 847;
+  setInterval(() => {
+    const increment = Math.floor(Math.random() * 3);
+    count += increment;
+    document.getElementById('entry-count').textContent = count.toLocaleString();
+    document.getElementById('spots-left').textContent = (10000 - count).toLocaleString();
+  }, 8000);
+
+  // Payment initiation
+  function initiatePayment() {
+    const fname   = document.getElementById('fname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const country = document.getElementById('country').value;
+
+    if (!fname || !email || !country) {
+      alert('Please fill in your name, email, and country to continue.');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // In production: redirect to Stripe payment link with pre-filled metadata
+    // Replace STRIPE_PAYMENT_LINK with your actual Stripe Payment Link URL
+    const stripeUrl = `https://buy.stripe.com/REPLACE_WITH_YOUR_LINK?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${encodeURIComponent(email + '_' + country)}`;
+
+    // Track conversion attempt
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'begin_checkout', { value: 50, currency: 'USD' });
+    }
+
+    // For demo: show confirmation
+    alert(`✅ Redirecting to secure payment...\n\nEntry: Oracle Race\nName: ${fname}\nEmail: ${email}\nAmount: $50 USD\n\nYour prediction dashboard will be emailed after payment.`);
+
+    // Uncomment when Stripe link is ready:
+    // window.location.href = stripeUrl;
+  }
+
+  // Update AI score from API (if available)
+  async function updateAIScore() {
+    try {
+      const r = await fetch('/api/ai-score');
+      const d = await r.json();
+      document.getElementById('ai-score').textContent = d.score + '/' + d.total;
+    } catch (e) {
+      document.getElementById('ai-score').textContent = 'Tracking live';
+    }
+  }
+  updateAIScore();
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

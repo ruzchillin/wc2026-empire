@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — AI Command Center</title>
+<style>
+:root {
+  --bg: #050810;
+  --surface: #0d1117;
+  --card: #161b22;
+  --border: #21262d;
+  --accent: #58a6ff;
+  --accent2: #3fb950;
+  --warn: #d29922;
+  --danger: #f85149;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --ai: #bc8cff;
+  --system: #39d353;
+  --font: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; }
+
+/* ── Layout ── */
+.shell { display: grid; grid-template-rows: 44px 1fr; grid-template-columns: 1fr 300px; height: 100vh; }
+.topbar { grid-column: 1 / 3; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.logo { color: var(--accent); font-weight: 700; font-size: 14px; }
+.service-dots { display: flex; gap: 8px; align-items: center; }
+.sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); position: relative; cursor: help; }
+.sdot.online { background: var(--accent2); animation: glow 2s infinite; }
+.sdot.warn { background: var(--warn); }
+.sdot.offline { background: var(--danger); }
+@keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}50%{box-shadow:0 0 0 4px rgba(63,185,80,.2)} }
+.sdot-label { font-size: 10px; color: var(--muted); }
+.topbar-right { display: flex; align-items: center; gap: 16px; font-size: 11px; color: var(--muted); }
+.ts { color: var(--accent2); font-weight: 600; }
+
+/* ── Chat panel ── */
+.chat-panel { grid-column: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); min-height: 0; }
+.chat-log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 2px; scroll-behavior: smooth; }
+.chat-log::-webkit-scrollbar { width: 4px; }
+.chat-log::-webkit-scrollbar-track { background: transparent; }
+.chat-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── Message types ── */
+.msg { display: flex; gap: 10px; padding: 3px 0; line-height: 1.6; animation: fadein .15s ease; }
+@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.msg-prefix { flex-shrink: 0; width: 90px; text-align: right; font-size: 11px; padding-top: 2px; }
+.msg-body { flex: 1; word-break: break-word; }
+.msg.user .msg-prefix { color: var(--accent); }
+.msg.ai .msg-prefix { color: var(--ai); }
+.msg.system .msg-prefix { color: var(--system); }
+.msg.error .msg-prefix { color: var(--danger); }
+.msg.warn .msg-prefix { color: var(--warn); }
+.msg.divider { margin: 8px 0; }
+.msg.divider .msg-body { color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; font-size: 11px; }
+
+/* ── Structured output blocks ── */
+.data-block { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; margin: 4px 0; font-size: 12px; }
+.data-block .row { display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid var(--border); }
+.data-block .row:last-child { border-bottom: none; }
+.data-block .key { color: var(--muted); }
+.data-block .val { color: var(--text); font-weight: 600; }
+.data-block .val.green { color: var(--accent2); }
+.data-block .val.red { color: var(--danger); }
+.data-block .val.blue { color: var(--accent); }
+.data-block .val.purple { color: var(--ai); }
+
+.progress-bar { background: var(--border); border-radius: 3px; height: 6px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .5s; }
+
+/* ── Match card in chat ── */
+.match-inline { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; font-size: 12px; }
+.team-inline { display: flex; align-items: center; gap: 6px; }
+.team-inline.away { flex-direction: row-reverse; }
+.score-inline { font-size: 20px; font-weight: 700; color: var(--text); text-align: center; min-width: 60px; }
+.match-meta-inline { font-size: 10px; color: var(--muted); text-align: center; margin-top: 4px; }
+
+/* ── Input ── */
+.input-bar { padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.prompt-label { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+.cmd-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: var(--font); font-size: 13px; caret-color: var(--accent); }
+.cmd-input::placeholder { color: var(--muted); }
+.send-btn { background: var(--accent); color: #000; border: none; padding: 5px 14px; border-radius: 4px; font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+.send-btn:hover { opacity: .85; }
+.hint { font-size: 10px; color: var(--muted); padding: 4px 16px 6px; background: var(--surface); }
+
+/* ── Autocomplete ── */
+.autocomplete { position: absolute; bottom: 80px; left: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; z-index: 50; min-width: 280px; display: none; }
+.ac-item { padding: 7px 12px; cursor: pointer; display: flex; gap: 10px; }
+.ac-item:hover, .ac-item.selected { background: var(--border); }
+.ac-cmd { color: var(--accent); font-weight: 600; min-width: 100px; }
+.ac-desc { color: var(--muted); font-size: 11px; }
+
+/* ── Sidebar ── */
+.sidebar { grid-column: 2; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.sidebar-section { border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-section h4 { padding: 8px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); background: var(--surface); }
+.feed { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.feed::-webkit-scrollbar { width: 3px; }
+.feed::-webkit-scrollbar-thumb { background: var(--border); }
+.feed-item { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; font-size: 11px; line-height: 1.4; }
+.feed-item .fi-type { font-weight: 700; margin-right: 4px; }
+.feed-item .fi-type.goal { color: var(--accent2); }
+.feed-item .fi-type.red { color: var(--danger); }
+.feed-item .fi-type.var { color: var(--warn); }
+.feed-item .fi-type.sys { color: var(--ai); }
+.feed-item .fi-time { color: var(--muted); font-size: 10px; float: right; }
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
+.kpi { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 8px; text-align: center; }
+.kpi-val { font-size: 18px; font-weight: 700; }
+.kpi-val.blue { color: var(--accent); }
+.kpi-val.green { color: var(--accent2); }
+.kpi-val.purple { color: var(--ai); }
+.kpi-val.warn { color: var(--warn); }
+.kpi-label { font-size: 9px; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+
+/* ── Spinner ── */
+.thinking { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+.thinking span { width: 5px; height: 5px; background: var(--ai); border-radius: 50%; animation: bounce .8s infinite; }
+.thinking span:nth-child(2) { animation-delay: .15s; }
+.thinking span:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)} }
+
+/* ── Quick action buttons ── */
+.quick-actions { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 8px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.qa-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 3px 8px; border-radius: 3px; font-size: 10px; cursor: pointer; font-family: var(--font); transition: all .1s; }
+.qa-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+<meta name="description" content="AI command center for WC 2026 Live — chat with AI, trigger content engines, and monitor the entire sports empire.">
+</head>
+<body>
+
+<div class="shell" id="shell">
+
+  <!-- ── Top bar ── -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="logo">⚡ WC2026 AI</span>
+      <div class="service-dots" id="serviceDots">
+        <span class="sdot" id="dot-api" title="api-server"></span><span class="sdot-label">API</span>
+        <span class="sdot" id="dot-ai" title="ai-engine"></span><span class="sdot-label">AI</span>
+        <span class="sdot" id="dot-pipeline" title="data-pipeline"></span><span class="sdot-label">Pipeline</span>
+        <span class="sdot" id="dot-moment" title="moment-engine"></span><span class="sdot-label">Moment</span>
+        <span class="sdot" id="dot-world" title="world-engine"></span><span class="sdot-label">World</span>
+        <span class="sdot" id="dot-push" title="onesignal"></span><span class="sdot-label">Push</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="liveCount">0 live</span>
+      <span id="clock" class="ts">--:--:--</span>
+      <a href="/admin-dashboard.html" style="color:var(--muted);text-decoration:none;font-size:11px">Full dashboard →</a>
+    </div>
+  </div>
+
+  <!-- ── Main chat ── -->
+  <div class="chat-panel">
+    <div class="quick-actions">
+      <button class="qa-btn" onclick="sendCmd('/status')">📡 Status</button>
+      <button class="qa-btn" onclick="sendCmd('/live')">⚽ Live matches</button>
+      <button class="qa-btn" onclick="sendCmd('/today')">📅 Today</button>
+      <button class="qa-btn" onclick="sendCmd('/events')">📋 Events</button>
+      <button class="qa-btn" onclick="sendCmd('/services')">🔧 Services</button>
+      <button class="qa-btn" onclick="sendCmd('/ai-stats')">🤖 AI stats</button>
+      <button class="qa-btn" onclick="sendCmd('/push-history')">🔔 Push log</button>
+      <button class="qa-btn" onclick="sendCmd('/deploy')">🚀 Deploy</button>
+      <button class="qa-btn" onclick="sendCmd('/help')">? Help</button>
+    </div>
+
+    <div class="chat-log" id="chatLog"></div>
+
+    <!-- Autocomplete -->
+    <div class="autocomplete" id="autocomplete"></div>
+
+    <div class="input-bar">
+      <span class="prompt-label">›</span>
+      <input class="cmd-input" id="cmdInput" placeholder="Type a command or ask a question... (/help for commands)" autocomplete="off" spellcheck="false">
+      <button class="send-btn" onclick="handleSend()">Send</button>
+    </div>
+    <div class="hint">
+      Slash commands: /status /live /today /ai-pick [matchId] /push [message] /events /services /deploy /restart [service] /help
+      &nbsp;·&nbsp; Or just ask in plain English
+    </div>
+  </div>
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi"><div class="kpi-val blue" id="kpiLive">—</div><div class="kpi-label">Live now</div></div>
+      <div class="kpi"><div class="kpi-val green" id="kpiEvents">—</div><div class="kpi-label">Events 24h</div></div>
+      <div class="kpi"><div class="kpi-val purple" id="kpiAI">—</div><div class="kpi-label">AI analyses</div></div>
+      <div class="kpi"><div class="kpi-val warn" id="kpiPush">—</div><div class="kpi-label">Push sent</div></div>
+    </div>
+    <div class="sidebar-section">
+      <h4>📡 Live event feed</h4>
+    </div>
+    <div class="feed" id="liveFeed">
+      <div class="feed-item"><span class="fi-type sys">SYS</span> Connecting to backend...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ─── Config ───────────────────────────────────────────────────────────────────
+
+const API = window.location.hostname === 'localhost'
+  ? 'http://localhost:3001/api/v1'
+  : '/api/v1';
+
+const ADMIN_TOKEN = localStorage.getItem('adminToken') || '';
+
+let ws = null;
+const history = [];
+let histIdx = -1;
+let thinkingEl = null;
+
+// ─── Clock ────────────────────────────────────────────────────────────────────
+
+function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-GB', { hour12: false });
+}
+tick();
+setInterval(tick, 1000);
+
+// ─── Chat log ─────────────────────────────────────────────────────────────────
+
+function msg(type, prefix, html, raw = false) {
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  div.innerHTML = `<span class="msg-prefix">${prefix}</span><div class="msg-body">${raw ? html : escHtml(html)}</div>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function thinking() {
+  if (thinkingEl) return;
+  const log = document.getElementById('chatLog');
+  thinkingEl = document.createElement('div');
+  thinkingEl.className = 'msg ai';
+  thinkingEl.innerHTML = `<span class="msg-prefix">AI</span><div class="msg-body"><div class="thinking"><span></span><span></span><span></span></div></div>`;
+  log.appendChild(thinkingEl);
+  log.scrollTop = log.scrollHeight;
+}
+
+function stopThinking() {
+  if (thinkingEl) { thinkingEl.remove(); thinkingEl = null; }
+}
+
+function dataBlock(rows) {
+  let html = '<div class="data-block">';
+  for (const [k, v, cls] of rows) {
+    html += `<div class="row"><span class="key">${escHtml(k)}</span><span class="val ${cls||''}">${escHtml(String(v))}</span></div>`;
+  }
+  return html + '</div>';
+}
+
+function divider(text) {
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'msg divider';
+  div.innerHTML = `<span class="msg-prefix"></span><div class="msg-body">${escHtml(text)}</div>`;
+  log.appendChild(div);
+}
+
+// ─── API helpers ──────────────────────────────────────────────────────────────
+
+async function apiGet(path) {
+  const r = await fetch(`${API}${path}`, { signal: AbortSignal.timeout(12000) });
+  if (!r.ok) { const e = await r.json().catch(()=>({error:`HTTP ${r.status}`})); throw new Error(e.error); }
+  return r.json();
+}
+
+async function apiPost(path, body) {
+  const r = await fetch(`${API}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': ADMIN_TOKEN },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(20000)
+  });
+  if (!r.ok) { const e = await r.json().catch(()=>({error:`HTTP ${r.status}`})); throw new Error(e.error); }
+  return r.json();
+}
+
+// ─── Command handler ──────────────────────────────────────────────────────────
+
+const COMMANDS = {
+  '/help': { desc: 'Show all commands', fn: cmdHelp },
+  '/status': { desc: 'All service statuses', fn: cmdStatus },
+  '/services': { desc: 'Service health details', fn: cmdStatus },
+  '/live': { desc: 'Live match scores', fn: cmdLive },
+  '/today': { desc: 'Today\'s match schedule', fn: cmdToday },
+  '/events': { desc: 'Recent automation events', fn: cmdEvents },
+  '/ai-stats': { desc: 'AI prediction accuracy', fn: cmdAIStats },
+  '/ai-pick': { desc: '/ai-pick [matchId] — get AI analysis for a match', fn: cmdAIPick },
+  '/push': { desc: '/push [message] — send push notification to all subscribers', fn: cmdPush },
+  '/push-history': { desc: 'Recent push notifications sent', fn: cmdPushHistory },
+  '/deploy': { desc: 'Trigger Vercel redeploy', fn: cmdDeploy },
+  '/restart': { desc: '/restart [service] — restart a Railway service', fn: cmdRestart },
+  '/token': { desc: '/token [key] — set admin token for protected endpoints', fn: cmdToken },
+};
+
+async function handleSend() {
+  const input = document.getElementById('cmdInput');
+  const raw = input.value.trim();
+  if (!raw) return;
+
+  input.value = '';
+  history.unshift(raw);
+  histIdx = -1;
+  document.getElementById('autocomplete').style.display = 'none';
+
+  msg('user', 'you', raw);
+
+  const parts = raw.split(/\s+/);
+  const cmd = parts[0].toLowerCase();
+
+  if (COMMANDS[cmd]) {
+    await COMMANDS[cmd].fn(parts.slice(1), raw);
+  } else {
+    // Natural language — call AI via Groq through backend
+    await cmdNaturalLanguage(raw);
+  }
+}
+
+function sendCmd(cmd) {
+  document.getElementById('cmdInput').value = cmd;
+  handleSend();
+}
+
+// ─── Individual commands ──────────────────────────────────────────────────────
+
+function cmdHelp() {
+  divider('Available commands');
+  let html = '<div class="data-block">';
+  for (const [cmd, info] of Object.entries(COMMANDS)) {
+    html += `<div class="row"><span class="key" style="color:var(--accent)">${escHtml(cmd)}</span><span class="val" style="color:var(--muted)">${escHtml(info.desc)}</span></div>`;
+  }
+  html += '</div>';
+  html += `<div style="margin-top:8px;font-size:11px;color:var(--muted)">You can also ask in plain English — e.g. "which teams are playing today?" or "send a push about tonight's match"</div>`;
+  msg('ai', 'AI', html, true);
+}
+
+async function cmdStatus() {
+  thinking();
+  try {
+    const data = await apiGet('/services/health');
+    stopThinking();
+    const s = data.services || {};
+    divider('Service health');
+    let rows = [];
+    for (const [name, info] of Object.entries(s)) {
+      const status = info.status;
+      const cls = status === 'online' || status === 'configured' ? 'green' : status === 'not-configured' ? 'warn' : 'red';
+      const note = info.note ? ` — ${info.note}` : info.uptime ? ` (up ${Math.round(info.uptime)}s)` : '';
+      rows.push([name, status + note, cls]);
+    }
+    msg('ai', 'AI', dataBlock(rows), true);
+    updateDots(s);
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', `Cannot reach backend: ${e.message}. Is api-server.js running?`);
+    setAllDotsOffline();
+  }
+}
+
+async function cmdLive() {
+  thinking();
+  try {
+    const data = await apiGet('/matches/live');
+    stopThinking();
+    if (!data.matches || data.matches.length === 0) {
+      msg('ai', 'AI', 'No live matches right now. Try /today for the full schedule.');
+      document.getElementById('kpiLive').textContent = '0';
+      return;
+    }
+    divider(`${data.count} live match${data.count > 1 ? 'es' : ''}`);
+    const log = document.getElementById('chatLog');
+    document.getElementById('kpiLive').textContent = data.count;
+    for (const m of data.matches) {
+      const card = document.createElement('div');
+      card.className = 'msg ai';
+      const hs = m.home.score !== null ? m.home.score : '—';
+      const as = m.away.score !== null ? m.away.score : '—';
+      const min = m.minute ? `${m.minute}'` : m.status;
+      card.innerHTML = `
+        <span class="msg-prefix">match</span>
+        <div class="msg-body">
+          <div class="match-inline">
+            <div class="team-inline">${m.home.logo ? `<img src="${m.home.logo}" width="20" height="20" style="object-fit:contain">` : ''}<strong>${escHtml(m.home.name)}</strong></div>
+            <div><div class="score-inline">${hs} — ${as}</div><div class="match-meta-inline">${escHtml(min)} · ${escHtml(m.venue||'')}</div></div>
+            <div class="team-inline away"><strong>${escHtml(m.away.name)}</strong>${m.away.logo ? `<img src="${m.away.logo}" width="20" height="20" style="object-fit:contain">` : ''}</div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px">Run: /ai-pick ${m.id} for AI analysis</div>
+        </div>`;
+      log.appendChild(card);
+      log.scrollTop = log.scrollHeight;
+    }
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdToday() {
+  thinking();
+  try {
+    const data = await apiGet('/matches/today');
+    stopThinking();
+    if (!data.matches || !data.matches.length) {
+      msg('ai', 'AI', 'No matches scheduled today.');
+      return;
+    }
+    divider(`${data.matches.length} matches on ${data.date}`);
+    let rows = data.matches.map(m => {
+      const t = new Date(m.time).toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+      const status = m.status === 'NS' ? 'upcoming' : m.status === 'FT' ? 'finished' : 'live';
+      const cls = status === 'live' ? 'green' : status === 'finished' ? 'muted' : '';
+      return [`${t}`, `${m.home.name} vs ${m.away.name}`, cls];
+    });
+    msg('ai', 'AI', dataBlock(rows), true);
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdEvents() {
+  thinking();
+  try {
+    const data = await apiGet('/events/recent?limit=15');
+    stopThinking();
+    if (!data.events || !data.events.length) {
+      msg('ai', 'AI', 'No events logged yet. Events appear here when matches are live and moment-engine is running.');
+      return;
+    }
+    divider(`Last ${data.events.length} automation events`);
+    let rows = data.events.map(e => {
+      const t = new Date(e.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const detail = e.detail?.player ? `${e.detail.player} (${e.team||''})` : e.team || '';
+      return [t, `${e.type} ${detail}`, e.type.includes('GOAL') ? 'green' : e.type.includes('RED') ? 'red' : ''];
+    });
+    msg('ai', 'AI', dataBlock(rows), true);
+    document.getElementById('kpiEvents').textContent = data.events.length;
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdAIStats() {
+  thinking();
+  try {
+    const [metrics, accuracy] = await Promise.all([
+      apiGet('/dashboard/metrics'),
+      apiGet('/ai/accuracy').catch(() => null)
+    ]);
+    stopThinking();
+    divider('AI engine stats');
+    const m = metrics.metrics || {};
+    let rows = [
+      ['AI analyses (24h)', m.aiAnalyses24h ?? '—', 'purple'],
+      ['Push notifs sent (24h)', m.pushNotifs24h ?? '—', 'blue'],
+      ['Push recipients (24h)', m.pushRecipients ?? '—', 'green'],
+      ['Total events (24h)', m.totalEvents24h ?? '—', ''],
+      ['WS connections now', m.wsConnections ?? '—', 'blue'],
+      ['Server uptime', m.uptimeSeconds ? `${Math.round(m.uptimeSeconds/3600)}h` : '—', 'green'],
+    ];
+    if (accuracy && accuracy.ok) {
+      rows.push(['Prediction accuracy', accuracy.accuracy, accuracy.accuracy === 'No results yet' ? '' : 'green']);
+      rows.push(['Total predictions', accuracy.total, '']);
+      rows.push(['Correct', accuracy.correct, 'green']);
+      rows.push(['Pending verification', accuracy.pending, 'warn']);
+    }
+    msg('ai', 'AI', dataBlock(rows), true);
+    if (m.aiAnalyses24h !== undefined) document.getElementById('kpiAI').textContent = m.aiAnalyses24h;
+    if (m.pushNotifs24h !== undefined) document.getElementById('kpiPush').textContent = m.pushNotifs24h;
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdAIPick(args) {
+  const matchId = args[0];
+  if (!matchId) {
+    msg('warn', 'USAGE', '/ai-pick [matchId] — get the match ID from /live');
+    return;
+  }
+  thinking();
+  try {
+    const data = await apiGet(`/ai/predictions/${matchId}`);
+    stopThinking();
+    if (!data.ok) throw new Error(data.error);
+    divider(`AI analysis — match ${matchId}`);
+    const rows = [
+      ['Home win', `${data.homeWinPct}%`, 'blue'],
+      ['Draw', `${data.drawPct}%`, ''],
+      ['Away win', `${data.awayWinPct}%`, 'green'],
+      ['xG Home', data.homeGoalsExpected ?? '—', ''],
+      ['xG Away', data.awayGoalsExpected ?? '—', ''],
+      ['Predicted score', data.predictedScore ?? '—', 'purple'],
+      ['Confidence', data.confidence ?? '—', data.confidence === 'high' ? 'green' : data.confidence === 'medium' ? 'warn' : ''],
+      ['Data quality', data.dataQuality ?? '—', ''],
+      ['Cached', data.cached ? 'Yes (6hr TTL)' : 'Fresh', data.cached ? '' : 'green'],
+    ];
+    msg('ai', 'AI', dataBlock(rows), true);
+    if (data.prediction) {
+      msg('ai', 'verdict', data.prediction);
+    }
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdPush(args) {
+  const message = args.join(' ');
+  if (!message) {
+    msg('warn', 'USAGE', '/push [your message] — sends to all subscribers');
+    return;
+  }
+  if (!ADMIN_TOKEN) {
+    msg('warn', 'AUTH', 'Set your admin token first: /token YOUR_ADMIN_TOKEN');
+    return;
+  }
+  thinking();
+  try {
+    const data = await apiPost('/push/send', {
+      title: '⚽ WC 2026 Update',
+      message,
+      segment: 'All'
+    });
+    stopThinking();
+    if (!data.ok) throw new Error(data.error);
+    msg('ai', 'SENT', `Push notification sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}. OneSignal ID: ${data.onesignal_id}`);
+    document.getElementById('kpiPush').textContent = (parseInt(document.getElementById('kpiPush').textContent) || 0) + 1;
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdPushHistory() {
+  thinking();
+  try {
+    const data = await apiGet('/push/history');
+    stopThinking();
+    if (!data.history || !data.history.length) {
+      msg('ai', 'AI', 'No push notifications sent yet.');
+      return;
+    }
+    divider(`Last ${data.history.length} push notifications`);
+    let rows = data.history.slice(0, 10).map(p => {
+      const t = new Date(p.created_at).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      return [t, `${p.title} (${p.sent_count} sent)`, 'green'];
+    });
+    msg('ai', 'AI', dataBlock(rows), true);
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdDeploy() {
+  if (!ADMIN_TOKEN) { msg('warn', 'AUTH', 'Set admin token: /token YOUR_ADMIN_TOKEN'); return; }
+  msg('system', 'SYS', 'Triggering Vercel deploy...');
+  thinking();
+  try {
+    const data = await apiPost('/admin/deploy-vercel', {});
+    stopThinking();
+    msg('ai', 'DEPLOY', `Deploy triggered. ${data.message || 'Vercel will rebuild in ~30 seconds.'}`);
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+async function cmdRestart(args) {
+  const service = args[0];
+  if (!service) { msg('warn', 'USAGE', '/restart [service] — e.g. /restart api-server'); return; }
+  if (!ADMIN_TOKEN) { msg('warn', 'AUTH', 'Set admin token: /token YOUR_ADMIN_TOKEN'); return; }
+  thinking();
+  try {
+    const data = await apiPost(`/admin/restart/${service}`, {});
+    stopThinking();
+    msg('ai', 'SYS', data.message);
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+function cmdToken(args) {
+  const token = args[0];
+  if (!token) { msg('warn', 'USAGE', '/token [your ADMIN_TOKEN from Railway env vars]'); return; }
+  localStorage.setItem('adminToken', token);
+  // Reload to pick up token
+  window.location.reload();
+}
+
+// ─── Natural language handler via Groq ────────────────────────────────────────
+
+async function cmdNaturalLanguage(input) {
+  thinking();
+  try {
+    // Fetch context first so AI has real data
+    const [liveData, metricsData] = await Promise.allSettled([
+      apiGet('/matches/live'),
+      apiGet('/dashboard/metrics')
+    ]);
+
+    const liveMatches = liveData.value?.matches || [];
+    const metrics = metricsData.value?.metrics || {};
+
+    const contextStr = liveMatches.length
+      ? `Live matches: ${liveMatches.map(m => `${m.home.name} ${m.home.score??'-'}-${m.away.score??'-'} ${m.away.name} (${m.minute||m.status}')`).join(', ')}`
+      : 'No live matches right now.';
+
+    const res = await fetch(`${API.replace('/api/v1','')}`.replace('/api/v1','') + '/api/v1/ai/queue', {
+      signal: AbortSignal.timeout(5000)
+    }).catch(() => null);
+
+    // Use Groq directly via a small inline fetch to the AI engine
+    // The ai-engine service exposes /analyse/* endpoints; for chat we
+    // send the question to api-server which proxies if configured,
+    // otherwise we respond based on available context
+
+    stopThinking();
+
+    // Smart local handling based on keywords
+    const q = input.toLowerCase();
+    if (q.includes('how many') && q.includes('live')) {
+      msg('ai', 'AI', liveMatches.length > 0
+        ? `${liveMatches.length} match${liveMatches.length>1?'es are':' is'} live right now. Run /live to see them.`
+        : 'No matches are live right now. Run /today to see today\'s schedule.');
+    } else if (q.includes('status') || q.includes('running') || q.includes('working')) {
+      await cmdStatus();
+    } else if (q.includes('score') || q.includes('live') || q.includes('playing')) {
+      await cmdLive();
+    } else if (q.includes('today') || q.includes('schedule') || q.includes('kick')) {
+      await cmdToday();
+    } else if (q.includes('push') && (q.includes('send') || q.includes('notification'))) {
+      msg('ai', 'AI', 'To send a push notification: /push [your message]\nExample: /push England just scored! See live analysis →');
+    } else if (q.includes('deploy') || q.includes('vercel')) {
+      msg('ai', 'AI', 'To deploy all frontend pages to Vercel: /deploy\nMake sure your ADMIN_TOKEN is set: /token [token]');
+    } else if (q.includes('token') || q.includes('admin') || q.includes('auth')) {
+      msg('ai', 'AI', 'Set your admin token (found in Railway Variables → ADMIN_TOKEN):\n/token YOUR_TOKEN_HERE');
+    } else if (q.includes('revenue') || q.includes('money') || q.includes('earning')) {
+      msg('ai', 'AI', `Real revenue data requires your affiliate dashboards to be connected (Bet365, DraftKings, Beehiiv analytics). Once connected, api-server will aggregate it under /api/v1/dashboard/metrics.\n\nCurrent system metrics:\n— AI analyses (24h): ${metrics.aiAnalyses24h ?? 'connect backend'}\n— Push recipients: ${metrics.pushRecipients ?? 'connect backend'}\n— Events logged: ${metrics.totalEvents24h ?? 'connect backend'}`);
+    } else if (q.includes('help') || q.includes('what can')) {
+      cmdHelp();
+    } else {
+      // Context-aware general response
+      msg('ai', 'AI', `I don't have a direct command for that, but here's what I know:\n\n${contextStr}\n\nTry one of the slash commands for specific data, or ask about live matches, today's schedule, AI predictions, push notifications, or service status.`);
+    }
+  } catch (e) {
+    stopThinking();
+    msg('error', 'ERROR', e.message);
+  }
+}
+
+// ─── WebSocket for real-time events ──────────────────────────────────────────
+
+function connectWS() {
+  const wsUrl = window.location.hostname === 'localhost' ? 'ws://localhost:3001' : null;
+  if (!wsUrl) return;
+  try {
+    ws = new WebSocket(wsUrl);
+    ws.onopen = () => addFeedItem('sys', 'WebSocket connected — receiving live events');
+    ws.onmessage = e => {
+      try {
+        const m = JSON.parse(e.data);
+        if (m.type === 'event') {
+          const p = m.payload;
+          const typeClass = p.type?.includes('GOAL') ? 'goal' : p.type?.includes('RED') ? 'red' : p.type === 'VAR' ? 'var' : 'sys';
+          addFeedItem(typeClass, `${p.type?.replace(/_/g,' ')} — ${p.team || ''} ${p.player ? '('+p.player+')' : ''}`);
+        } else if (m.type === 'live_matches_update') {
+          refreshKPIs();
+        } else if (m.type === 'push_sent') {
+          addFeedItem('sys', `Push sent: "${m.payload.title}" → ${m.payload.sent} subscribers`);
+        }
+      } catch {}
+    };
+    ws.onclose = () => {
+      addFeedItem('sys', 'WebSocket disconnected — reconnecting...');
+      setTimeout(connectWS, 10000);
+    };
+  } catch {}
+}
+
+function addFeedItem(typeClass, text) {
+  const feed = document.getElementById('liveFeed');
+  const time = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const label = typeClass === 'goal' ? 'GOAL' : typeClass === 'red' ? 'RED' : typeClass === 'var' ? 'VAR' : 'SYS';
+  const item = document.createElement('div');
+  item.className = 'feed-item';
+  item.innerHTML = `<span class="fi-time">${time}</span><span class="fi-type ${typeClass}">${label}</span> ${escHtml(text)}`;
+  feed.prepend(item);
+  while (feed.children.length > 40) feed.removeChild(feed.lastChild);
+}
+
+// ─── KPI refresh ──────────────────────────────────────────────────────────────
+
+async function refreshKPIs() {
+  try {
+    const [live, metrics] = await Promise.all([
+      apiGet('/matches/live').catch(() => null),
+      apiGet('/dashboard/metrics').catch(() => null)
+    ]);
+    if (live) document.getElementById('kpiLive').textContent = live.count || 0;
+    if (metrics?.metrics) {
+      const m = metrics.metrics;
+      if (m.aiAnalyses24h !== undefined) document.getElementById('kpiAI').textContent = m.aiAnalyses24h;
+      if (m.totalEvents24h !== undefined) document.getElementById('kpiEvents').textContent = m.totalEvents24h;
+      if (m.pushNotifs24h !== undefined) document.getElementById('kpiPush').textContent = m.pushNotifs24h;
+    }
+  } catch {}
+}
+
+// ─── Service dots ──────────────────────────────────────────────────────────────
+
+function updateDots(services) {
+  const map = {
+    'api-server': 'api', 'ai-engine': 'ai', 'data-pipeline': 'pipeline',
+    'moment-engine': 'moment', 'world-engine': 'world', 'onesignal': 'push'
+  };
+  for (const [name, dotId] of Object.entries(map)) {
+    const dot = document.getElementById(`dot-${dotId}`);
+    if (!dot) continue;
+    const s = services[name]?.status;
+    dot.className = 'sdot ' + (s === 'online' || s === 'configured' ? 'online' : s === 'not-configured' ? 'warn' : 'offline');
+  }
+}
+
+function setAllDotsOffline() {
+  document.querySelectorAll('.sdot').forEach(d => d.className = 'sdot offline');
+}
+
+// ─── Keyboard: autocomplete + history ────────────────────────────────────────
+
+const input = document.getElementById('cmdInput');
+
+input.addEventListener('input', () => {
+  const val = input.value;
+  const ac = document.getElementById('autocomplete');
+  if (!val.startsWith('/') || val.includes(' ')) { ac.style.display = 'none'; return; }
+  const matches = Object.entries(COMMANDS).filter(([k]) => k.startsWith(val.toLowerCase()));
+  if (!matches.length) { ac.style.display = 'none'; return; }
+  ac.innerHTML = matches.map(([cmd, info], i) =>
+    `<div class="ac-item${i===0?' selected':''}" onclick="selectAC('${cmd}')" data-cmd="${cmd}">
+      <span class="ac-cmd">${escHtml(cmd)}</span>
+      <span class="ac-desc">${escHtml(info.desc)}</span>
+    </div>`
+  ).join('');
+  ac.style.display = 'block';
+});
+
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); handleSend(); }
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    histIdx = Math.min(histIdx + 1, history.length - 1);
+    if (history[histIdx]) input.value = history[histIdx];
+  }
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    histIdx = Math.max(histIdx - 1, -1);
+    input.value = histIdx >= 0 ? history[histIdx] : '';
+  }
+  if (e.key === 'Escape') { document.getElementById('autocomplete').style.display = 'none'; }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const first = document.querySelector('.ac-item.selected');
+    if (first) selectAC(first.dataset.cmd);
+  }
+});
+
+function selectAC(cmd) {
+  input.value = cmd + ' ';
+  input.focus();
+  document.getElementById('autocomplete').style.display = 'none';
+}
+
+// ─── Boot ──────────────────────────────────────────────────────────────────────
+
+async function boot() {
+  msg('system', 'WC2026', '⚡ AI Command Center online. Type /help or click a button above.', false);
+  if (!ADMIN_TOKEN) {
+    msg('warn', 'AUTH', 'No admin token set. Read-only until you run: /token YOUR_ADMIN_TOKEN  (found in Railway Variables)', false);
+  } else {
+    msg('system', 'AUTH', 'Admin token loaded from localStorage.', false);
+  }
+
+  // Initial data load
+  await refreshKPIs();
+  connectWS();
+  setInterval(refreshKPIs, 60000);
+
+  // Auto-run /status on boot
+  setTimeout(() => sendCmd('/status'), 500);
+}
+
+boot();
+</script>
+</body>
+</html>

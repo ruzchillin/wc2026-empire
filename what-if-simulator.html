@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC What If Simulator | Rewrite Football History</title>
+<meta name="description" content="What if Germany hadn't lost 7-1 in 2014? What if Maradona played in 2006? Simulate alternative football timelines.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#0a0a1a,#0a1a2a);border-bottom:2px solid #4499ff;padding:24px 20px;text-align:center}
+header h1{font-size:2rem;color:#4499ff;margin-bottom:8px}
+header p{color:#aaa}
+.main{max-width:900px;margin:30px auto;padding:0 20px}
+.scenario-picker{margin-bottom:28px}
+.scenario-picker h3{color:#4499ff;margin-bottom:14px;font-size:1rem}
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.scenario-btn{background:#161616;border:2px solid #2a2a2a;border-radius:8px;padding:12px;text-align:left;cursor:pointer;transition:all .2s}
+.scenario-btn:hover,.scenario-btn.active{border-color:#4499ff;background:#0a1a2a}
+.scenario-btn .emoji{font-size:1.4rem;margin-bottom:6px;display:block}
+.scenario-btn .title{font-size:0.85rem;font-weight:600}
+.scenario-btn .desc{font-size:0.75rem;color:#888;margin-top:3px}
+.simulator{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:24px}
+.sim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.sim-header h2{color:#4499ff}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.control-group label{display:block;font-size:0.8rem;color:#888;margin-bottom:6px}
+.control-group input,.control-group select{background:#1a1a1a;border:1px solid #333;border-radius:6px;padding:10px;color:#e5e5e5;width:100%;font-size:0.9rem;outline:none}
+.control-group input:focus,.control-group select:focus{border-color:#4499ff}
+.full-width{grid-column:1/-1}
+.slider-group{margin-bottom:14px}
+.slider-group label{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:6px}
+.slider-group label span{color:#4499ff;font-weight:700}
+input[type=range]{width:100%;accent-color:#4499ff}
+.run-btn{background:#4499ff;color:#000;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer;border:none;font-size:1rem;width:100%;margin-top:10px}
+.run-btn:hover{background:#66aaff}
+.result-box{background:#0a1a2a;border:1px solid #4499ff;border-radius:10px;padding:20px;margin-top:20px;display:none}
+.result-box h3{color:#4499ff;margin-bottom:14px}
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:#2a2a2a}
+.timeline-event{position:relative;margin-bottom:16px;padding-left:16px}
+.timeline-event::before{content:'';position:absolute;left:-14px;top:6px;width:10px;height:10px;border-radius:50%;background:#4499ff}
+.timeline-event .year{font-size:0.75rem;color:#4499ff;font-weight:700;margin-bottom:3px}
+.timeline-event .text{font-size:0.9rem;color:#ccc;line-height:1.5}
+.alt-result{background:#1a2a1a;border-left:3px solid #44ff88;padding:12px;border-radius:0 6px 6px 0;margin-top:12px}
+.alt-result h4{color:#44ff88;margin-bottom:6px;font-size:0.9rem}
+.alt-result p{color:#ccc;font-size:0.85rem;line-height:1.5}
+.probability-bar{background:#1a1a1a;border-radius:4px;height:8px;overflow:hidden;margin-top:8px}
+.prob-fill{height:100%;background:linear-gradient(90deg,#4499ff,#44ff88);border-radius:4px;transition:width 1s}
+.share-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.share-btn{padding:8px 16px;border-radius:6px;cursor:pointer;font-size:0.85rem;font-weight:600;border:none}
+.share-twitter{background:#1da1f2;color:#fff}
+.share-whatsapp{background:#25d366;color:#fff}
+.share-copy{background:#333;color:#e5e5e5}
+.history-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pill{background:#1a1a1a;border:1px solid #2a2a2a;padding:5px 12px;border-radius:20px;font-size:0.8rem;color:#888;cursor:pointer}
+.pill:hover{border-color:#4499ff;color:#4499ff}
+.loading{text-align:center;padding:30px;color:#4499ff}
+.loading::after{content:'...';animation:dots 1.5s infinite}
+@keyframes dots{0%{content:'...'}33%{content:'....'}66%{content:'.....'}100%{content:'...'}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⏳ What If Simulator</h1>
+  <p>Rewrite World Cup history with AI. Change one variable — watch football history unravel.</p>
+</header>
+
+<div class="main">
+
+  <div class="scenario-picker">
+    <h3>🎯 Choose a Scenario Template</h3>
+    <div class="scenario-grid">
+      <div class="scenario-btn active" onclick="loadScenario('brazil2014',this)">
+        <span class="emoji">🇧🇷</span>
+        <div class="title">Brazil 7-1</div>
+        <div class="desc">What if Neymar played vs Germany?</div>
+      </div>
+      <div class="scenario-btn" onclick="loadScenario('ronaldo2006',this)">
+        <span class="emoji">🇵🇹</span>
+        <div class="title">Ronaldo 2006</div>
+        <div class="desc">What if CR7 had better teammates?</div>
+      </div>
+      <div class="scenario-btn" onclick="loadScenario('england1966',this)">
+        <span class="emoji">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+        <div class="title">England 1966</div>
+        <div class="desc">Was the ball over the line?</div>
+      </div>
+      <div class="scenario-btn" onclick="loadScenario('maradona2010',this)">
+        <span class="emoji">🇦🇷</span>
+        <div class="title">Maradona Reborn</div>
+        <div class="desc">Prime Maradona in modern football</div>
+      </div>
+      <div class="scenario-btn" onclick="loadScenario('custom',this)">
+        <span class="emoji">✏️</span>
+        <div class="title">Custom</div>
+        <div class="desc">Build your own scenario</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="simulator">
+    <div class="sim-header">
+      <h2 id="simTitle">Brazil 2014 Semi-Final</h2>
+      <span style="color:#888;font-size:0.85rem">AI-Powered</span>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Match / Tournament</label>
+        <input type="text" id="matchInput" value="Brazil vs Germany, 2014 WC Semi-Final">
+      </div>
+      <div class="control-group">
+        <label>Year / Tournament</label>
+        <select id="yearInput">
+          <option>2022 - Qatar</option>
+          <option selected>2014 - Brazil</option>
+          <option>2010 - South Africa</option>
+          <option>2006 - Germany</option>
+          <option>2002 - Japan/South Korea</option>
+          <option>1998 - France</option>
+          <option>1990 - Italy</option>
+          <option>1986 - Mexico</option>
+          <option>1966 - England</option>
+        </select>
+      </div>
+      <div class="control-group full-width">
+        <label>The "What If" Variable</label>
+        <input type="text" id="variableInput" value="What if Neymar was fit and played in this match?">
+      </div>
+    </div>
+
+    <div class="slider-group">
+      <label>Butterfly effect magnitude <span id="magVal">7</span>/10</label>
+      <input type="range" min="1" max="10" value="7" oninput="document.getElementById('magVal').textContent=this.value">
+    </div>
+
+    <div class="slider-group">
+      <label>Historical accuracy weight <span id="accVal">6</span>/10</label>
+      <input type="range" min="1" max="10" value="6" oninput="document.getElementById('accVal').textContent=this.value">
+    </div>
+
+    <button class="run-btn" onclick="runSimulation()">⚡ Run Simulation</button>
+
+    <div class="result-box" id="resultBox">
+      <h3>🔀 Alternative Timeline</h3>
+      <div id="resultContent"></div>
+      <div class="share-row">
+        <button class="share-btn share-twitter" onclick="shareTwitter()">Share on X</button>
+        <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">Share on WhatsApp</button>
+        <button class="share-btn share-copy" onclick="copyResult()">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <div style="color:#888;font-size:0.85rem;margin-bottom:8px">💡 Popular What Ifs:</div>
+    <div class="history-pills">
+      <div class="pill" onclick="quickLoad('Messi wins 2014 WC final penalty shootout')">Messi wins 2014 final</div>
+      <div class="pill" onclick="quickLoad('Ronaldo stays injury-free in Euro 2016')">CR7 never injured 2016</div>
+      <div class="pill" onclick="quickLoad('France loses to Croatia 2018 WC final')">Croatia wins 2018</div>
+      <div class="pill" onclick="quickLoad('England wins 1990 penalty shootout vs Germany')">England 1990</div>
+      <div class="pill" onclick="quickLoad('Italy qualifies for 2018 World Cup')">Italy qualifies 2018</div>
+      <div class="pill" onclick="quickLoad('Zidane doesn t headbutt Materazzi in 2006 final')">Zidane calm in 2006</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SCENARIOS = {
+  brazil2014: {
+    title:'Brazil 2014 Semi-Final',
+    match:'Brazil vs Germany, 2014 WC Semi-Final',
+    year:'2014 - Brazil',
+    variable:'What if Neymar was fit and played in this match?',
+  },
+  ronaldo2006: {
+    title:'Portugal 2006 World Cup',
+    match:'Portugal vs France, 2006 WC Semi-Final',
+    year:'2006 - Germany',
+    variable:'What if Cristiano Ronaldo had Messi-level teammates in 2006?',
+  },
+  england1966: {
+    title:'1966 World Cup Final',
+    match:'England vs West Germany, 1966 WC Final',
+    year:'1966 - England',
+    variable:'What if Geoff Hurst\'s shot was ruled not a goal?',
+  },
+  maradona2010: {
+    title:'Maradona in Modern Football',
+    match:'Argentina vs Germany, 2010 WC QF',
+    year:'2010 - South Africa',
+    variable:'What if Diego Maradona (prime, 1986) managed and played in 2010?',
+  },
+  custom: {
+    title:'Custom Scenario',
+    match:'',
+    year:'2022 - Qatar',
+    variable:'',
+  }
+};
+
+const OUTCOMES = {
+  brazil2014: {
+    probability: 78,
+    events:[
+      {year:'75 min', text:'Neymar cuts inside, draws foul on the edge. Brazil convert free kick — Oscar's deflection. 1-0.'},
+      {year:'81 min', text:'Germany equalise through Müller. Neymar\'s presence compels Löw to adopt more defensive shape.'},
+      {year:'90+2 min', text:'Neymar free kick hits the post. Brazil hold on for penalties after 1-1.'},
+      {year:'Penalties', text:'Julio César saves Schweinsteiger. Brazil win 4-3 on penalties.'},
+    ],
+    alt:'Brazil reach the 2014 World Cup Final for the first time since 2002. They face Argentina — the rivalry of the century. Neymar scores twice, Messi once. 2-1 Brazil, their sixth World Cup title on home soil. Luiz Felipe Scolari never gets sacked.',
+  },
+  ronaldo2006: {
+    probability: 61,
+    events:[
+      {year:'Qtr-Final', text:'Ronaldo scores the winner against England — his penalty, no controversy this time.'},
+      {year:'Semi-Final', text:'Portugal edge France 2-1 in Paris. Zidane sent off on the stroke of FT for a challenge on Ronaldo.'},
+      {year:'Final vs Italy', text:'Ronaldo scores an audacious lob in the 67th minute. His first and only World Cup Final goal.'},
+      {year:'AET', text:'Italy level at 90. Penalties. Ronaldo converts from the spot, shakes his fist to the sky.'},
+    ],
+    alt:'Portugal win the 2006 World Cup 5-3 on penalties. Ronaldo wins the Golden Ball, Golden Boot (8 goals), and Golden Glove (metaphorically). He retires at 40 with 1 WC title, 8 Ballon d\'Or.',
+  },
+  england1966: {
+    probability: 45,
+    events:[
+      {year:'101 min', text:'Hurst\'s shot is correctly ruled not a goal by East German linesman.'},
+      {year:'Extra Time', text:'West Germany press. Peters exhausted. Müller (Sr.) presses a chance wide.'},
+      {year:'120 min', text:'West Germany score a scrappy winner. Schäfer bundles over the line.'},
+      {year:'Full Time', text:'England 2-3 West Germany after extra time. Ramsey weeps on the Wembley turf.'},
+    ],
+    alt:'West Germany win the 1966 World Cup. England never win a major tournament. The "three lions on the shirt" becomes a symbol of nearly-men before the phrase was even coined. The cultural impact of 1966 in England (football coming home mythology) never materialises. English football culture entirely different.',
+  },
+  maradona2010: {
+    probability: 70,
+    events:[
+      {year:'Group Stage', text:'Maradona-as-player is deployed as a creative midfielder. Messi and Maradona play together — impossible genius.'},
+      {year:'vs Germany QF', text:'Maradona chips Neuer at 78 mins. Then does it again at 84. Argentina win 4-0 instead of losing 4-0.'},
+      {year:'Semi-Final', text:'Argentina vs Netherlands. Maradona nutmegs van Persie to create Messi\'s winner.'},
+      {year:'Final', text:'Spain were inevitable. But Maradona\'s genius creates a goal from nothing. 2-1 Argentina. Second title.'},
+    ],
+    alt:'Argentina win the 2010 World Cup with Diego Maradona managing AND playing (per the simulation). FIFA immediately rule it illegal for managers to play — the "Maradona Clause" added to WC rules.',
+  },
+};
+
+function loadScenario(key, btn) {
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const s = SCENARIOS[key];
+  document.getElementById('simTitle').textContent = s.title;
+  document.getElementById('matchInput').value = s.match;
+  document.getElementById('variableInput').value = s.variable;
+  if (s.year) {
+    const sel = document.getElementById('yearInput');
+    for (let o of sel.options) { if (o.text === s.year) { sel.value = o.value; break; } o.selected = o.text === s.year; }
+  }
+  document.getElementById('resultBox').style.display = 'none';
+  window._currentScenarioKey = key;
+}
+
+function quickLoad(text) {
+  document.getElementById('variableInput').value = text;
+  document.getElementById('matchInput').value = '';
+  document.getElementById('resultBox').style.display = 'none';
+  window._currentScenarioKey = 'custom';
+}
+
+async function runSimulation() {
+  const variable = document.getElementById('variableInput').value;
+  const match = document.getElementById('matchInput').value;
+  if (!variable) { alert('Enter a "What If" variable first.'); return; }
+
+  document.getElementById('resultBox').style.display = 'block';
+  document.getElementById('resultContent').innerHTML = '<div class="loading">Simulating alternative timeline</div>';
+
+  // Fetch from AI backend if available, else use built-in outcomes
+  try {
+    const res = await fetch('/api/what-if', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ variable, match })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      renderResult(data.result, data.probability || 65, variable);
+      return;
+    }
+  } catch(e) {}
+
+  // Fallback: use built-in scenario data
+  await new Promise(r => setTimeout(r, 1800));
+  const key = window._currentScenarioKey;
+  const outcome = OUTCOMES[key];
+  if (outcome) {
+    renderResult(null, outcome.probability, variable, outcome);
+  } else {
+    renderGenericResult(variable);
+  }
+}
+
+function renderResult(aiText, probability, variable, outcome) {
+  let html = `<p style="color:#ccc;font-size:0.85rem;margin-bottom:16px"><strong style="color:#4499ff">Variable:</strong> ${variable}</p>`;
+  html += `<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px"><span>Probability this happens</span><span style="color:#4499ff">${probability}%</span></div><div class="probability-bar"><div class="prob-fill" style="width:${probability}%"></div></div></div>`;
+
+  if (outcome) {
+    html += '<div class="timeline">';
+    outcome.events.forEach(e => {
+      html += `<div class="timeline-event"><div class="year">${e.year}</div><div class="text">${e.text}</div></div>`;
+    });
+    html += '</div>';
+    html += `<div class="alt-result"><h4>🌍 Alternative History</h4><p>${outcome.alt}</p></div>`;
+  } else if (aiText) {
+    html += `<p style="color:#ccc;line-height:1.6">${aiText}</p>`;
+  }
+
+  document.getElementById('resultContent').innerHTML = html;
+  window._lastResult = { variable, probability, outcome };
+}
+
+function renderGenericResult(variable) {
+  const probability = Math.floor(Math.random() * 40) + 45;
+  const html = `
+    <p style="color:#ccc;font-size:0.85rem;margin-bottom:16px"><strong style="color:#4499ff">Variable:</strong> ${variable}</p>
+    <div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px"><span>Probability this happens</span><span style="color:#4499ff">${probability}%</span></div><div class="probability-bar"><div class="prob-fill" style="width:${probability}%"></div></div></div>
+    <div class="alt-result"><h4>🌍 Alternative Timeline</h4><p>In this simulation, the change you introduced cascades in unexpected ways. The immediate match result shifts, but the longer-term consequences ripple through football history — manager changes, player confidence, rival nation strategies. Connect your Groq API key in .env to get full AI-generated alternative timelines for any scenario.</p></div>`;
+  document.getElementById('resultContent').innerHTML = html;
+}
+
+function shareTwitter() {
+  const v = document.getElementById('variableInput').value;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I just simulated: "${v}" on the WC 2026 AI What If Simulator — check the results 👇 wc2026ai.com/what-if`)}`;
+  window.open(url,'_blank');
+}
+
+function shareWhatsApp() {
+  const v = document.getElementById('variableInput').value;
+  const url = `https://wa.me/?text=${encodeURIComponent(`Check out this football what-if simulation: "${v}" — wc2026ai.com/what-if`)}`;
+  window.open(url,'_blank');
+}
+
+function copyResult() {
+  const v = document.getElementById('variableInput').value;
+  navigator.clipboard.writeText(`WC What If: "${v}" — see the simulation at wc2026ai.com/what-if`).then(() => alert('Copied!'));
+}
+
+window._currentScenarioKey = 'brazil2014';
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

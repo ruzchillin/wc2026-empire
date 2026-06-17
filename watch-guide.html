@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Watch FIFA World Cup 2026 Free — Every Country, Every Match</title>
+<meta name="description" content="Complete guide to watching FIFA World Cup 2026 free and paid in every country. USA, UK, Africa, Asia, Europe, Latin America. Every broadcaster listed.">
+<meta property="og:title" content="How to Watch World Cup 2026 — Every Country Guide">
+<meta property="og:description" content="Free and paid streams for every country. 104 matches. Don't miss a single one.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e8e8f0; line-height: 1.6; }
+
+  header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 40px 20px; text-align: center; border-bottom: 3px solid #e94560; }
+  header h1 { font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: 900; color: #fff; margin-bottom: 10px; }
+  header .subtitle { color: #a0a8c0; font-size: 1.1rem; max-width: 600px; margin: 0 auto 20px; }
+  .live-badge { display: inline-block; background: #e94560; color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  .vpn-banner { background: linear-gradient(135deg, #1a3a2a, #0d2018); border: 1px solid #2a6a4a; border-radius: 12px; padding: 20px; margin: 30px auto; max-width: 1100px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .vpn-banner .vpn-text h3 { color: #4caf88; font-size: 1.1rem; }
+  .vpn-banner .vpn-text p { color: #8ab8a0; font-size: 0.9rem; margin-top: 4px; }
+  .vpn-btn { background: #4caf88; color: #0d2018; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .vpn-btn:hover { background: #5dc9a0; }
+
+  .search-bar { margin: 30px auto; max-width: 500px; text-align: center; padding: 0 20px; }
+  .search-bar input { width: 100%; padding: 14px 20px; border-radius: 30px; border: 2px solid #2a2a4a; background: #12122a; color: #e8e8f0; font-size: 1rem; outline: none; }
+  .search-bar input:focus { border-color: #e94560; }
+
+  .regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin: 30px 0; }
+  .region-card { background: #12122a; border: 1px solid #2a2a4a; border-radius: 14px; overflow: hidden; transition: transform 0.2s, border-color 0.2s; }
+  .region-card:hover { transform: translateY(-3px); border-color: #e94560; }
+  .region-header { padding: 16px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .region-flag { font-size: 2rem; }
+  .region-name { font-size: 1.15rem; font-weight: 700; color: #fff; }
+  .region-free { font-size: 0.8rem; color: #4caf88; font-weight: 600; }
+  .region-body { padding: 0 20px 16px; display: none; }
+  .region-body.open { display: block; }
+  .broadcaster { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1e1e3a; }
+  .broadcaster:last-child { border-bottom: none; }
+  .broadcaster-name { font-weight: 600; color: #c8c8e8; }
+  .broadcaster-info { font-size: 0.82rem; color: #8080a0; margin-top: 2px; }
+  .broadcaster-cost { font-size: 0.85rem; font-weight: 700; }
+  .free { color: #4caf88; }
+  .paid { color: #f4a261; }
+  .watch-btn { background: #e94560; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-decoration: none; }
+  .watch-btn:hover { background: #ff5577; }
+  .watch-btn.alt { background: #2a2a4a; }
+  .watch-btn.alt:hover { background: #3a3a6a; }
+
+  .quick-tip { background: #1a1a2e; border-left: 4px solid #f4a261; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 0.9rem; color: #c8c8e8; }
+  .quick-tip strong { color: #f4a261; }
+
+  .schedule-preview { background: #12122a; border: 1px solid #2a2a4a; border-radius: 14px; padding: 24px; margin: 30px 0; }
+  .schedule-preview h2 { font-size: 1.4rem; color: #fff; margin-bottom: 16px; }
+  .match-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1e1e3a; flex-wrap: wrap; gap: 8px; }
+  .match-row:last-child { border-bottom: none; }
+  .match-teams { font-weight: 600; font-size: 1rem; }
+  .match-time { color: #8080a0; font-size: 0.9rem; }
+  .match-venue { color: #6060a0; font-size: 0.82rem; }
+
+  .newsletter { background: linear-gradient(135deg, #1a0a2e, #0a1a2e); border: 1px solid #3a2a5a; border-radius: 14px; padding: 30px; text-align: center; margin: 40px 0; }
+  .newsletter h2 { color: #fff; font-size: 1.4rem; margin-bottom: 8px; }
+  .newsletter p { color: #8080a0; margin-bottom: 20px; }
+  .newsletter-form { display: flex; gap: 10px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .newsletter-form input { flex: 1; min-width: 200px; padding: 12px 16px; border-radius: 8px; border: 1px solid #3a3a5a; background: #12122a; color: #e8e8f0; font-size: 0.95rem; outline: none; }
+  .newsletter-form button { background: #e94560; color: #fff; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; font-size: 0.95rem; }
+
+  footer { text-align: center; padding: 30px 20px; color: #404060; font-size: 0.85rem; border-top: 1px solid #1a1a2e; }
+  footer a { color: #6060a0; }
+
+  h2.section-title { font-size: 1.5rem; color: #fff; margin: 40px 0 16px; }
+
+  .highlight-box { background: linear-gradient(135deg, #1a0a0a, #2a0a0a); border: 1px solid #5a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; }
+  .highlight-box h3 { color: #e94560; margin-bottom: 8px; }
+
+  @media(max-width:600px){
+    .vpn-banner { flex-direction: column; text-align: center; }
+    .regions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="live-badge">🔴 LIVE — WC 2026 IS ON NOW</div>
+    <h1>How to Watch FIFA World Cup 2026<br>— Every Country, Every Match, Free</h1>
+    <p class="subtitle">Complete broadcaster guide for 200+ countries. Find your free stream before the next match kicks off.</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- VPN Banner (affiliate) -->
+  <div class="vpn-banner">
+    <div style="font-size:2rem">🔒</div>
+    <div class="vpn-text">
+      <h3>Blocked in your country? Traveling abroad? Get every match.</h3>
+      <p>A VPN unlocks free broadcasters from any country. NordVPN works on any device in 30 seconds.</p>
+    </div>
+    <a href="https://nordvpn.com" target="_blank" rel="nofollow" class="vpn-btn">Get NordVPN — 30 Day Free Trial →</a>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="regionSearch" placeholder="🔍 Search your country..." oninput="filterRegions(this.value)">
+  </div>
+
+  <h2 class="section-title">📺 Find Your Country's Stream</h2>
+  <p style="color:#6060a0; margin-bottom:20px; font-size:0.9rem">Click your region to see every broadcaster, price, and stream link.</p>
+
+  <div class="regions" id="regionsGrid">
+
+    <!-- USA -->
+    <div class="region-card" data-name="usa united states america">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇺🇸</span>
+        <div><div class="region-name">United States</div><div class="region-free">✓ Partially Free</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Best free option:</strong> Telemundo Deportes (Spanish) streams free online. English requires Fox or streaming sub.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Fox Sports / FS1</div><div class="broadcaster-info">English coverage. Cable or streaming required.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$~30/mo</div><a href="https://foxsports.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Telemundo Deportes</div><div class="broadcaster-info">Spanish. Free online + app. All 104 matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://telemundo.com/deportes" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Fubo TV</div><div class="broadcaster-info">Streaming. Includes Fox Sports. 7-day free trial.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$80/mo</div><a href="https://fubo.tv" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Sling TV</div><div class="broadcaster-info">Cheapest Fox option. No contract.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$40/mo</div><a href="https://sling.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UK -->
+    <div class="region-card" data-name="uk united kingdom england britain">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇬🇧</span>
+        <div><div class="region-name">United Kingdom</div><div class="region-free">✓ Free on BBC / ITV</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Completely free:</strong> BBC and ITV split coverage. No subscription. Watch online with BBC iPlayer and ITVX.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">BBC One / BBC iPlayer</div><div class="broadcaster-info">Free. Major matches. Requires UK TV licence.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://bbc.co.uk/iplayer" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">ITV / ITVX</div><div class="broadcaster-info">Free. All remaining matches BBC doesn't show.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://itvx.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nigeria -->
+    <div class="region-card" data-name="nigeria africa ng">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇳🇬</span>
+        <div><div class="region-name">Nigeria</div><div class="region-free">✓ Free on DSTV (select)</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Free option:</strong> SuperSport is the main broadcaster. Some matches on free-to-air NTA or Africa Magic.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SuperSport (DSTV)</div><div class="broadcaster-info">All 104 matches. DSTV subscription required.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">₦15,000+/mo</div><a href="https://dstv.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">NTA (Free-to-Air)</div><div class="broadcaster-info">National broadcaster. Selected matches free.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Showmax</div><div class="broadcaster-info">Streaming option. Works on mobile.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">₦4,000/mo</div><a href="https://showmax.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brazil -->
+    <div class="region-card" data-name="brazil brasil south america br">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇧🇷</span>
+        <div><div class="region-name">Brazil</div><div class="region-free">✓ Free on Globo</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Completely free:</strong> TV Globo and SporTV cover all matches. Globo Play streams free with registration.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">TV Globo / Globo Play</div><div class="broadcaster-info">Free. All major matches. Brazil's biggest network.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://globoplay.globo.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SporTV</div><div class="broadcaster-info">All 104 matches. Cable/streaming required.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">R$30/mo</div></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">CazéTV (YouTube)</div><div class="broadcaster-info">Free online. Popular streaming alternative.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://youtube.com/@cazefootball" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- India -->
+    <div class="region-card" data-name="india hindi south asia in">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇮🇳</span>
+        <div><div class="region-name">India</div><div class="region-free">✓ Free on JioCinema</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Best free option:</strong> JioCinema streams all matches free for Jio users. Sports18 on cable for non-Jio.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">JioCinema</div><div class="broadcaster-info">Free for Jio subscribers. All 104 matches. App + web.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE (Jio)</div><a href="https://jiocinema.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Sports18 / MTV</div><div class="broadcaster-info">Cable TV. English and Hindi commentary.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">Cable req.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Germany -->
+    <div class="region-card" data-name="germany deutschland europe de">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇩🇪</span>
+        <div><div class="region-name">Germany</div><div class="region-free">✓ Free on ARD/ZDF</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>Completely free:</strong> ARD and ZDF share rights. Stream free via Mediathek apps.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">ARD / Das Erste</div><div class="broadcaster-info">Public broadcaster. Free. Major matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://ardmediathek.de" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">ZDF / ZDF Mediathek</div><div class="broadcaster-info">Public broadcaster. Free. Remaining matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://zdf.de" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">MagentaTV (Telekom)</div><div class="broadcaster-info">All 104 matches. Telekom customers get discount.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">€10/mo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kenya -->
+    <div class="region-card" data-name="kenya east africa ke">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇰🇪</span>
+        <div><div class="region-name">Kenya</div><div class="region-free">✓ Free on Citizen TV</div></div>
+      </div>
+      <div class="region-body">
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Citizen TV</div><div class="broadcaster-info">Free-to-air. Selected matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SuperSport (DSTV/GOtv)</div><div class="broadcaster-info">All 104 matches. GOtv Supa from KSh800/mo.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">KSh800+/mo</div><a href="https://gotvafrica.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Showmax</div><div class="broadcaster-info">Streaming. Works on mobile data.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">KSh300/mo</div><a href="https://showmax.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- France -->
+    <div class="region-card" data-name="france europe fr">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇫🇷</span>
+        <div><div class="region-name">France</div><div class="region-free">✓ Free on TF1/M6</div></div>
+      </div>
+      <div class="region-body">
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">TF1 / TF1+</div><div class="broadcaster-info">Free. All France matches + major games.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://tf1plus.fr" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">M6 / 6play</div><div class="broadcaster-info">Free. Co-broadcaster. Selected matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://6play.fr" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">beIN Sports</div><div class="broadcaster-info">All 104 matches. Premium subscription.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">€15/mo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mexico -->
+    <div class="region-card" data-name="mexico latin america mx">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇲🇽</span>
+        <div><div class="region-name">Mexico (Host Nation 🏟️)</div><div class="region-free">✓ Free on Televisa/TV Azteca</div></div>
+      </div>
+      <div class="region-body">
+        <div class="quick-tip"><strong>3 matches in Mexico City, Guadalajara & Monterrey.</strong> Mexico playing at home.</div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">Televisa / Canal de las Estrellas</div><div class="broadcaster-info">Free-to-air. Most matches. ViX streaming.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://vix.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">TV Azteca</div><div class="broadcaster-info">Free-to-air. Selected matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">TUDN (Univision)</div><div class="broadcaster-info">All matches. Cable or streaming required.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$~20/mo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canada -->
+    <div class="region-card" data-name="canada ca north america">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇨🇦</span>
+        <div><div class="region-name">Canada (Host Nation 🏟️)</div><div class="region-free">✓ TSN / RDS</div></div>
+      </div>
+      <div class="region-body">
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">TSN (English)</div><div class="broadcaster-info">All 104 matches. Cable or TSN Direct streaming.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$20/mo</div><a href="https://tsn.ca" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">RDS (French)</div><div class="broadcaster-info">French language. All matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">$20/mo</div></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">CTV</div><div class="broadcaster-info">Free selected matches (big games). CTV app.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">SELECT FREE</div><a href="https://ctv.ca" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Australia -->
+    <div class="region-card" data-name="australia au oceania">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇦🇺</span>
+        <div><div class="region-name">Australia</div><div class="region-free">✓ Free on SBS</div></div>
+      </div>
+      <div class="region-body">
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SBS On Demand</div><div class="broadcaster-info">Free. All 104 matches. No subscription needed.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://sbs.com.au/ondemand" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- South Africa -->
+    <div class="region-card" data-name="south africa za africa">
+      <div class="region-header" onclick="toggleRegion(this)">
+        <span class="region-flag">🇿🇦</span>
+        <div><div class="region-name">South Africa</div><div class="region-free">✓ Free on SABC</div></div>
+      </div>
+      <div class="region-body">
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SABC Sport</div><div class="broadcaster-info">Free-to-air. Selected matches. App available.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost free">FREE</div><a href="https://sabcsport.co.za" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+        <div class="broadcaster">
+          <div><div class="broadcaster-name">SuperSport (DSTV)</div><div class="broadcaster-info">All 104 matches.</div></div>
+          <div style="text-align:right"><div class="broadcaster-cost paid">R899+/mo</div><a href="https://dstv.com" target="_blank" class="watch-btn">Watch</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /regions -->
+
+  <!-- VPN tip for travelers -->
+  <div class="highlight-box">
+    <h3>🌍 Traveling to a WC Host City?</h3>
+    <p style="color:#c8c8e8; margin-top:8px">When you're abroad, your home country's free stream may be geo-blocked. A VPN lets you access your home broadcaster (BBC, ARD, SBS, Globo, etc.) from anywhere in the world. Takes 2 minutes to set up.</p>
+    <a href="https://nordvpn.com" target="_blank" style="display:inline-block; margin-top:12px; background:#e94560; color:#fff; padding:10px 20px; border-radius:8px; font-weight:700; text-decoration:none;">Get NordVPN (30-day free trial) →</a>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="newsletter">
+    <h2>🗞️ Get Daily WC 2026 Alerts — Free</h2>
+    <p>Match previews, results, and the best content from every match. Delivered before every game.</p>
+    <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+      <input type="email" id="emailInput" placeholder="your@email.com" required>
+      <button type="submit">Get Free Alerts →</button>
+    </form>
+    <p id="subMsg" style="margin-top:12px; color:#4caf88; display:none">✅ You're in! Check your inbox.</p>
+  </div>
+
+  <!-- Telegram CTA -->
+  <div style="background:#12122a; border:1px solid #2a2a4a; border-radius:14px; padding:24px; text-align:center; margin:30px 0;">
+    <div style="font-size:2.5rem; margin-bottom:10px">📱</div>
+    <h2 style="color:#fff; margin-bottom:8px">Live Goal Alerts on Telegram</h2>
+    <p style="color:#8080a0; margin-bottom:16px">Get notified the instant a goal is scored — before your TV shows it.</p>
+    <a href="https://t.me/wc2026intel" target="_blank" style="background:#0088cc; color:#fff; padding:14px 28px; border-radius:10px; font-weight:700; text-decoration:none; font-size:1rem;">Join WC 2026 Intel on Telegram →</a>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>WC 2026 Intel | Broadcaster information may change — verify with official sources | <a href="#">Privacy</a></p>
+  <p style="margin-top:8px; font-size:0.8rem">Some links are affiliate links. We earn a small commission at no extra cost to you.</p>
+</footer>
+
+<script>
+function toggleRegion(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function filterRegions(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.region-card').forEach(card => {
+    const name = card.dataset.name || '';
+    card.style.display = name.includes(q) || q === '' ? '' : 'none';
+  });
+}
+
+function subscribeNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('emailInput').value;
+  // In production: POST to Beehiiv API
+  document.getElementById('subMsg').style.display = 'block';
+  document.getElementById('emailInput').value = '';
+  console.log('Subscribe:', email);
+}
+
+// Open all cards on mobile by default for first 3
+document.querySelectorAll('.region-body').forEach((body, i) => {
+  if (i < 3) body.classList.add('open');
+});
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

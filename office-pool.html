@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 Office Pool Generator — Free Printable</title>
+<meta name="description" content="Generate a free printable World Cup 2026 office pool sheet in seconds. Track picks, scoring, and standings automatically.">
+<style>
+  :root { --green:#15803d; --green-light:#dcfce7; --blue:#1d4ed8; --border:#e5e7eb; --text:#111827; --muted:#6b7280; --bg:#f9fafb; --radius:8px; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);background:var(--bg);padding:1.5rem 1rem}
+  h1{font-size:1.4rem;font-weight:700;margin-bottom:.25rem}
+  .sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+  input,select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;color:var(--text);background:#fff;margin-bottom:14px}
+  input:focus,select:focus{outline:2px solid var(--green);outline-offset:1px;border-color:transparent}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;transition:opacity .15s}
+  .btn:hover{opacity:.85}
+  .btn-primary{background:var(--green);color:#fff}
+  .btn-secondary{background:#fff;color:var(--text);border:1px solid var(--border)}
+  .btn-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:.5rem}
+  .aff-bar{background:#1e3a5f;color:#fff;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .aff-bar p{font-size:12px;font-weight:500;flex-shrink:0}
+  .aff-links{display:flex;gap:8px;flex-wrap:wrap}
+  .aff-btn{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap}
+  .dk{background:#00843d;color:#fff}.fd{background:#1493ff;color:#fff}.vpn{background:#4687f3;color:#fff}
+  #preview{display:none}
+  /* Print styles */
+  @media print{
+    body{padding:0;background:#fff;font-size:11px}
+    .no-print{display:none!important}
+    #preview{display:block!important;padding:0}
+    .print-header{border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:12px}
+    .matches-table{width:100%;border-collapse:collapse}
+    .matches-table th,.matches-table td{border:1px solid #999;padding:5px 8px;font-size:10px;text-align:left}
+    .matches-table th{background:#eee;font-weight:700}
+    .phase-header{background:#15803d;color:#fff;padding:5px 8px;font-weight:700;font-size:11px}
+    .scoring-box{border:1px solid #999;padding:8px 12px;margin-top:10px;font-size:10px}
+    .participants{margin-top:10px}
+    .p-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+    .p-cell{border:1px solid #ccc;padding:8px 6px;font-size:9px;text-align:center}
+    .footer-note{font-size:9px;color:#666;margin-top:8px;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <h1>⚽ WC 2026 Office Pool Generator</h1>
+  <p class="sub">Create a free printable office pool in 30 seconds. Every workplace needs one.</p>
+
+  <div class="aff-bar">
+    <p>🎰 Want real stakes?</p>
+    <div class="aff-links">
+      <a class="aff-btn dk" href="DRAFTKINGS_AFFILIATE_LINK" target="_blank" rel="nofollow">DraftKings — Bet $5 Get $200</a>
+      <a class="aff-btn fd" href="FANDUEL_AFFILIATE_LINK" target="_blank" rel="nofollow">FanDuel — $200 Bonus</a>
+      <a class="aff-btn vpn" href="NORDVPN_AFFILIATE_LINK" target="_blank" rel="nofollow">📺 Watch Live — NordVPN</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div><label>Office / Group Name</label><input id="poolName" placeholder="e.g. Marketing Dept WC Pool" value="World Cup 2026 Office Pool"></div>
+      <div><label>Entry fee per person</label><input id="entryFee" placeholder="e.g. $10" value="$10"></div>
+    </div>
+    <div class="row">
+      <div><label>Number of participants</label><input id="numPlayers" type="number" min="2" max="50" value="10"></div>
+      <div><label>Tiebreaker rule</label>
+        <select id="tiebreaker">
+          <option>Total goals in the Final</option>
+          <option>Winning margin in the Final</option>
+          <option>First goalscorer of the tournament</option>
+          <option>Total tournament goals</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Scoring system</label>
+    <select id="scoring" style="margin-bottom:14px">
+      <option value="standard">Standard: Group stage 1pt, R32 2pt, R16 3pt, QF 5pt, SF 8pt, Final 12pt</option>
+      <option value="simple">Simple: 1 point per correct prediction</option>
+      <option value="double">Double down: Points double each round</option>
+    </select>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generatePool()">⚽ Generate Pool Sheet</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRINTABLE POOL SHEET -->
+<div id="preview">
+  <div class="print-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-size:16px;font-weight:700" id="out-name">World Cup 2026 Office Pool</div>
+        <div style="font-size:11px;color:#555" id="out-meta"></div>
+      </div>
+      <div style="font-size:10px;text-align:right">
+        <div>Entry: <strong id="out-fee">$10</strong></div>
+        <div>Tiebreaker: <span id="out-tie"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="out-participants" class="participants no-print-hide"></div>
+  <div id="out-matches"></div>
+  <div id="out-scoring" class="scoring-box"></div>
+  <div class="footer-note">Generated by WC2026PoolGenerator.com · Join our Telegram for free AI picks every match day</div>
+</div>
+
+<div class="no-print" id="actions" style="display:none;margin-top:1rem">
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="btn btn-secondary" onclick="sharePool()">📤 Share link</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('preview').style.display='none';document.getElementById('actions').style.display='none'">← Edit</button>
+  </div>
+  <p style="font-size:11px;color:var(--muted);margin-top:.75rem">Tip: In your print dialog, choose "Save as PDF" to share digitally.</p>
+</div>
+
+<script>
+const MATCHES = [
+  // Group stage — all 48 teams, 12 groups (representative sample)
+  // Phase, Group, Home, Away
+  {phase:'GROUP STAGE — GROUP A', group:'A', matches:[
+    {home:'USA',away:'Panama'},{home:'Mexico',away:'Jamaica'},{home:'USA',away:'Jamaica'},{home:'Panama',away:'Mexico'},{home:'USA',away:'Mexico'},{home:'Jamaica',away:'Panama'}
+  ]},
+  {phase:'GROUP STAGE — GROUP B', group:'B', matches:[
+    {home:'Brazil',away:'Chile'},{home:'Argentina',away:'Ecuador'},{home:'Brazil',away:'Ecuador'},{home:'Chile',away:'Argentina'},{home:'Brazil',away:'Argentina'},{home:'Ecuador',away:'Chile'}
+  ]},
+  {phase:'GROUP STAGE — GROUP C', group:'C', matches:[
+    {home:'France',away:'Morocco'},{home:'Belgium',away:'Senegal'},{home:'France',away:'Senegal'},{home:'Morocco',away:'Belgium'},{home:'France',away:'Belgium'},{home:'Senegal',away:'Morocco'}
+  ]},
+  {phase:'GROUP STAGE — GROUP D', group:'D', matches:[
+    {home:'England',away:'Iran'},{home:'Germany',away:'Japan'},{home:'England',away:'Japan'},{home:'Iran',away:'Germany'},{home:'England',away:'Germany'},{home:'Japan',away:'Iran'}
+  ]},
+  {phase:'GROUP STAGE — GROUP E', group:'E', matches:[
+    {home:'Spain',away:'Colombia'},{home:'Portugal',away:'Turkey'},{home:'Spain',away:'Turkey'},{home:'Colombia',away:'Portugal'},{home:'Spain',away:'Portugal'},{home:'Turkey',away:'Colombia'}
+  ]},
+  {phase:'GROUP STAGE — GROUP F', group:'F', matches:[
+    {home:'Netherlands',away:'Poland'},{home:'Croatia',away:'Australia'},{home:'Netherlands',away:'Australia'},{home:'Poland',away:'Croatia'},{home:'Netherlands',away:'Croatia'},{home:'Australia',away:'Poland'}
+  ]},
+];
+
+const KNOCKOUT = [
+  {phase:'ROUND OF 32', matches: Array.from({length:16},(_,i)=>`Match ${i+1}: Winner Group ___ vs Runner-up Group ___`)},
+  {phase:'ROUND OF 16', matches: Array.from({length:8},(_,i)=>`Match ${i+1}: _____________ vs _____________`)},
+  {phase:'QUARTERFINALS', matches: Array.from({length:4},(_,i)=>`Match ${i+1}: _____________ vs _____________`)},
+  {phase:'SEMIFINALS',    matches: Array.from({length:2},(_,i)=>`Match ${i+1}: _____________ vs _____________`)},
+  {phase:'THIRD PLACE PLAYOFF', matches:['_____________ vs _____________']},
+  {phase:'🏆 FINAL', matches:['_____________ vs _____________']},
+];
+
+const SCORING_TEXT = {
+  standard: 'Group stage: 1pt correct winner | Round of 32: 2pt | Round of 16: 3pt | QF: 5pt | SF: 8pt | Final: 12pt',
+  simple:   '1 point for every correct match winner. Most points after the Final wins.',
+  double:   'Group stage: 1pt | R32: 2pt | R16: 4pt | QF: 8pt | SF: 16pt | Final: 32pt — points double each round.',
+};
+
+function generatePool() {
+  const name    = document.getElementById('poolName').value || 'World Cup 2026 Pool';
+  const fee     = document.getElementById('entryFee').value || '$10';
+  const players = parseInt(document.getElementById('numPlayers').value) || 10;
+  const tie     = document.getElementById('tiebreaker').value;
+  const scoring = document.getElementById('scoring').value;
+
+  document.getElementById('out-name').textContent = name;
+  document.getElementById('out-fee').textContent  = fee;
+  document.getElementById('out-tie').textContent  = tie;
+  document.getElementById('out-meta').textContent = `${players} participants · Entry: ${fee} · Total pot: ${fee.replace(/[^0-9.]/g,'')*players ? '$'+fee.replace(/[^0-9.]/g,'')*players : 'TBD'}`;
+
+  // Participants grid
+  let pHtml = '<div style="margin-bottom:10px"><strong style="font-size:11px">PARTICIPANTS</strong><div class="p-row" style="margin-top:6px">';
+  for (let i = 1; i <= players; i++) {
+    pHtml += `<div class="p-cell">${i}. _______________</div>`;
+  }
+  pHtml += '</div></div>';
+  document.getElementById('out-participants').innerHTML = pHtml;
+
+  // Group stage matches
+  let mHtml = '';
+  for (const grp of MATCHES) {
+    mHtml += `<div class="phase-header" style="margin-top:8px">${grp.phase}</div>
+    <table class="matches-table"><tr><th>Match</th><th>Home</th><th>Score</th><th>Away</th><th>Your Pick (W/D/L)</th></tr>`;
+    for (const m of grp.matches) {
+      mHtml += `<tr><td style="white-space:nowrap">${m.home} vs ${m.away}</td><td>${m.home}</td><td>___ — ___</td><td>${m.away}</td><td>_____</td></tr>`;
+    }
+    mHtml += '</table>';
+  }
+
+  // Knockout rounds
+  for (const round of KNOCKOUT) {
+    mHtml += `<div class="phase-header" style="margin-top:8px">${round.phase}</div>
+    <table class="matches-table"><tr><th>Match</th><th>Score</th><th>Your Pick (team name)</th></tr>`;
+    for (const m of round.matches) {
+      mHtml += `<tr><td>${m}</td><td>___ — ___</td><td>________________________</td></tr>`;
+    }
+    mHtml += '</table>';
+  }
+
+  document.getElementById('out-matches').innerHTML  = mHtml;
+  document.getElementById('out-scoring').innerHTML  =
+    `<strong>SCORING:</strong> ${SCORING_TEXT[scoring]}<br><strong>TIEBREAKER:</strong> ${tie}`;
+
+  document.getElementById('preview').style.display = 'block';
+  document.getElementById('actions').style.display = 'block';
+  document.getElementById('preview').scrollIntoView({behavior:'smooth'});
+}
+
+function sharePool() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'WC 2026 Office Pool', url });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(url);
+    alert('Link copied! Share it with your office.');
+  }
+}
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

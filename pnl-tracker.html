@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WC 2026 Betting Tracker — Track Your P&L, Bets & ROI</title>
+<meta name="description" content="Free betting tracker for World Cup 2026. Log your bets, track profit and loss, analyze your ROI and improve your strategy.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9fafb;color:#1a1a1a}
+.topbar{background:#0f172a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar-title{font-size:16px;font-weight:700}
+.topbar-sub{font-size:11px;opacity:.65}
+.upgrade-btn{background:#10b981;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding:20px;max-width:1000px;margin:0 auto}
+.stat-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;text-align:center}
+.stat-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:800}
+.stat-value.green{color:#10b981}
+.stat-value.red{color:#ef4444}
+.stat-value.blue{color:#3b82f6}
+.main{max-width:1000px;margin:0 auto;padding:0 20px 20px;display:grid;grid-template-columns:1fr 340px;gap:16px}
+@media(max-width:720px){.main{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.panel-header{padding:14px 18px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center}
+.panel-title{font-size:14px;font-weight:700}
+.add-bet-form{padding:16px 18px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select{padding:9px 12px;border:1px solid #e5e7eb;border-radius:7px;font-size:13px;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.add-btn{width:100%;background:#0f172a;color:#fff;border:none;padding:11px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px}
+.add-btn:hover{background:#1e293b}
+.bets-table{width:100%;font-size:12px}
+.bets-table th{background:#f9fafb;padding:8px 12px;text-align:left;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;font-weight:600;border-bottom:1px solid #f0f0f0}
+.bets-table td{padding:10px 12px;border-bottom:1px solid #f9fafb}
+.bets-table tr:hover td{background:#fafafa}
+.status-badge{padding:3px 7px;border-radius:4px;font-size:10px;font-weight:700}
+.status-win{background:#dcfce7;color:#166534}
+.status-loss{background:#fee2e2;color:#991b1b}
+.status-pending{background:#fef3c7;color:#92400e}
+.delete-btn{background:none;border:none;cursor:pointer;color:#d1d5db;font-size:14px}
+.delete-btn:hover{color:#ef4444}
+.sidebar-content{padding:16px 18px}
+.aff-promo{background:linear-gradient(135deg,#002868,#BF0A30);color:#fff;border-radius:10px;padding:16px;margin-bottom:14px;text-decoration:none;display:block}
+.aff-promo h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.aff-promo p{font-size:11px;opacity:.85;line-height:1.4;margin-bottom:8px}
+.aff-promo-cta{background:#fff;color:#002868;padding:6px 12px;border-radius:5px;font-size:11px;font-weight:800;display:inline-block}
+.tip-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.tip-card h4{font-size:12px;font-weight:700;color:#0369a1;margin-bottom:4px}
+.tip-card p{font-size:11px;color:#555;line-height:1.5}
+.chart-bar{height:6px;border-radius:3px;background:#e5e7eb;margin-top:6px}
+.chart-fill{height:100%;border-radius:3px;background:#10b981;transition:width .3s}
+.upgrade-cta{background:#0f172a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-top:14px}
+.upgrade-cta h4{font-size:13px;font-weight:700;margin-bottom:6px}
+.upgrade-cta p{font-size:11px;opacity:.8;margin-bottom:10px}
+.upgrade-cta button{background:#10b981;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;width:100%}
+.empty-state{padding:40px 20px;text-align:center;color:#9ca3af;font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">⚽ WC 2026 Betting Tracker</div>
+    <div class="topbar-sub">Track every bet · Analyze your edge · Improve your ROI</div>
+  </div>
+  <button class="upgrade-btn" onclick="alert('Pro plan coming soon — unlimited bets, AI insights, CSV export. Join waitlist: your@domain.com')">Upgrade to Pro →</button>
+</div>
+
+<div class="stats-row" id="stats-row">
+  <div class="stat-card"><div class="stat-label">Total bets</div><div class="stat-value blue" id="stat-total">0</div></div>
+  <div class="stat-card"><div class="stat-label">Total staked</div><div class="stat-value" id="stat-staked">£0</div></div>
+  <div class="stat-card"><div class="stat-label">Net P&L</div><div class="stat-value" id="stat-pnl">£0</div></div>
+  <div class="stat-card"><div class="stat-label">ROI</div><div class="stat-value" id="stat-roi">0%</div></div>
+  <div class="stat-card"><div class="stat-label">Win rate</div><div class="stat-value" id="stat-winrate">0%</div></div>
+  <div class="stat-card"><div class="stat-label">Best win</div><div class="stat-value green" id="stat-best">£0</div></div>
+</div>
+
+<div class="main">
+  <div>
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-header">
+        <div class="panel-title">Add a bet</div>
+        <span style="font-size:11px;color:#9ca3af">Stored locally in your browser</span>
+      </div>
+      <div class="add-bet-form">
+        <div class="form-row">
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Match</label>
+            <input type="text" id="bet-match" placeholder="e.g. Brazil vs Argentina" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bet type</label>
+            <select id="bet-type">
+              <option>Match result</option>
+              <option>Both teams to score</option>
+              <option>Over 2.5 goals</option>
+              <option>Under 2.5 goals</option>
+              <option>Correct score</option>
+              <option>First goalscorer</option>
+              <option>Asian handicap</option>
+              <option>Parlay / accumulator</option>
+              <option>Player props</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Selection</label>
+            <input type="text" id="bet-selection" placeholder="e.g. Brazil to win" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stake (£/$)</label>
+            <input type="number" id="bet-stake" placeholder="10" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Odds (decimal)</label>
+            <input type="number" id="bet-odds" placeholder="2.40" step="0.01" min="1" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sportsbook</label>
+            <select id="bet-book">
+              <option>DraftKings</option>
+              <option>FanDuel</option>
+              <option>BetMGM</option>
+              <option>Bet365</option>
+              <option>Caesars</option>
+              <option>William Hill</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Result</label>
+            <select id="bet-result">
+              <option value="pending">Pending</option>
+              <option value="win">Won ✓</option>
+              <option value="loss">Lost ✗</option>
+              <option value="void">Void / Push</option>
+            </select>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addBet()">+ Add bet</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Bet history</div>
+        <span style="font-size:11px;color:#9ca3af" id="bet-count">0 bets</span>
+      </div>
+      <div id="bets-container">
+        <div class="empty-state">No bets yet. Add your first bet above.<br><br>All data is stored locally in your browser.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <div class="panel-header"><div class="panel-title">Promotions</div></div>
+      <div class="sidebar-content">
+        <a href="https://sportsbook.draftkings.com/promos" target="_blank" rel="nofollow" class="aff-promo">
+          <h4>🎰 DraftKings WC 2026</h4>
+          <p>Bet $5 on any World Cup match and get $200 in bonus bets instantly. New users only.</p>
+          <div class="aff-promo-cta">Claim $200 bonus →</div>
+        </a>
+        
+        <div class="tip-card">
+          <h4>📊 Track your edge</h4>
+          <p>A positive ROI over 100+ bets is statistically significant. Aim for 5%+ ROI to beat the house long-term.</p>
+        </div>
+        
+        <div class="tip-card">
+          <h4>🔢 Value betting basics</h4>
+          <p>If you think a team has a 50% chance of winning and the odds imply 40%, that's value. Track enough bets and value wins long-term.</p>
+        </div>
+
+        <div style="background:#f9fafb;border-radius:8px;padding:12px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:#6b7280;margin-bottom:8px">Your betting breakdown</div>
+          <div style="font-size:12px;color:#1a1a1a;display:flex;justify-content:space-between;margin-bottom:6px">
+            <span>Wins</span><span id="breakdown-wins" style="font-weight:700;color:#10b981">0</span>
+          </div>
+          <div class="chart-bar"><div class="chart-fill" id="win-bar" style="width:0%"></div></div>
+          <div style="font-size:12px;color:#1a1a1a;display:flex;justify-content:space-between;margin:8px 0 6px">
+            <span>Losses</span><span id="breakdown-losses" style="font-weight:700;color:#ef4444">0</span>
+          </div>
+          <div class="chart-bar"><div class="chart-fill" id="loss-bar" style="width:0%;background:#ef4444"></div></div>
+          <div style="font-size:12px;color:#1a1a1a;display:flex;justify-content:space-between;margin:8px 0 6px">
+            <span>Pending</span><span id="breakdown-pending" style="font-weight:700;color:#f59e0b">0</span>
+          </div>
+          <div class="chart-bar"><div class="chart-fill" id="pending-bar" style="width:0%;background:#f59e0b"></div></div>
+        </div>
+
+        <div class="upgrade-cta">
+          <h4>Pro features</h4>
+          <p>AI bet analysis · Unlimited history · CSV export · Kelly criterion calculator · Odds comparison alerts</p>
+          <button onclick="alert('Pro coming soon — £4.99/mo. Join waitlist: pro@your-domain.com')">Upgrade to Pro — £4.99/mo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let bets = JSON.parse(localStorage.getItem('wc2026_bets') || '[]');
+
+function saveBets(){ localStorage.setItem('wc2026_bets', JSON.stringify(bets)); }
+
+function addBet(){
+  const match = document.getElementById('bet-match').value.trim();
+  const type = document.getElementById('bet-type').value;
+  const selection = document.getElementById('bet-selection').value.trim();
+  const stake = parseFloat(document.getElementById('bet-stake').value);
+  const odds = parseFloat(document.getElementById('bet-odds').value);
+  const book = document.getElementById('bet-book').value;
+  const result = document.getElementById('bet-result').value;
+  
+  if(!match || !stake || !odds) { alert('Please fill in match, stake and odds'); return; }
+  
+  const returns = result === 'win' ? +(stake * odds).toFixed(2) : result === 'void' ? stake : 0;
+  const pnl = result === 'win' ? +(returns - stake).toFixed(2) : result === 'loss' ? -stake : 0;
+  
+  bets.unshift({
+    id: Date.now(), match, type, selection, stake, odds, book, result, returns, pnl,
+    date: new Date().toLocaleDateString()
+  });
+  
+  saveBets();
+  renderBets();
+  updateStats();
+  
+  // Clear form
+  document.getElementById('bet-match').value = '';
+  document.getElementById('bet-selection').value = '';
+  document.getElementById('bet-stake').value = '';
+  document.getElementById('bet-odds').value = '';
+  document.getElementById('bet-result').value = 'pending';
+}
+
+function deleteBet(id){
+  bets = bets.filter(b => b.id !== id);
+  saveBets(); renderBets(); updateStats();
+}
+
+function renderBets(){
+  const container = document.getElementById('bets-container');
+  document.getElementById('bet-count').textContent = bets.length + ' bets';
+  
+  if(!bets.length){
+    container.innerHTML = '<div class="empty-state">No bets yet. Add your first bet above.</div>';
+    return;
+  }
+  
+  container.innerHTML = `<table class="bets-table">
+    <thead><tr><th>Match</th><th>Selection</th><th>Stake</th><th>Odds</th><th>P&L</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      ${bets.map(b => `
+        <tr>
+          <td><div style="font-weight:600;font-size:12px">${b.match}</div><div style="font-size:10px;color:#9ca3af">${b.date} · ${b.book}</div></td>
+          <td style="font-size:11px;color:#555">${b.selection || b.type}</td>
+          <td>£${b.stake}</td>
+          <td>${b.odds}</td>
+          <td style="font-weight:700;color:${b.pnl > 0 ? '#10b981' : b.pnl < 0 ? '#ef4444' : '#6b7280'}">${b.pnl > 0 ? '+' : ''}${b.pnl !== 0 ? '£'+Math.abs(b.pnl) : '-'}</td>
+          <td><span class="status-badge status-${b.result}">${b.result.toUpperCase()}</span></td>
+          <td><button class="delete-btn" onclick="deleteBet(${b.id})">×</button></td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>`;
+}
+
+function updateStats(){
+  const settled = bets.filter(b => b.result !== 'pending' && b.result !== 'void');
+  const wins = settled.filter(b => b.result === 'win').length;
+  const losses = settled.filter(b => b.result === 'loss').length;
+  const pending = bets.filter(b => b.result === 'pending').length;
+  const totalStaked = bets.reduce((s,b) => s + (b.result !== 'void' ? b.stake : 0), 0);
+  const netPnl = settled.reduce((s,b) => s + b.pnl, 0);
+  const roi = totalStaked > 0 ? ((netPnl / totalStaked) * 100).toFixed(1) : 0;
+  const bestWin = Math.max(0, ...bets.map(b => b.pnl));
+  const winRate = settled.length > 0 ? ((wins / settled.length) * 100).toFixed(0) : 0;
+  
+  document.getElementById('stat-total').textContent = bets.length;
+  document.getElementById('stat-staked').textContent = '£' + totalStaked.toFixed(2);
+  document.getElementById('stat-pnl').textContent = (netPnl >= 0 ? '+' : '') + '£' + Math.abs(netPnl).toFixed(2);
+  document.getElementById('stat-pnl').className = 'stat-value ' + (netPnl >= 0 ? 'green' : 'red');
+  document.getElementById('stat-roi').textContent = (roi >= 0 ? '+' : '') + roi + '%';
+  document.getElementById('stat-roi').className = 'stat-value ' + (roi >= 0 ? 'green' : 'red');
+  document.getElementById('stat-winrate').textContent = winRate + '%';
+  document.getElementById('stat-best').textContent = '£' + bestWin.toFixed(2);
+  
+  const total = wins + losses + pending || 1;
+  document.getElementById('breakdown-wins').textContent = wins;
+  document.getElementById('breakdown-losses').textContent = losses;
+  document.getElementById('breakdown-pending').textContent = pending;
+  document.getElementById('win-bar').style.width = (wins/total*100) + '%';
+  document.getElementById('loss-bar').style.width = (losses/total*100) + '%';
+  document.getElementById('pending-bar').style.width = (pending/total*100) + '%';
+}
+
+renderBets();
+updateStats();
+</script>
+</body>
+</html>

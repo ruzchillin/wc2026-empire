@@ -1,0 +1,75 @@
+# ═══════════════════════════════════════════════════════════
+# WC 2026 EMPIRE — PRE-MATCH ALERTS
+# Fires 1 hour before each WC 2026 match day group stage
+# ═══════════════════════════════════════════════════════════
+name: Pre-Match Alerts
+
+on:
+  schedule:
+    # WC 2026 Group Stage: June 11 – July 2, 2026
+    # Matches at 14:00, 17:00, 20:00 UTC
+    # Alert 1hr before each: 13:00, 16:00, 19:00 UTC
+    - cron: '0 13 * * *'
+    - cron: '0 16 * * *'
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+jobs:
+  pre-match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send Pre-Match Alert
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          node -e "
+          const https = require('https');
+          const hour = new Date().getUTCHours();
+          const matchTimes = { 13: '14:00 UTC', 16: '17:00 UTC', 19: '20:00 UTC' };
+          const kickoff = matchTimes[hour] || 'kickoff';
+          
+          const alerts = [
+            '🔥 Big tip: Watch first 15 minutes — most WC value is pre-match',
+            '⚡ BTTS market often closes fast — check now while odds hold',
+            '🎯 Our model ran 10,000 simulations — full picks on the site',
+            '📊 Value window: odds shift heavily once match kicks off'
+          ];
+          const alert = alerts[Math.floor(Math.random() * alerts.length)];
+          
+          const msg = \`⚽ KICK-OFF IN 1 HOUR (\${kickoff})\n\n\${alert}\n\n📈 Full picks: wc2026-sports-empire.vercel.app/win-share.html\`;
+          
+          // Telegram
+          const tToken = process.env.TELEGRAM_BOT_TOKEN;
+          const tChat = process.env.TELEGRAM_CHANNEL_ID;
+          if (tToken && tChat) {
+            const data = JSON.stringify({ chat_id: tChat, text: msg });
+            const req = https.request({ hostname: 'api.telegram.org', path: '/bot' + tToken + '/sendMessage', method: 'POST', headers: {'Content-Type':'application/json'} }, r => {
+              let b = ''; r.on('data', d => b += d); r.on('end', () => {
+                console.log(JSON.parse(b).ok ? '✓ Telegram alert sent' : 'Telegram: skip');
+              });
+            });
+            req.write(data); req.end();
+          }
+          
+          // Discord
+          const dWebhook = process.env.DISCORD_WEBHOOK_URL;
+          if (dWebhook) {
+            const url = new URL(dWebhook);
+            const embed = JSON.stringify({ embeds: [{ title: '⚽ Match starts in 1 hour!', description: msg, color: 0xEF4444 }] });
+            const req2 = https.request({ hostname: url.hostname, path: url.pathname + url.search, method: 'POST', headers: {'Content-Type':'application/json'} }, r2 => {
+              console.log(r2.statusCode === 204 ? '✓ Discord alert sent' : 'Discord status: ' + r2.statusCode);
+            });
+            req2.write(embed); req2.end();
+          }
+          "

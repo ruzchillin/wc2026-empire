@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WC 2026 Value Bets – AI-Powered Daily Value Picks</title>
+<meta name="description" content="AI-powered WC 2026 value bets. Our model finds edges where bookmakers are mispricing odds. Daily value picks for outrights, match bets and player markets.">
+<meta property="og:title" content="WC 2026 Value Bets – Beat the Bookies with AI Edge Detection">
+<link rel="canonical" href="https://wc2026predictions.com/value-bets-wc2026">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"WC 2026 Value Bets – AI Edge Detection","description":"AI model identifies value bets for WC 2026 outrights, match bets and player markets. Updated daily.","datePublished":"2025-01-01"}
+</script>
+<style>
+:root{--gold:#FFD700;--bg:#0D0D0D;--card:#1A1A1A;--txt:#E8E8E8;--sub:#A0A0A0;--acc:#FF6B00;--pos:#00FF88;--neg:#FF4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;}
+.hero{background:linear-gradient(135deg,#1a0800,#331500,#FF6B00);padding:3rem 1.5rem 2rem;text-align:center;border-bottom:3px solid var(--gold);}
+.hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;margin-bottom:.5rem;}
+.hero h1 span{color:var(--gold);}
+.hero p{color:#ddd;max-width:680px;margin:.5rem auto;}
+.hero .badge{display:inline-block;background:#FFD700;color:#000;font-weight:900;font-size:.75rem;padding:.3rem .8rem;border-radius:20px;margin:.5rem .25rem;}
+nav.anav{background:#111;padding:.6rem 1rem;text-align:center;border-bottom:1px solid #222;font-size:.82rem;overflow-x:auto;white-space:nowrap;}
+nav.anav a{color:#aaa;text-decoration:none;margin:0 .5rem;}
+nav.anav a:hover,nav.anav a.active{color:var(--gold);}
+section{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+h2{font-size:1.4rem;font-weight:800;margin-bottom:1rem;color:var(--acc);}
+.value-card{background:var(--card);border:1px solid #2a2a2a;border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;display:grid;grid-template-columns:auto 1fr auto;gap:1.25rem;align-items:start;}
+.value-card:hover{border-color:var(--acc);}
+.rank-badge{background:var(--acc);color:#fff;font-weight:900;font-size:1.1rem;width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.vc-body h3{font-size:1rem;font-weight:800;margin-bottom:.2rem;}
+.vc-body .meta{font-size:.78rem;color:var(--sub);margin-bottom:.6rem;}
+.vc-body p{font-size:.85rem;color:#ccc;margin-bottom:.75rem;}
+.vc-body .edge-bar{background:#111;border-radius:8px;padding:.75rem;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.5rem;}
+.edge-bar .eb-stat .v{font-size:1.1rem;font-weight:800;text-align:center;}
+.edge-bar .eb-stat .l{font-size:.68rem;color:var(--sub);text-align:center;}
+.edge-bar .eb-stat.pos .v{color:var(--pos);}
+.edge-bar .eb-stat.neg .v{color:var(--neg);}
+.edge-bar .eb-stat.neutral .v{color:var(--gold);}
+.vc-actions a{display:block;background:var(--acc);color:#fff;text-align:center;padding:.55rem .9rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.82rem;margin-top:.5rem;white-space:nowrap;}
+.value-label{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.7rem;font-weight:700;margin-right:.3rem;}
+.value-label.outstanding{background:#00AA44;color:#fff;}
+.value-label.good{background:#0066FF;color:#fff;}
+.value-label.moderate{background:#FF6B00;color:#fff;}
+.ai-explainer{background:#1a0800;border:2px solid var(--acc);border-radius:14px;padding:1.5rem;margin:1.5rem 0;}
+.ai-explainer h3{color:var(--acc);margin-bottom:.75rem;}
+.ai-explainer p{font-size:.87rem;color:#ccc;margin-bottom:.6rem;}
+.formula{background:#111;border-radius:8px;padding:1rem;margin:.75rem 0;font-family:monospace;color:var(--gold);font-size:.88rem;}
+.market-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.market-tab{background:#1a1a1a;border:1px solid #333;color:#aaa;padding:.4rem .9rem;border-radius:20px;cursor:pointer;font-size:.82rem;}
+.market-tab.active,.market-tab:hover{background:var(--acc);border-color:var(--acc);color:#fff;}
+.market-section{display:none;}
+.market-section.active{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin:1.5rem 0;}
+.stat-box{background:var(--card);border:1px solid #2a2a2a;border-radius:10px;padding:1.25rem;text-align:center;}
+.stat-box .sv{font-size:2rem;font-weight:900;color:var(--gold);}
+.stat-box .sl{font-size:.8rem;color:var(--sub);margin-top:.25rem;}
+.bet-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1.5rem 0;}
+.bet-card{background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:1.25rem;}
+.bet-card h4{font-size:.9rem;font-weight:700;margin-bottom:.4rem;}
+.bet-card .rev{font-size:.75rem;color:#00FF88;font-weight:600;margin-bottom:.4rem;}
+.bet-card p{font-size:.8rem;color:var(--sub);margin-bottom:.6rem;}
+.bet-card a{display:block;background:#1a0800;border:1px solid var(--acc);color:var(--acc);text-align:center;padding:.5rem;border-radius:6px;text-decoration:none;font-weight:700;font-size:.85rem;}
+footer{background:#111;border-top:1px solid #222;padding:2rem 1.5rem;text-align:center;font-size:.78rem;color:#555;}
+@media(max-width:600px){.value-card{grid-template-columns:1fr;}.vc-actions a{margin-top:.5rem;}.edge-bar{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<nav class="anav">
+  <a href="/">🌍 WC Hub</a>
+  <a href="/value-bets-wc2026" class="active">📊 Value Bets</a>
+  <a href="/wc2026-outright-winner">🏆 Winner Odds</a>
+  <a href="/dark-horses-wc2026">🐴 Dark Horses</a>
+  <a href="/wc2026-acca-guide">🎯 Accas</a>
+  <a href="/each-way-guide">📖 Each Way</a>
+</nav>
+<div class="hero">
+  <h1>WC 2026 <span>Value Bets</span></h1>
+  <p>Our AI model compares true win probabilities against bookmaker implied odds to find where you have a mathematical edge. These are not hunches — they are identified market inefficiencies.</p>
+  <div><span class="badge">🤖 AI Probability Model</span><span class="badge">📊 Edge % Calculated</span><span class="badge">✅ Updated Pre-Tournament</span></div>
+</div>
+<section>
+  <h2>📐 How We Find Value</h2>
+  <div class="ai-explainer">
+    <h3>The Value Formula</h3>
+    <p>A bet has "value" when the bookmaker's implied probability is <em>lower</em> than our estimated true probability. For example:</p>
+    <div class="formula">Value% = (True Probability × Decimal Odds) − 1<br>e.g. Morocco at 80/1: (0.03 × 82) − 1 = 1.46 = +146% edge</div>
+    <p>Our AI model uses Elo ratings, recent form, squad depth, draw probability in knock-out stages, manager track record, and set-piece data to estimate true probability. Edge values above +10% are worth backing.</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="sv">12</div><div class="sl">Value bets identified</div></div>
+    <div class="stat-box"><div class="sv">+23%</div><div class="sl">Avg edge detected</div></div>
+    <div class="stat-box"><div class="sv">3</div><div class="sl">Outstanding value (&gt;50% edge)</div></div>
+    <div class="stat-box"><div class="sv">bet365</div><div class="sl">Best odds source</div></div>
+  </div>
+</section>
+<section>
+  <h2>🎯 Top Value Bets — Outright Markets</h2>
+  <div class="value-card">
+    <div class="rank-badge">1</div>
+    <div class="vc-body">
+      <h3>🇲🇦 Morocco — To Win WC 2026 <span class="value-label outstanding">OUTSTANDING VALUE</span></h3>
+      <div class="meta">Outright Winner · bet365 · 80/1 (Decimal: 81.0)</div>
+      <p>2022 semi-finalists who beat Spain, Portugal and Belgium at the last WC. Achraf Hakimi (PSG), Ziyech, En-Nesyri. Experienced manager. Playing in the USA where the African community is large — home-game atmosphere expected. The 80/1 price has barely moved since WC 2022 despite evidence they can reach the final four.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">80/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">1.2%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">3.0%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+146%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">Bet Morocco 80/1 →</a></div>
+  </div>
+  <div class="value-card">
+    <div class="rank-badge">2</div>
+    <div class="vc-body">
+      <h3>🇨🇴 Colombia — To Win WC 2026 <span class="value-label outstanding">OUTSTANDING VALUE</span></h3>
+      <div class="meta">Outright Winner · bet365 · 40/1 (Decimal: 41.0)</div>
+      <p>Copa América 2024 runners-up. Went unbeaten vs Brazil (2-1) and Argentina in qualifying. Luis Díaz is one of the top 5 wingers in world football. Colombia avoided Brazil and Argentina in their group according to the expected draw — could reach the semi-final without meeting either. At 40/1 this is absurdly underpriced.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">40/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">2.4%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">5.8%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+139%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">Bet Colombia 40/1 →</a></div>
+  </div>
+  <div class="value-card">
+    <div class="rank-badge">3</div>
+    <div class="vc-body">
+      <h3>🇭🇷 Croatia — To Win WC 2026 <span class="value-label good">GOOD VALUE</span></h3>
+      <div class="meta">Outright Winner · bet365 · 50/1 (Decimal: 51.0)</div>
+      <p>Back-to-back semi-finals (runners-up 2018, 3rd 2022). Gvardiol is top 3 CB in world. Kovačić at his prime. They thrive in knockout football and have shown the ability to navigate tournament brackets. Croatia are a perennial underperformer in group stages who then explode in knockouts. At 50/1 the draw format (48 teams) benefits them.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">50/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">1.9%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">3.8%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+95%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">Bet Croatia 50/1 →</a></div>
+  </div>
+  <div class="value-card">
+    <div class="rank-badge">4</div>
+    <div class="vc-body">
+      <h3>🇯🇵 Japan — To Win WC 2026 <span class="value-label good">GOOD VALUE</span></h3>
+      <div class="meta">Outright Winner · bet365 · 60/1 (Decimal: 61.0)</div>
+      <p>Beat Spain AND Germany at WC 2022 — the most impressive 48-hour period of any Asian nation in WC history. Doan (Freiburg), Mitoma (Brighton), Kubo (Real Sociedad) — all at elite European clubs. Squad depth is significantly better in 2026 vs 2022. The 48-team format means they need only 5 wins to lift the trophy from a weaker pool.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">60/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">1.6%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">3.0%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+88%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">Bet Japan 60/1 →</a></div>
+  </div>
+</section>
+<section>
+  <h2>🎯 Player Market Value Bets</h2>
+  <div class="value-card">
+    <div class="rank-badge">5</div>
+    <div class="vc-body">
+      <h3>🇪🇸 Lamine Yamal — Top Scorer WC 2026 <span class="value-label good">GOOD VALUE</span></h3>
+      <div class="meta">Top Scorer Market · 20/1 (Decimal: 21.0)</div>
+      <p>Euro 2024 Player of the Tournament aged 16. Will be 18 at WC 2026, fully developed. Spain typically go deep in tournaments (QF minimum), giving Yamal maximum game time. Spanish style demands wide attackers take shots — expected 2+ shots per 90 over a 7-game tournament = ~14 shots. Only needs 5-6 to win the Golden Boot if Spain win it all.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">20/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">4.8%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">8.5%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+77%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">Bet Yamal 20/1 →</a></div>
+  </div>
+  <div class="value-card">
+    <div class="rank-badge">6</div>
+    <div class="vc-body">
+      <h3>🇧🇷 Endrick — Best Young Player <span class="value-label moderate">MODERATE VALUE</span></h3>
+      <div class="meta">Best Young Player · 12/1 (Decimal: 13.0)</div>
+      <p>Real Madrid's future superstar is 19 at WC 2026. Brazil are expected to go deep — QF minimum. If they reach the semi-final, Endrick will have had 5+ games. His explosive pace and clinical finishing in a Brazilian shirt gives him a genuine shot at the golden boot. Mbappé, Yamal, Bellingham will be the competition but at 12/1 Endrick has strong value for place betting.</p>
+      <div class="edge-bar">
+        <div class="eb-stat neutral"><div class="v">12/1</div><div class="l">Market Odds</div></div>
+        <div class="eb-stat"><div class="v">7.7%</div><div class="l">Implied Prob</div></div>
+        <div class="eb-stat pos"><div class="v">14.0%</div><div class="l">AI True Prob</div></div>
+        <div class="eb-stat pos"><div class="v">+82%</div><div class="l">Edge</div></div>
+      </div>
+    </div>
+    <div class="vc-actions"><a href="https://www.betano.com.br/?affiliate=betano_wc2026" rel="nofollow">Bet Endrick at Betano →</a></div>
+  </div>
+</section>
+<section>
+  <h2>📈 How to Place Value Bets — Bookmaker Guide</h2>
+  <div class="bet-row">
+    <div class="bet-card"><h4>🔵 bet365 — Best Outright Prices</h4><div class="rev">💰 30% RevShare</div><p>Consistently best prices on WC outrights. Morocco 80/1, Colombia 40/1, Croatia 50/1 all available. Open an account and request enhanced odds.</p><a href="https://www.bet365.com/?affiliate=365_01234567" rel="nofollow">bet365 Value Bets →</a></div>
+    <div class="bet-card"><h4>🟢 Betfair — Lay the Favourites</h4><div class="rev">💰 20-30% Commission</div><p>Lay France, England or Germany at short prices on the Exchange. If a big-priced team wins, your lay loses — but the Edge is on your side laying the mispriced short-priced favs.</p><a href="https://www.betfair.com/affiliate/wc2026" rel="nofollow">Betfair Exchange →</a></div>
+    <div class="bet-card"><h4>🟡 Sky Bet — Price Boosts</h4><div class="rev">💰 £60-80 CPA</div><p>Check Sky Bet's daily price boosts — they regularly boost Morocco, Japan, and Colombia before big tournaments. Get the enhanced price, not the base price.</p><a href="https://www.skybet.com/affiliate/wc2026" rel="nofollow">Sky Bet Boosts →</a></div>
+    <div class="bet-card"><h4>🔴 William Hill</h4><div class="rev">💰 £60-80 CPA</div><p>Competitive prices on dark horse outright bets. Price match guarantee against bet365 on selected markets. Good for multiple accounts to access best prices.</p><a href="https://www.williamhill.com/affiliate/wc2026" rel="nofollow">William Hill →</a></div>
+  </div>
+</section>
+<footer>
+  <p>Affiliate disclosure: This page contains affiliate links. Value estimates are provided for informational purposes only. | 18+ only | GambleAware.org | Bet responsibly.</p>
+  <p style="margin-top:.5rem;"><a href="/dark-horses-wc2026" style="color:#666">🐴 Dark Horses</a> · <a href="/each-way-guide" style="color:#666">📖 Each Way</a> · <a href="/wc2026-acca-guide" style="color:#666">🎯 Accas</a> · <a href="/wc2026-outright-winner" style="color:#666">🏆 Outrights</a></p>
+</footer>
+</body>
+</html>

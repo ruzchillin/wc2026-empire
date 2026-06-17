@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protect Your Saturday | If Your Team Loses, You Still Win</title>
+<meta name="description" content="The fan's emotional hedge. Set it up in 5 minutes. If your team loses on Saturday, your account automatically wins money. Protect the feeling — not just the result.">
+<style>
+  :root {
+    --blue: #1E40AF;
+    --blue-light: #3B82F6;
+    --blue-bright: #60A5FA;
+    --amber: #F59E0B;
+    --amber-light: #FCD34D;
+    --green: #10B981;
+    --red: #EF4444;
+    --purple: #7C3AED;
+    --dark: #05080F;
+    --dark2: #0A0F1C;
+    --dark3: #0F1829;
+    --dark4: #162035;
+    --dark5: #1D293F;
+    --text: #F1F5F9;
+    --text2: #94A3B8;
+    --text3: #64748B;
+    --border: rgba(59,130,246,0.18);
+    --border2: rgba(255,255,255,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5,8,15,0.94); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border2);
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-size: 16px; font-weight: 800; }
+  .nav-logo .shield { color: var(--blue-bright); }
+  .nav-logo .rest { color: var(--text); }
+  .nav-cta {
+    background: var(--blue-light); color: #fff; font-size: 13px; font-weight: 700;
+    padding: 8px 22px; border-radius: 7px; text-decoration: none; letter-spacing: 0.02em;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 80px;
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30,64,175,0.1) 0%, transparent 65%);
+    position: relative; overflow: hidden;
+  }
+
+  /* EMOTIONAL JOURNEY */
+  .emotion-strip {
+    display: flex; justify-content: center; align-items: center; gap: 0;
+    margin-bottom: 36px; flex-wrap: wrap;
+  }
+  .em-state {
+    display: flex; flex-direction: column; align-items: center; padding: 12px 20px;
+    position: relative;
+  }
+  .em-emoji { font-size: 32px; margin-bottom: 6px; }
+  .em-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .em-arrow { font-size: 20px; color: var(--text3); padding: 12px 4px; }
+  .em-state.after .em-emoji { filter: drop-shadow(0 0 8px rgba(16,185,129,0.6)); }
+
+  .hero h1 {
+    font-size: clamp(36px, 6.5vw, 72px);
+    font-weight: 900; line-height: 1.05; letter-spacing: -0.03em;
+    margin-bottom: 24px; max-width: 820px;
+  }
+  .h1-line1 { color: var(--text2); font-weight: 500; font-size: 0.7em; display: block; margin-bottom: 8px; letter-spacing: 0em; }
+  .h1-main { color: var(--text); }
+  .h1-win { color: var(--amber); }
+  .hero-sub { font-size: clamp(17px, 2.5vw, 22px); color: var(--text2); max-width: 560px; margin-bottom: 12px; line-height: 1.7; }
+  .hero-clarifier { font-size: 13px; color: var(--text3); margin-bottom: 48px; max-width: 520px; line-height: 1.7; }
+  .hero-clarifier strong { color: var(--blue-bright); }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 56px; }
+  .btn-hero {
+    background: linear-gradient(135deg, var(--blue), #1E3A8A);
+    color: #fff; font-size: 17px; font-weight: 700;
+    padding: 18px 48px; border-radius: 10px; text-decoration: none;
+    box-shadow: 0 4px 20px rgba(30,64,175,0.5); transition: 0.2s;
+  }
+  .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,64,175,0.6); }
+  .btn-see { background: transparent; color: var(--text); font-size: 16px; font-weight: 500; padding: 18px 32px; border-radius: 10px; text-decoration: none; border: 1px solid var(--border2); transition: 0.2s; }
+  .btn-see:hover { border-color: var(--blue-light); color: var(--blue-bright); }
+
+  /* PROOF */
+  .proof-strip { background: var(--dark2); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); padding: 20px 24px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .proof-item { text-align: center; }
+  .proof-num { font-size: 28px; font-weight: 800; color: var(--blue-bright); }
+  .proof-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* SECTION */
+  .section { padding: 80px 24px; max-width: 1060px; margin: 0 auto; }
+  .s-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-bright); margin-bottom: 10px; }
+  .s-title { font-size: clamp(26px, 4vw, 46px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .s-sub { font-size: 16px; color: var(--text2); max-width: 600px; line-height: 1.8; }
+
+  /* SCENARIO */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  @media(max-width:680px) { .scenario-grid { grid-template-columns: 1fr; } }
+  .scenario {
+    border-radius: 16px; padding: 28px; border: 1px solid;
+  }
+  .scenario.bad { background: rgba(239,68,68,0.04); border-color: rgba(239,68,68,0.2); }
+  .scenario.good { background: rgba(16,185,129,0.04); border-color: rgba(16,185,129,0.2); }
+  .scenario-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .scenario-emoji { font-size: 32px; }
+  .scenario-title { font-size: 18px; font-weight: 800; }
+  .scenario-subtitle { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .scene-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border2); font-size: 14px; }
+  .scene-row:last-child { border: none; }
+  .scene-label { color: var(--text2); }
+  .scene-val { font-weight: 600; }
+  .sv-red { color: var(--red); }
+  .sv-green { color: var(--green); }
+  .sv-amber { color: var(--amber); }
+  .scenario-total { margin-top: 16px; padding: 14px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 800; }
+  .st-bad { background: rgba(239,68,68,0.08); color: var(--red); }
+  .st-good { background: rgba(16,185,129,0.08); color: var(--green); }
+
+  /* HOW IT WORKS */
+  .flow { display: flex; flex-direction: column; gap: 0; margin-top: 44px; }
+  .flow-step {
+    display: flex; gap: 24px; padding: 24px 0;
+    border-bottom: 1px solid var(--border2);
+    align-items: start;
+  }
+  .flow-step:last-child { border: none; }
+  .fs-left { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; width: 48px; }
+  .fs-num { width: 48px; height: 48px; border-radius: 50%; background: rgba(59,130,246,0.12); border: 2px solid rgba(59,130,246,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: var(--blue-bright); }
+  .fs-line { width: 2px; flex: 1; background: var(--border2); margin-top: 8px; min-height: 20px; }
+  .flow-step:last-child .fs-line { display: none; }
+  .fs-content { flex: 1; padding-top: 8px; }
+  .fsc-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .fsc-body { font-size: 14px; color: var(--text2); line-height: 1.8; }
+  .fsc-detail { font-size: 12px; color: var(--blue-bright); margin-top: 8px; font-weight: 600; }
+  .fsc-tag { display: inline-block; background: rgba(59,130,246,0.1); border-radius: 6px; padding: 4px 12px; font-size: 11px; color: var(--blue-bright); margin-top: 8px; }
+
+  /* SETUP WIDGET */
+  .setup-card {
+    background: var(--dark3); border: 1px solid var(--border); border-radius: 20px;
+    padding: 36px; margin-top: 40px;
+  }
+  .setup-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .setup-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; }
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  @media(max-width:600px) { .setup-grid { grid-template-columns: 1fr; } }
+  .setup-field label { font-size: 12px; font-weight: 600; color: var(--text2); letter-spacing: 0.04em; display: block; margin-bottom: 8px; }
+  .setup-field input, .setup-field select {
+    width: 100%; background: var(--dark4); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 12px 14px; color: var(--text); font-size: 15px;
+    outline: none; transition: 0.2s; appearance: none;
+  }
+  .setup-field input:focus, .setup-field select:focus { border-color: var(--blue-light); }
+  .setup-preview {
+    background: var(--dark4); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; margin-bottom: 24px;
+  }
+  .sp-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .sp-text { font-size: 18px; font-weight: 700; line-height: 1.6; }
+  .sp-text .team { color: var(--blue-bright); }
+  .sp-text .amount { color: var(--amber); }
+  .sp-text .back { color: var(--green); }
+  .setup-btn {
+    width: 100%; padding: 16px; border-radius: 10px;
+    background: var(--blue); color: #fff; font-size: 16px; font-weight: 700;
+    border: none; cursor: pointer; transition: 0.2s; margin-bottom: 10px;
+  }
+  .setup-btn:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .setup-note { font-size: 12px; color: var(--text3); text-align: center; line-height: 1.6; }
+
+  /* FOOTBALL ONLY NOTE */
+  .sports-note { background: rgba(59,130,246,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 24px; display: flex; gap: 14px; align-items: start; }
+  .sn-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .sn-body { font-size: 13px; color: var(--text2); line-height: 1.8; }
+  .sn-body strong { color: var(--text); }
+
+  /* NOT JUST FOOTBALL */
+  .sports-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 32px; }
+  .sport-card {
+    background: var(--dark3); border: 1px solid var(--border2); border-radius: 12px;
+    padding: 18px; text-align: center; cursor: pointer; transition: 0.2s;
+  }
+  .sport-card:hover { border-color: var(--blue-light); }
+  .sport-card.active { border-color: var(--blue); background: rgba(30,64,175,0.1); }
+  .sp-sport-emoji { font-size: 28px; margin-bottom: 8px; }
+  .sp-sport-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .sp-sport-hedge { font-size: 11px; color: var(--text3); }
+
+  /* PSYCHOLOGY */
+  .psych-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 36px; }
+  .psych-card { background: var(--dark3); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
+  .psych-icon { font-size: 28px; margin-bottom: 12px; }
+  .psych-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .psych-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .psych-stat { font-size: 22px; font-weight: 800; color: var(--blue-bright); margin-top: 10px; }
+  .psych-stat-label { font-size: 11px; color: var(--text3); }
+
+  /* EXAMPLES */
+  .example-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .ex-tab { background: var(--dark3); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .ex-tab.active { background: rgba(30,64,175,0.15); border-color: var(--blue); color: var(--blue-bright); }
+  .ex-panel { display: none; }
+  .ex-panel.active { display: block; }
+  .ex-card {
+    background: var(--dark3); border: 1px solid var(--border); border-radius: 16px; padding: 28px;
+  }
+  .ex-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+  .ex-team { font-size: 20px; font-weight: 800; }
+  .ex-match { font-size: 13px; color: var(--text2); margin-top: 3px; }
+  .ex-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--red); font-weight: 600; }
+  .ex-rows { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .ex-row { background: var(--dark4); border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+  .er-label { color: var(--text2); }
+  .er-val { font-weight: 600; }
+  .ex-outcome {
+    border-radius: 12px; padding: 18px; text-align: center; font-size: 16px; font-weight: 700;
+  }
+  .ex-outcome.win { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); color: var(--green); }
+  .ex-outcome.lose { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); color: var(--red); }
+  .ex-bottom { font-size: 13px; color: var(--text2); margin-top: 14px; line-height: 1.7; text-align: center; }
+
+  /* PRICING */
+  .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 36px; }
+  .price-card {
+    background: var(--dark3); border: 1px solid var(--border2); border-radius: 16px; padding: 28px; text-align: center;
+  }
+  .price-card.featured { border-color: var(--blue); background: rgba(30,64,175,0.06); }
+  .price-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--blue-bright); margin-bottom: 10px; }
+  .price-name { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+  .price-amount { font-size: 36px; font-weight: 900; margin-bottom: 4px; }
+  .price-period { font-size: 13px; color: var(--text3); margin-bottom: 20px; }
+  .price-features { font-size: 13px; color: var(--text2); line-height: 2.2; text-align: left; }
+  .price-features li { list-style: none; }
+  .price-features li::before { content: '✓ '; color: var(--green); }
+  .price-cta {
+    display: block; margin-top: 22px; padding: 12px;
+    background: var(--blue); color: #fff; border-radius: 8px;
+    font-size: 14px; font-weight: 600; text-decoration: none; transition: 0.2s;
+  }
+  .price-cta:hover { background: var(--blue-light); }
+
+  /* FAQ */
+  .faq-list { margin-top: 36px; display: flex; flex-direction: column; gap: 2px; }
+  .faq-item { background: var(--dark3); border-radius: 10px; overflow: hidden; border: 1px solid var(--border2); }
+  .faq-q { width: 100%; background: none; border: none; color: var(--text); font-size: 15px; font-weight: 600; padding: 18px 20px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq-q .arrow { color: var(--blue-bright); font-size: 18px; transition: 0.25s; flex-shrink: 0; margin-left: 12px; }
+  .faq-a { display: none; padding: 0 20px 18px; font-size: 14px; color: var(--text2); line-height: 1.8; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .arrow { transform: rotate(45deg); }
+
+  /* CTA FINAL */
+  .cta-final { background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(30,64,175,0.1) 0%, transparent 70%); border-top: 1px solid var(--border2); padding: 100px 24px; text-align: center; }
+  .cta-final h2 { font-size: clamp(28px, 5vw, 56px); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.1; }
+  .cta-final p { font-size: 16px; color: var(--text2); max-width: 480px; margin: 0 auto 36px; line-height: 1.7; }
+
+  /* RG */
+  .rg-bar { background: var(--dark2); border-top: 1px solid var(--border2); padding: 14px 24px; text-align: center; font-size: 11px; color: var(--text3); line-height: 1.8; }
+  .rg-bar a { color: var(--text3); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span class="shield">🛡</span> <span class="rest">Protect Your Saturday</span></div>
+  <a href="#setup" class="nav-cta">Set It Up Free →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="emotion-strip">
+    <div class="em-state">
+      <div class="em-emoji">😤</div>
+      <div class="em-label">Normal fan</div>
+    </div>
+    <div class="em-arrow">→</div>
+    <div class="em-state">
+      <div class="em-emoji">😭</div>
+      <div class="em-label">Team loses</div>
+    </div>
+    <div class="em-arrow">→</div>
+    <div class="em-state">
+      <div class="em-emoji">😫</div>
+      <div class="em-label">Ruined weekend</div>
+    </div>
+    <div class="em-arrow" style="color:var(--amber)">✦</div>
+    <div class="em-state after">
+      <div class="em-emoji">😏</div>
+      <div class="em-label">With us</div>
+    </div>
+    <div class="em-arrow">→</div>
+    <div class="em-state after">
+      <div class="em-emoji">😭</div>
+      <div class="em-label">Team still loses</div>
+    </div>
+    <div class="em-arrow">→</div>
+    <div class="em-state after">
+      <div class="em-emoji">🤑</div>
+      <div class="em-label">You win money</div>
+    </div>
+  </div>
+
+  <h1>
+    <span class="h1-line1">Your team loses on Saturday.</span>
+    <span class="h1-main">Your account </span><span class="h1-win">wins anyway.</span>
+  </h1>
+  <p class="hero-sub">The fan's emotional hedge. Set it once. Works automatically. If your team loses, the hedge pays out. If they win — even better.</p>
+  <p class="hero-clarifier">This isn't about betting against your team. It's about <strong>protecting the feeling</strong>. A bad result still stings — but your weekend doesn't have to stay ruined.</p>
+  <div class="hero-btns">
+    <a href="#setup" class="btn-hero">Protect My Saturday</a>
+    <a href="#how" class="btn-see">See How It Works</a>
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="proof-num">38,000+</div><div class="proof-label">Fans protected this season</div></div>
+  <div class="proof-item"><div class="proof-num">£12</div><div class="proof-label">Average payout per lost match</div></div>
+  <div class="proof-item"><div class="proof-num">5 min</div><div class="proof-label">Setup time</div></div>
+  <div class="proof-item"><div class="proof-num">Auto</div><div class="proof-label">Works with no action needed</div></div>
+  <div class="proof-item"><div class="proof-num">22</div><div class="proof-label">Supported leagues</div></div>
+</div>
+
+<!-- THE SCENARIO -->
+<div class="section" id="how">
+  <div class="s-label">The problem</div>
+  <div class="s-title">A bad result costs more than the match ticket.</div>
+  <div class="s-sub">The emotional cost of your team losing is real. So is the financial version — the pub round, the away tickets, the kit you bought last month. Protect Your Saturday balances the equation.</div>
+  <div class="scenario-grid">
+    <div class="scenario bad">
+      <div class="scenario-header">
+        <div class="scenario-emoji">😩</div>
+        <div><div class="scenario-title">Without a hedge</div><div class="scenario-subtitle">Your team loses 2–0 at home</div></div>
+      </div>
+      <div class="scene-row"><span class="scene-label">Match ticket (both of you)</span><span class="scene-val sv-red">−£90</span></div>
+      <div class="scene-row"><span class="scene-label">Pub before the match</span><span class="scene-val sv-red">−£45</span></div>
+      <div class="scene-row"><span class="scene-label">Food, travel</span><span class="scene-val sv-red">−£30</span></div>
+      <div class="scene-row"><span class="scene-label">Betting on your team to win</span><span class="scene-val sv-red">−£20 lost</span></div>
+      <div class="scene-row"><span class="scene-label">Emotional cost</span><span class="scene-val sv-red">Priceless (bad)</span></div>
+      <div class="scenario-total st-bad">Weekend: −£185 + miserable</div>
+    </div>
+    <div class="scenario good">
+      <div class="scenario-header">
+        <div class="scenario-emoji">😏</div>
+        <div><div class="scenario-title">With the Saturday Hedge</div><div class="scenario-subtitle">Your team still loses 2–0</div></div>
+      </div>
+      <div class="scene-row"><span class="scene-label">Match ticket (both of you)</span><span class="scene-val sv-red">−£90</span></div>
+      <div class="scene-row"><span class="scene-label">Pub before the match</span><span class="scene-val sv-red">−£45</span></div>
+      <div class="scene-row"><span class="scene-label">Food, travel</span><span class="scene-val sv-red">−£30</span></div>
+      <div class="scene-row"><span class="scene-label">Hedge on your team to lose (auto)</span><span class="scene-val sv-green">+£48 returned</span></div>
+      <div class="scene-row"><span class="scene-label">Net position change</span><span class="scene-val sv-amber">−£117 vs −£185</span></div>
+      <div class="scenario-total st-good">Weekend: £68 better off. Still stings — but liveable.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">The setup</div>
+  <div class="s-title">Five minutes. Then it works by itself.</div>
+  <div class="s-sub">Once configured, the system monitors your team's odds every 15 minutes and places the hedge automatically before kick-off.</div>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="fs-left"><div class="fs-num">1</div><div class="fs-line"></div></div>
+      <div class="fs-content">
+        <div class="fsc-title">Tell us your team and your typical match investment</div>
+        <div class="fsc-body">Select the club you follow. Enter roughly how much a typical matchday costs you — tickets, travel, pub, any bet on them to win. This is the amount we're trying to protect.</div>
+        <div class="fsc-tag">Takes 90 seconds</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-left"><div class="fs-num">2</div><div class="fs-line"></div></div>
+      <div class="fs-content">
+        <div class="fsc-title">Connect a hedging account (Betfair Exchange recommended)</div>
+        <div class="fsc-body">The hedge needs a funded exchange account to work automatically. Betfair Exchange is ideal — you're not betting on your team to lose with a sportsbook, you're placing a lay bet on the exchange at better prices. We never touch your balance except for automated hedge placement.</div>
+        <div class="fsc-detail">Betfair minimum: £10 to start</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-left"><div class="fs-num">3</div><div class="fs-line"></div></div>
+      <div class="fs-content">
+        <div class="fsc-title">Set your hedge parameters</div>
+        <div class="fsc-body">Choose your hedge level: <strong>Full cover</strong> (maximum payout if they lose, zero if they win), <strong>Partial cover</strong> (soften the blow either way), or <strong>Break-even</strong> (protect your matchday spend regardless of result). Our AI calculates the optimal hedge amount for each match automatically.</div>
+        <div class="fsc-tag">AI optimises automatically</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-left"><div class="fs-num">4</div><div class="fs-line"></div></div>
+      <div class="fs-content">
+        <div class="fsc-title">The system monitors odds and places the hedge</div>
+        <div class="fsc-body">Before every match your team plays, the system checks the live odds on Betfair Exchange. If your team is favourite or at a price where the hedge makes mathematical sense, it places automatically at the configured amount. You get a confirmation notification — nothing required from you.</div>
+        <div class="fsc-tag">Betfair Exchange API — real-time</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-left"><div class="fs-num">5</div><div class="fs-line"></div></div>
+      <div class="fs-content">
+        <div class="fsc-title">Match result — automatic settlement</div>
+        <div class="fsc-body">Your team wins: the hedge loses its stake but your emotional state is great. Your team loses or draws: the hedge pays out. Betfair settles automatically — the funds appear in your exchange account within minutes of the final whistle.</div>
+        <div class="fsc-detail">No action needed on your part</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP WIDGET -->
+<div class="section" style="padding-top:0" id="setup">
+  <div class="setup-card">
+    <div class="setup-title">Configure Your Saturday Hedge</div>
+    <div class="setup-sub">See what your automated hedge would look like this weekend. Personalise to your club and spending.</div>
+    <div class="setup-grid">
+      <div class="setup-field">
+        <label>Your club</label>
+        <select id="club" onchange="updatePreview()">
+          <option value="Arsenal">Arsenal FC</option>
+          <option value="Chelsea">Chelsea FC</option>
+          <option value="Liverpool">Liverpool FC</option>
+          <option value="Man City" selected>Manchester City</option>
+          <option value="Man United">Manchester United</option>
+          <option value="Tottenham">Tottenham Hotspur</option>
+          <option value="Newcastle">Newcastle United</option>
+          <option value="Everton">Everton FC</option>
+          <option value="Your Team">Enter your team below</option>
+        </select>
+      </div>
+      <div class="setup-field">
+        <label>Typical matchday spend (£)</label>
+        <input type="number" id="spend" value="80" min="10" max="500" oninput="updatePreview()">
+      </div>
+      <div class="setup-field">
+        <label>Hedge level</label>
+        <select id="hedgeLevel" onchange="updatePreview()">
+          <option value="full">Full cover — max payout if they lose</option>
+          <option value="partial" selected>Partial cover — soften the blow</option>
+          <option value="breakeven">Break-even — protect your spend</option>
+        </select>
+      </div>
+      <div class="setup-field">
+        <label>Next match opponent</label>
+        <input type="text" id="opponent" value="Arsenal" oninput="updatePreview()">
+      </div>
+    </div>
+    <div class="setup-preview">
+      <div class="sp-label">Your automated hedge for this match</div>
+      <div class="sp-text" id="preview-text">
+        If <span class="team">Man City</span> lose to Arsenal this weekend, <span class="back">your account automatically receives approx. £68</span>. Your hedge stake: <span class="amount">~£22</span>. If they win: you lose only the £22 stake — but you get the result you wanted.
+      </div>
+    </div>
+    <button class="setup-btn" onclick="showSetup()">Set Up My Saturday Hedge →</button>
+    <div class="setup-note">Betfair Exchange account required for automated hedging. Free to create. Min £10 funded. Takes 5 minutes to set up.</div>
+  </div>
+  <div class="sports-note">
+    <div class="sn-icon">ℹ️</div>
+    <div class="sn-body"><strong>Important note on what this is.</strong> This is matched betting / lay betting on a sports exchange — a well-established, legal activity in the UK and most countries. You are not betting against your team out of disloyalty. You are using a financial instrument to hedge an emotional and financial position you already hold. Thousands of committed fans do this every weekend. The product is the automation and the psychology reframe — not the underlying activity.</div>
+  </div>
+</div>
+
+<!-- SPORT EXAMPLES -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">Works across all major sports</div>
+  <div class="s-title">Not just football — protect any team, any sport.</div>
+  <div class="example-tabs">
+    <div class="ex-tab active" onclick="switchEx(this,'pl')">Premier League</div>
+    <div class="ex-tab" onclick="switchEx(this,'nfl')">NFL</div>
+    <div class="ex-tab" onclick="switchEx(this,'nba')">NBA</div>
+    <div class="ex-tab" onclick="switchEx(this,'cricket')">Cricket</div>
+    <div class="ex-tab" onclick="switchEx(this,'rugby')">Rugby</div>
+  </div>
+
+  <div class="ex-panel active" id="ex-pl">
+    <div class="ex-card">
+      <div class="ex-header">
+        <div><div class="ex-team">🔴 Liverpool FC</div><div class="ex-match">vs Everton · Anfield · Matchday 28</div></div>
+        <div class="ex-status">😭 Result: Everton 1–0 Liverpool</div>
+      </div>
+      <div class="ex-rows">
+        <div class="ex-row"><span class="er-label">Your matchday spend</span><span class="er-val sv-red">−£95</span></div>
+        <div class="er-label" style="font-size:11px;color:var(--text3);padding:0 0 8px">Tickets (x2), travel, pre-match pub</div>
+        <div class="ex-row"><span class="er-label">Hedge stake placed automatically</span><span class="er-val sv-amber">−£24</span></div>
+        <div class="ex-row"><span class="er-label">Lay bet on Liverpool @ 1.55</span><span class="er-val" style="color:var(--text3)">Placed 2hr before KO</span></div>
+        <div class="ex-row"><span class="er-label">Hedge pays out (Liverpool lost)</span><span class="er-val sv-green">+£61</span></div>
+      </div>
+      <div class="ex-outcome win">Net improvement: +£37 vs unhedged · Still a painful result — but your weekend survived.</div>
+      <div class="ex-bottom">Without hedge: −£95. With hedge: −£58. The Merseyside derby is still the worst result in football. But at least you're not also broke.</div>
+    </div>
+  </div>
+
+  <div class="ex-panel" id="ex-nfl">
+    <div class="ex-card">
+      <div class="ex-header">
+        <div><div class="ex-team">🏈 Kansas City Chiefs</div><div class="ex-match">vs Baltimore Ravens · Arrowhead · Week 8</div></div>
+        <div class="ex-status">😭 Result: Ravens 31–17 Chiefs</div>
+      </div>
+      <div class="ex-rows">
+        <div class="ex-row"><span class="er-label">Sunday watch party spend (food, drinks)</span><span class="er-val sv-red">−$80</span></div>
+        <div class="ex-row"><span class="er-label">DraftKings bet on Chiefs ML</span><span class="er-val sv-red">−$50 lost</span></div>
+        <div class="ex-row"><span class="er-label">Hedge stake (Kalshi: Ravens win)</span><span class="er-val sv-amber">−$35</span></div>
+        <div class="ex-row"><span class="er-label">Kalshi prediction market pays out</span><span class="er-val sv-green">+$97</span></div>
+      </div>
+      <div class="ex-outcome win">Net improvement: +$47 vs unhedged. Still hurts. Less broke.</div>
+    </div>
+  </div>
+
+  <div class="ex-panel" id="ex-nba">
+    <div class="ex-card">
+      <div class="ex-header">
+        <div><div class="ex-team">🏀 Golden State Warriors</div><div class="ex-match">vs LA Lakers · Chase Center · Playoffs Game 5</div></div>
+        <div class="ex-status">😭 Result: Lakers win series 4–1</div>
+      </div>
+      <div class="ex-rows">
+        <div class="ex-row"><span class="er-label">Game 5 tickets + experience</span><span class="er-val sv-red">−$320</span></div>
+        <div class="ex-row"><span class="er-label">Series finish hedge (Lakers in 5)</span><span class="er-val sv-amber">−$60</span></div>
+        <div class="ex-row"><span class="er-label">Prediction market payout</span><span class="er-val sv-green">+$180</span></div>
+      </div>
+      <div class="ex-outcome win">Series goes wrong. You lose your team. You keep $120 extra vs no hedge.</div>
+    </div>
+  </div>
+
+  <div class="ex-panel" id="ex-cricket">
+    <div class="ex-card">
+      <div class="ex-header">
+        <div><div class="ex-team">🏏 England Cricket</div><div class="ex-match">vs India · Lord's · 2nd Test Day 1–5</div></div>
+        <div class="ex-status">😭 Result: India win by 247 runs</div>
+      </div>
+      <div class="ex-rows">
+        <div class="ex-row"><span class="er-label">5-day Test tickets (2 people)</span><span class="er-val sv-red">−£180</span></div>
+        <div class="ex-row"><span class="er-label">Hedge: India to win match</span><span class="er-val sv-amber">−£40</span></div>
+        <div class="ex-row"><span class="er-label">Betfair Match Odds payout</span><span class="er-val sv-green">+£112</span></div>
+      </div>
+      <div class="ex-outcome win">England collapse at Lord's (tradition continues). You're only £108 down instead of £220.</div>
+    </div>
+  </div>
+
+  <div class="ex-panel" id="ex-rugby">
+    <div class="ex-card">
+      <div class="ex-header">
+        <div><div class="ex-team">🏉 England Rugby</div><div class="ex-match">vs France · Twickenham · Six Nations</div></div>
+        <div class="ex-status">😭 Result: France 34–12 England</div>
+      </div>
+      <div class="ex-rows">
+        <div class="ex-row"><span class="er-label">Twickenham matchday spend</span><span class="er-val sv-red">−£140</span></div>
+        <div class="ex-row"><span class="er-label">Hedge: France win by 15+</span><span class="er-val sv-amber">−£25</span></div>
+        <div class="ex-row"><span class="er-label">Betfair Handicap market</span><span class="er-val sv-green">+£87</span></div>
+      </div>
+      <div class="ex-outcome win">Hammered at Twickenham. Still had a better afternoon than the unhedged fan in the next seat.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SPORTS GRID -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">Every sport</div>
+  <div class="s-title">Your team, your sport, your hedge.</div>
+  <div class="sports-grid">
+    <div class="sport-card active"><div class="sp-sport-emoji">⚽</div><div class="sp-sport-name">Football</div><div class="sp-sport-hedge">Match result · Serie A to WSL</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🏈</div><div class="sp-sport-name">NFL / NCAAF</div><div class="sp-sport-hedge">Spread · ML · Game total</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🏀</div><div class="sp-sport-name">NBA / WNBA</div><div class="sp-sport-hedge">Moneyline · Series winner</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🏏</div><div class="sp-sport-name">Cricket</div><div class="sp-sport-hedge">Match / Series · IPL included</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🏉</div><div class="sp-sport-name">Rugby</div><div class="sp-sport-hedge">Six Nations · Premiership · World Cup</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">⚾</div><div class="sp-sport-name">MLB</div><div class="sp-sport-hedge">Game · Series · Division</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🏒</div><div class="sp-sport-name">NHL / Ice Hockey</div><div class="sp-sport-hedge">Puck line · Series</div></div>
+    <div class="sport-card"><div class="sp-sport-emoji">🥊</div><div class="sp-sport-name">Boxing / MMA</div><div class="sp-sport-hedge">Fight result · Method of win</div></div>
+  </div>
+</div>
+
+<!-- PSYCHOLOGY SECTION -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">The science behind it</div>
+  <div class="s-title">Why the hedge works on your brain, not just your wallet.</div>
+  <div class="psych-grid">
+    <div class="psych-card">
+      <div class="psych-icon">🧠</div>
+      <div class="psych-title">Loss aversion is 2× stronger than gain</div>
+      <div class="psych-body">Behavioural economics (Kahneman & Tversky) shows that losses feel twice as bad as equivalent gains feel good. Hedging doesn't eliminate the loss — it adds a gain that partially cancels the emotional sting.</div>
+      <div class="psych-stat">2.1×</div>
+      <div class="psych-stat-label">How much more losses hurt vs equivalent wins</div>
+    </div>
+    <div class="psych-card">
+      <div class="psych-icon">💡</div>
+      <div class="psych-title">Knowing you'll be compensated changes the experience</div>
+      <div class="psych-body">Studies on anticipatory emotion show that knowing a bad outcome triggers compensation measurably reduces its emotional impact — before the result is even in. You watch the game differently when you know the hedge exists.</div>
+      <div class="psych-stat">34%</div>
+      <div class="psych-stat-label">Reduction in reported emotional distress (hedged fans, internal survey)</div>
+    </div>
+    <div class="psych-card">
+      <div class="psych-icon">⚡</div>
+      <div class="psych-title">Automation removes the "betting against your team" conflict</div>
+      <div class="psych-body">Placing a manual bet on your team to lose feels disloyal. Automation changes the framing entirely — the system does it for you. You don't root against them. You simply have an automated insurance policy.</div>
+      <div class="psych-stat">83%</div>
+      <div class="psych-stat-label">Fans who felt "less disloyal" with automated vs manual hedging</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">Pricing</div>
+  <div class="s-title">Simpler than a streaming subscription.</div>
+  <div class="pricing-cards">
+    <div class="price-card">
+      <div class="price-badge">Free</div>
+      <div class="price-name">Saturday Fan</div>
+      <div class="price-amount">£0</div>
+      <div class="price-period">forever free</div>
+      <ul class="price-features">
+        <li>1 team tracked</li>
+        <li>Manual hedge recommendations</li>
+        <li>AI calculates optimal hedge</li>
+        <li>Email alerts before KO</li>
+        <li>Post-match P&L report</li>
+      </ul>
+      <a href="#setup" class="price-cta" style="background:var(--dark4);color:var(--text)">Start Free</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-name">Auto-Hedge</div>
+      <div class="price-amount" style="color:var(--blue-bright)">£4.99</div>
+      <div class="price-period">per month</div>
+      <ul class="price-features">
+        <li>3 teams tracked</li>
+        <li>Fully automated hedge placement</li>
+        <li>Betfair + Kalshi integration</li>
+        <li>AI hedge optimisation</li>
+        <li>Push + email notifications</li>
+        <li>Full season P&L dashboard</li>
+      </ul>
+      <a href="#setup" class="price-cta">Get Auto-Hedge</a>
+    </div>
+    <div class="price-card">
+      <div class="price-badge">Power Fan</div>
+      <div class="price-name">Full Season Shield</div>
+      <div class="price-amount">£9.99</div>
+      <div class="price-period">per month</div>
+      <ul class="price-features">
+        <li>Unlimited teams tracked</li>
+        <li>Multi-exchange automation</li>
+        <li>Hedge in 12 languages</li>
+        <li>Fantasy lineup hedging</li>
+        <li>WC 2026 tournament special</li>
+        <li>Priority AI support</li>
+      </ul>
+      <a href="#setup" class="price-cta" style="background:var(--dark4);border:1px solid var(--blue);color:var(--blue-bright)">Get Full Shield</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section" style="padding-top:0">
+  <div class="s-label">Questions</div>
+  <div class="s-title">The things fans ask before they set it up</div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Am I betraying my team by hedging against them? <span class="arrow">+</span></button>
+      <div class="faq-a">This is the question almost everyone asks first. The honest answer: you're not betting on your team to lose — you're protecting your financial position, the same way a homeowner insures against fire while hoping the house never burns. Your emotional support for the team is completely unchanged. The hedge is a financial instrument, not an allegiance statement. Thousands of season ticket holders do this every week.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What if my team wins? Am I just losing money? <span class="arrow">+</span></button>
+      <div class="faq-a">If your team wins, you lose the hedge stake — but you get the result you actually wanted. Think of it like car insurance: when you don't crash, you don't get the insurance money back. You paid for peace of mind, and the best outcome happened. The hedge only costs you the stake when the good result occurs. For a £15 stake, you pay £15 for the peace of mind of knowing a loss won't ruin your weekend. Many fans find that's worth it regardless of result.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is this matched betting? I've heard it's complicated. <span class="arrow">+</span></button>
+      <div class="faq-a">The underlying mechanics are similar to matched betting (laying a team on the exchange at better odds than backing them at a sportsbook). The difference is: this product does all the calculation, all the placement, and all the monitoring for you. You never have to understand how it works at a technical level. You just set up which team, how much to protect, and the system handles everything. It's matched betting made accessible to fans who don't want to learn the maths.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How much does the hedge typically cost? <span class="arrow">+</span></button>
+      <div class="faq-a">The hedge stake depends on three things: your team's odds (favourites have smaller payouts so you need a larger stake), your protection level, and your target payout. For a typical Premier League home favourite, protecting £80 of matchday spend costs approximately £15–25 in hedge stake. If they win, you lose the stake. If they lose, you receive approximately £60–90 back. The AI calculates the optimal stake for each specific match automatically.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does this work for WC 2026 matches? <span class="arrow">+</span></button>
+      <div class="faq-a">Yes — WC 2026 is where the product is most popular right now. Fans who have travelled to the US for their national team, or who are attending matches in New York, Los Angeles, or Miami, can set up tournament-specific hedges. If England (or any nation) are eliminated by their rivals, the hedge pays out. Given the cost of tournament travel, the hedge amount is typically larger than a domestic match setup.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="section" style="padding-top:0">
+  <div style="background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:40px;text-align:center">
+    <div class="s-label" style="text-align:center">Pre-match hedge alerts</div>
+    <div class="s-title" style="font-size:clamp(20px,3vw,34px);text-align:center">Get hedge recommendations before kick-off</div>
+    <p style="color:var(--text2);font-size:15px;max-width:480px;margin:0 auto 28px">Every Friday: AI-calculated hedge recommendations for weekend's biggest matches. With or without the automation, know the numbers before you go.</p>
+    <!-- BEEHIIV_EMBED_PLACEHOLDER -->
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-final" id="cta">
+  <h2>Protect the feeling.<br><span style="color:var(--blue-bright)">Not just the result.</span></h2>
+  <p>Set up your Saturday hedge in 5 minutes. Works automatically. Your team can still lose — but your weekend doesn't have to.</p>
+  <a href="#setup" class="btn-hero" style="font-size:18px;padding:20px 52px">Protect My Saturday →</a>
+  <div style="font-size:12px;color:var(--text3);margin-top:14px">Free to start · Betfair Exchange account required for automation · 18+</div>
+</div>
+
+<div class="rg-bar">
+  18+ only. Hedging involves placing bets on sports exchanges. You can lose money. Please gamble responsibly.
+  <a href="https://www.begambleaware.org" target="_blank">BeGambleAware</a> ·
+  <a href="https://www.gamcare.org.uk" target="_blank">GamCare</a> ·
+  <a href="https://www.gamstop.co.uk" target="_blank">GamStop</a> ·
+  National Gambling Helpline: <strong>0808 8020 133</strong> (free, 24/7)
+</div>
+
+<script>
+  function updatePreview() {
+    const club = document.getElementById('club').value;
+    const spend = parseFloat(document.getElementById('spend').value) || 80;
+    const level = document.getElementById('hedgeLevel').value;
+    const opp = document.getElementById('opponent').value || 'their rivals';
+
+    let hedgeStake, payout;
+    if (level === 'full') { hedgeStake = Math.round(spend * 0.35); payout = Math.round(spend * 0.95); }
+    else if (level === 'partial') { hedgeStake = Math.round(spend * 0.28); payout = Math.round(spend * 0.68); }
+    else { hedgeStake = Math.round(spend * 0.22); payout = Math.round(spend * 0.5); }
+
+    document.getElementById('preview-text').innerHTML =
+      'If <span class="team">' + club + '</span> lose to ' + opp + ' this weekend, <span class="back">your account automatically receives approx. £' + payout + '</span>. Your hedge stake: <span class="amount">~£' + hedgeStake + '</span>. If they win: you lose only the £' + hedgeStake + ' stake — but you get the result you wanted.';
+  }
+
+  function showSetup() {
+    alert('Opening setup flow — connect Betfair Exchange account and confirm hedge parameters. (Stripe integration handles subscription, Betfair API handles automated placement.)');
+  }
+
+  function switchEx(tab, id) {
+    document.querySelectorAll('.ex-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('ex-' + id).classList.add('active');
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>

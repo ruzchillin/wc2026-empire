@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
+<title>WC2026 Live — Second Screen</title>
+<link rel="manifest" href="/manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0e1a;--surface:#131828;--border:#1e2d4a;
+  --gold:#c9aa71;--text:#e8eaf0;--muted:#7a8fa6;
+  --green:#4caf50;--red:#e53935;--blue:#1e88e5;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:80px}
+
+/* Nav */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-weight:800;font-size:1.1rem;color:var(--gold)}
+.nav-logo span{color:var(--text)}
+.live-dot{width:8px;height:8px;background:var(--red);border-radius:50%;display:inline-block;margin-right:6px;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.refresh-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;gap:5px}
+.refresh-btn:active{background:var(--border)}
+
+/* Tabs */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 20px;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* Main */
+.main{padding:12px 14px}
+.section{display:none}
+.section.active{display:block}
+
+/* Match card */
+.match-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;transition:border-color .2s}
+.match-card.live{border-color:var(--red)}
+.match-card.live .match-time{color:var(--red);animation:blink 1s infinite}
+.match-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.match-league{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.match-status{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--border);color:var(--muted)}
+.match-status.live{background:#2a1515;color:var(--red)}
+.match-status.ft{background:#1a2a1a;color:var(--green)}
+.match-teams{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.team{flex:1;text-align:center}
+.team-flag{font-size:2rem;display:block;margin-bottom:4px}
+.team-name{font-size:.8rem;font-weight:600;color:var(--text)}
+.score-box{text-align:center;min-width:70px}
+.score{font-size:2rem;font-weight:800;color:var(--text);line-height:1}
+.match-time{font-size:.72rem;color:var(--muted);margin-top:2px}
+.match-actions{display:flex;gap:8px;margin-top:14px}
+.action-btn{flex:1;padding:8px 4px;border-radius:8px;font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer;transition:opacity .2s}
+.action-btn:active{opacity:.7}
+.btn-watch{background:#1e2d4a;color:var(--gold)}
+.btn-bet{background:#1a3a1a;color:var(--green)}
+.btn-food{background:#2a1a0a;color:#ff9800}
+.btn-ai{background:#1a1a3a;color:#9c8aff}
+
+/* AI Commentary */
+.ai-box{background:#1a1a3a;border:1px solid #2a2a5a;border-radius:12px;padding:14px;margin-top:10px}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.78rem;font-weight:700;color:#9c8aff}
+.ai-text{font-size:.88rem;color:#c8d0f0;line-height:1.5}
+.ai-loading{color:#5a5a8a;font-style:italic;font-size:.83rem}
+
+/* Odds panel */
+.odds-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.odds-header{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.odds-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.odds-btn:active{background:var(--border)}
+.odds-label{font-size:.7rem;color:var(--muted);margin-bottom:2px}
+.odds-val{font-size:1.05rem;font-weight:700;color:var(--text)}
+.odds-val.best{color:var(--green)}
+.odds-bookmaker{font-size:.65rem;color:var(--muted);margin-top:1px}
+.best-odds-badge{font-size:.65rem;background:#1a3a1a;color:var(--green);padding:1px 5px;border-radius:4px;margin-left:4px}
+
+/* Empty states */
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty .icon{font-size:3rem;margin-bottom:12px}
+.empty p{font-size:.9rem}
+
+/* Affiliate strip */
+.aff-strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.aff-strip::-webkit-scrollbar{display:none}
+.aff-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:7px 14px;white-space:nowrap;font-size:.78rem;font-weight:600;color:var(--muted);text-decoration:none;transition:all .2s;flex-shrink:0}
+.aff-pill:active{background:var(--border)}
+.aff-pill.gold{border-color:var(--gold);color:var(--gold)}
+.aff-pill.green{border-color:var(--green);color:var(--green)}
+.aff-pill.orange{border-color:#ff9800;color:#ff9800}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100}
+.bnav-item{flex:1;padding:10px 0 8px;text-align:center;cursor:pointer;transition:color .2s}
+.bnav-item .icon{font-size:1.3rem;display:block}
+.bnav-item .label{font-size:.65rem;color:var(--muted);font-weight:600;display:block;margin-top:1px}
+.bnav-item.active .label{color:var(--gold)}
+
+/* Settings */
+.settings-form{background:var(--surface);border-radius:14px;padding:20px;margin-bottom:12px}
+.settings-form h3{font-size:.95rem;color:var(--gold);margin-bottom:14px;font-weight:700}
+.form-group{margin-bottom:12px}
+.form-group label{font-size:.78rem;color:var(--muted);display:block;margin-bottom:5px;font-weight:600}
+.form-group input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:.85rem}
+.form-group input:focus{outline:none;border-color:var(--gold)}
+.save-btn{width:100%;background:var(--gold);color:#0a0e1a;border:none;border-radius:8px;padding:11px;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:4px}
+.save-btn:active{opacity:.85}
+.about-box{background:var(--surface);border-radius:14px;padding:16px;font-size:.82rem;color:var(--muted);line-height:1.7}
+.about-box a{color:var(--gold);text-decoration:none}
+</style>
+<meta name="description" content="WC 2026 second screen experience — live stats, predictions, and commentary while watching the match.">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">WC2026 <span>Live</span></div>
+  <button class="refresh-btn" onclick="refreshAll()">
+    <span id="refresh-icon">↻</span> Refresh
+  </button>
+</nav>
+
+<div class="tabs" id="tab-bar">
+  <div class="tab active" data-tab="matches" onclick="switchTab('matches',this)">⚽ Matches</div>
+  <div class="tab" data-tab="odds" onclick="switchTab('odds',this)">📈 Odds</div>
+  <div class="tab" data-tab="picks" onclick="switchTab('picks',this)">🤖 AI Picks</div>
+  <div class="tab" data-tab="settings" onclick="switchTab('settings',this)">⚙️ Setup</div>
+</div>
+
+<div class="main">
+
+  <!-- ===== MATCHES TAB ===== -->
+  <div class="section active" id="section-matches">
+    <div id="aff-strip-wrap">
+      <div class="aff-strip">
+        <a href="#" id="link-watch-all" class="aff-pill gold">📺 Watch All Matches</a>
+        <a href="#" id="link-draftk" class="aff-pill green">🏆 DraftKings DFS</a>
+        <a href="#" id="link-food" class="aff-pill orange">🍕 Order Food Now</a>
+        <a href="/streaming-guide.html" class="aff-pill">📡 Streaming Guide</a>
+        <a href="/office-pool.html" class="aff-pill">🏅 Office Pool</a>
+      </div>
+    </div>
+    <div id="matches-container">
+      <div class="empty"><div class="icon">⚽</div><p>Loading today's matches…</p></div>
+    </div>
+  </div>
+
+  <!-- ===== ODDS TAB ===== -->
+  <div class="section" id="section-odds">
+    <div id="odds-container">
+      <div class="empty"><div class="icon">📈</div><p>Loading best odds…</p></div>
+    </div>
+  </div>
+
+  <!-- ===== AI PICKS TAB ===== -->
+  <div class="section" id="section-picks">
+    <div id="picks-container">
+      <div class="empty"><div class="icon">🤖</div><p>AI picks load when matches are configured.<br><br>Add your Groq API key in Setup.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS TAB ===== -->
+  <div class="section" id="section-settings">
+    <div class="settings-form">
+      <h3>⚙️ API Keys</h3>
+      <div class="form-group">
+        <label>API-Football Key (api-football.com — free)</label>
+        <input type="password" id="cfg-football" placeholder="your-api-football-key">
+      </div>
+      <div class="form-group">
+        <label>The Odds API Key (the-odds-api.com — free)</label>
+        <input type="password" id="cfg-odds" placeholder="your-odds-api-key">
+      </div>
+      <div class="form-group">
+        <label>Groq API Key (groq.com — free)</label>
+        <input type="password" id="cfg-groq" placeholder="your-groq-api-key">
+      </div>
+      <button class="save-btn" onclick="saveConfig()">Save & Activate</button>
+    </div>
+
+    <div class="settings-form">
+      <h3>🔗 Your Affiliate Links</h3>
+      <div class="form-group">
+        <label>FuboTV affiliate link</label>
+        <input type="text" id="aff-fubo" placeholder="https://fubo.tv/...">
+      </div>
+      <div class="form-group">
+        <label>DraftKings affiliate link</label>
+        <input type="text" id="aff-dk" placeholder="https://draftkings.com/...">
+      </div>
+      <div class="form-group">
+        <label>DoorDash affiliate link</label>
+        <input type="text" id="aff-dd" placeholder="https://doordash.com/...">
+      </div>
+      <div class="form-group">
+        <label>NordVPN affiliate link</label>
+        <input type="text" id="aff-vpn" placeholder="https://nordvpn.com/...">
+      </div>
+      <button class="save-btn" onclick="saveAffiliates()">Save Links</button>
+    </div>
+
+    <div class="about-box">
+      <strong style="color:#fff">How to get free API keys:</strong><br>
+      • <a href="https://api-football.com" target="_blank">api-football.com</a> — free 100 req/day, WC = League ID 1, Season 2026<br>
+      • <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a> — free 500 req/month<br>
+      • <a href="https://groq.com" target="_blank">groq.com</a> — free, model: llama3-70b-8192<br><br>
+      All keys are stored locally in your browser only.
+    </div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <div class="bnav-item active" onclick="switchTab('matches',null,this)"><span class="icon">⚽</span><span class="label">Matches</span></div>
+  <div class="bnav-item" onclick="switchTab('odds',null,this)"><span class="icon">📈</span><span class="label">Odds</span></div>
+  <div class="bnav-item" onclick="switchTab('picks',null,this)"><span class="icon">🤖</span><span class="label">AI Picks</span></div>
+  <div class="bnav-item" onclick="switchTab('settings',null,this)"><span class="icon">⚙️</span><span class="label">Setup</span></div>
+</nav>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG — loaded from localStorage
+// ─────────────────────────────────────────────
+let CFG = {
+  football_key: '',
+  odds_key: '',
+  groq_key: '',
+  aff_fubo: 'https://www.fubo.tv/signup',
+  aff_dk: 'https://www.draftkings.com/',
+  aff_dd: 'https://www.doordash.com/',
+  aff_vpn: 'https://nordvpn.com/',
+};
+
+function loadConfig() {
+  const saved = localStorage.getItem('wc2026_cfg');
+  if (saved) CFG = { ...CFG, ...JSON.parse(saved) };
+  // fill settings form
+  document.getElementById('cfg-football').value = CFG.football_key;
+  document.getElementById('cfg-odds').value = CFG.odds_key;
+  document.getElementById('cfg-groq').value = CFG.groq_key;
+  document.getElementById('aff-fubo').value = CFG.aff_fubo;
+  document.getElementById('aff-dk').value = CFG.aff_dk;
+  document.getElementById('aff-dd').value = CFG.aff_dd;
+  document.getElementById('aff-vpn').value = CFG.aff_vpn;
+  // apply affiliate links
+  document.getElementById('link-watch-all').href = CFG.aff_fubo;
+  document.getElementById('link-draftk').href = CFG.aff_dk;
+  document.getElementById('link-food').href = CFG.aff_dd;
+}
+
+function saveConfig() {
+  CFG.football_key = document.getElementById('cfg-football').value.trim();
+  CFG.odds_key = document.getElementById('cfg-odds').value.trim();
+  CFG.groq_key = document.getElementById('cfg-groq').value.trim();
+  localStorage.setItem('wc2026_cfg', JSON.stringify(CFG));
+  alert('✓ Saved! Refreshing data…');
+  refreshAll();
+}
+
+function saveAffiliates() {
+  CFG.aff_fubo = document.getElementById('aff-fubo').value.trim() || CFG.aff_fubo;
+  CFG.aff_dk = document.getElementById('aff-dk').value.trim() || CFG.aff_dk;
+  CFG.aff_dd = document.getElementById('aff-dd').value.trim() || CFG.aff_dd;
+  CFG.aff_vpn = document.getElementById('aff-vpn').value.trim() || CFG.aff_vpn;
+  localStorage.setItem('wc2026_cfg', JSON.stringify(CFG));
+  document.getElementById('link-watch-all').href = CFG.aff_fubo;
+  document.getElementById('link-draftk').href = CFG.aff_dk;
+  document.getElementById('link-food').href = CFG.aff_dd;
+  alert('✓ Affiliate links saved!');
+}
+
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
+function switchTab(name, tabEl, bnav) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  else document.querySelectorAll('.tab').forEach(t => { if(t.dataset.tab===name) t.classList.add('active'); });
+  if (bnav) bnav.classList.add('active');
+  else document.querySelectorAll('.bnav-item').forEach((b,i) => {
+    const tabs = ['matches','odds','picks','settings'];
+    if(tabs[i]===name) b.classList.add('active');
+  });
+  if (name === 'odds' && !oddsLoaded) loadOdds();
+  if (name === 'picks' && !picksLoaded) loadPicks();
+}
+
+// ─────────────────────────────────────────────
+// MATCHES — API-Football
+// ─────────────────────────────────────────────
+let matchData = [];
+let oddsLoaded = false, picksLoaded = false;
+
+async function loadMatches() {
+  const container = document.getElementById('matches-container');
+  if (!CFG.football_key) {
+    container.innerHTML = `<div class="match-card" style="text-align:center;padding:24px">
+      <p style="color:var(--muted);margin-bottom:12px">Add your API-Football key in <strong style="color:var(--gold)">Setup</strong> to see live matches.</p>
+      <p style="font-size:.8rem;color:var(--muted)">Free key at <a href="https://api-football.com" target="_blank" style="color:var(--gold)">api-football.com</a></p>
+    </div>`;
+    showDemoMatches();
+    return;
+  }
+  container.innerHTML = '<div class="empty"><div class="icon">⚽</div><p>Loading matches…</p></div>';
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const res = await fetch(`https://v3.football.api-sports.io/fixtures?league=1&season=2026&date=${today}`, {
+      headers: { 'x-apisports-key': CFG.football_key }
+    });
+    const data = await res.json();
+    matchData = data.response || [];
+    renderMatches(matchData);
+  } catch(e) {
+    container.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Could not load matches. Check your API key.</p></div>';
+    showDemoMatches();
+  }
+}
+
+function renderMatches(matches) {
+  const container = document.getElementById('matches-container');
+  if (!matches.length) {
+    container.innerHTML = '<div class="empty"><div class="icon">📅</div><p>No matches today.<br>Next match info coming soon.</p></div>';
+    return;
+  }
+  container.innerHTML = matches.map(m => {
+    const home = m.teams.home, away = m.teams.away;
+    const goals = m.goals;
+    const status = m.fixture.status;
+    const isLive = ['1H','HT','2H','ET','P'].includes(status.short);
+    const isFT = status.short === 'FT';
+    const kickoff = new Date(m.fixture.date);
+    const timeStr = kickoff.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const elapsed = m.fixture.status.elapsed;
+    return `
+    <div class="match-card ${isLive?'live':''}">
+      <div class="match-meta">
+        <span class="match-league">FIFA World Cup 2026</span>
+        <span class="match-status ${isLive?'live':''} ${isFT?'ft':''}">${isLive?elapsed+"'":isFT?'FT':timeStr}</span>
+      </div>
+      <div class="match-teams">
+        <div class="team">
+          <span class="team-flag">${flagEmoji(home.name)}</span>
+          <div class="team-name">${home.name}</div>
+        </div>
+        <div class="score-box">
+          <div class="score">${isLive||isFT ? (goals.home??0)+' – '+(goals.away??0) : 'vs'}</div>
+          <div class="match-time">${isLive?'LIVE':isFT?'Full Time':''}</div>
+        </div>
+        <div class="team">
+          <span class="team-flag">${flagEmoji(away.name)}</span>
+          <div class="team-name">${away.name}</div>
+        </div>
+      </div>
+      <div class="match-actions">
+        <a href="${CFG.aff_fubo}" target="_blank" class="action-btn btn-watch">📺 Watch</a>
+        <a href="${CFG.aff_dk}" target="_blank" class="action-btn btn-bet">🏆 DFS</a>
+        <a href="${CFG.aff_dd}" target="_blank" class="action-btn btn-food">🍕 Food</a>
+        <button class="action-btn btn-ai" onclick="getAI(${m.fixture.id},'${home.name}','${away.name}',${goals.home??0},${goals.away??0})">🤖 AI</button>
+      </div>
+      <div id="ai-${m.fixture.id}"></div>
+    </div>`;
+  }).join('');
+}
+
+function showDemoMatches() {
+  // Demo data for when no API key is set
+  const demo = [
+    {id:1,home:'Mexico',away:'South Africa',time:'3:00 PM ET',status:'upcoming'},
+    {id:2,home:'South Korea',away:'Czechia',time:'9:00 PM ET',status:'upcoming'},
+  ];
+  const container = document.getElementById('matches-container');
+  const existing = container.innerHTML;
+  container.innerHTML = existing + '<p style="font-size:.75rem;color:var(--muted);text-align:center;margin:8px 0 4px">Demo data — add API key for live scores</p>' +
+  demo.map(m => `
+    <div class="match-card">
+      <div class="match-meta">
+        <span class="match-league">FIFA World Cup 2026 — Matchday 1</span>
+        <span class="match-status">${m.time}</span>
+      </div>
+      <div class="match-teams">
+        <div class="team"><span class="team-flag">${flagEmoji(m.home)}</span><div class="team-name">${m.home}</div></div>
+        <div class="score-box"><div class="score">vs</div></div>
+        <div class="team"><span class="team-flag">${flagEmoji(m.away)}</span><div class="team-name">${m.away}</div></div>
+      </div>
+      <div class="match-actions">
+        <a href="${CFG.aff_fubo}" target="_blank" class="action-btn btn-watch">📺 Watch</a>
+        <a href="${CFG.aff_dk}" target="_blank" class="action-btn btn-bet">🏆 DFS</a>
+        <a href="${CFG.aff_dd}" target="_blank" class="action-btn btn-food">🍕 Food</a>
+      </div>
+    </div>`).join('');
+}
+
+// ─────────────────────────────────────────────
+// ODDS — The Odds API
+// ─────────────────────────────────────────────
+async function loadOdds() {
+  oddsLoaded = true;
+  const container = document.getElementById('odds-container');
+  if (!CFG.odds_key) {
+    container.innerHTML = '<div class="empty"><div class="icon">📈</div><p>Add your Odds API key in Setup.<br>Free at <a href="https://the-odds-api.com" target="_blank" style="color:var(--gold)">the-odds-api.com</a></p></div>';
+    return;
+  }
+  container.innerHTML = '<div class="empty"><div class="icon">📈</div><p>Loading best odds…</p></div>';
+  try {
+    const res = await fetch(`https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey=${CFG.odds_key}&regions=us,uk&markets=h2h&oddsFormat=american&dateFormat=iso`);
+    const data = await res.json();
+    if (!data.length) { container.innerHTML = '<div class="empty"><div class="icon">📅</div><p>No upcoming WC odds available yet.</p></div>'; return; }
+    renderOdds(data.slice(0,6));
+  } catch(e) {
+    container.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Could not load odds. Check your API key.</p></div>';
+  }
+}
+
+function renderOdds(games) {
+  const container = document.getElementById('odds-container');
+  container.innerHTML = games.map(g => {
+    const home = g.home_team, away = g.away_team;
+    // Find best odds across bookmakers
+    let bestH=null,bestA=null,bestD=null,bestHBook='',bestABook='',bestDBook='';
+    g.bookmakers.forEach(bk => {
+      const market = bk.markets.find(m=>m.key==='h2h');
+      if(!market) return;
+      const ho = market.outcomes.find(o=>o.name===home);
+      const ao = market.outcomes.find(o=>o.name===away);
+      const dr = market.outcomes.find(o=>o.name==='Draw');
+      if(ho && (bestH===null || ho.price > bestH)){bestH=ho.price;bestHBook=bk.title}
+      if(ao && (bestA===null || ao.price > bestA)){bestA=ao.price;bestABook=bk.title}
+      if(dr && (bestD===null || dr.price > bestD)){bestD=dr.price;bestDBook=bk.title}
+    });
+    const fmt=v=>v===null?'N/A':(v>0?'+'+v:v);
+    return `
+    <div class="odds-card">
+      <div class="odds-header">
+        <span>${home} vs ${away}</span>
+        <span style="font-size:.7rem">${new Date(g.commence_time).toLocaleDateString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+      <div class="odds-row">
+        <a href="${CFG.aff_dk}" target="_blank" class="odds-btn">
+          <div class="odds-label">${home}</div>
+          <div class="odds-val best">${fmt(bestH)}</div>
+          <div class="odds-bookmaker">${bestHBook}</div>
+        </a>
+        <a href="${CFG.aff_dk}" target="_blank" class="odds-btn">
+          <div class="odds-label">Draw</div>
+          <div class="odds-val best">${fmt(bestD)}</div>
+          <div class="odds-bookmaker">${bestDBook}</div>
+        </a>
+        <a href="${CFG.aff_dk}" target="_blank" class="odds-btn">
+          <div class="odds-label">${away}</div>
+          <div class="odds-val best">${fmt(bestA)}</div>
+          <div class="odds-bookmaker">${bestABook}</div>
+        </a>
+      </div>
+      <p style="font-size:.72rem;color:var(--muted);text-align:right">Best odds across ${g.bookmakers.length} books</p>
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────
+// AI COMMENTARY — Groq
+// ─────────────────────────────────────────────
+async function getAI(fixtureId, home, away, goalsH, goalsA) {
+  const box = document.getElementById('ai-'+fixtureId);
+  if (!CFG.groq_key) {
+    box.innerHTML = `<div class="ai-box"><div class="ai-header">🤖 AI Commentary</div><p class="ai-loading">Add your Groq key in Setup for AI analysis.</p></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="ai-box"><div class="ai-header">🤖 Generating analysis…</div><p class="ai-loading">AI is analyzing the match…</p></div>`;
+  try {
+    const scoreStr = goalsH !== undefined ? `Current score: ${home} ${goalsH} – ${goalsA} ${away}.` : '';
+    const prompt = `You are a sharp football analyst for WC 2026. Give a punchy 3-sentence tactical breakdown for ${home} vs ${away}. ${scoreStr} Focus on key tactical angles, which team has the edge and why, and one bold prediction. Be confident and specific. No fluff.`;
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+CFG.groq_key},
+      body: JSON.stringify({model:'llama3-70b-8192',messages:[{role:'user',content:prompt}],max_tokens:180,temperature:0.7})
+    });
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || 'Analysis unavailable.';
+    box.innerHTML = `<div class="ai-box"><div class="ai-header">🤖 AI Analysis</div><p class="ai-text">${text}</p></div>`;
+  } catch(e) {
+    box.innerHTML = `<div class="ai-box"><div class="ai-header">🤖 AI Commentary</div><p class="ai-loading">Error — check your Groq API key.</p></div>`;
+  }
+}
+
+async function loadPicks() {
+  picksLoaded = true;
+  const container = document.getElementById('picks-container');
+  if (!CFG.groq_key || !matchData.length) {
+    container.innerHTML = '<div class="empty"><div class="icon">🤖</div><p>Add your API keys and load matches first, then switch back to this tab.</p></div>';
+    return;
+  }
+  container.innerHTML = '<div class="empty"><div class="icon">🤖</div><p>Generating AI picks for today…</p></div>';
+  try {
+    const matchList = matchData.map(m=>`${m.teams.home.name} vs ${m.teams.away.name}`).join(', ');
+    const prompt = `You are a sharp WC 2026 analyst. Give a brief AI pick for each match: ${matchList}.
+For each match give: predicted winner (or draw), confidence (Low/Medium/High), and one key reason in 1 sentence. Format clearly with match name on its own line then the pick.`;
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+CFG.groq_key},
+      body: JSON.stringify({model:'llama3-70b-8192',messages:[{role:'user',content:prompt}],max_tokens:400,temperature:0.5})
+    });
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    container.innerHTML = `
+      <div style="background:var(--surface);border-radius:14px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#9c8aff;font-size:.82rem;font-weight:700">🤖 AI PICKS — TODAY'S MATCHES</div>
+        <p style="font-size:.88rem;color:#c8d0f0;line-height:1.7;white-space:pre-line">${text}</p>
+      </div>
+      <div style="text-align:center;margin:12px 0">
+        <a href="${CFG.aff_dk}" target="_blank" class="aff-pill green" style="display:inline-block">🏆 Use these picks on DraftKings →</a>
+      </div>`;
+  } catch(e) {
+    container.innerHTML = '<div class="empty"><div class="icon">⚠️</div><p>Error generating picks. Check your Groq API key.</p></div>';
+  }
+}
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+const FLAGS = {
+  'Mexico':'🇲🇽','Brazil':'🇧🇷','Argentina':'🇦🇷','United States':'🇺🇸','USA':'🇺🇸',
+  'England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','France':'🇫🇷','Germany':'🇩🇪','Spain':'🇪🇸','Portugal':'🇵🇹',
+  'Netherlands':'🇳🇱','Belgium':'🇧🇪','Italy':'🇮🇹','Croatia':'🇭🇷','Serbia':'🇷🇸',
+  'Japan':'🇯🇵','South Korea':'🇰🇷','Morocco':'🇲🇦','Senegal':'🇸🇳','Nigeria':'🇳🇬',
+  'Canada':'🇨🇦','Australia':'🇦🇺','Uruguay':'🇺🇾','Colombia':'🇨🇴','Chile':'🇨🇱',
+  'Ecuador':'🇪🇨','Peru':'🇵🇪','Saudi Arabia':'🇸🇦','Iran':'🇮🇷','Turkey':'🇹🇷',
+  'Poland':'🇵🇱','Switzerland':'🇨🇭','Denmark':'🇩🇰','Wales':'🏴󠁧󠁢󠁷󠁬󠁳󠁿','Czech Republic':'🇨🇿',
+  'Czechia':'🇨🇿','South Africa':'🇿🇦','Cameroon':'🇨🇲','Ghana':'🇬🇭','Egypt':'🇪🇬',
+  'Costa Rica':'🇨🇷','Honduras':'🇭🇳','Panama':'🇵🇦','Jamaica':'🇯🇲','Venezuela':'🇻🇪',
+  'Bolivia':'🇧🇴','Paraguay':'🇵🇾','Algeria':'🇩🇿','Tunisia':'🇹🇳','Mali':'🇲🇱',
+  'Ivory Coast':'🇨🇮','Bosnia':'🇧🇦','Scotland':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','Greece':'🇬🇷','Ukraine':'🇺🇦',
+  'Slovakia':'🇸🇰','Hungary':'🇭🇺','Romania':'🇷🇴','Austria':'🇦🇹','New Zealand':'🇳🇿',
+};
+function flagEmoji(name){ return FLAGS[name] || '🏳️'; }
+
+function refreshAll() {
+  document.getElementById('refresh-icon').style.transform = 'rotate(360deg)';
+  setTimeout(()=>{ document.getElementById('refresh-icon').style.transform=''; }, 600);
+  oddsLoaded = false; picksLoaded = false;
+  loadMatches();
+  const activeTab = document.querySelector('.tab.active')?.dataset?.tab;
+  if(activeTab === 'odds') { oddsLoaded = true; loadOdds(); }
+  if(activeTab === 'picks') { picksLoaded = true; loadPicks(); }
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+loadConfig();
+loadMatches();
+
+// Auto-refresh every 45 seconds when on matches tab
+setInterval(() => {
+  const activeTab = document.querySelector('.tab.active')?.dataset?.tab;
+  if (activeTab === 'matches') loadMatches();
+  if (activeTab === 'odds') loadOdds();
+}, 45000);
+</script>
+
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

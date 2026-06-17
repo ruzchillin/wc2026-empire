@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 Odds Comparison | Best Lines from 15+ Books</title>
+<meta name="description" content="Live odds comparison for every World Cup 2026 match. Find the best lines from DraftKings, FanDuel, BetMGM, Caesars, and 10+ more books instantly.">
+<style>
+  :root {
+    --green: #16a34a; --green-light: #dcfce7; --green-dark: #14532d;
+    --blue: #1d4ed8;  --blue-light: #dbeafe;
+    --gray: #6b7280;  --gray-light: #f9fafb; --border: #e5e7eb;
+    --text: #111827;  --text-muted: #6b7280;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: var(--text); background: #f3f4f6; }
+  .header { background: #15803d; color: #fff; padding: 1.25rem 1.5rem; }
+  .header h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 4px; }
+  .header p  { font-size: 0.8rem; opacity: .85; }
+  .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+  .status-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fff; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 1rem; font-size: 12px; color: var(--text-muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .loading { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  .loading .spinner { width: 32px; height: 32px; border: 3px solid #e5e7eb; border-top-color: #15803d; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .match-card { background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 1rem; overflow: hidden; }
+  .match-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .teams { font-size: 1rem; font-weight: 600; }
+  .match-meta { font-size: 11px; color: var(--text-muted); }
+  .odds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .odds-col { padding: 1rem 1.25rem; border-right: 1px solid var(--border); }
+  .odds-col:last-child { border-right: none; }
+  .odds-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 8px; }
+  .best-odds { font-size: 1.5rem; font-weight: 700; color: var(--green-dark); }
+  .best-book { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .bet-btn { display: block; width: 100%; padding: 8px 0; background: var(--green); color: #fff; font-size: 12px; font-weight: 600; border: none; border-radius: var(--radius); cursor: pointer; text-align: center; text-decoration: none; transition: background .15s; }
+  .bet-btn:hover { background: #15803d; }
+  .all-books { padding: .75rem 1.25rem; border-top: 1px solid var(--border); }
+  .all-books summary { font-size: 11px; color: var(--blue); cursor: pointer; list-style: none; }
+  .all-books summary::before { content: '▶ '; }
+  details[open] summary::before { content: '▼ '; }
+  .books-table { margin-top: .5rem; width: 100%; border-collapse: collapse; font-size: 11px; }
+  .books-table th { text-align: left; color: var(--text-muted); font-weight: 500; padding: 4px 8px; border-bottom: 1px solid var(--border); }
+  .books-table td { padding: 5px 8px; border-bottom: 1px solid #f3f4f6; }
+  .books-table tr:last-child td { border: none; }
+  .books-table a { color: var(--blue); text-decoration: none; font-weight: 500; }
+  .books-table a:hover { text-decoration: underline; }
+  .best-row { background: var(--green-light); font-weight: 600; }
+  .affiliate-bar { background: #1e3a5f; color: #fff; padding: 1rem 1.25rem; border-radius: var(--radius-lg); margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .affiliate-bar span { font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .aff-links { display: flex; gap: 8px; flex-wrap: wrap; }
+  .aff-btn { padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: opacity .15s; }
+  .aff-btn:hover { opacity: .85; }
+  .dk  { background: #00843d; color: #fff; }
+  .fd  { background: #1493ff; color: #fff; }
+  .mgm { background: #c8a84b; color: #000; }
+  .cae { background: #003087; color: #fff; }
+  .vpn { background: #4687f3; color: #fff; }
+  .no-matches { text-align: center; padding: 3rem; color: var(--text-muted); }
+  .error-msg { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius); padding: 1rem; color: #991b1b; font-size: 12px; margin-bottom: 1rem; }
+  .refresh-btn { padding: 6px 14px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); font-size: 12px; cursor: pointer; margin-left: auto; }
+  .refresh-btn:hover { background: var(--gray-light); }
+  .tag-live { display: inline-block; padding: 2px 7px; background: #fee2e2; color: #991b1b; font-size: 10px; font-weight: 600; border-radius: 4px; animation: pulse 1.5s infinite; }
+  .tag-soon { display: inline-block; padding: 2px 7px; background: var(--blue-light); color: var(--blue); font-size: 10px; font-weight: 600; border-radius: 4px; }
+  footer { text-align: center; padding: 2rem 1rem; font-size: 11px; color: var(--text-muted); }
+  footer a { color: var(--blue); }
+  @media (max-width: 600px) {
+    .odds-grid { grid-template-columns: 1fr; }
+    .odds-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .odds-col:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚽ World Cup 2026 Odds Comparison</h1>
+  <p>Live best odds from 15+ books — updated every 5 minutes</p>
+</div>
+
+<div class="container">
+
+  <!-- Top affiliate bar -->
+  <div class="affiliate-bar">
+    <span>🎰 Top bonuses right now:</span>
+    <div class="aff-links">
+      <a class="aff-btn dk"  href="DRAFTKINGS_AFFILIATE_LINK"  target="_blank" rel="nofollow sponsored">DraftKings — Bet $5 Get $200</a>
+      <a class="aff-btn fd"  href="FANDUEL_AFFILIATE_LINK"     target="_blank" rel="nofollow sponsored">FanDuel — $200 Bonus</a>
+      <a class="aff-btn mgm" href="BETMGM_AFFILIATE_LINK"      target="_blank" rel="nofollow sponsored">BetMGM — $1,500 Insurance</a>
+      <a class="aff-btn cae" href="CAESARS_AFFILIATE_LINK"     target="_blank" rel="nofollow sponsored">Caesars — $1,000 Promo</a>
+      <a class="aff-btn vpn" href="NORDVPN_AFFILIATE_LINK"     target="_blank" rel="nofollow sponsored">📺 NordVPN — Watch Live</a>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="dot"></div>
+    <span id="status-text">Loading live odds...</span>
+    <button class="refresh-btn" onclick="loadOdds()">↻ Refresh</button>
+  </div>
+
+  <div id="error-container"></div>
+  <div id="matches-container">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Fetching live odds from 15+ books...</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Odds update every 5 minutes via The Odds API. Must be 21+ and in a legal betting state.</p>
+  <p style="margin-top:6px">
+    <a href="NEWSLETTER_LINK">📧 Free picks newsletter</a> &nbsp;|&nbsp;
+    <a href="TELEGRAM_LINK">📱 Telegram channel</a> &nbsp;|&nbsp;
+    <a href="DISCORD_LINK">💬 Discord community</a>
+  </p>
+</footer>
+
+<script>
+// ─── CONFIGURATION ────────────────────────────────────────────────────────────
+// Replace all CAPS placeholders with your actual values before deploying.
+const CONFIG = {
+  oddsApiKey: 'YOUR_ODDS_API_KEY',      // from the-odds-api.com
+  sport: 'soccer_fifa_world_cup',
+  affiliates: {
+    draftkings: 'DRAFTKINGS_AFFILIATE_LINK',
+    fanduel:    'FANDUEL_AFFILIATE_LINK',
+    betmgm:     'BETMGM_AFFILIATE_LINK',
+    caesars:    'CAESARS_AFFILIATE_LINK',
+    bet365:     'BET365_AFFILIATE_LINK',
+    nordvpn:    'NORDVPN_AFFILIATE_LINK',
+    betano:     'BETANO_AFFILIATE_LINK',
+    unibet:     'UNIBET_AFFILIATE_LINK',
+  },
+};
+
+// Book → affiliate link mapping
+const BOOK_LINKS = {
+  'DraftKings':  CONFIG.affiliates.draftkings,
+  'FanDuel':     CONFIG.affiliates.fanduel,
+  'BetMGM':      CONFIG.affiliates.betmgm,
+  'Caesars':     CONFIG.affiliates.caesars,
+  'bet365':      CONFIG.affiliates.bet365,
+  'Betano':      CONFIG.affiliates.betano,
+  'Unibet':      CONFIG.affiliates.unibet,
+};
+
+function getBookLink(bookName) {
+  return BOOK_LINKS[bookName] || CONFIG.affiliates.draftkings;
+}
+
+// ─── FETCH ODDS ───────────────────────────────────────────────────────────────
+async function fetchOdds() {
+  const url = `https://api.the-odds-api.com/v4/sports/${CONFIG.sport}/odds` +
+    `?apiKey=${CONFIG.oddsApiKey}&regions=us,uk,eu&markets=h2h,totals&oddsFormat=american`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`API error ${r.status}`);
+  return r.json();
+}
+
+// ─── FIND BEST ODDS ───────────────────────────────────────────────────────────
+function getBestOdds(match) {
+  const outcomes = { home: [], draw: [], away: [] };
+
+  for (const book of match.bookmakers) {
+    const h2h = book.markets.find(m => m.key === 'h2h');
+    if (!h2h) continue;
+    for (const o of h2h.outcomes) {
+      const entry = { book: book.title, odds: o.price };
+      if (o.name === match.home_team) outcomes.home.push(entry);
+      else if (o.name === 'Draw')     outcomes.draw.push(entry);
+      else if (o.name === match.away_team) outcomes.away.push(entry);
+    }
+  }
+
+  const best = (arr) => arr.sort((a, b) => b.odds - a.odds)[0] || null;
+  return {
+    home: best(outcomes.home),
+    draw: best(outcomes.draw),
+    away: best(outcomes.away),
+    allHome: outcomes.home.sort((a, b) => b.odds - a.odds),
+    allDraw: outcomes.draw.sort((a, b) => b.odds - a.odds),
+    allAway: outcomes.away.sort((a, b) => b.odds - a.odds),
+  };
+}
+
+function fmtOdds(n) {
+  if (n == null) return 'N/A';
+  return n > 0 ? `+${n}` : `${n}`;
+}
+
+function isLive(match) {
+  const start = new Date(match.commence_time);
+  const now   = new Date();
+  const end   = new Date(start.getTime() + 110 * 60000);
+  return now >= start && now <= end;
+}
+
+function isSoon(match) {
+  const start = new Date(match.commence_time);
+  const now   = new Date();
+  return start > now && (start - now) < 3 * 3600000; // within 3 hours
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderMatch(match) {
+  const best = getBestOdds(match);
+  const start = new Date(match.commence_time);
+  const live  = isLive(match);
+  const soon  = isSoon(match);
+
+  const tag = live
+    ? '<span class="tag-live">🔴 LIVE</span>'
+    : soon
+    ? '<span class="tag-soon">⏰ Soon</span>'
+    : '';
+
+  const timeStr = start.toLocaleString('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric',
+    hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+  });
+
+  const col = (label, outcome, allOdds, teamName) => {
+    if (!outcome) return `
+      <div class="odds-col">
+        <div class="odds-label">${label}</div>
+        <div class="best-odds">N/A</div>
+        <div class="best-book">No odds</div>
+      </div>`;
+    return `
+      <div class="odds-col">
+        <div class="odds-label">${label}</div>
+        <div class="best-odds">${fmtOdds(outcome.odds)}</div>
+        <div class="best-book">Best: ${outcome.book}</div>
+        <a class="bet-btn" href="${getBookLink(outcome.book)}" target="_blank" rel="nofollow sponsored">
+          Bet at ${outcome.book} →
+        </a>
+      </div>`;
+  };
+
+  const bookRow = (entry, i, colKey) => {
+    const isBest = i === 0;
+    return `<tr class="${isBest ? 'best-row' : ''}">
+      <td><a href="${getBookLink(entry.book)}" target="_blank" rel="nofollow">${entry.book}</a></td>
+      <td>${fmtOdds(entry.odds)}${isBest ? ' ⭐' : ''}</td>
+    </tr>`;
+  };
+
+  const booksTable = (home, draw, away) => `
+    <table class="books-table">
+      <tr>
+        <th style="width:33%">${match.home_team} (win)</th>
+        <th style="width:33%">Draw</th>
+        <th>  ${match.away_team} (win)</th>
+      </tr>
+      <tr>
+        <td valign="top">${home.map((e,i)=>bookRow(e,i,'home')).join('')}</td>
+        <td valign="top">${draw.map((e,i)=>bookRow(e,i,'draw')).join('')}</td>
+        <td valign="top">${away.map((e,i)=>bookRow(e,i,'away')).join('')}</td>
+      </tr>
+    </table>`;
+
+  return `
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="teams">${match.home_team} vs ${match.away_team} ${tag}</div>
+      <div class="match-meta">${timeStr}</div>
+    </div>
+  </div>
+  <div class="odds-grid">
+    ${col(match.home_team + ' WIN', best.home, best.allHome)}
+    ${col('DRAW', best.draw, best.allDraw)}
+    ${col(match.away_team + ' WIN', best.away, best.allAway)}
+  </div>
+  <div class="all-books">
+    <details>
+      <summary>Compare all books (${match.bookmakers.length} available)</summary>
+      ${booksTable(best.allHome, best.allDraw, best.allAway)}
+    </details>
+  </div>
+</div>`;
+}
+
+// ─── MAIN LOAD ────────────────────────────────────────────────────────────────
+let lastFetch = null;
+
+async function loadOdds() {
+  const container = document.getElementById('matches-container');
+  const errorDiv  = document.getElementById('error-container');
+  const statusTxt = document.getElementById('status-text');
+
+  errorDiv.innerHTML   = '';
+  statusTxt.textContent = 'Loading...';
+  container.innerHTML  = '<div class="loading"><div class="spinner"></div><p>Fetching live odds...</p></div>';
+
+  try {
+    const matches = await fetchOdds();
+    lastFetch = new Date();
+
+    if (!matches.length) {
+      container.innerHTML = '<div class="no-matches">No World Cup matches scheduled right now. Check back closer to the next match!</div>';
+      statusTxt.textContent = 'No live matches found';
+      return;
+    }
+
+    // Sort: live first, then by start time
+    matches.sort((a, b) => {
+      const aLive = isLive(a) ? 0 : 1;
+      const bLive = isLive(b) ? 0 : 1;
+      if (aLive !== bLive) return aLive - bLive;
+      return new Date(a.commence_time) - new Date(b.commence_time);
+    });
+
+    container.innerHTML = matches.map(renderMatch).join('');
+    statusTxt.textContent = `Updated ${lastFetch.toLocaleTimeString()} — ${matches.length} match${matches.length > 1 ? 'es' : ''} found`;
+  } catch (err) {
+    container.innerHTML = '';
+    errorDiv.innerHTML = `
+      <div class="error-msg">
+        ⚠️ Could not load odds: ${err.message}.
+        Make sure your API key is set correctly in the script.
+        <button class="refresh-btn" onclick="loadOdds()" style="margin-left:8px">Retry</button>
+      </div>`;
+    statusTxt.textContent = 'Error loading odds';
+  }
+}
+
+// Load on start, then auto-refresh every 5 minutes
+loadOdds();
+setInterval(loadOdds, 5 * 60 * 1000);
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>

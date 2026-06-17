@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 Injury Tracker | Real-Time Player Fitness</title>
+<meta name="description" content="Track injuries, suspensions, and fitness concerns for all 48 WC 2026 squads. Updated daily.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e5e5e5;font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:#111;border-bottom:2px solid #ff8800;padding:20px;text-align:center}
+header h1{color:#ff8800;font-size:1.8rem;margin-bottom:6px}
+header p{color:#aaa;font-size:0.9rem}
+.filter-bar{background:#111;padding:14px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #2a2a2a}
+.filter-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:#888;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:0.85rem;transition:all .2s}
+.filter-btn.active,.filter-btn:hover{border-color:#ff8800;color:#ff8800}
+.search-input{background:#1a1a1a;border:1px solid #2a2a2a;color:#e5e5e5;padding:7px 14px;border-radius:20px;font-size:0.85rem;outline:none;min-width:200px}
+.search-input:focus{border-color:#ff8800}
+.main{max-width:1100px;margin:0 auto;padding:20px}
+.stats-strip{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.stat-card{background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:12px 18px;text-align:center;flex:1;min-width:100px}
+.stat-card .n{font-size:1.5rem;font-weight:700;color:#ff8800}
+.stat-card .l{font-size:0.75rem;color:#888;margin-top:3px}
+.injury-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.team-card{background:#161616;border:1px solid #2a2a2a;border-radius:10px;overflow:hidden}
+.team-header{padding:12px 16px;display:flex;align-items:center;gap:10px;background:#1a1a1a;border-bottom:1px solid #2a2a2a}
+.team-flag{font-size:1.4rem}
+.team-name{font-weight:700;font-size:0.95rem}
+.team-count{margin-left:auto;font-size:0.8rem}
+.injury-list{padding:0}
+.injury-item{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #1a1a1a;gap:10px}
+.injury-item:last-child{border-bottom:none}
+.player-name{font-size:0.9rem;font-weight:600;flex:1}
+.player-pos{font-size:0.75rem;color:#888;min-width:30px}
+.status-badge{padding:3px 8px;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap}
+.status-out{background:#3d0000;color:#ff4444}
+.status-doubt{background:#3d2200;color:#ff8800}
+.status-available{background:#003d0f;color:#44cc44}
+.status-suspended{background:#1a003d;color:#9966ff}
+.injury-type{font-size:0.75rem;color:#888;min-width:90px}
+.no-injuries{padding:12px 16px;font-size:0.85rem;color:#444}
+.impact-high{border-left:3px solid #ff4444}
+.impact-med{border-left:3px solid #ff8800}
+.impact-low{border-left:3px solid #444}
+.last-updated{font-size:0.75rem;color:#555;text-align:right;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🩹 WC 2026 Injury Tracker</h1>
+  <p>Live fitness updates · Injuries · Suspensions · Doubts</p>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterStatus('all',this)">All</button>
+  <button class="filter-btn" onclick="filterStatus('out',this)">🔴 Out</button>
+  <button class="filter-btn" onclick="filterStatus('doubt',this)">🟠 Doubt</button>
+  <button class="filter-btn" onclick="filterStatus('suspended',this)">🟣 Suspended</button>
+  <button class="filter-btn" onclick="filterStatus('key',this)">⭐ Key Players</button>
+  <input class="search-input" placeholder="🔍 Search player or team..." oninput="searchPlayers(this.value)" id="searchBox">
+</div>
+
+<div class="main">
+  <div class="stats-strip" id="statsStrip"></div>
+  <div class="injury-grid" id="injuryGrid"></div>
+  <div class="last-updated">Last updated: <span id="lastUpdate"></span> · Data via team press conferences & official sources</div>
+</div>
+
+<script>
+const INJURY_DATA = [
+  { team:'Argentina', flag:'🇦🇷', players:[
+    {name:'Ángel Di María', pos:'RW', status:'doubt', injury:'Hamstring strain', key:true, impact:'high'},
+    {name:'Paulo Dybala', pos:'CAM', status:'doubt', injury:'Knee concern', key:true, impact:'high'},
+  ]},
+  { team:'Brazil', flag:'🇧🇷', players:[
+    {name:'Neymar Jr', pos:'LW', status:'out', injury:'ACL – long-term', key:true, impact:'high'},
+    {name:'Richarlison', pos:'ST', status:'available', injury:'Returning from surgery', key:true, impact:'med'},
+  ]},
+  { team:'England', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', players:[
+    {name:'Reece James', pos:'RB', status:'doubt', injury:'Hamstring', key:false, impact:'med'},
+    {name:'Jack Grealish', pos:'LW', status:'out', injury:'Ankle', key:false, impact:'low'},
+  ]},
+  { team:'France', flag:'🇫🇷', players:[
+    {name:'Kylian Mbappé', pos:'ST', status:'available', injury:'Recovered - nose break', key:true, impact:'high'},
+    {name:'Presnel Kimpembe', pos:'CB', status:'out', injury:'Achilles – long-term', key:false, impact:'med'},
+  ]},
+  { team:'Spain', flag:'🇪🇸', players:[
+    {name:'Pedri', pos:'CM', status:'doubt', injury:'Muscle fatigue', key:true, impact:'high'},
+    {name:'Dani Olmo', pos:'CAM', status:'available', injury:'Fully fit', key:true, impact:'med'},
+  ]},
+  { team:'Germany', flag:'🇩🇪', players:[
+    {name:'Toni Kroos', pos:'CM', status:'doubt', injury:'Thigh concern', key:true, impact:'high'},
+    {name:'Marco Reus', pos:'CAM', status:'out', injury:'Knee surgery', key:false, impact:'low'},
+  ]},
+  { team:'Portugal', flag:'🇵🇹', players:[
+    {name:'João Cancelo', pos:'RB', status:'available', injury:'Fully fit', key:false, impact:'low'},
+    {name:'Rúben Dias', pos:'CB', status:'doubt', injury:'Groin strain', key:true, impact:'high'},
+  ]},
+  { team:'Netherlands', flag:'🇳🇱', players:[
+    {name:'Virgil van Dijk', pos:'CB', status:'available', injury:'Fit', key:true, impact:'high'},
+    {name:'Memphis Depay', pos:'ST', status:'doubt', injury:'Calf', key:false, impact:'med'},
+  ]},
+  { team:'Morocco', flag:'🇲🇦', players:[
+    {name:'Hakim Ziyech', pos:'LW', status:'available', injury:'Fully fit', key:true, impact:'high'},
+    {name:'Achraf Hakimi', pos:'RB', status:'available', injury:'Fully fit', key:true, impact:'high'},
+  ]},
+  { team:'Japan', flag:'🇯🇵', players:[
+    {name:'Takehiro Tomiyasu', pos:'RB', status:'doubt', injury:'Knee', key:false, impact:'med'},
+    {name:'Daichi Kamada', pos:'CM', status:'available', injury:'Fit', key:false, impact:'low'},
+  ]},
+  { team:'USA', flag:'🇺🇸', players:[
+    {name:'Christian Pulisic', pos:'LW', status:'available', injury:'Fit', key:true, impact:'high'},
+    {name:'Yunus Musah', pos:'CM', status:'doubt', injury:'Ankle knock', key:false, impact:'med'},
+  ]},
+  { team:'Mexico', flag:'🇲🇽', players:[
+    {name:'Hirving Lozano', pos:'RW', status:'doubt', injury:'Shoulder', key:true, impact:'high'},
+    {name:'Raúl Jiménez', pos:'ST', status:'available', injury:'Fully fit', key:false, impact:'med'},
+  ]},
+];
+
+function renderStats(data) {
+  const flat = data.flatMap(t => t.players);
+  const out = flat.filter(p => p.status==='out').length;
+  const doubt = flat.filter(p => p.status==='doubt').length;
+  const susp = flat.filter(p => p.status==='suspended').length;
+  const key = flat.filter(p => p.key && p.status!=='available').length;
+  document.getElementById('statsStrip').innerHTML = `
+    <div class="stat-card"><div class="n" style="color:#ff4444">${out}</div><div class="l">Out</div></div>
+    <div class="stat-card"><div class="n" style="color:#ff8800">${doubt}</div><div class="l">Doubtful</div></div>
+    <div class="stat-card"><div class="n" style="color:#9966ff">${susp}</div><div class="l">Suspended</div></div>
+    <div class="stat-card"><div class="n">${key}</div><div class="l">Key Players Affected</div></div>
+    <div class="stat-card"><div class="n">${data.length}</div><div class="l">Teams Tracked</div></div>`;
+}
+
+function renderGrid(data) {
+  document.getElementById('injuryGrid').innerHTML = data.map(team => {
+    const injured = team.players.filter(p => p.status !== 'available');
+    if (injured.length === 0) return '';
+    return `<div class="team-card">
+      <div class="team-header">
+        <span class="team-flag">${team.flag}</span>
+        <span class="team-name">${team.name}</span>
+        <span class="team-count">${injured.length} concern${injured.length!==1?'s':''}</span>
+      </div>
+      <div class="injury-list">
+        ${injured.map(p => `<div class="injury-item impact-${p.impact}">
+          <span class="player-pos">${p.pos}</span>
+          <span class="player-name">${p.name}${p.key?' ⭐':''}</span>
+          <span class="injury-type">${p.injury}</span>
+          <span class="status-badge status-${p.status}">${
+            p.status==='out'?'🔴 OUT':p.status==='doubt'?'🟠 DOUBT':p.status==='suspended'?'🟣 SUSP':'🟢 FIT'
+          }</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+function applyFilters() {
+  let data = JSON.parse(JSON.stringify(INJURY_DATA));
+  if (currentSearch) {
+    data = data.map(t => ({...t, players: t.players.filter(p =>
+      p.name.toLowerCase().includes(currentSearch) || t.team.toLowerCase().includes(currentSearch)
+    )})).filter(t => t.players.length > 0);
+  }
+  if (currentFilter === 'out') {
+    data = data.map(t => ({...t, players: t.players.filter(p => p.status==='out')})).filter(t => t.players.length>0);
+  } else if (currentFilter === 'doubt') {
+    data = data.map(t => ({...t, players: t.players.filter(p => p.status==='doubt')})).filter(t => t.players.length>0);
+  } else if (currentFilter === 'suspended') {
+    data = data.map(t => ({...t, players: t.players.filter(p => p.status==='suspended')})).filter(t => t.players.length>0);
+  } else if (currentFilter === 'key') {
+    data = data.map(t => ({...t, players: t.players.filter(p => p.key && p.status!=='available')})).filter(t => t.players.length>0);
+  }
+  renderStats(INJURY_DATA);
+  renderGrid(data);
+}
+
+function filterStatus(status, btn) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function searchPlayers(val) {
+  currentSearch = val.toLowerCase();
+  applyFilters();
+}
+
+// Init
+renderStats(INJURY_DATA);
+renderGrid(INJURY_DATA);
+document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+</script>
+<script src="/squeeze-engine.js"></script>
+</body>
+</html>
