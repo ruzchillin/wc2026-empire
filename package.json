@@ -2,9 +2,9 @@
   "name": "wc2026-empire",
   "version": "2.1.0",
   "description": "WC 2026 omnichannel intelligence, content, and monetization empire",
-  "main": "api-server.js",
+  "main": "world-engine.js",
   "scripts": {
-    "start": "node api-server.js",
+    "start": "node world-engine.js",
     "start:api": "node api-server.js",
     "start:ai": "node ai-engine.js",
     "start:pipeline": "node data-pipeline.js",
