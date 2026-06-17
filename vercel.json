@@ -8,12 +8,12 @@
     { "src": "*.txt", "use": "@vercel/static" }
   ],
   "env": {
-    "RAILWAY_API_URL": "https://api-server-production-xxxx.up.railway.app"
+    "RAILWAY_API_URL": "https://wc2026-empire-production.up.railway.app"
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://api-server-production-xxxx.up.railway.app/api/$1",
+      "dest": "https://wc2026-empire-production.up.railway.app/api/$1",
       "headers": { "x-forwarded-host": "$host" }
     },
     { "src": "/go/bet365",      "dest": "https://www.bet365.com/?affiliate=YOUR_BET365_ID",   "status": 302 },
@@ -28,7 +28,7 @@
     { "src": "/go/888sport",    "dest": "https://www.888sport.com/?affiliate=YOUR_888_ID",      "status": 302 },
     {
       "src": "/go/(.*)",
-      "dest": "https://api-server-production-xxxx.up.railway.app/go/$1"
+      "dest": "https://wc2026-empire-production.up.railway.app/go/$1"
     },
     { "src": "/", "dest": "/index.html" },
     { "src": "/command-center", "dest": "/empire-command.html" },
