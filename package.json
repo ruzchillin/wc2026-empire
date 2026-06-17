@@ -1,6 +1,6 @@
 {
   "name": "wc2026-empire",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "WC 2026 omnichannel intelligence, content, and monetization empire",
   "main": "api-server.js",
   "scripts": {
