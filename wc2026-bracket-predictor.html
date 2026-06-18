@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Bracket Predictor — Fill In Your Tournament Predictions</title>
+<meta name="description" content="Predict the WC2026 knockout bracket. Fill in your Round of 32 through to Final predictions. Share your bracket with friends.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:linear-gradient(135deg,#1a237e,#0d47a1);padding:20px;text-align:center;border-bottom:3px solid #ffd700}
+header h1{font-size:2em;color:#ffd700;margin-bottom:8px}
+nav{background:#0d1b2a;padding:12px 20px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid #1e3a5f}
+nav a{color:#90caf9;text-decoration:none;font-size:0.9em;padding:5px 12px;border-radius:20px}
+nav a:hover{background:#1e3a5f;color:#fff}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.ctrl-btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:0.9em}
+.ctrl-btn.primary{background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a}
+.ctrl-btn.secondary{background:#1e3a5f;color:#90caf9;border:1px solid #1565c0}
+.ctrl-btn.danger{background:#b71c1c;color:#fff}
+.bracket-section{background:#0f1923;border:1px solid #1e3a5f;border-radius:12px;padding:20px;margin-bottom:20px}
+.bracket-section h3{color:#ffd700;margin-bottom:15px;font-size:1.1em}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.match-card{background:#0d1b2a;border:1px solid #1e3a5f;border-radius:10px;padding:12px}
+.match-label{color:#546e7a;font-size:0.75em;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.team-pick{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s;border:2px solid transparent}
+.team-pick:hover{background:#1e3a5f}
+.team-pick.selected{background:#1e3a5f;border-color:#ffd700}
+.team-pick.eliminated{opacity:0.4}
+.pick-flag{font-size:1.3em}
+.pick-name{font-size:0.9em;font-weight:600;flex:1}
+.pick-radio{width:16px;height:16px;border-radius:50%;border:2px solid #546e7a;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pick-radio.checked{border-color:#ffd700;background:#ffd700}
+.pick-radio.checked::after{content:"";width:8px;height:8px;border-radius:50%;background:#0a0e1a}
+.vs-divider{text-align:center;color:#546e7a;font-size:0.75em;padding:3px 0}
+.winner-display{background:#1e3a5f;border:2px solid #ffd700;border-radius:10px;padding:15px;text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.winner-flag{font-size:2.5em}
+.winner-name{font-weight:700;color:#ffd700;font-size:1.1em;margin-top:5px}
+.progress-bar{background:#1e3a5f;height:8px;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.progress-fill{height:100%;background:linear-gradient(to right,#ffd700,#ff8f00);border-radius:4px;transition:width 0.3s}
+.ad-slot{background:#0f1923;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:25px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+#resultText{background:#0d1b2a;border:1px solid #1e3a5f;border-radius:8px;padding:12px;font-size:0.85em;color:#90caf9;margin-top:10px;white-space:pre-wrap;display:none}
+footer{background:#0d1b2a;border-top:1px solid #1e3a5f;padding:25px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.85em}
+footer a{color:#90caf9}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏆 WC2026 Bracket Predictor</h1>
+  <p>Fill in your predictions for the knockout rounds</p>
+</header>
+<nav>
+  <a href="/">Home</a>
+  <a href="/predictions">AI Predictions</a>
+  <a href="/wc2026-fantasy">Fantasy</a>
+  <a href="/wc2026-sweepstake">Sweepstake</a>
+</nav>
+
+<div class="container">
+  <div style="text-align:center;margin-bottom:15px">
+    <div id="progressLabel" style="color:#90caf9;font-size:0.85em;margin-bottom:6px">Complete your bracket: <span id="pct">0%</span></div>
+    <div class="progress-bar" style="max-width:400px;margin:0 auto"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn primary" onclick="generateAIPicks()">🤖 AI Auto-Fill</button>
+    <button class="ctrl-btn secondary" onclick="copyBracket()">📋 Copy Bracket</button>
+    <button class="ctrl-btn secondary" onclick="shareBracket()">🔗 Share</button>
+    <button class="ctrl-btn danger" onclick="resetBracket()">🗑️ Reset</button>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Round of 32 -->
+  <div class="bracket-section">
+    <h3>⚽ Round of 32 — Pick Your Winners</h3>
+    <div class="matches-grid" id="r32Grid"></div>
+  </div>
+
+  <!-- Round of 16 -->
+  <div class="bracket-section">
+    <h3>🔥 Round of 16</h3>
+    <div class="matches-grid" id="r16Grid"></div>
+  </div>
+
+  <!-- Quarter-Finals -->
+  <div class="bracket-section">
+    <h3>⚡ Quarter-Finals</h3>
+    <div class="matches-grid" id="qfGrid"></div>
+  </div>
+
+  <!-- Semi-Finals -->
+  <div class="bracket-section">
+    <h3>🏟️ Semi-Finals</h3>
+    <div class="matches-grid" id="sfGrid"></div>
+  </div>
+
+  <!-- Final + Winner -->
+  <div class="bracket-section">
+    <h3>🏆 The Final</h3>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:15px;align-items:center;max-width:500px;margin:0 auto">
+      <div class="matches-grid" id="finalGrid" style="display:block"></div>
+      <div style="text-align:center">
+        <div style="font-size:2em">🏆</div>
+        <div style="color:#ffd700;font-size:0.8em;font-weight:700">WINNER</div>
+      </div>
+      <div class="winner-display" id="championDisplay">
+        <div style="color:#546e7a;font-size:0.85em">Pick your champion</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultText"></div>
+
+  <div style="background:#0f1923;border:2px solid #ffd700;border-radius:12px;padding:18px;text-align:center;margin:20px 0">
+    <h3 style="color:#ffd700;margin-bottom:8px">📧 Share Your Bracket</h3>
+    <p style="color:#90caf9;margin-bottom:12px;font-size:0.9em">Subscribe to get expert predictions before each round + compare with the AI's bracket</p>
+    <a href="/wc2026-newsletter" style="background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a;padding:11px 24px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">Get AI Predictions →</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">WC2026 Empire</a> | <a href="/predictions">AI Predictions</a> | <a href="/wc2026-sweepstake">Sweepstake</a></p>
+  <p style="margin-top:5px">Bracket predictor for entertainment. Group stage outcomes may affect available teams.</p>
+</footer>
+
+<script>
+const R32_MATCHES = [
+  {id:'r32_1',a:{n:'Argentina',f:'🇦🇷'},b:{n:'Algeria',f:'🇩🇿'}},
+  {id:'r32_2',a:{n:'France',f:'🇫🇷'},b:{n:'Senegal',f:'🇸🇳'}},
+  {id:'r32_3',a:{n:'England',f:'🏴󠁧󠁢󠁥󠁮󠁧󠁿'},b:{n:'Ghana',f:'🇬🇭'}},
+  {id:'r32_4',a:{n:'Brazil',f:'🇧🇷'},b:{n:'Chile',f:'🇨🇱'}},
+  {id:'r32_5',a:{n:'Spain',f:'🇪🇸'},b:{n:'Cape Verde',f:'🇨🇻'}},
+  {id:'r32_6',a:{n:'Germany',f:'🇩🇪'},b:{n:'Ivory Coast',f:'🇨🇮'}},
+  {id:'r32_7',a:{n:'Portugal',f:'🇵🇹'},b:{n:'Uzbekistan',f:'🇺🇿'}},
+  {id:'r32_8',a:{n:'Netherlands',f:'🇳🇱'},b:{n:'Saudi Arabia',f:'🇸🇦'}},
+  {id:'r32_9',a:{n:'USA',f:'🇺🇸'},b:{n:'Panama',f:'🇵🇦'}},
+  {id:'r32_10',a:{n:'Belgium',f:'🇧🇪'},b:{n:'Egypt',f:'🇪🇬'}},
+  {id:'r32_11',a:{n:'Norway',f:'🇳🇴'},b:{n:'New Zealand',f:'🇳🇿'}},
+  {id:'r32_12',a:{n:'Croatia',f:'🇭🇷'},b:{n:'Morocco',f:'🇲🇦'}},
+  {id:'r32_13',a:{n:'Mexico',f:'🇲🇽'},b:{n:'Bolivia',f:'🇧🇴'}},
+  {id:'r32_14',a:{n:'Japan',f:'🇯🇵'},b:{n:'Australia',f:'🇦🇺'}},
+  {id:'r32_15',a:{n:'Uruguay',f:'🇺🇾'},b:{n:'Costa Rica',f:'🇨🇷'}},
+  {id:'r32_16',a:{n:'Switzerland',f:'🇨🇭'},b:{n:'Ecuador',f:'🇪🇨'}},
+];
+
+const picks = {};
+
+function renderMatches(containerId, matches, round) {
+  const grid = document.getElementById(containerId);
+  grid.innerHTML = matches.map(m => `
+    <div class="match-card" id="card_${m.id}">
+      <div class="match-label">${round} — Match ${m.id.split('_')[1]}</div>
+      <div class="team-pick ${picks[m.id]===m.a.n?'selected':''} ${m.a.eliminated?'eliminated':''}" onclick="selectPick('${m.id}','${m.a.n}','${m.a.f}')">
+        <span class="pick-flag">${m.a.f}</span>
+        <span class="pick-name">${m.a.n}</span>
+        <div class="pick-radio ${picks[m.id]===m.a.n?'checked':''}"></div>
+      </div>
+      <div class="vs-divider">vs</div>
+      <div class="team-pick ${picks[m.id]===m.b.n?'selected':''} ${m.b.eliminated?'eliminated':''}" onclick="selectPick('${m.id}','${m.b.n}','${m.b.f}')">
+        <span class="pick-flag">${m.b.f}</span>
+        <span class="pick-name">${m.b.n}</span>
+        <div class="pick-radio ${picks[m.id]===m.b.n?'checked':''}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildNextRound(prevMatches, prefix) {
+  const winners = [];
+  for(let i=0;i<prevMatches.length;i+=2){
+    const m1=prevMatches[i], m2=prevMatches[i+1];
+    const w1=picks[m1.id]?{n:picks[m1.id],f:getFlag(picks[m1.id],prevMatches)}:{n:'TBD',f:'❓'};
+    const w2=picks[m2.id]?{n:picks[m2.id],f:getFlag(picks[m2.id],prevMatches)}:{n:'TBD',f:'❓'};
+    winners.push({id:`${prefix}_${Math.floor(i/2)+1}`,a:w1,b:w2});
+  }
+  return winners;
+}
+
+function getFlag(name, matches) {
+  for(const m of matches) {
+    if(m.a.n===name) return m.a.f;
+    if(m.b.n===name) return m.b.f;
+  }
+  return '🏳️';
+}
+
+let R16=[], QF=[], SF=[], FINAL=[];
+
+function refresh() {
+  R16 = buildNextRound(R32_MATCHES, 'r16');
+  QF = buildNextRound(R16, 'qf');
+  SF = buildNextRound(QF, 'sf');
+  FINAL = buildNextRound(SF, 'final');
+  renderMatches('r16Grid', R16, 'R16');
+  renderMatches('qfGrid', QF, 'QF');
+  renderMatches('sfGrid', SF, 'SF');
+  // Final - single match
+  const fm = FINAL[0];
+  document.getElementById('finalGrid').innerHTML = `
+    <div class="match-card">
+      <div class="match-label">THE FINAL</div>
+      <div class="team-pick ${picks[fm.id]===fm.a.n?'selected':''}" onclick="selectPick('${fm.id}','${fm.a.n}','${fm.a.f}')">
+        <span class="pick-flag">${fm.a.f}</span><span class="pick-name">${fm.a.n}</span>
+        <div class="pick-radio ${picks[fm.id]===fm.a.n?'checked':''}"></div>
+      </div>
+      <div class="vs-divider">vs</div>
+      <div class="team-pick ${picks[fm.id]===fm.b.n?'selected':''}" onclick="selectPick('${fm.id}','${fm.b.n}','${fm.b.f}')">
+        <span class="pick-flag">${fm.b.f}</span><span class="pick-name">${fm.b.n}</span>
+        <div class="pick-radio ${picks[fm.id]===fm.b.n?'checked':''}"></div>
+      </div>
+    </div>`;
+  // Champion display
+  const champ = picks['final_1'];
+  const champF = champ ? getFlag(champ, FINAL) : null;
+  const cd = document.getElementById('championDisplay');
+  if(champ) { cd.innerHTML=`<div class="winner-flag">${champF}</div><div class="winner-name">${champ}</div>`; }
+  else { cd.innerHTML='<div style="color:#546e7a;font-size:0.85em">Pick your champion</div>'; }
+  updateProgress();
+}
+
+function selectPick(matchId, name, flag) {
+  picks[matchId] = name;
+  refresh();
+}
+
+function updateProgress() {
+  const total = 16+8+4+2+1;
+  const done = Object.keys(picks).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('pct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
+
+function generateAIPicks() {
+  const aiPicks = {
+    r32_1:'Argentina',r32_2:'France',r32_3:'England',r32_4:'Brazil',
+    r32_5:'Spain',r32_6:'Germany',r32_7:'Portugal',r32_8:'Netherlands',
+    r32_9:'USA',r32_10:'Belgium',r32_11:'Norway',r32_12:'Croatia',
+    r32_13:'Mexico',r32_14:'Japan',r32_15:'Uruguay',r32_16:'Switzerland',
+  };
+  Object.assign(picks, aiPicks);
+  refresh();
+  // Auto-fill remaining rounds based on AI logic
+  R16 = buildNextRound(R32_MATCHES,'r16');
+  const r16ai=['Argentina','France','England','Brazil','Spain','Germany','Portugal','Netherlands'];
+  R16.forEach((m,i)=>{picks[m.id]=r16ai[i]});
+  QF = buildNextRound(R16,'qf');
+  const qfai=['Argentina','France','Spain','England'];
+  QF.forEach((m,i)=>{picks[m.id]=qfai[i]});
+  SF = buildNextRound(QF,'sf');
+  picks[SF[0].id]='Argentina'; picks[SF[1].id]='France';
+  FINAL = buildNextRound(SF,'final');
+  picks['final_1']='Argentina';
+  refresh();
+}
+
+function copyBracket() {
+  const lines=['🏆 My WC2026 Bracket Predictions',''];
+  const rounds=[
+    {label:'Round of 32',matches:R32_MATCHES},
+    {label:'Round of 16',matches:R16},
+    {label:'Quarter-Finals',matches:QF},
+    {label:'Semi-Finals',matches:SF},
+  ];
+  for(const r of rounds){
+    lines.push(`── ${r.label} ──`);
+    r.matches.forEach(m=>{const w=picks[m.id]||'?';lines.push(`  ${m.a.f}${m.a.n} vs ${m.b.f}${m.b.n} → ${w}`)});
+    lines.push('');
+  }
+  lines.push(`🏆 MY WINNER: ${picks['final_1']||'?'}`);
+  lines.push('Predicted at wc2026-empire.vercel.app/wc2026-bracket-predictor');
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(()=>alert('Bracket copied to clipboard!')).catch(()=>{
+    const el=document.getElementById('resultText');el.textContent=text;el.style.display='block';
+  });
+}
+
+function shareBracket() {
+  const champ = picks['final_1']||'TBD';
+  const text = `My WC2026 bracket — I'm predicting ${champ} to win! Make your own: wc2026-empire.vercel.app/wc2026-bracket-predictor`;
+  if(navigator.share){navigator.share({text,url:location.href})}
+  else{copyBracket();}
+}
+
+function resetBracket() {
+  if(confirm('Reset all picks?')){Object.keys(picks).forEach(k=>delete picks[k]);refresh();}
+}
+
+// Init
+renderMatches('r32Grid', R32_MATCHES, 'R32');
+refresh();
+</script>
+</body>
+</html>
