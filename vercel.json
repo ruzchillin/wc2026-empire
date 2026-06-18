@@ -1,121 +1,1005 @@
 {
   "version": 2,
   "builds": [
-    { "src": "*.html", "use": "@vercel/static" },
-    { "src": "*.js", "use": "@vercel/static" },
-    { "src": "*.css", "use": "@vercel/static" },
-    { "src": "*.xml", "use": "@vercel/static" },
-    { "src": "*.txt", "use": "@vercel/static" }
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.xml",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.txt",
+      "use": "@vercel/static"
+    }
   ],
   "env": {
     "RAILWAY_API_URL": "https://wc2026-empire-production.up.railway.app"
   },
   "routes": [
     {
+      "src": "/group-l",
+      "dest": "/group-l.html"
+    },
+    {
+      "src": "/group-k",
+      "dest": "/group-k.html"
+    },
+    {
+      "src": "/group-j",
+      "dest": "/group-j.html"
+    },
+    {
+      "src": "/group-i",
+      "dest": "/group-i.html"
+    },
+    {
+      "src": "/group-h",
+      "dest": "/group-h.html"
+    },
+    {
+      "src": "/group-g",
+      "dest": "/group-g.html"
+    },
+    {
+      "src": "/group-f",
+      "dest": "/group-f.html"
+    },
+    {
+      "src": "/group-e",
+      "dest": "/group-e.html"
+    },
+    {
+      "src": "/group-d",
+      "dest": "/group-d.html"
+    },
+    {
+      "src": "/group-c",
+      "dest": "/group-c.html"
+    },
+    {
+      "src": "/group-b",
+      "dest": "/group-b.html"
+    },
+    {
+      "src": "/group-a",
+      "dest": "/group-a.html"
+    },
+    {
+      "src": "/scores",
+      "dest": "/live-scores.html"
+    },
+    {
+      "src": "/live",
+      "dest": "/live-scores.html"
+    },
+    {
+      "src": "/gear",
+      "dest": "/wc2026-shop.html"
+    },
+    {
+      "src": "/merch",
+      "dest": "/wc2026-shop.html"
+    },
+    {
+      "src": "/shop",
+      "dest": "/wc2026-shop.html"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "https://wc2026-empire-production.up.railway.app/api/$1",
-      "headers": { "x-forwarded-host": "$host" }
+      "headers": {
+        "x-forwarded-host": "$host"
+      }
     },
-    { "src": "/go/bet365",      "dest": "https://www.bet365.com/?affiliate=YOUR_BET365_ID",   "status": 302 },
-    { "src": "/go/betfair",     "dest": "https://promotions.betfair.com/betfair-welcome-offer?aff=YOUR_BETFAIR_ID", "status": 302 },
-    { "src": "/go/draftkings",  "dest": "https://www.draftkings.com/?affiliate=YOUR_DK_ID",     "status": 302 },
-    { "src": "/go/betmgm",      "dest": "https://sports.betmgm.com/?affiliate=YOUR_BETMGM_ID", "status": 302 },
-    { "src": "/go/fanduel",     "dest": "https://www.fanduel.com/betting?affiliate=YOUR_FD_ID", "status": 302 },
-    { "src": "/go/williamhill", "dest": "https://sports.williamhill.com/?affiliate=YOUR_WH_ID", "status": 302 },
-    { "src": "/go/paddypower",  "dest": "https://www.paddypower.com/?aff=YOUR_PP_ID",           "status": 302 },
-    { "src": "/go/betway",      "dest": "https://www.betway.com/?affiliate=YOUR_BETWAY_ID",     "status": 302 },
-    { "src": "/go/unibet",      "dest": "https://www.unibet.com/?affiliate=YOUR_UNIBET_ID",     "status": 302 },
-    { "src": "/go/888sport",    "dest": "https://www.888sport.com/?affiliate=YOUR_888_ID",      "status": 302 },
+    {
+      "src": "/go/bet365",
+      "dest": "https://www.bet365.com/?affiliate=YOUR_BET365_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/betfair",
+      "dest": "https://promotions.betfair.com/betfair-welcome-offer?aff=YOUR_BETFAIR_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/draftkings",
+      "dest": "https://www.draftkings.com/?affiliate=YOUR_DK_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/betmgm",
+      "dest": "https://sports.betmgm.com/?affiliate=YOUR_BETMGM_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/fanduel",
+      "dest": "https://www.fanduel.com/betting?affiliate=YOUR_FD_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/williamhill",
+      "dest": "https://sports.williamhill.com/?affiliate=YOUR_WH_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/paddypower",
+      "dest": "https://www.paddypower.com/?aff=YOUR_PP_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/betway",
+      "dest": "https://www.betway.com/?affiliate=YOUR_BETWAY_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/unibet",
+      "dest": "https://www.unibet.com/?affiliate=YOUR_UNIBET_ID",
+      "status": 302
+    },
+    {
+      "src": "/go/888sport",
+      "dest": "https://www.888sport.com/?affiliate=YOUR_888_ID",
+      "status": 302
+    },
     {
       "src": "/go/(.*)",
       "dest": "https://wc2026-empire-production.up.railway.app/go/$1"
     },
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/command-center", "dest": "/empire-command.html" },
-    { "src": "/empire-command", "dest": "/empire-command.html" },
-    { "src": "/status", "dest": "/status.html" },
-    { "src": "/win-share", "dest": "/win-share.html" },
-    { "src": "/england", "dest": "/england-wc2026.html" },
-    { "src": "/italy", "dest": "/italy-wc2026.html" },
-    { "src": "/portugal", "dest": "/portugal-wc2026.html" },
-    { "src": "/mexico", "dest": "/mexico-wc2026.html" },
-    { "src": "/poland", "dest": "/poland-wc2026.html" },
-    { "src": "/belgium", "dest": "/belgium-wc2026.html" },
-    { "src": "/kane", "dest": "/kane-wc2026.html" },
-    { "src": "/saka", "dest": "/saka-wc2026.html" },
-    { "src": "/son", "dest": "/son-wc2026.html" },
-    { "src": "/salah", "dest": "/salah-wc2026.html" },
-    { "src": "/pedri", "dest": "/pedri-wc2026.html" },
-    { "src": "/musiala", "dest": "/musiala-wc2026.html" },
-    { "src": "/wirtz", "dest": "/wirtz-wc2026.html" },
-    { "src": "/osimhen", "dest": "/osimhen-wc2026.html" },
-    { "src": "/hakimi", "dest": "/hakimi-wc2026.html" },
-    { "src": "/lewandowski", "dest": "/lewandowski-wc2026.html" },
-    { "src": "/messi-vs-ronaldo", "dest": "/messi-vs-ronaldo.html" },
-    { "src": "/mbappe-vs-haaland", "dest": "/mbappe-vs-haaland.html" },
-    { "src": "/live-scores", "dest": "/live-scores.html" },
-    { "src": "/ai-predictions", "dest": "/ai-predictions.html" },
-    { "src": "/odds-comparison", "dest": "/odds-comparison.html" },
-    { "src": "/injury-tracker", "dest": "/injury-tracker.html" },
-    { "src": "/squad-tracker", "dest": "/squad-tracker.html" },
-    { "src": "/head-to-head", "dest": "/head-to-head.html" },
-    { "src": "/var-tracker", "dest": "/var-tracker.html" },
-    { "src": "/elimination-memorial", "dest": "/elimination-memorial.html" },
-    { "src": "/elimination/(?<team>[^/]+)", "dest": "/elimination-memorial.html?team=$team" },
-    { "src": "/pub-quiz", "dest": "/pub-quiz-generator.html" },
-    { "src": "/pub-quiz-generator", "dest": "/pub-quiz-generator.html" },
-    { "src": "/fan-zones", "dest": "/wc2026-fan-zones.html" },
-    { "src": "/fan-zones/(?<city>[^/]+)", "dest": "/wc2026-fan-zones.html?city=$city" },
-    { "src": "/tax-calculator", "dest": "/wc2026-tax-calculator.html" },
-    { "src": "/betting-tax", "dest": "/wc2026-tax-calculator.html" },
-    { "src": "/indonesia", "dest": "/indonesia-wc2026.html" },
-    { "src": "/india", "dest": "/india-wc2026-hindi.html" },
-    { "src": "/nigeria", "dest": "/nigeria-supereagles.html" },
-    { "src": "/super-eagles", "dest": "/nigeria-supereagles.html" },
-    { "src": "/win-share", "dest": "/win-share.html" },
-    { "src": "/beat-the-ai", "dest": "/beat-the-ai.html" },
-    { "src": "/emotional-hedge", "dest": "/emotional-hedge.html" },
-    { "src": "/horse-racing", "dest": "/horse-racing.html" },
-    { "src": "/nfl-picks", "dest": "/nfl-picks.html" },
-    { "src": "/greyhounds", "dest": "/greyhounds.html" },
-    { "src": "/cricket", "dest": "/cricket-india.html" },
-    { "src": "/womens-sport", "dest": "/womens-sports-hub.html" },
-    { "src": "/micro-betting", "dest": "/micro-betting.html" },
-    { "src": "/same-game-parlay", "dest": "/same-game-parlay.html" },
-    { "src": "/(?<slug>[^/\\.]+)", "dest": "/$slug.html" }
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/command-center",
+      "dest": "/empire-command.html"
+    },
+    {
+      "src": "/empire-command",
+      "dest": "/empire-command.html"
+    },
+    {
+      "src": "/status",
+      "dest": "/status.html"
+    },
+    {
+      "src": "/win-share",
+      "dest": "/win-share.html"
+    },
+    {
+      "src": "/england",
+      "dest": "/england-wc2026.html"
+    },
+    {
+      "src": "/italy",
+      "dest": "/italy-wc2026.html"
+    },
+    {
+      "src": "/portugal",
+      "dest": "/portugal-wc2026.html"
+    },
+    {
+      "src": "/mexico",
+      "dest": "/mexico-wc2026.html"
+    },
+    {
+      "src": "/poland",
+      "dest": "/poland-wc2026.html"
+    },
+    {
+      "src": "/belgium",
+      "dest": "/belgium-wc2026.html"
+    },
+    {
+      "src": "/kane",
+      "dest": "/kane-wc2026.html"
+    },
+    {
+      "src": "/saka",
+      "dest": "/saka-wc2026.html"
+    },
+    {
+      "src": "/son",
+      "dest": "/son-wc2026.html"
+    },
+    {
+      "src": "/salah",
+      "dest": "/salah-wc2026.html"
+    },
+    {
+      "src": "/pedri",
+      "dest": "/pedri-wc2026.html"
+    },
+    {
+      "src": "/musiala",
+      "dest": "/musiala-wc2026.html"
+    },
+    {
+      "src": "/wirtz",
+      "dest": "/wirtz-wc2026.html"
+    },
+    {
+      "src": "/osimhen",
+      "dest": "/osimhen-wc2026.html"
+    },
+    {
+      "src": "/hakimi",
+      "dest": "/hakimi-wc2026.html"
+    },
+    {
+      "src": "/lewandowski",
+      "dest": "/lewandowski-wc2026.html"
+    },
+    {
+      "src": "/messi-vs-ronaldo",
+      "dest": "/messi-vs-ronaldo.html"
+    },
+    {
+      "src": "/mbappe-vs-haaland",
+      "dest": "/mbappe-vs-haaland.html"
+    },
+    {
+      "src": "/live-scores",
+      "dest": "/live-scores.html"
+    },
+    {
+      "src": "/ai-predictions",
+      "dest": "/ai-predictions.html"
+    },
+    {
+      "src": "/odds-comparison",
+      "dest": "/odds-comparison.html"
+    },
+    {
+      "src": "/injury-tracker",
+      "dest": "/injury-tracker.html"
+    },
+    {
+      "src": "/squad-tracker",
+      "dest": "/squad-tracker.html"
+    },
+    {
+      "src": "/head-to-head",
+      "dest": "/head-to-head.html"
+    },
+    {
+      "src": "/var-tracker",
+      "dest": "/var-tracker.html"
+    },
+    {
+      "src": "/elimination-memorial",
+      "dest": "/elimination-memorial.html"
+    },
+    {
+      "src": "/wc2026-bracket",
+      "dest": "/wc2026-bracket.html"
+    },
+    {
+      "src": "/bracket",
+      "dest": "/wc2026-bracket.html"
+    },
+    {
+      "src": "/standings",
+      "dest": "/wc2026-bracket.html"
+    },
+    {
+      "src": "/groups",
+      "dest": "/wc2026-bracket.html"
+    },
+    {
+      "src": "/store",
+      "dest": "/digital-store.html"
+    },
+    {
+      "src": "/elimination/(?<team>[^/]+)",
+      "dest": "/elimination-memorial.html?team=$team"
+    },
+    {
+      "src": "/pub-quiz",
+      "dest": "/pub-quiz-generator.html"
+    },
+    {
+      "src": "/pub-quiz-generator",
+      "dest": "/pub-quiz-generator.html"
+    },
+    {
+      "src": "/fan-zones",
+      "dest": "/wc2026-fan-zones.html"
+    },
+    {
+      "src": "/fan-zones/(?<city>[^/]+)",
+      "dest": "/wc2026-fan-zones.html?city=$city"
+    },
+    {
+      "src": "/tax-calculator",
+      "dest": "/wc2026-tax-calculator.html"
+    },
+    {
+      "src": "/betting-tax",
+      "dest": "/wc2026-tax-calculator.html"
+    },
+    {
+      "src": "/indonesia",
+      "dest": "/indonesia-wc2026.html"
+    },
+    {
+      "src": "/india",
+      "dest": "/india-wc2026-hindi.html"
+    },
+    {
+      "src": "/nigeria",
+      "dest": "/nigeria-supereagles.html"
+    },
+    {
+      "src": "/super-eagles",
+      "dest": "/nigeria-supereagles.html"
+    },
+    {
+      "src": "/win-share",
+      "dest": "/win-share.html"
+    },
+    {
+      "src": "/beat-the-ai",
+      "dest": "/beat-the-ai.html"
+    },
+    {
+      "src": "/emotional-hedge",
+      "dest": "/emotional-hedge.html"
+    },
+    {
+      "src": "/horse-racing",
+      "dest": "/horse-racing.html"
+    },
+    {
+      "src": "/nfl-picks",
+      "dest": "/nfl-picks.html"
+    },
+    {
+      "src": "/greyhounds",
+      "dest": "/greyhounds.html"
+    },
+    {
+      "src": "/cricket",
+      "dest": "/cricket-india.html"
+    },
+    {
+      "src": "/womens-sport",
+      "dest": "/womens-sports-hub.html"
+    },
+    {
+      "src": "/micro-betting",
+      "dest": "/micro-betting.html"
+    },
+    {
+      "src": "/same-game-parlay",
+      "dest": "/same-game-parlay.html"
+    },
+    {
+      "src": "/support",
+      "dest": "/support.html"
+    },
+    {
+      "src": "/kofi",
+      "dest": "/support.html"
+    },
+    {
+      "src": "/coffee",
+      "dest": "/support.html"
+    },
+    {
+      "src": "/donate",
+      "dest": "/support.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/EMPIRE-DASHBOARD.html"
+    },
+    {
+      "src": "/empire-dashboard",
+      "dest": "/EMPIRE-DASHBOARD.html"
+    },
+    {
+      "src": "/golden-boot",
+      "dest": "/golden-boot-2026.html"
+    },
+    {
+      "src": "/golden-boot-2026",
+      "dest": "/golden-boot-2026.html"
+    },
+    {
+      "src": "/top-scorers",
+      "dest": "/golden-boot-2026.html"
+    },
+    {
+      "src": "/todays-matches",
+      "dest": "/todays-matches.html"
+    },
+    {
+      "src": "/today",
+      "dest": "/todays-matches.html"
+    },
+    {
+      "src": "/matches-today",
+      "dest": "/todays-matches.html"
+    },
+    {
+      "src": "/streaming-vpn",
+      "dest": "/streaming-vpn.html"
+    },
+    {
+      "src": "/vpn",
+      "dest": "/streaming-vpn.html"
+    },
+    {
+      "src": "/watch",
+      "dest": "/streaming-vpn.html"
+    },
+    {
+      "src": "/how-to-watch",
+      "dest": "/streaming-vpn.html"
+    },
+    {
+      "src": "/wc2026-fantasy",
+      "dest": "/wc2026-fantasy.html"
+    },
+    {
+      "src": "/fantasy-football",
+      "dest": "/wc2026-fantasy.html"
+    },
+    {
+      "src": "/fantasy",
+      "dest": "/wc2026-fantasy.html"
+    },
+    {
+      "src": "/wc2026-stadiums",
+      "dest": "/wc2026-stadiums.html"
+    },
+    {
+      "src": "/stadiums",
+      "dest": "/wc2026-stadiums.html"
+    },
+    {
+      "src": "/venues",
+      "dest": "/wc2026-stadiums.html"
+    },
+    {
+      "src": "/wc2026-kit-guide",
+      "dest": "/wc2026-kit-guide.html"
+    },
+    {
+      "src": "/kit-guide",
+      "dest": "/wc2026-kit-guide.html"
+    },
+    {
+      "src": "/jerseys",
+      "dest": "/wc2026-kit-guide.html"
+    },
+    {
+      "src": "/kits",
+      "dest": "/wc2026-kit-guide.html"
+    },
+    {
+      "src": "/wc2026-prize-money",
+      "dest": "/wc2026-prize-money.html"
+    },
+    {
+      "src": "/prize-money",
+      "dest": "/wc2026-prize-money.html"
+    },
+    {
+      "src": "/wc2026-history",
+      "dest": "/wc2026-history.html"
+    },
+    {
+      "src": "/history",
+      "dest": "/wc2026-history.html"
+    },
+    {
+      "src": "/wc2026-records",
+      "dest": "/wc2026-records.html"
+    },
+    {
+      "src": "/records",
+      "dest": "/wc2026-records.html"
+    },
+    {
+      "src": "/stats",
+      "dest": "/wc2026-records.html"
+    },
+    {
+      "src": "/wc2026-managers",
+      "dest": "/wc2026-managers.html"
+    },
+    {
+      "src": "/managers",
+      "dest": "/wc2026-managers.html"
+    },
+    {
+      "src": "/coaches",
+      "dest": "/wc2026-managers.html"
+    },
+    {
+      "src": "/wc2026-captains",
+      "dest": "/wc2026-captains.html"
+    },
+    {
+      "src": "/captains",
+      "dest": "/wc2026-captains.html"
+    },
+    {
+      "src": "/wc2026-referees",
+      "dest": "/wc2026-referees.html"
+    },
+    {
+      "src": "/referees",
+      "dest": "/wc2026-referees.html"
+    },
+    {
+      "src": "/wc2026-power-rankings",
+      "dest": "/wc2026-power-rankings.html"
+    },
+    {
+      "src": "/power-rankings",
+      "dest": "/wc2026-power-rankings.html"
+    },
+    {
+      "src": "/rankings",
+      "dest": "/wc2026-power-rankings.html"
+    },
+    {
+      "src": "/wc2026-bracket-predictor",
+      "dest": "/wc2026-bracket-predictor.html"
+    },
+    {
+      "src": "/bracket-predictor",
+      "dest": "/wc2026-bracket-predictor.html"
+    },
+    {
+      "src": "/wc2026-injuries",
+      "dest": "/wc2026-injuries.html"
+    },
+    {
+      "src": "/injuries",
+      "dest": "/wc2026-injuries.html"
+    },
+    {
+      "src": "/wc2026-lineups",
+      "dest": "/wc2026-lineups.html"
+    },
+    {
+      "src": "/lineups",
+      "dest": "/wc2026-lineups.html"
+    },
+    {
+      "src": "/lineup",
+      "dest": "/wc2026-lineups.html"
+    },
+    {
+      "src": "/wc2026-top-goals",
+      "dest": "/wc2026-top-goals.html"
+    },
+    {
+      "src": "/top-goals",
+      "dest": "/wc2026-top-goals.html"
+    },
+    {
+      "src": "/best-goals",
+      "dest": "/wc2026-top-goals.html"
+    },
+    {
+      "src": "/wc2026-women",
+      "dest": "/wc2026-women.html"
+    },
+    {
+      "src": "/womens-football",
+      "dest": "/wc2026-women.html"
+    },
+    {
+      "src": "/wwc2027",
+      "dest": "/wc2026-women.html"
+    },
+    {
+      "src": "/wc2026-transfers",
+      "dest": "/wc2026-transfers.html"
+    },
+    {
+      "src": "/transfers",
+      "dest": "/wc2026-transfers.html"
+    },
+    {
+      "src": "/wc2026-attendance",
+      "dest": "/wc2026-attendance.html"
+    },
+    {
+      "src": "/attendance",
+      "dest": "/wc2026-attendance.html"
+    },
+    {
+      "src": "/wc2026-predictions-hub",
+      "dest": "/wc2026-predictions-hub.html"
+    },
+    {
+      "src": "/predictions-hub",
+      "dest": "/wc2026-predictions-hub.html"
+    },
+    {
+      "src": "/wc2026-odds-boost",
+      "dest": "/wc2026-odds-boost.html"
+    },
+    {
+      "src": "/odds-boost",
+      "dest": "/wc2026-odds-boost.html"
+    },
+    {
+      "src": "/free-bets",
+      "dest": "/wc2026-odds-boost.html"
+    },
+    {
+      "src": "/sponsorship-landing",
+      "dest": "/sponsorship-landing.html"
+    },
+    {
+      "src": "/advertise",
+      "dest": "/sponsorship-landing.html"
+    },
+    {
+      "src": "/media-kit",
+      "dest": "/sponsorship-landing.html"
+    },
+    {
+      "src": "/sponsor",
+      "dest": "/sponsorship-landing.html"
+    },
+    {
+      "src": "/lead-magnet",
+      "dest": "/lead-magnet.html"
+    },
+    {
+      "src": "/free-downloads",
+      "dest": "/lead-magnet.html"
+    },
+    {
+      "src": "/downloads",
+      "dest": "/lead-magnet.html"
+    },
+    {
+      "src": "/freebies",
+      "dest": "/lead-magnet.html"
+    },
+    {
+      "src": "/affiliate-program",
+      "dest": "/affiliate-program.html"
+    },
+    {
+      "src": "/affiliates",
+      "dest": "/affiliate-program.html"
+    },
+    {
+      "src": "/become-affiliate",
+      "dest": "/affiliate-program.html"
+    },
+    {
+      "src": "/earn",
+      "dest": "/affiliate-program.html"
+    },
+    {
+      "src": "/white-label",
+      "dest": "/white-label.html"
+    },
+    {
+      "src": "/content-licence",
+      "dest": "/white-label.html"
+    },
+    {
+      "src": "/publishers",
+      "dest": "/white-label.html"
+    },
+    {
+      "src": "/tipster-subscription",
+      "dest": "/tipster-subscription.html"
+    },
+    {
+      "src": "/premium-tips",
+      "dest": "/tipster-subscription.html"
+    },
+    {
+      "src": "/tips-subscription",
+      "dest": "/tipster-subscription.html"
+    },
+    {
+      "src": "/subscribe-tips",
+      "dest": "/tipster-subscription.html"
+    },
+    {
+      "src": "/arabic-hub",
+      "dest": "/arabic-hub.html"
+    },
+    {
+      "src": "/arabic",
+      "dest": "/arabic-hub.html"
+    },
+    {
+      "src": "/ar",
+      "dest": "/arabic-hub.html"
+    },
+    {
+      "src": "/wc2026-arabic",
+      "dest": "/arabic-hub.html"
+    },
+    {
+      "src": "/dach-hub",
+      "dest": "/dach-hub.html"
+    },
+    {
+      "src": "/deutsch",
+      "dest": "/dach-hub.html"
+    },
+    {
+      "src": "/de",
+      "dest": "/dach-hub.html"
+    },
+    {
+      "src": "/wm2026",
+      "dest": "/dach-hub.html"
+    },
+    {
+      "src": "/french-africa-hub",
+      "dest": "/french-africa-hub.html"
+    },
+    {
+      "src": "/afrique",
+      "dest": "/french-africa-hub.html"
+    },
+    {
+      "src": "/fr-africa",
+      "dest": "/french-africa-hub.html"
+    },
+    {
+      "src": "/coupe-du-monde",
+      "dest": "/french-africa-hub.html"
+    },
+    {
+      "src": "/corporate-package",
+      "dest": "/corporate-package.html"
+    },
+    {
+      "src": "/corporate",
+      "dest": "/corporate-package.html"
+    },
+    {
+      "src": "/office-sweepstake",
+      "dest": "/corporate-package.html"
+    },
+    {
+      "src": "/b2b",
+      "dest": "/corporate-package.html"
+    },
+    {
+      "src": "/api-access",
+      "dest": "/api-access.html"
+    },
+    {
+      "src": "/developers",
+      "dest": "/api-access.html"
+    },
+    {
+      "src": "/docs",
+      "dest": "/api-access.html"
+    },
+    {
+      "src": "/(?<slug>[^/\\.]+)",
+      "dest": "/$slug.html"
+    },
+    {
+      "source": "/watch-wc2026",
+      "destination": "/watch-wc2026.html"
+    },
+    {
+      "source": "/stream",
+      "destination": "/watch-wc2026.html"
+    },
+    {
+      "source": "/streaming",
+      "destination": "/watch-wc2026.html"
+    },
+    {
+      "source": "/wc2026-travel",
+      "destination": "/wc2026-travel.html"
+    },
+    {
+      "source": "/travel",
+      "destination": "/wc2026-travel.html"
+    },
+    {
+      "source": "/hotels",
+      "destination": "/wc2026-travel.html"
+    },
+    {
+      "source": "/host-cities",
+      "destination": "/wc2026-travel.html"
+    },
+    {
+      "source": "/wc2026-tickets",
+      "destination": "/wc2026-tickets.html"
+    },
+    {
+      "source": "/tickets",
+      "destination": "/wc2026-tickets.html"
+    },
+    {
+      "source": "/buy-tickets",
+      "destination": "/wc2026-tickets.html"
+    },
+    {
+      "source": "/wc2026-newsletter",
+      "destination": "/wc2026-newsletter.html"
+    },
+    {
+      "source": "/newsletter",
+      "destination": "/wc2026-newsletter.html"
+    },
+    {
+      "source": "/subscribe",
+      "destination": "/wc2026-newsletter.html"
+    },
+    {
+      "source": "/daily-picks",
+      "destination": "/wc2026-newsletter.html"
+    },
+    {
+      "source": "/wc2026-merch-store",
+      "destination": "/wc2026-merch-store.html"
+    },
+    {
+      "source": "/merch-store",
+      "destination": "/wc2026-merch-store.html"
+    },
+    {
+      "source": "/custom-merch",
+      "destination": "/wc2026-merch-store.html"
+    },
+    {
+      "source": "/wc2026-premium",
+      "destination": "/wc2026-premium.html"
+    },
+    {
+      "source": "/premium",
+      "destination": "/wc2026-premium.html"
+    },
+    {
+      "source": "/discord",
+      "destination": "/wc2026-premium.html"
+    },
+    {
+      "source": "/telegram",
+      "destination": "/wc2026-premium.html"
+    },
+    {
+      "source": "/community",
+      "destination": "/wc2026-premium.html"
+    },
+    {
+      "source": "/media-kit",
+      "destination": "/media-kit.html"
+    },
+    {
+      "source": "/advertise",
+      "destination": "/media-kit.html"
+    },
+    {
+      "source": "/sponsor",
+      "destination": "/media-kit.html"
+    },
+    {
+      "source": "/partnerships",
+      "destination": "/media-kit.html"
+    },
+    {
+      "source": "/go/fubotv",
+      "destination": "https://www.fubo.tv?irad=YOUR_FUBOTV_ID"
+    },
+    {
+      "source": "/go/dazn",
+      "destination": "https://www.dazn.com?YOUR_DAZN_AFFILIATE"
+    },
+    {
+      "source": "/go/peacock",
+      "destination": "https://www.peacocktv.com"
+    },
+    {
+      "source": "/go/tnt",
+      "destination": "https://go.discoveryplus.com/tnt"
+    },
+    {
+      "source": "/go/booking",
+      "destination": "https://www.booking.com?aid=YOUR_BOOKING_AFFILIATE"
+    },
+    {
+      "source": "/go/expedia",
+      "destination": "https://www.expedia.com?YOUR_EXPEDIA_AFFILIATE"
+    },
+    {
+      "source": "/go/hotels",
+      "destination": "https://www.hotels.com?YOUR_HOTELS_AFFILIATE"
+    },
+    {
+      "source": "/go/stubhub",
+      "destination": "https://www.stubhub.com?YOUR_STUBHUB_AFFILIATE"
+    },
+    {
+      "source": "/go/viagogo",
+      "destination": "https://www.viagogo.com?YOUR_VIAGOGO_ID"
+    },
+    {
+      "source": "/go/seatgeek",
+      "destination": "https://seatgeek.com?aid=YOUR_SEATGEEK_ID"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     },
     {
       "source": "/onesignal-push.js",
       "headers": [
-        { "key": "Service-Worker-Allowed", "value": "/" }
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
       ]
     },
     {
       "source": "/(.*\\.html)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=600" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=600"
+        }
       ]
     },
     {
       "source": "/(.*)\\.js",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
       ]
     },
     {
       "source": "/(.*)\\.css",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
       ]
     }
   ]
