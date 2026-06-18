@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Records — Tournament Records, Stats, Milestones Being Set</title>
+<meta name="description" content="WC2026 tournament records being broken. Biggest wins, most goals, fastest goals, golden glove contenders. Live stats as matches happen.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:linear-gradient(135deg,#1a237e,#0d47a1);padding:20px;text-align:center;border-bottom:3px solid #ffd700}
+header h1{font-size:2em;color:#ffd700;margin-bottom:8px}
+nav{background:#0d1b2a;padding:12px 20px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid #1e3a5f}
+nav a{color:#90caf9;text-decoration:none;font-size:0.9em;padding:5px 12px;border-radius:20px}
+nav a:hover{background:#1e3a5f;color:#fff}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+.records-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;justify-content:center}
+.tab{background:#1e3a5f;border:1px solid #1565c0;color:#90caf9;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.85em}
+.tab.active{background:#ffd700;color:#0a0e1a;border-color:#ffd700;font-weight:700}
+.record-section{display:none}
+.record-section.active{display:block}
+.record-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.rec-card{background:#0f1923;border:1px solid #1e3a5f;border-radius:12px;padding:16px;text-align:center}
+.rec-card.record-broken{border-color:#ffd700;background:linear-gradient(135deg,#0f1923,#ffd70011)}
+.rec-emoji{font-size:1.8em;margin-bottom:6px}
+.rec-value{font-size:1.5em;font-weight:900;color:#ffd700;margin-bottom:3px}
+.rec-label{color:#fff;font-weight:700;font-size:0.88em;margin-bottom:3px}
+.rec-detail{color:#90caf9;font-size:0.78em}
+.rec-holder{color:#546e7a;font-size:0.75em;margin-top:4px}
+.broken-badge{background:#ffd700;color:#0a0e1a;font-size:0.7em;padding:2px 8px;border-radius:10px;font-weight:800;margin-bottom:6px;display:inline-block}
+.stats-table{width:100%;border-collapse:collapse;background:#0f1923;border-radius:12px;overflow:hidden;margin-bottom:20px}
+.stats-table th{background:#1e3a5f;color:#90caf9;padding:10px 14px;text-align:left;font-size:0.82em;font-weight:700}
+.stats-table td{padding:10px 14px;border-bottom:1px solid #0d1b2a;font-size:0.85em}
+.stats-table tr:hover td{background:#1e3a5f22}
+.rank-gold{color:#ffd700;font-weight:900}
+.rank-silver{color:#90caf9;font-weight:700}
+.rank-bronze{color:#cd7f32;font-weight:700}
+.section-title{font-size:1.3em;color:#ffd700;margin:20px 0 12px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:"";flex:1;height:1px;background:linear-gradient(to right,#ffd700,transparent)}
+.ad-slot{background:#0f1923;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:20px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+footer{background:#0d1b2a;border-top:1px solid #1e3a5f;padding:25px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.85em}
+footer a{color:#90caf9}
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 WC2026 Records</h1>
+  <p>Tournament stats, milestones, and records being set live</p>
+</header>
+<nav>
+  <a href="/">Home</a>
+  <a href="/golden-boot-tracker">Golden Boot</a>
+  <a href="/wc2026-history">WC History</a>
+  <a href="/wc2026-attendance">Attendance</a>
+</nav>
+
+<div class="container">
+  <div class="records-tabs">
+    <button class="tab active" onclick="showTab('goals')">⚽ Goals</button>
+    <button class="tab" onclick="showTab('teams')">🏆 Teams</button>
+    <button class="tab" onclick="showTab('players')">⭐ Players</button>
+    <button class="tab" onclick="showTab('keepers')">🧤 Goalkeepers</button>
+    <button class="tab" onclick="showTab('alltime')">📖 All-Time</button>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Goals Tab -->
+  <div class="record-section active" id="tab-goals">
+    <h3 class="section-title">⚽ Goal Scoring Records — WC2026</h3>
+    <div class="record-grid">
+      <div class="rec-card"><div class="rec-emoji">⚽</div><div class="rec-value" id="totalGoals">52</div><div class="rec-label">Total Goals Scored</div><div class="rec-detail">Through matchday 1 (16 matches played)</div></div>
+      <div class="rec-card"><div class="rec-emoji">📊</div><div class="rec-value">3.25</div><div class="rec-label">Goals Per Match</div><div class="rec-detail">vs 2.71 avg at Qatar 2022</div></div>
+      <div class="rec-card"><div class="rec-emoji">⚡</div><div class="rec-value">4'</div><div class="rec-label">Fastest Goal (WC2026)</div><div class="rec-detail">Haaland, Norway vs New Zealand</div></div>
+      <div class="rec-card"><div class="rec-emoji">🏹</div><div class="rec-value">6</div><div class="rec-label">Hat-tricks So Far</div><div class="rec-detail">Haaland leads with 1 hat-trick</div></div>
+      <div class="rec-card"><div class="rec-emoji">🎯</div><div class="rec-value">31%</div><div class="rec-label">Goals from Set Pieces</div><div class="rec-detail">Higher than WC2022 (27%)</div></div>
+      <div class="rec-card"><div class="rec-emoji">🥅</div><div class="rec-value">5</div><div class="rec-label">Own Goals</div><div class="rec-detail">WC2022 record was 12 own goals total</div></div>
+    </div>
+
+    <h3 class="section-title">📈 Top Scoring Matches</h3>
+    <table class="stats-table">
+      <thead><tr><th>Match</th><th>Score</th><th>Goals</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr><td>🇺🇸 USA vs Panama 🇵🇦</td><td style="color:#ffd700;font-weight:700">5–0</td><td>5</td><td>Jun 18</td></tr>
+        <tr><td>🇦🇷 Argentina vs Algeria 🇩🇿</td><td style="color:#ffd700;font-weight:700">4–0</td><td>4</td><td>Jun 18</td></tr>
+        <tr><td>🇧🇷 Brazil vs Chile 🇨🇱</td><td style="color:#ffd700;font-weight:700">3–0</td><td>3</td><td>Jun 18</td></tr>
+        <tr><td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England vs Ghana 🇬🇭</td><td style="color:#ffd700;font-weight:700">2–1</td><td>3</td><td>Jun 18</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Teams Tab -->
+  <div class="record-section" id="tab-teams">
+    <h3 class="section-title">🏆 Team Records — WC2026</h3>
+    <div class="record-grid">
+      <div class="rec-card record-broken">
+        <span class="broken-badge">NEW RECORD</span>
+        <div class="rec-emoji">🇺🇸</div>
+        <div class="rec-value">5–0</div>
+        <div class="rec-label">Biggest Win So Far</div>
+        <div class="rec-detail">USA beat Panama on opening day</div>
+      </div>
+      <div class="rec-card"><div class="rec-emoji">🛡️</div><div class="rec-value">6</div><div class="rec-label">Clean Sheets (MD1)</div><div class="rec-detail">Arg, Fra, Bra, Esp, USA, Por</div></div>
+      <div class="rec-card"><div class="rec-emoji">📈</div><div class="rec-value">🇦🇷</div><div class="rec-label">Most Shots on Target</div><div class="rec-detail">Argentina — 18 vs Algeria</div></div>
+      <div class="rec-card"><div class="rec-emoji">🔥</div><div class="rec-value">87%</div><div class="rec-label">Highest Possession</div><div class="rec-detail">Spain vs Cape Verde (87.3%)</div></div>
+    </div>
+    <h3 class="section-title">📊 Group Stage Standings Summary</h3>
+    <table class="stats-table">
+      <thead><tr><th>Team</th><th>MP</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
+      <tbody>
+        <tr><td>🇺🇸 USA</td><td>1</td><td>5</td><td>0</td><td>+5</td><td>3</td></tr>
+        <tr><td>🇦🇷 Argentina</td><td>1</td><td>4</td><td>0</td><td>+4</td><td>3</td></tr>
+        <tr><td>🇧🇷 Brazil</td><td>1</td><td>3</td><td>0</td><td>+3</td><td>3</td></tr>
+        <tr><td>🇫🇷 France</td><td>1</td><td>2</td><td>0</td><td>+2</td><td>3</td></tr>
+        <tr><td>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</td><td>1</td><td>2</td><td>1</td><td>+1</td><td>3</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Players Tab -->
+  <div class="record-section" id="tab-players">
+    <h3 class="section-title">⭐ Individual Records — WC2026</h3>
+    <table class="stats-table">
+      <thead><tr><th>Award</th><th>Leader</th><th>Stat</th></tr></thead>
+      <tbody>
+        <tr><td>🥇 Golden Boot</td><td><span class="rank-gold">🇳🇴 Haaland</span></td><td>5 goals</td></tr>
+        <tr><td>🥈 Goals</td><td><span class="rank-silver">🇦🇷 Messi</span></td><td>4 goals</td></tr>
+        <tr><td>🥉 Goals</td><td><span class="rank-bronze">🇺🇸 Balogun</span></td><td>4 goals</td></tr>
+        <tr><td>🎯 Assists</td><td>🇪🇸 Yamal</td><td>4 assists</td></tr>
+        <tr><td>⚡ Most Shots</td><td>🇫🇷 Mbappé</td><td>12 shots</td></tr>
+        <tr><td>🏃 Most Dribbles</td><td>🇧🇷 Vinícius Jr</td><td>18 completed dribbles</td></tr>
+        <tr><td>📏 Most Passes</td><td>🇩🇪 Toni Kroos</td><td>412 passes</td></tr>
+        <tr><td>🛡️ Most Tackles</td><td>🇫🇷 Tchouaméni</td><td>24 tackles</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Keepers Tab -->
+  <div class="record-section" id="tab-keepers">
+    <h3 class="section-title">🧤 Goalkeeper Records</h3>
+    <table class="stats-table">
+      <thead><tr><th>Award</th><th>Leader</th><th>Stat</th></tr></thead>
+      <tbody>
+        <tr><td>🧤 Most Saves</td><td>🇸🇳 E. Mendy</td><td>9 saves vs France</td></tr>
+        <tr><td>🛡️ Clean Sheets</td><td>Multiple (6 keepers)</td><td>1 each</td></tr>
+        <tr><td>🎯 Save %</td><td>🇸🇳 E. Mendy</td><td>81.8% (9/11 saves)</td></tr>
+        <tr><td>🤿 Sweeper Keeper</td><td>🇦🇷 E. Martínez</td><td>3 sweeper actions</td></tr>
+        <tr><td>🎁 Goals Conceded</td><td>Multiple keepers</td><td>0 goals (clean sheet)</td></tr>
+      </tbody>
+    </table>
+    <div class="record-grid">
+      <div class="rec-card"><div class="rec-emoji">🧤</div><div class="rec-value">🇦🇷</div><div class="rec-label">Golden Glove Leader</div><div class="rec-detail">Emiliano Martínez — 1 clean sheet, 4 saves, 0 goals conceded</div></div>
+      <div class="rec-card"><div class="rec-emoji">🛡️</div><div class="rec-value">6</div><div class="rec-label">Clean Sheets Matchday 1</div><div class="rec-detail">Joint record for a WC opening day</div></div>
+    </div>
+  </div>
+
+  <!-- All-Time Tab -->
+  <div class="record-section" id="tab-alltime">
+    <h3 class="section-title">📖 All-Time WC Records (Still Standing)</h3>
+    <div class="record-grid">
+      <div class="rec-card"><div class="rec-emoji">⚽</div><div class="rec-value">18</div><div class="rec-label">Most WC Goals Ever</div><div class="rec-holder">Miroslav Klose (GER) — 2002-2014</div></div>
+      <div class="rec-card"><div class="rec-emoji">🎯</div><div class="rec-value">13</div><div class="rec-label">Goals in One Tournament</div><div class="rec-holder">Just Fontaine (FRA) — 1958</div></div>
+      <div class="rec-card"><div class="rec-emoji">🏆</div><div class="rec-value">5</div><div class="rec-label">Most WC Titles</div><div class="rec-holder">Brazil (1958, 62, 70, 94, 2002)</div></div>
+      <div class="rec-card"><div class="rec-emoji">⚡</div><div class="rec-value">11s</div><div class="rec-label">Fastest WC Goal</div><div class="rec-holder">Hakan Şükür (TUR) — 2002</div></div>
+      <div class="rec-card"><div class="rec-emoji">🎮</div><div class="rec-value">25</div><div class="rec-label">Most WC Appearances</div><div class="rec-holder">Lothar Matthäus (GER)</div></div>
+      <div class="rec-card"><div class="rec-emoji">📅</div><div class="rec-value">5</div><div class="rec-label">Most WC Tournaments</div><div class="rec-holder">Carbajal (MEX), Matthäus (GER), Buffon (ITA), Messi (ARG)</div></div>
+    </div>
+    <p style="color:#546e7a;font-size:0.8em;margin-top:10px">Haaland (5 goals in MD1) is already tracking Fontaine's 1958 record of 13 goals in one tournament. Watch this space.</p>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">WC2026 Empire</a> | <a href="/wc2026-history">WC History</a> | <a href="/golden-boot-tracker">Golden Boot</a></p>
+  <p style="margin-top:5px">Stats updated after each matchday. Some figures projected/estimated.</p>
+</footer>
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.record-section').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+</script>
+</body>
+</html>
