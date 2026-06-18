@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Sweepstake Generator — Free Draw Tool for Office, Home & Groups</title>
+<meta name="description" content="Free WC2026 sweepstake generator. Randomly assign all 48 World Cup teams to participants. Perfect for office pools and friend groups. Instant PDF.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:linear-gradient(135deg,#1a237e,#0d47a1);padding:20px;text-align:center;border-bottom:3px solid #ffd700}
+header h1{font-size:2em;color:#ffd700;margin-bottom:8px}
+nav{background:#0d1b2a;padding:12px 20px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid #1e3a5f}
+nav a{color:#90caf9;text-decoration:none;font-size:0.9em;padding:5px 12px;border-radius:20px}
+nav a:hover{background:#1e3a5f;color:#fff}
+.container{max-width:800px;margin:0 auto;padding:20px}
+.hero{background:linear-gradient(135deg,#1a237e,#311b92);border:2px solid #ffd700;border-radius:16px;padding:30px;text-align:center;margin-bottom:25px}
+.hero h2{font-size:1.8em;color:#ffd700;margin-bottom:10px}
+.section-title{font-size:1.4em;color:#ffd700;margin:25px 0 15px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:"";flex:1;height:1px;background:linear-gradient(to right,#ffd700,transparent)}
+.setup-card{background:#0f1923;border:1px solid #1e3a5f;border-radius:14px;padding:25px;margin-bottom:20px}
+.setup-card h3{color:#ffd700;margin-bottom:15px}
+.input-row{display:flex;gap:10px;margin-bottom:10px}
+.input-row input{flex:1;background:#1e3a5f;border:1px solid #1565c0;color:#fff;padding:10px 14px;border-radius:8px;font-size:0.95em}
+.input-row input::placeholder{color:#546e7a}
+.input-row button{background:#ef5350;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:0.95em;font-weight:700}
+.add-btn{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:0.95em;font-weight:700;width:100%;margin-top:8px}
+.participants-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:12px}
+.participant-item{background:#1e3a5f;border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:0.9em}
+.participant-item button{background:none;border:none;color:#ef5350;cursor:pointer;font-size:1em}
+.run-btn{width:100%;background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a;border:none;padding:16px;border-radius:10px;font-size:1.2em;font-weight:700;cursor:pointer;margin-top:20px;transition:transform 0.2s}
+.run-btn:hover{transform:scale(1.02)}
+.run-btn:disabled{background:#546e7a;cursor:not-allowed;transform:none}
+.results-area{background:#0f1923;border:1px solid #1e3a5f;border-radius:14px;padding:20px;margin-top:20px;display:none}
+.results-area h3{color:#ffd700;margin-bottom:15px;text-align:center}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.result-card{background:#1e3a5f;border-radius:8px;padding:12px;text-align:center;border:1px solid #1565c0}
+.result-participant{font-weight:700;color:#fff;margin-bottom:5px}
+.result-team{color:#ffd700;font-size:1.1em}
+.result-flag{font-size:1.8em;margin-bottom:3px}
+.result-odds{font-size:0.78em;color:#90caf9;margin-top:3px}
+.action-btns{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+.action-btn{flex:1;padding:10px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:0.9em;border:none;cursor:pointer}
+.copy-btn{background:#1565c0;color:#fff}
+.print-btn{background:#1e3a5f;color:#90caf9;border:1px solid #1565c0}
+.redo-btn{background:#ef5350;color:#fff}
+.prize-guide{background:#0f1923;border:1px solid #2e7d32;border-radius:12px;padding:18px;margin-top:20px}
+.prize-guide h4{color:#4caf50;margin-bottom:10px}
+.prize-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e3a5f;font-size:0.9em}
+.prize-row:last-child{border-bottom:none}
+.ad-slot{background:#0f1923;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:25px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+footer{background:#0d1b2a;border-top:1px solid #1e3a5f;padding:25px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.85em}
+footer a{color:#90caf9}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 WC2026 Sweepstake Generator</h1>
+  <p>Free tool — randomly assign all 48 World Cup teams to your group</p>
+</header>
+<nav>
+  <a href="/">Home</a>
+  <a href="/office-pool">Office Pool</a>
+  <a href="/wc2026-wall-chart">Wall Chart</a>
+  <a href="/predictions">Predictions</a>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <h2>🏆 Run Your WC2026 Sweepstake</h2>
+    <p>Add up to 48 participants. Click Draw. Teams randomly assigned. Completely free, no signup needed.</p>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h3 class="section-title">👥 Step 1 — Add Participants</h3>
+  <div class="setup-card">
+    <div class="input-row">
+      <input type="text" id="nameInput" placeholder="Enter name (e.g. John)" maxlength="30" onkeydown="if(event.key==='Enter')addParticipant()">
+      <button onclick="addParticipant()">+ Add</button>
+    </div>
+    <button class="add-btn" onclick="addBulk()">📋 Add multiple names (comma separated)</button>
+    <ul class="participants-list" id="participantsList"></ul>
+    <p id="participantCount" style="color:#546e7a;font-size:0.85em;margin-top:10px;text-align:center">0 participants added (max 48 — one team each)</p>
+
+    <button class="run-btn" id="drawBtn" onclick="runDraw()" disabled>🎲 Run the Draw!</button>
+  </div>
+
+  <div class="prize-guide">
+    <h4>💰 Suggested Prize Structure</h4>
+    <div class="prize-row"><span>🥇 Winner's team wins the tournament</span><span style="color:#ffd700">50% of pot</span></div>
+    <div class="prize-row"><span>🥈 Runner-up team reaches final</span><span style="color:#c0c0c0">20% of pot</span></div>
+    <div class="prize-row"><span>🥉 Semi-final exits</span><span style="color:#cd7f32">10% each</span></div>
+    <div class="prize-row"><span>🤣 Team knocked out in group stage</span><span style="color:#ef5350">Buys the round</span></div>
+    <div class="prize-row" style="border-top:1px solid #1e3a5f;padding-top:8px;margin-top:5px"><span>Example: 10 people × £5 = £50 pot → 1st place gets £25</span><span></span></div>
+  </div>
+
+  <div id="resultsArea" class="results-area">
+    <h3>🎉 Results — WC2026 Sweepstake Draw</h3>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="action-btns">
+      <button class="action-btn copy-btn" onclick="copyResults()">📋 Copy Results</button>
+      <button class="action-btn print-btn" onclick="window.print()">🖨️ Print</button>
+      <button class="action-btn redo-btn" onclick="redraw()">🔄 Redraw</button>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div style="background:#0f1923;border:2px solid #ffd700;border-radius:12px;padding:20px;text-align:center;margin:20px 0">
+    <h3 style="color:#ffd700;margin-bottom:8px">📧 Track the sweepstake via our newsletter</h3>
+    <p style="color:#90caf9;margin-bottom:15px">Daily WC2026 results + AI predictions — know whose team is doing what before anyone else.</p>
+    <a href="/wc2026-newsletter" style="background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a;padding:12px 25px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">Subscribe Free →</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">WC2026 Empire</a> | <a href="/office-pool">Office Pool</a> | <a href="/wc2026-wall-chart">Wall Chart</a></p>
+</footer>
+
+<script>
+const TEAMS = [
+  {name:'Mexico',flag:'🇲🇽',group:'A',odds:'20/1'},
+  {name:'South Korea',flag:'🇰🇷',group:'A',odds:'50/1'},
+  {name:'Czechia',flag:'🇨🇿',group:'A',odds:'80/1'},
+  {name:'South Africa',flag:'🇿🇦',group:'A',odds:'150/1'},
+  {name:'Switzerland',flag:'🇨🇭',group:'B',odds:'60/1'},
+  {name:'Canada',flag:'🇨🇦',group:'B',odds:'40/1'},
+  {name:'Qatar',flag:'🇶🇦',group:'B',odds:'200/1'},
+  {name:'Bosnia',flag:'🇧🇦',group:'B',odds:'120/1'},
+  {name:'Scotland',flag:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',group:'C',odds:'80/1'},
+  {name:'Brazil',flag:'🇧🇷',group:'C',odds:'6/1'},
+  {name:'Morocco',flag:'🇲🇦',group:'C',odds:'25/1'},
+  {name:'Haiti',flag:'🇭🇹',group:'C',odds:'500/1'},
+  {name:'USA',flag:'🇺🇸',group:'D',odds:'15/1'},
+  {name:'Australia',flag:'🇦🇺',group:'D',odds:'35/1'},
+  {name:'Türkiye',flag:'🇹🇷',group:'D',odds:'60/1'},
+  {name:'Paraguay',flag:'🇵🇾',group:'D',odds:'100/1'},
+  {name:'Germany',flag:'🇩🇪',group:'E',odds:'8/1'},
+  {name:'Ivory Coast',flag:'🇨🇮',group:'E',odds:'40/1'},
+  {name:'Ecuador',flag:'🇪🇨',group:'E',odds:'80/1'},
+  {name:'Curaçao',flag:'🇨🇼',group:'E',odds:'1000/1'},
+  {name:'Sweden',flag:'🇸🇪',group:'F',odds:'30/1'},
+  {name:'Japan',flag:'🇯🇵',group:'F',odds:'25/1'},
+  {name:'Netherlands',flag:'🇳🇱',group:'F',odds:'15/1'},
+  {name:'Tunisia',flag:'🇹🇳',group:'F',odds:'150/1'},
+  {name:'New Zealand',flag:'🇳🇿',group:'G',odds:'300/1'},
+  {name:'Iran',flag:'🇮🇷',group:'G',odds:'200/1'},
+  {name:'Belgium',flag:'🇧🇪',group:'G',odds:'20/1'},
+  {name:'Egypt',flag:'🇪🇬',group:'G',odds:'100/1'},
+  {name:'Uruguay',flag:'🇺🇾',group:'H',odds:'30/1'},
+  {name:'Saudi Arabia',flag:'🇸🇦',group:'H',odds:'80/1'},
+  {name:'Spain',flag:'🇪🇸',group:'H',odds:'7/1'},
+  {name:'Cape Verde',flag:'🇨🇻',group:'H',odds:'500/1'},
+  {name:'Norway',flag:'🇳🇴',group:'I',odds:'20/1'},
+  {name:'France',flag:'🇫🇷',group:'I',odds:'5/1'},
+  {name:'Senegal',flag:'🇸🇳',group:'I',odds:'50/1'},
+  {name:'Iraq',flag:'🇮🇶',group:'I',odds:'300/1'},
+  {name:'Argentina',flag:'🇦🇷',group:'J',odds:'4/1'},
+  {name:'Algeria',flag:'🇩🇿',group:'J',odds:'100/1'},
+  {name:'Austria',flag:'🇦🇹',group:'J',odds:'60/1'},
+  {name:'Jordan',flag:'🇯🇴',group:'J',odds:'400/1'},
+  {name:'Colombia',flag:'🇨🇴',group:'K',odds:'25/1'},
+  {name:'DR Congo',flag:'🇨🇩',group:'K',odds:'200/1'},
+  {name:'Portugal',flag:'🇵🇹',group:'K',odds:'9/1'},
+  {name:'Uzbekistan',flag:'🇺🇿',group:'K',odds:'500/1'},
+  {name:'Croatia',flag:'🇭🇷',group:'L',odds:'20/1'},
+  {name:'England',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',group:'L',odds:'8/1'},
+  {name:'Ghana',flag:'🇬🇭',group:'L',odds:'150/1'},
+  {name:'Panama',flag:'🇵🇦',group:'L',odds:'300/1'}
+];
+
+let participants = [];
+let lastResults = null;
+
+function addParticipant() {
+  const inp = document.getElementById('nameInput');
+  const name = inp.value.trim();
+  if(!name || participants.includes(name) || participants.length >= 48) return;
+  participants.push(name);
+  inp.value = '';
+  render();
+}
+
+function addBulk() {
+  const val = prompt('Enter names separated by commas:');
+  if(!val) return;
+  val.split(',').forEach(n => {
+    const name = n.trim();
+    if(name && !participants.includes(name) && participants.length < 48) participants.push(name);
+  });
+  render();
+}
+
+function removePart(i) {
+  participants.splice(i, 1);
+  render();
+}
+
+function render() {
+  const ul = document.getElementById('participantsList');
+  ul.innerHTML = participants.map((p,i) => `<li class="participant-item"><span>${p}</span><button onclick="removePart(${i})">✕</button></li>`).join('');
+  document.getElementById('participantCount').textContent = `${participants.length} participant${participants.length!==1?'s':''} added (max 48)`;
+  document.getElementById('drawBtn').disabled = participants.length < 2;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function runDraw() {
+  const shuffledTeams = shuffle(TEAMS).slice(0, participants.length);
+  const shuffledParts = shuffle(participants);
+  lastResults = shuffledParts.map((p,i) => ({participant:p, team:shuffledTeams[i]}));
+  showResults();
+}
+
+function showResults() {
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = lastResults.map(r => `
+    <div class="result-card">
+      <div class="result-flag">${r.team.flag}</div>
+      <div class="result-participant">${r.participant}</div>
+      <div class="result-team">${r.team.name}</div>
+      <div class="result-odds">Group ${r.team.group} • WC odds: ${r.team.odds}</div>
+    </div>
+  `).join('');
+  document.getElementById('resultsArea').style.display = 'block';
+  document.getElementById('resultsArea').scrollIntoView({behavior:'smooth'});
+}
+
+function redraw() { runDraw(); }
+
+function copyResults() {
+  if(!lastResults) return;
+  const text = 'WC2026 SWEEPSTAKE RESULTS:\n\n' + lastResults.map(r => `${r.participant}: ${r.team.flag} ${r.team.name}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => alert('Results copied to clipboard!'));
+}
+</script>
+</body>
+</html>
