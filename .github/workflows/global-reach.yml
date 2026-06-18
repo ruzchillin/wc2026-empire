@@ -1,0 +1,71 @@
+name: Global Reach Engine (Translate + Post to All Countries)
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Morning global push
+    - cron: '0 20 * * *'  # Evening global push
+  workflow_dispatch:
+    inputs:
+      content:
+        description: 'Content to globalize (leave blank for AI-generated)'
+        required: false
+      markets:
+        description: 'Comma-separated market IDs to target (leave blank for all)'
+        required: false
+        default: ''
+      event_type:
+        description: 'Event type: general, match_result, breaking, prediction'
+        required: false
+        default: 'general'
+
+jobs:
+  global-reach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate content if not provided
+        if: ${{ !github.event.inputs.content }}
+        id: gen-content
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          node -e "
+          const https = require('https');
+          const body = JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{role:'user', content:'Write a 2-sentence WC2026 hype post for social media. Be exciting and make fans want to click. Include a call to action.'}],
+            max_tokens: 100,
+          });
+          const req = https.request({
+            hostname: 'api.groq.com', path: '/openai/v1/chat/completions', method: 'POST',
+            headers: {'Authorization': 'Bearer ${{ secrets.GROQ_API_KEY }}', 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body)}
+          }, res => {
+            let d=''; res.on('data',c=>d+=c); res.on('end',()=>{
+              const r = JSON.parse(d);
+              const content = r.choices?.[0]?.message?.content?.trim() || 'WC2026 is the biggest World Cup ever — 48 teams, 3 nations, 1 trophy. Get all picks at wc2026-sports-empire.vercel.app';
+              console.log('::set-output name=content::' + content.replace(/\n/g, ' '));
+            });
+          });
+          req.write(body); req.end();
+          "
+
+      - name: Run Global Reach Engine
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          SITE_URL: https://wc2026-sports-empire.vercel.app
+          SOURCE_CONTENT: ${{ github.event.inputs.content || steps.gen-content.outputs.content || 'WC2026 — The world is watching. Are you ready?' }}
+          EVENT_TYPE: ${{ github.event.inputs.event_type || 'general' }}
+        run: |
+          echo "🌍 Starting Global Reach Engine..."
+          node global-reach-engine.js

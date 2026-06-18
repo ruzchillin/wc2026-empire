@@ -1,0 +1,50 @@
+name: Master Scheduler (24/7 Automation Brain)
+
+on:
+  schedule:
+    # Runs every hour — task is auto-detected by UTC hour
+    - cron: '0 6 * * *'   # Morning briefing
+    - cron: '0 10 * * *'  # SEO ping
+    - cron: '0 12 * * *'  # News scan
+    - cron: '0 13 * * *'  # Pre-match alert
+    - cron: '0 14 * * *'  # News scan
+    - cron: '0 16 * * *'  # Pre-match alert
+    - cron: '0 17 * * *'  # Affiliate report
+    - cron: '0 18 * * *'  # News scan
+    - cron: '0 19 * * *'  # Evening content + pre-match
+    - cron: '0 21 * * *'  # Translation queue
+    - cron: '0 22 * * *'  # News scan
+    - cron: '0 23 * * *'  # Daily stats summary
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task to run (morning/news/prematch/affiliate/evening/translate/stats/seo)'
+        required: false
+        default: 'auto'
+
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Scheduled Task
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_GROUP_CHAT_ID }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          SITE_URL: https://wc2026-sports-empire.vercel.app
+          SCHEDULER_TASK: ${{ github.event.inputs.task || 'auto' }}
+        run: |
+          echo "⏰ Master Scheduler triggered"
+          node master-scheduler.js
