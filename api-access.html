@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Empire API — Developer Access to Predictions & Data</title>
+<meta name="description" content="Access WC2026 Empire's AI predictions, odds data, standings, and live scores via REST API. Developer plans from £29/month. Instant API key.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Courier New',monospace,sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:#0d1b2a;padding:40px 20px;text-align:center;border-bottom:3px solid #00e676}
+header h1{font-size:2.2em;color:#00e676;margin-bottom:8px;font-family:monospace}
+header p{color:#a5d6a7;font-size:0.9em;font-family:monospace}
+.container{max-width:900px;margin:0 auto;padding:25px 20px}
+.section-title{font-size:1.2em;color:#00e676;margin:25px 0 14px;font-family:monospace}
+.code-block{background:#040810;border:1px solid #00e67622;border-radius:8px;padding:16px;font-family:'Courier New',monospace;font-size:0.82em;overflow-x:auto;margin-bottom:16px;position:relative}
+.code-block .comment{color:#546e7a}
+.code-block .key{color:#90caf9}
+.code-block .string{color:#ffd700}
+.code-block .number{color:#66bb6a}
+.code-block .method{color:#ef5350}
+.copy-btn{position:absolute;top:8px;right:8px;background:#1e3a5f;border:none;color:#90caf9;padding:4px 10px;border-radius:5px;font-size:0.72em;cursor:pointer;font-family:inherit}
+.copy-btn:hover{background:#0d47a1}
+.endpoints{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.endpoint{background:#0d1b2a;border:1px solid #1e3a5f;border-radius:8px;padding:13px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.method-badge{padding:3px 10px;border-radius:5px;font-size:0.75em;font-weight:700;font-family:monospace;flex-shrink:0}
+.get{background:#1b5e2022;color:#66bb6a;border:1px solid #1b5e2044}
+.endpoint-path{color:#90caf9;font-family:monospace;font-size:0.88em;flex:1}
+.endpoint-desc{color:#546e7a;font-size:0.78em;width:100%;margin-top:3px}
+.plans{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:25px}
+.plan{background:#0d1b2a;border:1px solid #1e3a5f;border-radius:12px;padding:18px}
+.plan.pro{border-color:#00e676}
+.plan-name{color:#00e676;font-size:0.8em;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:5px}
+.plan-price{font-size:1.9em;font-weight:700;color:#ffd700;font-family:monospace}
+.plan-reqs{color:#546e7a;font-size:0.75em;margin-bottom:10px}
+.plan-feat{font-size:0.8em;color:#b0bec5;padding:4px 0;border-bottom:1px solid #1e3a5f}
+.plan-feat::before{content:"> ";color:#00e676}
+.plan-feat:last-of-type{border-bottom:none}
+.plan-btn{display:block;text-align:center;padding:10px;margin-top:14px;border-radius:8px;background:linear-gradient(135deg,#00e676,#00897b);color:#0a0e1a;font-weight:700;font-size:0.88em;text-decoration:none;border:none;cursor:pointer;width:100%}
+.ad-slot{background:#0d1b2a;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:20px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+.key-form{background:#0d1b2a;border:1px solid #00e676;border-radius:12px;padding:22px;max-width:500px;margin:0 auto}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;color:#00e676;font-size:0.8em;margin-bottom:4px;font-family:monospace}
+.form-group input,.form-group select{width:100%;padding:10px 12px;background:#040810;border:1px solid #1e3a5f;border-radius:6px;color:#e8eaf6;font-size:0.88em;font-family:monospace}
+.form-group input:focus{outline:none;border-color:#00e676}
+.submit-btn{width:100%;padding:12px;background:linear-gradient(135deg,#00e676,#00897b);border:none;border-radius:8px;color:#0a0e1a;font-size:0.95em;font-weight:700;cursor:pointer;font-family:monospace;margin-top:5px}
+.success{display:none;background:#1b5e20;border:1px solid #2e7d32;border-radius:8px;padding:14px;text-align:center;color:#a5d6a7;margin-top:12px;font-family:monospace;font-size:0.85em}
+footer{background:#040810;border-top:1px solid #1e3a5f;padding:20px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.82em;font-family:monospace}
+footer a{color:#00e676}
+</style>
+</head>
+<body>
+<header>
+  <h1>{ WC2026 API }</h1>
+  <p>// REST API — predictions, standings, odds, lineups. Instant key.</p>
+</header>
+
+<div class="container">
+
+  <div class="section-title">// Quick Start</div>
+  <div class="code-block">
+    <button class="copy-btn" onclick="this.textContent='✓';setTimeout(()=>this.textContent='Copy',1200)">Copy</button>
+    <span class="comment"># Get today's predictions</span><br>
+    <span class="method">curl</span> -H <span class="string">"X-API-Key: YOUR_KEY"</span> \<br>
+    &nbsp;&nbsp;<span class="string">"https://wc2026-empire-production.up.railway.app/api/predictions/today"</span>
+  </div>
+  <div class="code-block">
+    <span class="comment">// Response</span><br>
+    {<br>
+    &nbsp;&nbsp;<span class="key">"date"</span>: <span class="string">"2026-06-18"</span>,<br>
+    &nbsp;&nbsp;<span class="key">"matches"</span>: [{<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"home"</span>: <span class="string">"Argentina"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"away"</span>: <span class="string">"Algeria"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"predicted_score"</span>: <span class="string">"3-0"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"confidence"</span>: <span class="number">0.88</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"winner_prob"</span>: { <span class="key">"home"</span>: <span class="number">0.82</span>, <span class="key">"away"</span>: <span class="number">0.05</span>, <span class="key">"draw"</span>: <span class="number">0.13</span> }<br>
+    &nbsp;&nbsp;}]<br>
+    }
+  </div>
+
+  <div class="section-title">// Available Endpoints</div>
+  <div class="endpoints">
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/predictions/today</span><div class="endpoint-desc">Today's AI predictions with confidence scores and probability breakdowns</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/predictions/{matchId}</span><div class="endpoint-desc">Detailed prediction for a specific match including AI reasoning</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/standings</span><div class="endpoint-desc">All 12 group standings, updated in real-time after each match</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/power-rankings</span><div class="endpoint-desc">AI power rankings for all 48 teams with methodology breakdown</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/golden-boot</span><div class="endpoint-desc">Live Golden Boot standings with goals, sssists, and AI-predicted final totals</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/lineups/{matchId}</span><div class="endpoint-desc">Expected lineups, confirmed lineups when available, injury updates</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/odds/{matchId}</span><div class="endpoint-desc">Aggregated odds from 8 bookmakers + AI value bet flag</div></div>
+    <div class="endpoint"><span class="method-badge get">GET</span><span class="endpoint-path">/api/schedule</span><div class="endpoint-desc">Full 104-match schedule with venues, kick-off times (UTC), and status</div></div>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="section-title">// Plans & Pricing</div>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-name">Free Tier</div>
+      <div class="plan-price">£0<span style="font-size:0.5em;color:#546e7a">/month</span></div>
+      <div class="plan-reqs">No credit card needed</div>
+      <div class="plan-feat">100 requests/day</div>
+      <div class="plan-feat">/predictions/today only</div>
+      <div class="plan-feat">/standings only</div>
+      <div class="plan-feat">JSON responses</div>
+      <button class="plan-btn" onclick="goGet('free')">Get Free Key →</button>
+    </div>
+    <div class="plan pro">
+      <div class="plan-name">Developer</div>
+      <div class="plan-price">£29<span style="font-size:0.5em;color:#546e7a">/month</span></div>
+      <div class="plan-reqs">Cancel anytime</div>
+      <div class="plan-feat">5,000 requests/day</div>
+      <div class="plan-feat">All endpoints</div>
+      <div class="plan-feat">Odds + lineups data</div>
+      <div class="plan-feat">Webhook support</div>
+      <div class="plan-feat">Email support</div>
+      <button class="plan-btn" onclick="goGet('developer')">Get Developer Key →</button>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Commercial</div>
+      <div class="plan-price">£99<span style="font-size:0.5em;color:#546e7a">/month</span></div>
+      <div class="plan-reqs">For apps & products</div>
+      <div class="plan-feat">Unlimited requests</div>
+      <div class="plan-feat">All endpoints</div>
+      <div class="plan-feat">Priority support (Slack)</div>
+      <div class="plan-feat">SLA 99.5% uptime</div>
+      <div class="plan-feat">White-label rights</div>
+      <button class="plan-btn" onclick="goGet('commercial')">Get Commercial Key →</button>
+    </div>
+  </div>
+
+  <div class="section-title">// Get Your API Key</div>
+  <div class="key-form">
+    <form id="apiForm" onsubmit="submitAPI(event)">
+      <div class="form-group"><label>// Email Address</label><input type="email" placeholder="dev@yoursite.com" required></div>
+      <div class="form-group"><label>// Plan</label><select><option>Free (100 req/day)</option><option>Developer £29/mo</option><option>Commercial £99/mo</option></select></div>
+      <div class="form-group"><label>// Use Case</label><input type="text" placeholder="e.g. sports app, betting site, personal project"></div>
+      <button type="submit" class="submit-btn">→ Generate API Key</button>
+    </form>
+    <div class="success" id="apiSuccess">// KEY GENERATED<br>Check your email — API key sent within 5 minutes.<br>// Welcome to WC2026 Empire API</div>
+  </div>
+</div>
+
+<script>
+function goGet(plan) { document.querySelector('.key-form').scrollIntoView({behavior:'smooth'}); }
+function submitAPI(e) {
+  e.preventDefault();
+  fetch('/api/api-key-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'api-access'})}).catch(()=>{});
+  document.getElementById('apiForm').style.display='none';
+  document.getElementById('apiSuccess').style.display='block';
+}
+</script>
+
+<footer><p><a href="/">WC2026 Empire</a> | <a href="/white-label">White Label</a> | <a href="/sponsorship-landing">Advertise</a></p></footer>
+</body>
+</html>
