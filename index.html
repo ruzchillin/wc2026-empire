@@ -11,13 +11,19 @@
 <link rel="manifest" href="/manifest.json">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
           <meta name="google-site-verification" content="yTJvqcaOjeic7oGLvc2KANgbGP8Jwd15tJJykT1qooQ" />
+          <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+          <script>
+                      window.OneSignalDeferred = window.OneSignalDeferred || [];
+                      OneSignalDeferred.push(async function(OneSignal) {
+                                    await OneSignal.init({ appId: "22adfec8-1ad1-46a2-863f-899cb1bc76b5" });
+                      });
+          </script>
 <style>
 :root{
   --gold:#D4AF37;--gold-light:#F5D060;
   --dark:#080B0E;--dark2:#0F1419;--dark3:#141C25;--dark4:#1A2332;
   --green:#16A34A;--green-light:#22C55E;
   --red:#DC2626;--blue:#3B82F6;--purple:#7C3AED;
-  --text:#F1F5F9;--text2:#94A3B8;--text3:#475569;
   --border:rgba(255,255,255,0.07);--gold-border:rgba(212,175,55,0.18);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
