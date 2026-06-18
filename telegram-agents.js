@@ -267,19 +267,8 @@ async function handleMessage(message) {
   // Skip very short messages or non-text
   if (!text || text.length < 3) return;
 
-  // In groups, only respond if bot is mentioned or message replies to bot
-  if (message.chat.type !== 'private') {
-    const botMentioned = text.includes('@') && text.toLowerCase().includes('bot');
-    const replyToBot = message.reply_to_message?.from?.is_bot;
-    const hasAgentMention = Object.values(AGENTS).some(a =>
-      text.toLowerCase().includes(a.username.toLowerCase())
-    );
-    const hasCommand = text.startsWith('/');
-
-    if (!botMentioned && !replyToBot && !hasAgentMention && !hasCommand) {
-      return; // Don't respond to every group message
-    }
-  }
+  // In groups: respond to all messages (privacy mode is disabled so we see everything)
+  // Agent routing handles which specialist replies
 
   // Route to appropriate agent
   const { key, agent } = detectAgent(text);
