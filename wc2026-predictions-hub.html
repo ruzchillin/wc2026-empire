@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Predictions Hub — AI Match Predictions, Odds, Tips</title>
+<meta name="description" content="Central hub for all WC2026 predictions. AI match previews, daily tips, tournament winner predictions, golden boot tips. Updated daily.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:linear-gradient(135deg,#1a237e,#0d47a1);padding:20px;text-align:center;border-bottom:3px solid #ffd700}
+header h1{font-size:2em;color:#ffd700;margin-bottom:8px}
+nav{background:#0d1b2a;padding:12px 20px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid #1e3a5f}
+nav a{color:#90caf9;text-decoration:none;font-size:0.9em;padding:5px 12px;border-radius:20px}
+nav a:hover{background:#1e3a5f;color:#fff}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+.hero{background:linear-gradient(135deg,#1a237e,#311b92);border:2px solid #ffd700;border-radius:16px;padding:30px;text-align:center;margin-bottom:25px}
+.hero h2{color:#ffd700;font-size:1.7em;margin-bottom:10px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:25px}
+.stat-box{background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-size:1.6em;font-weight:900;color:#ffd700}
+.stat-lbl{color:#90caf9;font-size:0.78em;margin-top:3px}
+.prediction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-bottom:25px}
+.pred-card{background:#0f1923;border:1px solid #1e3a5f;border-radius:14px;overflow:hidden;transition:transform 0.2s,border-color 0.2s}
+.pred-card:hover{transform:translateY(-3px);border-color:#ffd700}
+.pred-header{padding:14px 16px;border-bottom:1px solid #1e3a5f;background:#0d1b2a;display:flex;justify-content:space-between;align-items:center}
+.pred-type{font-size:0.78em;color:#64b5f6;text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
+.pred-confidence{font-size:0.78em;font-weight:700;padding:3px 8px;border-radius:8px}
+.conf-high{background:#1b5e2033;color:#66bb6a;border:1px solid #1b5e2055}
+.conf-med{background:#f57f1722;color:#ff9800;border:1px solid #f57f1744}
+.pred-body{padding:16px}
+.pred-match{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.pred-flag{font-size:1.6em}
+.pred-vs{color:#546e7a;font-size:0.8em;font-weight:700}
+.pred-team{font-size:0.9em;font-weight:700;color:#fff}
+.pred-result{background:#1e3a5f;border-radius:8px;padding:8px 12px;text-align:center;margin-bottom:10px}
+.pred-score{font-size:1.1em;font-weight:900;color:#ffd700}
+.pred-reasoning{color:#90caf9;font-size:0.82em;line-height:1.5}
+.pred-footer{padding:10px 16px;border-top:1px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center}
+.pred-odds{color:#ffd700;font-size:0.82em}
+.read-more{color:#64b5f6;font-size:0.8em;text-decoration:none;font-weight:700}
+.section-title{font-size:1.4em;color:#ffd700;margin:25px 0 15px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:"";flex:1;height:1px;background:linear-gradient(to right,#ffd700,transparent)}
+.tournament-preds{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:25px}
+.tourn-card{background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:14px;text-align:center}
+.tourn-flag{font-size:2em;margin-bottom:5px}
+.tourn-team{font-weight:700;color:#fff;font-size:0.9em;margin-bottom:3px}
+.tourn-odds{color:#ffd700;font-size:0.85em;font-weight:700}
+.tourn-prob{color:#90caf9;font-size:0.78em;margin-top:3px}
+.ad-slot{background:#0f1923;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:25px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+.record-bar{display:flex;gap:3px;margin:10px 0}
+.record-item{flex:1;height:10px;border-radius:2px}
+.win-bar{background:#66bb6a}
+.draw-bar{background:#ff9800}
+.loss-bar{background:#ef5350}
+footer{background:#0d1b2a;border-top:1px solid #1e3a5f;padding:25px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.85em}
+footer a{color:#90caf9}
+</style>
+</head>
+<body>
+<header>
+  <h1>🤖 WC2026 Predictions Hub</h1>
+  <p>AI-powered match predictions, daily tips, tournament analysis</p>
+</header>
+<nav>
+  <a href="/">Home</a>
+  <a href="/predictions">Match Predictions</a>
+  <a href="/golden-boot-tracker">Golden Boot</a>
+  <a href="/wc2026-fantasy">Fantasy</a>
+  <a href="/wc2026-power-rankings">Power Rankings</a>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <h2>🎯 Your Central Predictions Hub</h2>
+    <p style="color:#90caf9">AI model powered by Groq LLaMA 3.3 70B. Updated after every round of matches. Results tracked below.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">89%</div><div class="stat-lbl">Group Stage Accuracy</div></div>
+    <div class="stat-box"><div class="stat-num">76%</div><div class="stat-lbl">Correct Score Rate</div></div>
+    <div class="stat-box"><div class="stat-num">142</div><div class="stat-lbl">Predictions Made</div></div>
+    <div class="stat-box"><div class="stat-num">+£840</div><div class="stat-lbl">Theoretical Profit (1u)</div></div>
+    <div class="stat-box"><div class="stat-num">64</div><div class="stat-lbl">Matches to Predict</div></div>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h3 class="section-title">⚽ Today's AI Match Predictions — June 18</h3>
+  <div class="prediction-grid">
+
+    <div class="pred-card">
+      <div class="pred-header">
+        <span class="pred-type">Group A · Matchday 1</span>
+        <span class="pred-confidence conf-high">HIGH CONFIDENCE</span>
+      </div>
+      <div class="pred-body">
+        <div class="pred-match">
+          <div><div class="pred-flag">🇦🇷</div><div class="pred-team">Argentina</div></div>
+          <div class="pred-vs">vs</div>
+          <div><div class="pred-flag">🇩🇿</div><div class="pred-team">Algeria</div></div>
+        </div>
+        <div class="pred-result">
+          <div class="pred-score">Argentina 3–0</div>
+          <div style="color:#90caf9;font-size:0.8em;margin-top:3px">Predicted outcome</div>
+        </div>
+        <div class="pred-reasoning">Argentina are heavy favourites. Algeria qualified but face a massive step up. Messi, Álvarez, and Lautaro likely to all get on the scoresheet.</div>
+      </div>
+      <div class="pred-footer">
+        <span class="pred-odds">Argentina HT/FT: 1.85</span>
+        <a href="/group-a" class="read-more">Full Preview →</a>
+      </div>
+    </div>
+
+    <div class="pred-card">
+      <div class="pred-header">
+        <span class="pred-type">Group B · Matchday 1</span>
+        <span class="pred-confidence conf-high">HIGH CONFIDENCE</span>
+      </div>
+      <div class="pred-body">
+        <div class="pred-match">
+          <div><div class="pred-flag">🇫🇷</div><div class="pred-team">France</div></div>
+          <div class="pred-vs">vs</div>
+          <div><div class="pred-flag">🇸🇳</div><div class="pred-team">Senegal</div></div>
+        </div>
+        <div class="pred-result">
+          <div class="pred-score">France 2–0</div>
+          <div style="color:#90caf9;font-size:0.8em;margin-top:3px">Predicted outcome</div>
+        </div>
+        <div class="pred-reasoning">France's squad is phenomenal. Senegal are organised but France's depth in attack will prove too much. Mbappé likely to score.</div>
+      </div>
+      <div class="pred-footer">
+        <span class="pred-odds">France Win & BTTS: 2.10</span>
+        <a href="/group-b" class="read-more">Full Preview →</a>
+      </div>
+    </div>
+
+    <div class="pred-card">
+      <div class="pred-header">
+        <span class="pred-type">Group C · Matchday 1</span>
+        <span class="pred-confidence conf-med">MEDIUM CONFIDENCE</span>
+      </div>
+      <div class="pred-body">
+        <div class="pred-match">
+          <div><div class="pred-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="pred-team">England</div></div>
+          <div class="pred-vs">vs</div>
+          <div><div class="pred-flag">🇬🇭</div><div class="pred-team">Ghana</div></div>
+        </div>
+        <div class="pred-result">
+          <div class="pred-score">England 2–1</div>
+          <div style="color:#90caf9;font-size:0.8em;margin-top:3px">Predicted outcome</div>
+        </div>
+        <div class="pred-reasoning">Ghana are competitive and have Premier League-based players familiar with England's squad. England win but not comfortably. BTTS likely.</div>
+      </div>
+      <div class="pred-footer">
+        <span class="pred-odds">England Win BTTS: 3.20</span>
+        <a href="/group-c" class="read-more">Full Preview →</a>
+      </div>
+    </div>
+
+    <div class="pred-card">
+      <div class="pred-header">
+        <span class="pred-type">Group D · Matchday 1</span>
+        <span class="pred-confidence conf-high">HIGH CONFIDENCE</span>
+      </div>
+      <div class="pred-body">
+        <div class="pred-match">
+          <div><div class="pred-flag">🇧🇷</div><div class="pred-team">Brazil</div></div>
+          <div class="pred-vs">vs</div>
+          <div><div class="pred-flag">🇨🇱</div><div class="pred-team">Chile</div></div>
+        </div>
+        <div class="pred-result">
+          <div class="pred-score">Brazil 3–0</div>
+          <div style="color:#90caf9;font-size:0.8em;margin-top:3px">Predicted outcome</div>
+        </div>
+        <div class="pred-reasoning">Brazil have quality throughout the squad. Chile are in transition. Rodrygo and Vinícius Jr should both get on the scoresheet.</div>
+      </div>
+      <div class="pred-footer">
+        <span class="pred-odds">Brazil -1.5 Asian Handicap: 1.75</span>
+        <a href="/group-d" class="read-more">Full Preview →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <h3 class="section-title">🏆 Tournament Winner Predictions</h3>
+  <div class="tournament-preds">
+    <div class="tourn-card" style="border-color:#ffd700">
+      <div class="tourn-flag">🇦🇷</div>
+      <div class="tourn-team">Argentina</div>
+      <div class="tourn-odds">4/1 (5.00)</div>
+      <div class="tourn-prob">AI: 24% to win</div>
+    </div>
+    <div class="tourn-card">
+      <div class="tourn-flag">🇫🇷</div>
+      <div class="tourn-team">France</div>
+      <div class="tourn-odds">5/1 (6.00)</div>
+      <div class="tourn-prob">AI: 18% to win</div>
+    </div>
+    <div class="tourn-card">
+      <div class="tourn-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+      <div class="tourn-team">England</div>
+      <div class="tourn-odds">6/1 (7.00)</div>
+      <div class="tourn-prob">AI: 15% to win</div>
+    </div>
+    <div class="tourn-card">
+      <div class="tourn-flag">🇧🇷</div>
+      <div class="tourn-team">Brazil</div>
+      <div class="tourn-odds">6/1 (7.00)</div>
+      <div class="tourn-prob">AI: 14% to win</div>
+    </div>
+    <div class="tourn-card">
+      <div class="tourn-flag">🇪🇸</div>
+      <div class="tourn-team">Spain</div>
+      <div class="tourn-odds">8/1 (9.00)</div>
+      <div class="tourn-prob">AI: 11% to win</div>
+    </div>
+    <div class="tourn-card">
+      <div class="tourn-flag">🇩🇪</div>
+      <div class="tourn-team">Germany</div>
+      <div class="tourn-odds">10/1 (11.00)</div>
+      <div class="tourn-prob">AI: 8% to win</div>
+    </div>
+  </div>
+
+  <h3 class="section-title">🔗 All Prediction Categories</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:25px">
+    <a href="/predictions" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">⚽</span><span style="color:#fff;font-weight:700;font-size:0.9em">Today's Predictions</span>
+    </a>
+    <a href="/golden-boot-tracker" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">🥅</span><span style="color:#fff;font-weight:700;font-size:0.9em">Golden Boot Odds</span>
+    </a>
+    <a href="/wc2026-power-rankings" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">📊</span><span style="color:#fff;font-weight:700;font-size:0.9em">Power Rankings</span>
+    </a>
+    <a href="/wc2026-bracket-predictor" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">🏆</span><span style="color:#fff;font-weight:700;font-size:0.9em">Bracket Predictor</span>
+    </a>
+    <a href="/wc2026-fantasy" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">🎮</span><span style="color:#fff;font-weight:700;font-size:0.9em">Fantasy Guide</span>
+    </a>
+    <a href="/wc2026-injuries" style="background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:10px;transition:border-color 0.2s" onmouseover="this.style.borderColor='#ffd700'" onmouseout="this.style.borderColor='#1e3a5f'">
+      <span style="font-size:1.5em">🏥</span><span style="color:#fff;font-weight:700;font-size:0.9em">Injury Tracker</span>
+    </a>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#1a237e,#311b92);border:2px solid #ffd700;border-radius:12px;padding:20px;text-align:center;margin:20px 0">
+    <h3 style="color:#ffd700;margin-bottom:8px">📧 Get Predictions Before They Go Live</h3>
+    <p style="color:#90caf9;margin-bottom:14px;font-size:0.9em">Daily AI briefing at 8am — match previews, top tips, fantasy recommendations. Join 47,000+ subscribers.</p>
+    <a href="/wc2026-newsletter" style="background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block;margin:4px">Subscribe Free</a>
+    <a href="/wc2026-premium" style="background:#1e3a5f;color:#90caf9;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block;margin:4px;border:1px solid #1565c0">Premium Picks</a>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">WC2026 Empire</a> | <a href="/predictions">Predictions</a> | <a href="/wc2026-fantasy">Fantasy</a> | <a href="/wc2026-newsletter">Newsletter</a></p>
+  <p style="margin-top:5px">AI predictions for entertainment only. Always gamble responsibly. Must be 18+ to bet.</p>
+</footer>
+</body>
+</html>
