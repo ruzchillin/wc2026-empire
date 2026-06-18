@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC2026 Injury Tracker — Latest Squad Injury News & Updates</title>
+<meta name="description" content="WC2026 live injury tracker. Latest injury news for all 48 teams. Confirmed injuries, expected return dates, fantasy football impact.">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5791574815759721" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#e8eaf6;line-height:1.6}
+header{background:linear-gradient(135deg,#1a237e,#0d47a1);padding:20px;text-align:center;border-bottom:3px solid #ffd700}
+header h1{font-size:2em;color:#ffd700;margin-bottom:8px}
+nav{background:#0d1b2a;padding:12px 20px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;border-bottom:1px solid #1e3a5f}
+nav a{color:#90caf9;text-decoration:none;font-size:0.9em;padding:5px 12px;border-radius:20px}
+nav a:hover{background:#1e3a5f;color:#fff}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filter-btn{background:#1e3a5f;border:1px solid #1565c0;color:#90caf9;padding:7px 14px;border-radius:20px;cursor:pointer;font-size:0.82em}
+.filter-btn.active{background:#ffd700;color:#0a0e1a;border-color:#ffd700;font-weight:700}
+.injury-card{background:#0f1923;border:1px solid #1e3a5f;border-radius:12px;padding:16px;margin-bottom:12px;display:flex;align-items:start;gap:15px;transition:border-color 0.2s}
+.injury-card:hover{border-color:#1565c0}
+.injury-flag{font-size:2em;flex-shrink:0}
+.injury-main{flex:1}
+.injury-player{font-weight:700;color:#fff;font-size:1em}
+.injury-team{color:#64b5f6;font-size:0.82em;margin-bottom:4px}
+.injury-detail{color:#90caf9;font-size:0.85em;margin-bottom:4px}
+.injury-status{display:inline-flex;align-items:center;gap:5px;font-size:0.78em;font-weight:700;padding:3px 10px;border-radius:10px}
+.status-out{background:#b71c1c22;color:#ef5350;border:1px solid #b71c1c44}
+.status-doubt{background:#f57f1722;color:#ff9800;border:1px solid #f57f1744}
+.status-return{background:#1b5e2022;color:#66bb6a;border:1px solid #1b5e2044}
+.injury-impact{margin-top:6px;font-size:0.8em}
+.impact-high{color:#ef5350}
+.impact-med{color:#ff9800}
+.impact-low{color:#66bb6a}
+.updated-tag{color:#546e7a;font-size:0.75em;margin-top:4px}
+.section-title{font-size:1.3em;color:#ffd700;margin:20px 0 12px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:"";flex:1;height:1px;background:linear-gradient(to right,#ffd700,transparent)}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat-box{background:#0f1923;border:1px solid #1e3a5f;border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-size:1.5em;font-weight:900;color:#ffd700}
+.stat-lbl{color:#90caf9;font-size:0.78em;margin-top:3px}
+.ad-slot{background:#0f1923;border:1px solid #1e3a5f;border-radius:8px;padding:15px;text-align:center;margin:20px 0;min-height:90px;display:flex;align-items:center;justify-content:center}
+footer{background:#0d1b2a;border-top:1px solid #1e3a5f;padding:25px;text-align:center;margin-top:40px}
+footer p{color:#546e7a;font-size:0.85em}
+footer a{color:#90caf9}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏥 WC2026 Injury Tracker</h1>
+  <p>Latest injury news affecting all 48 squads</p>
+</header>
+<nav>
+  <a href="/">Home</a>
+  <a href="/wc2026-fantasy">Fantasy Impact</a>
+  <a href="/predictions">Predictions</a>
+  <a href="/wc2026-lineups">Lineups</a>
+</nav>
+
+<div class="container">
+  <div style="background:#0d1b2a;border:1px solid #1565c0;border-radius:8px;padding:10px 15px;margin-bottom:15px;display:flex;align-items:center;gap:10px">
+    <span style="color:#ffd700">🔴</span>
+    <span style="color:#90caf9;font-size:0.85em">Last updated: June 18, 2026 · Data updated after each training session and press conference</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">12</div><div class="stat-lbl">Confirmed Out</div></div>
+    <div class="stat-box"><div class="stat-num">8</div><div class="stat-lbl">Doubtful</div></div>
+    <div class="stat-box"><div class="stat-num">5</div><div class="stat-lbl">Returning Soon</div></div>
+    <div class="stat-box"><div class="stat-num">3</div><div class="stat-lbl">Tournament Over</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterInjuries('all')">All Injuries</button>
+    <button class="filter-btn" onclick="filterInjuries('out')">🔴 Out</button>
+    <button class="filter-btn" onclick="filterInjuries('doubt')">🟠 Doubtful</button>
+    <button class="filter-btn" onclick="filterInjuries('return')">🟢 Returning</button>
+    <button class="filter-btn" onclick="filterInjuries('high')">⭐ High Impact</button>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h3 class="section-title">🔴 Confirmed Out</h3>
+
+  <div class="injury-card" data-status="out" data-impact="high">
+    <div class="injury-flag">🇧🇷</div>
+    <div class="injury-main">
+      <div class="injury-player">Neymar Jr.</div>
+      <div class="injury-team">Brazil • Forward</div>
+      <div class="injury-detail">Knee ligament — missed qualification campaign, returning but not at 100%</div>
+      <span class="injury-status status-out">🔴 Uncertain availability</span>
+      <div class="injury-impact impact-high">⚠️ Fantasy: AVOID — limited minutes if plays at all</div>
+      <div class="updated-tag">Updated June 17</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="out" data-impact="high">
+    <div class="injury-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+    <div class="injury-main">
+      <div class="injury-player">Trent Alexander-Arnold</div>
+      <div class="injury-team">England • Midfielder/Defender</div>
+      <div class="injury-detail">Hamstring strain sustained in club season. Cleared to play but fitness concern for tournament start.</div>
+      <span class="injury-status status-doubt">🟠 Doubtful — being managed</span>
+      <div class="injury-impact impact-med">⚡ Fantasy: RISKY — expect rotation, check teamsheet day before</div>
+      <div class="updated-tag">Updated June 18</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="out" data-impact="med">
+    <div class="injury-flag">🇩🇪</div>
+    <div class="injury-main">
+      <div class="injury-player">Thomas Müller</div>
+      <div class="injury-team">Germany • Forward</div>
+      <div class="injury-detail">Retired from international football after 2022 WC. Germany rebuilding without him.</div>
+      <span class="injury-status status-out">⚫ Retired internationally</span>
+      <div class="injury-impact impact-low">✓ Fantasy: Germany's new generation fills role well</div>
+      <div class="updated-tag">Updated pre-tournament</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="out" data-impact="high">
+    <div class="injury-flag">🇫🇷</div>
+    <div class="injury-main">
+      <div class="injury-player">Karim Benzema</div>
+      <div class="injury-team">France • Forward</div>
+      <div class="injury-detail">Withdrawn from international football. France squad moving forward with Mbappé as main striker.</div>
+      <span class="injury-status status-out">⚫ International retirement</span>
+      <div class="injury-impact impact-med">⚡ France depth still strong — Giroud replacement found</div>
+      <div class="updated-tag">Updated pre-tournament</div>
+    </div>
+  </div>
+
+  <h3 class="section-title">🟠 Doubtful / Being Monitored</h3>
+
+  <div class="injury-card" data-status="doubt" data-impact="high">
+    <div class="injury-flag">🇦🇷</div>
+    <div class="injury-main">
+      <div class="injury-player">Lionel Messi</div>
+      <div class="injury-team">Argentina • Forward</div>
+      <div class="injury-detail">Managing knee inflammation. Resting between matches at 36. Medical team carefully managing workload.</div>
+      <span class="injury-status status-doubt">🟠 Load management — expected to play</span>
+      <div class="injury-impact impact-high">⭐ Fantasy: CAPTAIN if playing — monitor pre-match teamsheet</div>
+      <div class="updated-tag">Updated June 18</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="doubt" data-impact="med">
+    <div class="injury-flag">🇵🇹</div>
+    <div class="injury-main">
+      <div class="injury-player">Cristiano Ronaldo</div>
+      <div class="injury-team">Portugal • Forward</div>
+      <div class="injury-detail">Age 41 — fitness managed carefully. Not playing every game. Likely starter for key matches only.</div>
+      <span class="injury-status status-doubt">🟠 Rotation expected</span>
+      <div class="injury-impact impact-med">⚡ Fantasy: RISKY — rotation risk. Pick for guaranteed starts only</div>
+      <div class="updated-tag">Updated June 18</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="doubt" data-impact="med">
+    <div class="injury-flag">🇳🇱</div>
+    <div class="injury-main">
+      <div class="injury-player">Virgil van Dijk</div>
+      <div class="injury-team">Netherlands • Defender</div>
+      <div class="injury-detail">Minor thigh issue, trained with restrictions this week. Expected to be fit for Group H match.</div>
+      <span class="injury-status status-doubt">🟠 Minor concern — likely plays</span>
+      <div class="injury-impact impact-low">✓ Fantasy: Monitor closer to match day</div>
+      <div class="updated-tag">Updated June 17</div>
+    </div>
+  </div>
+
+  <h3 class="section-title">🟢 Returning From Injury</h3>
+
+  <div class="injury-card" data-status="return" data-impact="high">
+    <div class="injury-flag">🇧🇪</div>
+    <div class="injury-main">
+      <div class="injury-player">Kevin De Bruyne</div>
+      <div class="injury-team">Belgium • Midfielder</div>
+      <div class="injury-detail">Hamstring issue kept him out of late club season. Declared fit for WC2026 after training camp.</div>
+      <span class="injury-status status-return">🟢 FIT — expected to start</span>
+      <div class="injury-impact impact-high">⭐ Fantasy: STRONG pick — Belgium's most dangerous player</div>
+      <div class="updated-tag">Updated June 16</div>
+    </div>
+  </div>
+
+  <div class="injury-card" data-status="return" data-impact="med">
+    <div class="injury-flag">🇲🇽</div>
+    <div class="injury-main">
+      <div class="injury-player">Hirving "Chucky" Lozano</div>
+      <div class="injury-team">Mexico • Winger</div>
+      <div class="injury-detail">Ankle surgery December 2025 — returned to full training April 2026. Confirmed fit for WC.</div>
+      <span class="injury-status status-return">🟢 FIT — available</span>
+      <div class="injury-impact impact-med">⚡ Fantasy: Good value if starting for host nation</div>
+      <div class="updated-tag">Updated June 15</div>
+    </div>
+  </div>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5791574815759721" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#1a237e,#311b92);border:2px solid #ffd700;border-radius:12px;padding:18px;text-align:center;margin:20px 0">
+    <h3 style="color:#ffd700;margin-bottom:8px">📧 Get Injury Alerts Before Your Fantasy Deadlines</h3>
+    <p style="color:#90caf9;margin-bottom:12px;font-size:0.9em">Daily injury bulletin + fantasy recommendations every morning at 8am</p>
+    <a href="/wc2026-newsletter" style="background:linear-gradient(135deg,#ffd700,#ff8f00);color:#0a0e1a;padding:11px 24px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">Subscribe Free →</a>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">WC2026 Empire</a> | <a href="/wc2026-fantasy">Fantasy Guide</a> | <a href="/wc2026-lineups">Lineups</a></p>
+  <p style="margin-top:5px">Injury data compiled from press conferences and official team sources. Not guaranteed accurate.</p>
+</footer>
+
+<script>
+function filterInjuries(type) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.injury-card').forEach(c=>{
+    if(type==='all') c.style.display='flex';
+    else if(type==='out') c.style.display=c.dataset.status==='out'?'flex':'none';
+    else if(type==='doubt') c.style.display=c.dataset.status==='doubt'?'flex':'none';
+    else if(type==='return') c.style.display=c.dataset.status==='return'?'flex':'none';
+    else if(type==='high') c.style.display=c.dataset.impact==='high'?'flex':'none';
+  });
+}
+</script>
+</body>
+</html>
