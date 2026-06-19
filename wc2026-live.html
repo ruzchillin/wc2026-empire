@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WC2026 Live — Scores, Odds & AI Predictions | WC2026 Empire</title>
+<meta name="description" content="Live WC2026 scores, odds movements, AI match predictions, and real-time tournament stats. Updated every minute.">
+<meta property="og:title" content="WC2026 Live Dashboard — Scores + AI Predictions">
+<meta property="og:image" content="https://wc2026-sports-empire.vercel.app/og-default.png">
+<link rel="icon" href="/favicon.ico">
+<style>
+:root{--bg:#080d1a;--card:#0f172a;--card2:#111827;--border:#1e293b;--accent:#3b82f6;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;--muted:#64748b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.5}
+nav{background:#0d1629;border-bottom:1px solid var(--border);padding:.875rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
+.nav-logo{font-weight:800;color:#fff;text-decoration:none}.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.live-header{background:linear-gradient(135deg,#0d1629,#1a0a2e);padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border)}
+.live-header-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.live-title{font-size:1.8rem;font-weight:800}
+.live-tag{display:flex;align-items:center;gap:.5rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:999px;padding:.35rem .9rem;font-size:.8rem;font-weight:700}
+.pulse{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.refresh-info{color:var(--muted);font-size:.8rem}
+.container{max-width:1100px;margin:0 auto;padding:1.5rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+@media(max-width:640px){.grid-3{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.panel-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.panel-title .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:.4rem;animation:pulse 2s infinite}
+.stat-big{font-size:2rem;font-weight:800;line-height:1}
+.stat-sub{color:var(--muted);font-size:.8rem;margin-top:.3rem}
+.stat-green{color:var(--green)}
+.stat-yellow{color:var(--yellow)}
+.match-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.75rem;transition:border-color .2s}
+.match-card:hover{border-color:var(--accent)}
+.match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.match-status{font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;letter-spacing:.04em}
+.status-live{background:rgba(239,68,68,.15);color:#ef4444}
+.status-finished{background:rgba(100,116,139,.15);color:var(--muted)}
+.status-upcoming{background:rgba(59,130,246,.15);color:var(--accent)}
+.match-teams{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.team{display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.95rem;min-width:0;flex:1}
+.team-flag{font-size:1.2rem}
+.team.right{flex-direction:row-reverse;text-align:right}
+.score-box{text-align:center;min-width:60px}
+.score{font-size:1.5rem;font-weight:800}
+.score-vs{color:var(--muted);font-size:.85rem}
+.match-meta{display:flex;justify-content:space-between;margin-top:.5rem;font-size:.75rem;color:var(--muted)}
+.odds-row{display:flex;justify-content:space-between;margin-top:.5rem;gap:.4rem}
+.odds-btn{flex:1;text-align:center;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.2);border-radius:6px;padding:.35rem .4rem;font-size:.8rem;cursor:pointer;transition:all .2s}
+.odds-btn:hover{background:rgba(59,130,246,.15);border-color:var(--accent)}
+.odds-label{color:var(--muted);font-size:.7rem;display:block}
+.odds-val{font-weight:700;color:var(--text)}
+.ai-badge{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3);border-radius:4px;font-size:.7rem;padding:.1rem .35rem;margin-left:.35rem}
+.odds-movement{margin-bottom:1.5rem}
+.move-row{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.move-row:last-child{border-bottom:none}
+.move-team{flex:1;font-size:.875rem}
+.move-dir{font-size:.75rem;font-weight:700;padding:.15rem .5rem;border-radius:4px}
+.dir-up{color:var(--green);background:rgba(16,185,129,.1)}
+.dir-down{color:var(--red);background:rgba(239,68,68,.1)}
+.move-val{width:45px;text-align:right;font-weight:700;font-size:.9rem}
+.prediction-row{padding:.625rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.prediction-row:last-child{border-bottom:none}
+.pred-match{font-size:.875rem;font-weight:600;margin-bottom:.2rem}
+.pred-call{color:var(--accent);font-size:.8rem;margin-bottom:.15rem}
+.pred-conf-row{display:flex;align-items:center;gap:.5rem}
+.conf-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.conf-fill{height:100%;border-radius:3px}
+.conf-high{background:var(--green)}
+.conf-med{background:var(--yellow)}
+.conf-low{background:var(--muted)}
+.conf-pct{font-size:.75rem;color:var(--muted);width:28px}
+.standings-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.standings-table th{text-align:left;padding:.5rem .4rem;color:var(--muted);font-size:.75rem;border-bottom:1px solid var(--border);font-weight:500}
+.standings-table td{padding:.5rem .4rem;border-bottom:1px solid rgba(255,255,255,.03)}
+.standings-table tr:last-child td{border-bottom:none}
+.standings-table tr.qualified td:first-child{border-left:2px solid var(--green)}
+.error-state{text-align:center;padding:2rem;color:var(--muted);font-size:.875rem}
+.error-state .error-icon{font-size:2rem;margin-bottom:.5rem}
+.backend-status{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.8rem;color:var(--yellow);display:flex;align-items:center;gap:.5rem}
+.vpn-banner{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.1));border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.vpn-text{font-size:.875rem}
+.vpn-link{background:var(--accent);color:#fff;padding:.4rem 1rem;border-radius:6px;text-decoration:none;font-size:.8rem;font-weight:700;white-space:nowrap}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;color:var(--muted);font-size:.8rem}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/"><span>WC</span>2026 Empire</a>
+  <div class="nav-links">
+    <a href="/win-share.html">AI Picks</a>
+    <a href="/wc2026-predictions-hub.html">Predictions</a>
+    <a href="/odds-comparison.html">Odds</a>
+    <a href="/streaming-vpn.html">Watch</a>
+    <a href="/wc2026-premium.html">VIP</a>
+  </div>
+</nav>
+
+<div class="live-header">
+  <div class="live-header-inner">
+    <div>
+      <div class="live-title">⚽ WC2026 Live</div>
+      <div class="refresh-info" id="refresh-info">Fetching data...</div>
+    </div>
+    <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+      <div class="live-tag"><div class="pulse"></div> LIVE DATA</div>
+      <button onclick="refreshAll()" style="background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:.8rem">↻ Refresh</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOP STATS -->
+  <div class="grid-3" id="stats-row">
+    <div class="panel">
+      <div class="panel-title"><span><span class="dot"></span>Live Matches</span></div>
+      <div class="stat-big stat-green" id="live-count">—</div>
+      <div class="stat-sub">In progress right now</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span>Today's Matches</span></div>
+      <div class="stat-big" id="today-count">—</div>
+      <div class="stat-sub">Total today</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span>AI Model Active</span></div>
+      <div class="stat-big stat-green" id="ai-status">✓</div>
+      <div class="stat-sub">Predictions updating</div>
+    </div>
+  </div>
+
+  <!-- BACKEND STATUS -->
+  <div class="backend-status" id="backend-status" style="display:none">
+    ⚠️ <span id="backend-msg">Backend connecting...</span>
+  </div>
+
+  <!-- VPN BANNER -->
+  <div class="vpn-banner">
+    <div class="vpn-text">📺 <strong>Can't find WC2026 in your country?</strong> Every match is streaming somewhere — we track all 104 games.</div>
+    <a href="/streaming-vpn.html" class="vpn-link">View Full Watch Guide →</a>
+  </div>
+
+  <div class="grid-2">
+
+    <!-- MATCHES -->
+    <div>
+      <div class="panel-title" style="margin-bottom:.75rem;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">
+        <span><span class="dot"></span>Matches</span>
+        <span id="match-updated" style="font-size:.75rem;font-weight:400">—</span>
+      </div>
+      <div id="matches-container">
+        <div class="error-state"><div class="error-icon">📡</div><div>Connecting to match data...</div></div>
+      </div>
+    </div>
+
+    <!-- AI PREDICTIONS + ODDS MOVEMENT -->
+    <div>
+      <div class="panel" style="margin-bottom:1.25rem">
+        <div class="panel-title"><span>🔬 AI Predictions</span><span id="pred-updated" style="font-weight:400">—</span></div>
+        <div id="predictions-container">
+          <div class="error-state">Fetching AI model...</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span>📈 Odds Movement</span><a href="/odds-comparison.html" style="color:var(--accent);font-size:.75rem;text-decoration:none;font-weight:400">See all →</a></div>
+        <div id="odds-container">
+          <div class="error-state">Fetching odds data...</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOURNAMENT STANDINGS PREVIEW -->
+  <div class="panel" style="margin-bottom:1.5rem">
+    <div class="panel-title"><span>🏅 Tournament Favourites — Live Model</span><a href="/win-share.html" style="color:var(--accent);font-size:.75rem;text-decoration:none;font-weight:400">Full analysis →</a></div>
+    <table class="standings-table">
+      <thead><tr><th>Rank</th><th>Team</th><th>Win %</th><th>SF %</th><th>Trend</th></tr></thead>
+      <tbody id="standings-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <p>WC2026 Empire — Live data via The Odds API + AI Model. For informational purposes only.</p>
+  <p style="margin-top:.4rem"><a href="/privacy-policy.html">Privacy</a> · <a href="/streaming-vpn.html">Watch Guide</a> · <a href="/">Home</a></p>
+</footer>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const RAILWAY = ''; // filled by vercel.json proxy → /api/*
+const API     = '/api';
+
+// ── Static fallback data (shows while backend loads) ──────────────────────────
+const FALLBACK_PREDICTIONS = [
+  { match:'France vs Brazil (Final - Model)', call:'France to win 2-1 AET', conf:64 },
+  { match:'England', call:'Reach Semi-Finals', conf:72 },
+  { match:'Morocco', call:'Quarter-Finals exit', conf:61 },
+  { match:'Germany vs Spain', call:'Spain edge a classic', conf:55 },
+  { match:'Argentina', call:'Round of 16 exit', conf:52 },
+];
+
+const FALLBACK_ODDS_MOVES = [
+  { team:'France 🇫🇷', dir:'up', from:'+300', to:'+260', reason:'Strong warm-up form' },
+  { team:'England 🏴󠁧󠁢󠁥󠁮󠁧󠁿', dir:'down', from:'+420', to:'+480', reason:'Bellingham injury concern' },
+  { team:'Brazil 🇧🇷', dir:'up', from:'+380', to:'+340', reason:'Vinícius fully fit' },
+  { team:'Morocco 🇲🇦', dir:'up', from:'+1800', to:'+1600', reason:'Dark horse narrative building' },
+  { team:'Germany 🇩🇪', dir:'down', from:'+700', to:'+750', reason:'Manager press conference doubts' },
+];
+
+const FALLBACK_STANDINGS = [
+  { rank:1, team:'France 🇫🇷', win:18, sf:52, trend:'↑' },
+  { rank:2, team:'Brazil 🇧🇷', win:15, sf:48, trend:'↑' },
+  { rank:3, team:'England 🏴󠁧󠁢󠁥󠁮󠁧󠁿', win:12, sf:41, trend:'→' },
+  { rank:4, team:'Germany 🇩🇪', win:10, sf:38, trend:'↓' },
+  { rank:5, team:'Spain 🇪🇸', win:9, sf:36, trend:'↑' },
+  { rank:6, team:'Argentina 🇦🇷', win:9, sf:35, trend:'↓' },
+  { rank:7, team:'Portugal 🇵🇹', win:7, sf:30, trend:'→' },
+  { rank:8, team:'Morocco 🇲🇦', win:4, sf:22, trend:'↑' },
+];
+
+// ── Renderers ─────────────────────────────────────────────────────────────────
+function renderMatch(m) {
+  const statusClass = m.status === 'live' ? 'status-live' : m.status === 'finished' ? 'status-finished' : 'status-upcoming';
+  const statusText  = m.status === 'live' ? '🔴 LIVE' : m.status === 'finished' ? 'FT' : m.time || 'Upcoming';
+  const scoreHtml   = m.score ? `<div class="score">${m.score}</div>` : `<div class="score-vs">vs</div>`;
+  const oddsHtml    = m.odds ? `
+    <div class="odds-row">
+      <div class="odds-btn"><span class="odds-label">${m.homeTeam}</span><span class="odds-val">${m.odds.home||'—'}</span></div>
+      <div class="odds-btn"><span class="odds-label">Draw</span><span class="odds-val">${m.odds.draw||'—'}</span></div>
+      <div class="odds-btn"><span class="odds-label">${m.awayTeam}</span><span class="odds-val">${m.odds.away||'—'}</span></div>
+    </div>` : '';
+
+  return `<div class="match-card">
+    <div class="match-header">
+      <span class="match-status ${statusClass}">${statusText}</span>
+      <span style="font-size:.75rem;color:var(--muted)">${m.group||m.stage||''}</span>
+    </div>
+    <div class="match-teams">
+      <div class="team"><span class="team-flag">${m.homeFlag||'⚽'}</span><span>${m.homeTeam}</span></div>
+      <div class="score-box">${scoreHtml}</div>
+      <div class="team right"><span>${m.awayTeam}</span><span class="team-flag">${m.awayFlag||'⚽'}</span></div>
+    </div>
+    <div class="match-meta">
+      <span>${m.venue||''}</span>
+      ${m.aiPick ? `<span style="color:#a78bfa">AI: ${m.aiPick} <span class="ai-badge">AI</span></span>` : ''}
+    </div>
+    ${oddsHtml}
+  </div>`;
+}
+
+function renderPredictions(preds) {
+  if (!preds?.length) { document.getElementById('predictions-container').innerHTML = '<div class="error-state">No predictions loaded</div>'; return; }
+  document.getElementById('predictions-container').innerHTML = preds.map(p => {
+    const pct = p.conf || p.confidence || 65;
+    const cls = pct >= 70 ? 'conf-high' : pct >= 55 ? 'conf-med' : 'conf-low';
+    return `<div class="prediction-row">
+      <div class="pred-match">${p.match || p.teams}</div>
+      <div class="pred-call">📌 ${p.call || p.prediction}</div>
+      <div class="pred-conf-row">
+        <div class="conf-bar"><div class="conf-fill ${cls}" style="width:${pct}%"></div></div>
+        <div class="conf-pct">${pct}%</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('pred-updated').textContent = new Date().toLocaleTimeString();
+}
+
+function renderOddsMovement(moves) {
+  if (!moves?.length) { document.getElementById('odds-container').innerHTML = '<div class="error-state">No odds data loaded</div>'; return; }
+  document.getElementById('odds-container').innerHTML = moves.map(m =>
+    `<div class="move-row">
+      <div class="move-team">${m.team}</div>
+      <span class="move-dir ${m.dir==='up'?'dir-up':'dir-down'}">${m.dir==='up'?'▲ SHORTER':'▼ LONGER'}</span>
+      <div class="move-val" style="color:${m.dir==='up'?'var(--green)':'var(--red)'}">${m.to}</div>
+    </div>`
+  ).join('');
+}
+
+function renderStandings(data) {
+  document.getElementById('standings-body').innerHTML = data.map(r =>
+    `<tr><td style="color:var(--muted);font-size:.8rem">#${r.rank}</td><td>${r.team}</td>
+     <td><strong>${r.win}%</strong></td><td style="color:var(--muted)">${r.sf}%</td>
+     <td style="color:${r.trend==='↑'?'var(--green)':r.trend==='↓'?'var(--red)':'var(--muted)'}">${r.trend}</td></tr>`
+  ).join('');
+}
+
+// ── Fetch from backend ────────────────────────────────────────────────────────
+let dataLoaded = false;
+
+async function fetchMatches() {
+  try {
+    const r = await fetch(API + '/live', {signal:AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const matches = d.matches || d.events || d || [];
+    if (matches.length) {
+      document.getElementById('matches-container').innerHTML = matches.map(renderMatch).join('');
+      document.getElementById('live-count').textContent = matches.filter(m=>m.status==='live').length;
+      document.getElementById('today-count').textContent = matches.length;
+      document.getElementById('match-updated').textContent = new Date().toLocaleTimeString();
+      dataLoaded = true;
+    } else {
+      showNoMatches();
+    }
+  } catch (_) { showNoMatches(); }
+}
+
+function showNoMatches() {
+  document.getElementById('matches-container').innerHTML = `
+    <div class="error-state">
+      <div class="error-icon">📅</div>
+      <div>No live matches right now</div>
+      <div style="margin-top:.5rem;font-size:.8rem">WC2026 runs June–July 2026. Check back closer to tournament start.</div>
+      <div style="margin-top:.75rem"><a href="/wc2026-schedule.html" style="color:var(--accent);text-decoration:none;font-size:.85rem">View full schedule →</a></div>
+    </div>`;
+  document.getElementById('live-count').textContent = '0';
+}
+
+async function fetchPredictions() {
+  try {
+    const r = await fetch(API + '/predictions', {signal:AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    renderPredictions(d.picks || d.predictions || FALLBACK_PREDICTIONS);
+  } catch (_) { renderPredictions(FALLBACK_PREDICTIONS); }
+}
+
+async function fetchOdds() {
+  try {
+    const r = await fetch(API + '/odds', {signal:AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    renderOddsMovement(d.movements || d.odds || FALLBACK_ODDS_MOVES);
+  } catch (_) { renderOddsMovement(FALLBACK_ODDS_MOVES); }
+}
+
+async function refreshAll() {
+  document.getElementById('refresh-info').textContent = 'Refreshing...';
+  renderStandings(FALLBACK_STANDINGS);
+  await Promise.all([fetchMatches(), fetchPredictions(), fetchOdds()]);
+  document.getElementById('refresh-info').textContent = 'Last updated ' + new Date().toLocaleTimeString();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderPredictions(FALLBACK_PREDICTIONS);
+renderOddsMovement(FALLBACK_ODDS_MOVES);
+renderStandings(FALLBACK_STANDINGS);
+refreshAll();
+
+// Auto-refresh every 60 seconds
+setInterval(refreshAll, 60 * 1000);
+</script>
+</body>
+</html>
