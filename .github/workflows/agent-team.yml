@@ -1,15 +1,15 @@
 name: WC2026 Empire Agent Team (24/7)
 
 on:
-  # Run continuously — each job runs for up to 6 hours, then restarts
+  # Hourly restart — max 5-minute gap between runs instead of 5-hour gap
   schedule:
-    - cron: '0 */5 * * *'   # Restart every 5 hours (well within 6h limit)
-  workflow_dispatch:         # Manual trigger from GitHub UI
+    - cron: '0 * * * *'   # Every hour on the hour
+  workflow_dispatch:       # Manual trigger from GitHub UI
 
 jobs:
   run-agents:
     runs-on: ubuntu-latest
-    timeout-minutes: 300   # 5 hours max per run
+    timeout-minutes: 55   # 55 min per run, restarts every 60 min = max 5 min gap
 
     steps:
       - name: Checkout
@@ -26,6 +26,8 @@ jobs:
           TELEGRAM_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_GROUP_CHAT_ID }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           SITE_URL: https://wc2026-sports-empire.vercel.app
+          RAILWAY_URL: ${{ secrets.RAILWAY_URL }}
         run: |
           echo "🤖 Starting WC2026 Empire Agent Team..."
+          echo "⏰ Will run for 55 minutes then hand off to next hourly cron"
           node telegram-agents.js
