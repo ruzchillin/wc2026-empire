@@ -1,0 +1,47 @@
+name: Inject Monetization Script into All Pages
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'empire-monetization.js'
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Inject empire-monetization.js into all HTML pages
+        run: |
+          SCRIPT_TAG='  <script src="/empire-monetization.js" defer></script>'
+          COUNT=0
+          for f in *.html; do
+            if grep -q 'empire-monetization.js' "$f"; then
+              echo "SKIP: $f"
+              continue
+            fi
+            if grep -q '</head>' "$f"; then
+              sed -i "s|</head>|$SCRIPT_TAG\n</head>|" "$f"
+              echo "INJECTED: $f"
+              COUNT=$((COUNT + 1))
+            fi
+          done
+          echo "Total pages updated: $COUNT"
+
+      - name: Commit changes
+        run: |
+          git config user.name "WC2026 Empire Bot"
+          git config user.email "bot@wc2026-empire.vercel.app"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "chore: inject empire-monetization.js into all HTML pages [skip ci]"
+            git push
+            echo "Done."
+          fi
