@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wc2026-empire.vercel.app/sitemap.xml

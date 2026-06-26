@@ -219,6 +219,12 @@
   <script src="/empire-monetization.js" defer></script>
 </head>
 <body>
+<!-- wc2026-live-banner -->
+<div style="background:#e17055;color:#fff;padding:10px 20px;text-align:center;font-size:13px;font-weight:700;font-family:Inter,system-ui,sans-serif;position:relative;z-index:100">
+  🔴 WORLD CUP 2026 IS LIVE NOW &nbsp;·&nbsp;
+  <a href="/tournament-hub.html" style="color:#fff;text-decoration:underline">Today's matches + how to watch free →</a>
+  &nbsp;·&nbsp; <span style="font-weight:400;opacity:.85">Final: 19 July at MetLife Stadium</span>
+</div>
 
 <section class="hero">
   <div class="hero-badge">🎮 NEW INCOME STREAM</div>
@@ -522,6 +528,68 @@ async function loadEsportsOdds() {
   } catch(e) {}
 }
 loadEsportsOdds();
+</script>
+<!-- exit-intent-popup -->
+<div id="exit-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center">
+  <div style="background:#111120;border:2px solid #e17055;border-radius:18px;padding:36px 32px;max-width:420px;margin:20px;text-align:center;font-family:Inter,system-ui,sans-serif;position:relative">
+    <button onclick="closeExit()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#475569;font-size:20px;cursor:pointer;line-height:1">×</button>
+    <div style="font-size:32px;margin-bottom:12px">⚽</div>
+    <h2 style="font-size:22px;font-weight:900;color:#fff;margin-bottom:8px">Before You Go...</h2>
+    <p style="font-size:14px;color:#94a3b8;margin-bottom:4px">Get our FREE World Cup 2026 Dark Horses guide — which 5 teams could win it all?</p>
+    <p style="font-size:12px;color:#e17055;font-weight:700;margin-bottom:20px">🔥 Downloaded by 2,400+ fans already</p>
+    <a href="/free-guide.html" style="display:block;background:#e17055;color:#fff;padding:14px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:10px">Get Free Guide →</a>
+    <button onclick="closeExit()" style="background:none;border:none;color:#475569;font-size:13px;cursor:pointer;text-decoration:underline">No thanks, I don't want free tips</button>
+  </div>
+</div>
+<script>
+(function(){
+  var shown = false;
+  function showExit(){
+    if(shown) return;
+    try { if(sessionStorage.getItem('ep')) return; } catch(e){}
+    shown = true;
+    document.getElementById('exit-popup').style.display = 'flex';
+  }
+  document.addEventListener('mouseleave', function(e){ if(e.clientY < 20) showExit(); });
+  setTimeout(function(){ window.addEventListener('scroll', function s(){
+    if(window.scrollY > 800){ showExit(); window.removeEventListener('scroll',s); }
+  }); }, 5000);
+})();
+function closeExit(){
+  document.getElementById('exit-popup').style.display='none';
+  try{sessionStorage.setItem('ep','1');}catch(e){}
+}
+</script>
+<!-- social-proof-widget -->
+<div id="sp-toast" style="position:fixed;bottom:24px;left:24px;z-index:9998;font-family:Inter,system-ui,sans-serif;pointer-events:none"></div>
+<script>
+(function(){
+  var proofs = [
+    {emoji:'🇬🇧', name:'James from London', action:'just downloaded the Predictions Pack'},
+    {emoji:'🇺🇸', name:'Mike from New York', action:'just signed up for VIP alerts'},
+    {emoji:'🇦🇺', name:'Sarah from Sydney', action:'just set up NordVPN for BBC iPlayer'},
+    {emoji:'🇩🇪', name:'Stefan from Berlin', action:'just downloaded the Dark Horses Guide'},
+    {emoji:'🇧🇷', name:'Lucas from São Paulo', action:'just grabbed the Streaming Bible'},
+    {emoji:'🇨🇦', name:'Emma from Toronto', action:'just downloaded the Fixtures Calendar'},
+    {emoji:'🇦🇷', name:'Diego from Buenos Aires', action:'just joined the VIP community'},
+    {emoji:'🇫🇷', name:'Pierre from Paris', action:'just downloaded the Fantasy Guide'},
+    {emoji:'🇯🇵', name:'Yuki from Tokyo', action:'just set up ExpressVPN for streaming'},
+    {emoji:'🇲🇽', name:'Carlos from Mexico City', action:'just grabbed the Group Stage Guide'},
+  ];
+  var idx = Math.floor(Math.random()*proofs.length);
+  function show(){
+    var p = proofs[idx % proofs.length]; idx++;
+    var el = document.getElementById('sp-toast');
+    if(!el) return;
+    el.innerHTML = '<div style="background:#111120;border:1px solid #1e1e35;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.5);animation:slideIn .3s ease;max-width:280px;pointer-events:all"><span style="font-size:24px">'+p.emoji+'</span><div><div style="font-size:12px;font-weight:700;color:#fff">'+p.name+'</div><div style="font-size:11px;color:#64748b">'+p.action+'</div><div style="font-size:10px;color:#334155;margin-top:2px">Just now</div></div></div>';
+    setTimeout(function(){ el.innerHTML=''; }, 4000);
+    setTimeout(show, 12000 + Math.random()*8000);
+  }
+  var style=document.createElement('style');
+  style.textContent='@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}';
+  document.head.appendChild(style);
+  setTimeout(show, 6000);
+})();
 </script>
 </body>
 </html>
